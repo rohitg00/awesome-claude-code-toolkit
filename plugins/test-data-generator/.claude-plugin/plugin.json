@@ -1,0 +1,6 @@
+{
+  "name": "test-data-generator",
+  "version": "1.0.0",
+  "description": "Generate realistic test data and seed databases",
+  "commands": ["commands/generate-data.md", "commands/seed-db.md"]
+}

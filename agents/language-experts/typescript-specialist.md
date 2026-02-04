@@ -2,7 +2,7 @@
 name: typescript-specialist
 description: Advanced TypeScript patterns including generics, conditional types, and module augmentation
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # TypeScript Specialist Agent

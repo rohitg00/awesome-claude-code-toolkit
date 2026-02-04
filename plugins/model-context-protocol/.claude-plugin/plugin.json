@@ -1,0 +1,6 @@
+{
+  "name": "model-context-protocol",
+  "version": "1.0.0",
+  "description": "MCP server development helper with tool and resource scaffolding",
+  "commands": ["commands/create-server.md", "commands/add-tool.md"]
+}

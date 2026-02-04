@@ -1,0 +1,6 @@
+{
+  "name": "devops-automator",
+  "version": "1.0.0",
+  "description": "DevOps automation scripts for CI/CD, health checks, and deployments",
+  "commands": ["commands/automate.md", "commands/health-check.md"]
+}

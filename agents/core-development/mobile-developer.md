@@ -2,7 +2,7 @@
 name: mobile-developer
 description: React Native and Flutter cross-platform specialist with native bridge patterns
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Mobile Developer Agent

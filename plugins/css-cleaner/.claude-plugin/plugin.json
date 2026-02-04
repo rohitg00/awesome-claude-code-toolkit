@@ -1,0 +1,6 @@
+{
+  "name": "css-cleaner",
+  "version": "1.0.0",
+  "description": "Find unused CSS and consolidate stylesheets",
+  "commands": ["commands/find-unused-css.md", "commands/consolidate.md"]
+}

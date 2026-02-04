@@ -2,7 +2,7 @@
 name: platform-engineer
 description: Internal developer platforms, service mesh, observability, and SLO/SLI management
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Platform Engineer Agent

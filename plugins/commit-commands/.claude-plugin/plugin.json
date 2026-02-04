@@ -1,0 +1,6 @@
+{
+  "name": "commit-commands",
+  "version": "1.0.0",
+  "description": "Advanced commit workflows with smart staging and push automation",
+  "commands": ["commands/commit-push.md", "commands/amend.md"]
+}

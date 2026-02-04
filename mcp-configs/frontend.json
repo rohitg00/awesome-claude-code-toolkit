@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Browser automation for visual testing, screenshots, accessibility audits, and UI verification."
+    },
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-figma"],
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "<your-figma-pat>"
+      },
+      "description": "Read Figma designs, inspect component properties, extract design tokens and spacing values."
+    },
+    "storybook": {
+      "command": "npx",
+      "args": ["-y", "mcp-storybook"],
+      "env": {
+        "STORYBOOK_URL": "http://localhost:6006"
+      },
+      "description": "Browse and interact with Storybook component library. Inspect stories, props, and variants."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/frontend-project"],
+      "description": "Read and write component files, styles, tests, and configuration."
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      },
+      "description": "Manage PRs, review UI changes, and track frontend-related issues."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch component library docs, MDN references, and CSS specification details."
+    }
+  }
+}

@@ -2,7 +2,7 @@
 name: golang-developer
 description: Go concurrency patterns, interfaces, error handling, testing, and module management
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Go Developer Agent

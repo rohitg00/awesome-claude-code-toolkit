@@ -1,0 +1,6 @@
+{
+  "name": "code-review-assistant",
+  "version": "1.0.0",
+  "description": "Automated code review with severity levels and actionable feedback",
+  "commands": ["commands/review.md"]
+}

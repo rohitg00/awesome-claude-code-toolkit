@@ -1,0 +1,6 @@
+{
+  "name": "analytics-reporter",
+  "version": "1.0.0",
+  "description": "Generate analytics reports and dashboard configurations from project data",
+  "commands": ["commands/report.md", "commands/dashboard.md"]
+}

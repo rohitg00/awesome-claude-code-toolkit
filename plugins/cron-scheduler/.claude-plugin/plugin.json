@@ -1,0 +1,6 @@
+{
+  "name": "cron-scheduler",
+  "version": "1.0.0",
+  "description": "Cron job configuration and schedule validation",
+  "commands": ["commands/create-cron.md", "commands/validate-schedule.md"]
+}

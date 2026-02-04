@@ -1,0 +1,6 @@
+{
+  "name": "explore",
+  "version": "1.0.0",
+  "description": "Smart codebase exploration with dependency mapping and structure analysis",
+  "commands": ["commands/explore.md", "commands/map.md"]
+}

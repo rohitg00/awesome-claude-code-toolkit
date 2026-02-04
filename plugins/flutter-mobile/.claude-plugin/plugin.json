@@ -1,0 +1,6 @@
+{
+  "name": "flutter-mobile",
+  "version": "1.0.0",
+  "description": "Flutter app development with widget creation and platform channels",
+  "commands": ["commands/create-widget.md", "commands/platform-channel.md"]
+}

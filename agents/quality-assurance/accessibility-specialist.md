@@ -2,7 +2,7 @@
 name: accessibility-specialist
 description: WCAG 2.2 compliance, screen reader testing, keyboard navigation, and ARIA patterns
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Accessibility Specialist Agent

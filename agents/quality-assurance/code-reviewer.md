@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Comprehensive code review covering patterns, anti-patterns, security, performance, and readability
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Code Reviewer Agent

@@ -2,47 +2,740 @@
   "marketplace": {
     "name": "claude-code-toolkit",
     "displayName": "Claude Code Toolkit",
-    "description": "Complete developer toolkit for Claude Code -- plugins, agents, skills, commands, hooks, rules, templates, and setup guides.",
+    "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 35 skills, 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
     "author": "Rohit Ghumare",
     "repository": "https://github.com/rohitg00/awesome-claude-code-toolkit",
     "license": "MIT",
     "version": "1.0.0",
-    "categories": ["plugins", "agents", "skills", "commands", "hooks", "rules", "templates"],
+    "categories": [
+      "plugins",
+      "agents",
+      "skills",
+      "commands",
+      "hooks",
+      "rules",
+      "templates",
+      "contexts"
+    ],
     "plugins": [
       {
-        "name": "smart-commit",
-        "path": "plugins/smart-commit",
-        "description": "Analyzes diffs and generates conventional commit messages with scope detection and breaking change flags.",
+        "name": "a11y-audit",
+        "path": "plugins/a11y-audit",
+        "description": "Full accessibility audit with WCAG compliance checking",
         "version": "1.0.0"
       },
       {
-        "name": "code-guardian",
-        "path": "plugins/code-guardian",
-        "description": "Real-time code quality enforcement with linting, complexity analysis, and security checks.",
+        "name": "accessibility-checker",
+        "path": "plugins/accessibility-checker",
+        "description": "Scan for accessibility issues and fix ARIA attributes in web applications",
         "version": "1.0.0"
       },
       {
-        "name": "deploy-pilot",
-        "path": "plugins/deploy-pilot",
-        "description": "End-to-end deployment orchestration for Docker, Kubernetes, Vercel, AWS, and custom pipelines.",
+        "name": "adr-writer",
+        "path": "plugins/adr-writer",
+        "description": "Architecture Decision Records authoring and management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "ai-prompt-lab",
+        "path": "plugins/ai-prompt-lab",
+        "description": "Improve and test AI prompts for better Claude Code interactions",
+        "version": "1.0.0"
+      },
+      {
+        "name": "analytics-reporter",
+        "path": "plugins/analytics-reporter",
+        "description": "Generate analytics reports and dashboard configurations from project data",
+        "version": "1.0.0"
+      },
+      {
+        "name": "android-developer",
+        "path": "plugins/android-developer",
+        "description": "Android and Kotlin development with Jetpack Compose",
         "version": "1.0.0"
       },
       {
         "name": "api-architect",
         "path": "plugins/api-architect",
-        "description": "Generates OpenAPI specs, route handlers, validation schemas, and client SDKs from natural language.",
+        "description": "API design, documentation, and testing with OpenAPI spec generation",
         "version": "1.0.0"
       },
       {
-        "name": "perf-profiler",
-        "path": "plugins/perf-profiler",
-        "description": "Profiles memory, CPU, bundle size, and database queries with actionable performance recommendations.",
+        "name": "api-benchmarker",
+        "path": "plugins/api-benchmarker",
+        "description": "API endpoint benchmarking and performance reporting",
+        "version": "1.0.0"
+      },
+      {
+        "name": "api-reference",
+        "path": "plugins/api-reference",
+        "description": "API reference documentation generation from source code",
+        "version": "1.0.0"
+      },
+      {
+        "name": "api-tester",
+        "path": "plugins/api-tester",
+        "description": "Test API endpoints and run load tests against services",
+        "version": "1.0.0"
+      },
+      {
+        "name": "aws-helper",
+        "path": "plugins/aws-helper",
+        "description": "AWS service configuration and deployment automation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "azure-helper",
+        "path": "plugins/azure-helper",
+        "description": "Azure service configuration and deployment automation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "backend-architect",
+        "path": "plugins/backend-architect",
+        "description": "Backend service architecture design with endpoint scaffolding",
+        "version": "1.0.0"
+      },
+      {
+        "name": "bug-detective",
+        "path": "plugins/bug-detective",
+        "description": "Debug issues systematically with root cause analysis and execution tracing",
+        "version": "1.0.0"
+      },
+      {
+        "name": "bundle-analyzer",
+        "path": "plugins/bundle-analyzer",
+        "description": "Frontend bundle size analysis and tree-shaking optimization",
+        "version": "1.0.0"
+      },
+      {
+        "name": "changelog-gen",
+        "path": "plugins/changelog-gen",
+        "description": "Generate changelogs from git history with conventional commit parsing",
+        "version": "1.0.0"
+      },
+      {
+        "name": "changelog-writer",
+        "path": "plugins/changelog-writer",
+        "description": "Detailed changelog authoring from git history and PRs",
+        "version": "1.0.0"
+      },
+      {
+        "name": "ci-debugger",
+        "path": "plugins/ci-debugger",
+        "description": "Debug CI/CD pipeline failures and fix configurations",
+        "version": "1.0.0"
+      },
+      {
+        "name": "code-architect",
+        "path": "plugins/code-architect",
+        "description": "Generate architecture diagrams and technical design documents",
+        "version": "1.0.0"
+      },
+      {
+        "name": "code-explainer",
+        "path": "plugins/code-explainer",
+        "description": "Explain complex code and annotate files with inline documentation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "code-guardian",
+        "path": "plugins/code-guardian",
+        "description": "Automated code review, security scanning, and quality enforcement",
+        "version": "1.0.0"
+      },
+      {
+        "name": "code-review-assistant",
+        "path": "plugins/code-review-assistant",
+        "description": "Automated code review with severity levels and actionable feedback",
+        "version": "1.0.0"
+      },
+      {
+        "name": "codebase-documenter",
+        "path": "plugins/codebase-documenter",
+        "description": "Auto-document entire codebase with inline comments and API docs",
+        "version": "1.0.0"
+      },
+      {
+        "name": "color-contrast",
+        "path": "plugins/color-contrast",
+        "description": "Color contrast checking and accessible color suggestions",
+        "version": "1.0.0"
+      },
+      {
+        "name": "commit-commands",
+        "path": "plugins/commit-commands",
+        "description": "Advanced commit workflows with smart staging and push automation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "complexity-reducer",
+        "path": "plugins/complexity-reducer",
+        "description": "Reduce cyclomatic complexity and simplify functions",
+        "version": "1.0.0"
+      },
+      {
+        "name": "compliance-checker",
+        "path": "plugins/compliance-checker",
+        "description": "Regulatory compliance verification for GDPR, SOC2, and HIPAA",
+        "version": "1.0.0"
+      },
+      {
+        "name": "content-creator",
+        "path": "plugins/content-creator",
+        "description": "Technical content generation for blog posts and social media",
+        "version": "1.0.0"
+      },
+      {
+        "name": "context7-docs",
+        "path": "plugins/context7-docs",
+        "description": "Fetch up-to-date library documentation via Context7 for accurate coding",
+        "version": "1.0.0"
+      },
+      {
+        "name": "contract-tester",
+        "path": "plugins/contract-tester",
+        "description": "API contract testing with Pact for microservice compatibility",
+        "version": "1.0.0"
+      },
+      {
+        "name": "create-worktrees",
+        "path": "plugins/create-worktrees",
+        "description": "Git worktree management for parallel development workflows",
+        "version": "1.0.0"
+      },
+      {
+        "name": "cron-scheduler",
+        "path": "plugins/cron-scheduler",
+        "description": "Cron job configuration and schedule validation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "css-cleaner",
+        "path": "plugins/css-cleaner",
+        "description": "Find unused CSS and consolidate stylesheets",
+        "version": "1.0.0"
+      },
+      {
+        "name": "data-privacy",
+        "path": "plugins/data-privacy",
+        "description": "Data privacy implementation with PII detection and anonymization",
+        "version": "1.0.0"
+      },
+      {
+        "name": "database-optimizer",
+        "path": "plugins/database-optimizer",
+        "description": "Database query optimization with index recommendations and EXPLAIN analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "dead-code-finder",
+        "path": "plugins/dead-code-finder",
+        "description": "Find and remove dead code across the codebase",
+        "version": "1.0.0"
+      },
+      {
+        "name": "debug-session",
+        "path": "plugins/debug-session",
+        "description": "Interactive debugging workflow with git bisect integration",
+        "version": "1.0.0"
+      },
+      {
+        "name": "dependency-manager",
+        "path": "plugins/dependency-manager",
+        "description": "Audit, update, and manage project dependencies with safety checks",
+        "version": "1.0.0"
+      },
+      {
+        "name": "deploy-pilot",
+        "path": "plugins/deploy-pilot",
+        "description": "Deployment automation with Dockerfile generation, CI/CD pipelines, and infrastructure as code",
+        "version": "1.0.0"
+      },
+      {
+        "name": "desktop-app",
+        "path": "plugins/desktop-app",
+        "description": "Desktop application scaffolding with Electron or Tauri",
+        "version": "1.0.0"
+      },
+      {
+        "name": "devops-automator",
+        "path": "plugins/devops-automator",
+        "description": "DevOps automation scripts for CI/CD, health checks, and deployments",
+        "version": "1.0.0"
+      },
+      {
+        "name": "discuss",
+        "path": "plugins/discuss",
+        "description": "Debate implementation approaches with structured pros and cons analysis",
         "version": "1.0.0"
       },
       {
         "name": "doc-forge",
         "path": "plugins/doc-forge",
-        "description": "Generates READMEs, API references, changelogs, and architecture decision records from code.",
+        "description": "Documentation generation, API docs, and README maintenance",
+        "version": "1.0.0"
+      },
+      {
+        "name": "docker-helper",
+        "path": "plugins/docker-helper",
+        "description": "Build optimized Docker images and improve Dockerfile best practices",
+        "version": "1.0.0"
+      },
+      {
+        "name": "double-check",
+        "path": "plugins/double-check",
+        "description": "Verify code correctness with systematic second-pass analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "e2e-runner",
+        "path": "plugins/e2e-runner",
+        "description": "End-to-end test execution and recording for web applications",
+        "version": "1.0.0"
+      },
+      {
+        "name": "embedding-manager",
+        "path": "plugins/embedding-manager",
+        "description": "Manage vector embeddings and similarity search",
+        "version": "1.0.0"
+      },
+      {
+        "name": "env-manager",
+        "path": "plugins/env-manager",
+        "description": "Set up and validate environment configurations across environments",
+        "version": "1.0.0"
+      },
+      {
+        "name": "env-sync",
+        "path": "plugins/env-sync",
+        "description": "Environment variable syncing and diff across environments",
+        "version": "1.0.0"
+      },
+      {
+        "name": "experiment-tracker",
+        "path": "plugins/experiment-tracker",
+        "description": "ML experiment tracking with metrics logging and run comparison",
+        "version": "1.0.0"
+      },
+      {
+        "name": "explore",
+        "path": "plugins/explore",
+        "description": "Smart codebase exploration with dependency mapping and structure analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "feature-dev",
+        "path": "plugins/feature-dev",
+        "description": "Full feature development workflow from spec to completion",
+        "version": "1.0.0"
+      },
+      {
+        "name": "finance-tracker",
+        "path": "plugins/finance-tracker",
+        "description": "Development cost tracking with time estimates and budget reporting",
+        "version": "1.0.0"
+      },
+      {
+        "name": "fix-github-issue",
+        "path": "plugins/fix-github-issue",
+        "description": "Auto-fix GitHub issues by analyzing issue details and implementing solutions",
+        "version": "1.0.0"
+      },
+      {
+        "name": "fix-pr",
+        "path": "plugins/fix-pr",
+        "description": "Fix PR review comments automatically with context-aware patches",
+        "version": "1.0.0"
+      },
+      {
+        "name": "flutter-mobile",
+        "path": "plugins/flutter-mobile",
+        "description": "Flutter app development with widget creation and platform channels",
+        "version": "1.0.0"
+      },
+      {
+        "name": "frontend-developer",
+        "path": "plugins/frontend-developer",
+        "description": "Frontend component development with accessibility and responsive design",
+        "version": "1.0.0"
+      },
+      {
+        "name": "gcp-helper",
+        "path": "plugins/gcp-helper",
+        "description": "Google Cloud Platform service configuration and deployment",
+        "version": "1.0.0"
+      },
+      {
+        "name": "git-flow",
+        "path": "plugins/git-flow",
+        "description": "Git workflow management with feature branches, releases, and hotfix flows",
+        "version": "1.0.0"
+      },
+      {
+        "name": "github-issue-manager",
+        "path": "plugins/github-issue-manager",
+        "description": "GitHub issue triage, creation, and management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "helm-charts",
+        "path": "plugins/helm-charts",
+        "description": "Helm chart generation and upgrade management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "import-organizer",
+        "path": "plugins/import-organizer",
+        "description": "Organize, sort, and clean import statements",
+        "version": "1.0.0"
+      },
+      {
+        "name": "infrastructure-maintainer",
+        "path": "plugins/infrastructure-maintainer",
+        "description": "Infrastructure maintenance with security audits and update management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "ios-developer",
+        "path": "plugins/ios-developer",
+        "description": "iOS and Swift development with SwiftUI views and models",
+        "version": "1.0.0"
+      },
+      {
+        "name": "k8s-helper",
+        "path": "plugins/k8s-helper",
+        "description": "Generate Kubernetes manifests and debug pod issues with kubectl",
+        "version": "1.0.0"
+      },
+      {
+        "name": "license-checker",
+        "path": "plugins/license-checker",
+        "description": "License compliance checking and NOTICE file generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "lighthouse-runner",
+        "path": "plugins/lighthouse-runner",
+        "description": "Run Lighthouse audits and fix performance issues",
+        "version": "1.0.0"
+      },
+      {
+        "name": "linear-helper",
+        "path": "plugins/linear-helper",
+        "description": "Linear issue tracking integration and workflow management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "load-tester",
+        "path": "plugins/load-tester",
+        "description": "Load and stress testing for APIs and web services",
+        "version": "1.0.0"
+      },
+      {
+        "name": "memory-profiler",
+        "path": "plugins/memory-profiler",
+        "description": "Memory leak detection and heap analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "migrate-tool",
+        "path": "plugins/migrate-tool",
+        "description": "Generate database migrations and code migration scripts for framework upgrades",
+        "version": "1.0.0"
+      },
+      {
+        "name": "migration-generator",
+        "path": "plugins/migration-generator",
+        "description": "Database migration generation and rollback management",
+        "version": "1.0.0"
+      },
+      {
+        "name": "model-context-protocol",
+        "path": "plugins/model-context-protocol",
+        "description": "MCP server development helper with tool and resource scaffolding",
+        "version": "1.0.0"
+      },
+      {
+        "name": "model-evaluator",
+        "path": "plugins/model-evaluator",
+        "description": "Evaluate and compare ML model performance metrics",
+        "version": "1.0.0"
+      },
+      {
+        "name": "monitoring-setup",
+        "path": "plugins/monitoring-setup",
+        "description": "Monitoring and alerting configuration with dashboard generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "monorepo-manager",
+        "path": "plugins/monorepo-manager",
+        "description": "Manage monorepo packages with affected detection and version synchronization",
+        "version": "1.0.0"
+      },
+      {
+        "name": "mutation-tester",
+        "path": "plugins/mutation-tester",
+        "description": "Mutation testing to measure test suite quality",
+        "version": "1.0.0"
+      },
+      {
+        "name": "n8n-workflow",
+        "path": "plugins/n8n-workflow",
+        "description": "Generate n8n automation workflows from natural language descriptions",
+        "version": "1.0.0"
+      },
+      {
+        "name": "onboarding-guide",
+        "path": "plugins/onboarding-guide",
+        "description": "New developer onboarding documentation generator",
+        "version": "1.0.0"
+      },
+      {
+        "name": "openapi-expert",
+        "path": "plugins/openapi-expert",
+        "description": "OpenAPI spec generation, validation, and client code scaffolding",
+        "version": "1.0.0"
+      },
+      {
+        "name": "optimize",
+        "path": "plugins/optimize",
+        "description": "Code optimization for performance and bundle size reduction",
+        "version": "1.0.0"
+      },
+      {
+        "name": "perf-profiler",
+        "path": "plugins/perf-profiler",
+        "description": "Performance analysis, profiling, and optimization recommendations",
+        "version": "1.0.0"
+      },
+      {
+        "name": "performance-monitor",
+        "path": "plugins/performance-monitor",
+        "description": "Profile API endpoints and run benchmarks to identify performance bottlenecks",
+        "version": "1.0.0"
+      },
+      {
+        "name": "plan",
+        "path": "plugins/plan",
+        "description": "Structured planning with risk assessment and time estimation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "pr-reviewer",
+        "path": "plugins/pr-reviewer",
+        "description": "Review pull requests with structured analysis and approve with confidence",
+        "version": "1.0.0"
+      },
+      {
+        "name": "product-shipper",
+        "path": "plugins/product-shipper",
+        "description": "Ship features end-to-end with launch checklists and rollout plans",
+        "version": "1.0.0"
+      },
+      {
+        "name": "project-scaffold",
+        "path": "plugins/project-scaffold",
+        "description": "Scaffold new projects and add features with best-practice templates",
+        "version": "1.0.0"
+      },
+      {
+        "name": "prompt-optimizer",
+        "path": "plugins/prompt-optimizer",
+        "description": "Analyze and optimize AI prompts for better results",
+        "version": "1.0.0"
+      },
+      {
+        "name": "python-expert",
+        "path": "plugins/python-expert",
+        "description": "Python-specific development with type hints and idiomatic refactoring",
+        "version": "1.0.0"
+      },
+      {
+        "name": "query-optimizer",
+        "path": "plugins/query-optimizer",
+        "description": "SQL query optimization and execution plan analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "rag-builder",
+        "path": "plugins/rag-builder",
+        "description": "Build Retrieval-Augmented Generation pipelines",
+        "version": "1.0.0"
+      },
+      {
+        "name": "rapid-prototyper",
+        "path": "plugins/rapid-prototyper",
+        "description": "Quick prototype scaffolding with minimal viable structure",
+        "version": "1.0.0"
+      },
+      {
+        "name": "react-native-dev",
+        "path": "plugins/react-native-dev",
+        "description": "React Native mobile development with platform-specific optimizations",
+        "version": "1.0.0"
+      },
+      {
+        "name": "readme-generator",
+        "path": "plugins/readme-generator",
+        "description": "Smart README generation from project analysis",
+        "version": "1.0.0"
+      },
+      {
+        "name": "refactor-engine",
+        "path": "plugins/refactor-engine",
+        "description": "Extract functions, simplify complex code, and reduce cognitive complexity",
+        "version": "1.0.0"
+      },
+      {
+        "name": "regex-builder",
+        "path": "plugins/regex-builder",
+        "description": "Build, test, and debug regular expression patterns",
+        "version": "1.0.0"
+      },
+      {
+        "name": "release-manager",
+        "path": "plugins/release-manager",
+        "description": "Semantic versioning management and automated release workflows",
+        "version": "1.0.0"
+      },
+      {
+        "name": "responsive-designer",
+        "path": "plugins/responsive-designer",
+        "description": "Responsive design implementation and testing",
+        "version": "1.0.0"
+      },
+      {
+        "name": "schema-designer",
+        "path": "plugins/schema-designer",
+        "description": "Database schema design and ERD generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "screen-reader-tester",
+        "path": "plugins/screen-reader-tester",
+        "description": "Screen reader compatibility testing and ARIA fixes",
+        "version": "1.0.0"
+      },
+      {
+        "name": "security-guidance",
+        "path": "plugins/security-guidance",
+        "description": "Security best practices advisor with vulnerability detection and fixes",
+        "version": "1.0.0"
+      },
+      {
+        "name": "seed-generator",
+        "path": "plugins/seed-generator",
+        "description": "Database seeding script generation with realistic data",
+        "version": "1.0.0"
+      },
+      {
+        "name": "slack-notifier",
+        "path": "plugins/slack-notifier",
+        "description": "Slack integration for deployment and build notifications",
+        "version": "1.0.0"
+      },
+      {
+        "name": "smart-commit",
+        "path": "plugins/smart-commit",
+        "description": "Intelligent git commits with conventional format, semantic analysis, and changelog generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "sprint-prioritizer",
+        "path": "plugins/sprint-prioritizer",
+        "description": "Sprint planning with story prioritization and capacity estimation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "technical-sales",
+        "path": "plugins/technical-sales",
+        "description": "Technical demo creation and POC proposal writing",
+        "version": "1.0.0"
+      },
+      {
+        "name": "terraform-helper",
+        "path": "plugins/terraform-helper",
+        "description": "Terraform module creation and infrastructure planning",
+        "version": "1.0.0"
+      },
+      {
+        "name": "test-data-generator",
+        "path": "plugins/test-data-generator",
+        "description": "Generate realistic test data and seed databases",
+        "version": "1.0.0"
+      },
+      {
+        "name": "test-results-analyzer",
+        "path": "plugins/test-results-analyzer",
+        "description": "Analyze test failures, identify patterns, and suggest targeted fixes",
+        "version": "1.0.0"
+      },
+      {
+        "name": "test-writer",
+        "path": "plugins/test-writer",
+        "description": "Generate comprehensive unit and integration tests with full coverage",
+        "version": "1.0.0"
+      },
+      {
+        "name": "tool-evaluator",
+        "path": "plugins/tool-evaluator",
+        "description": "Evaluate and compare developer tools with structured scoring criteria",
+        "version": "1.0.0"
+      },
+      {
+        "name": "type-migrator",
+        "path": "plugins/type-migrator",
+        "description": "Migrate JavaScript files to TypeScript with proper types",
+        "version": "1.0.0"
+      },
+      {
+        "name": "ui-designer",
+        "path": "plugins/ui-designer",
+        "description": "Implement UI designs from specs with pixel-perfect component generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "ultrathink",
+        "path": "plugins/ultrathink",
+        "description": "Deep analysis mode with extended reasoning for complex problems",
+        "version": "1.0.0"
+      },
+      {
+        "name": "unit-test-generator",
+        "path": "plugins/unit-test-generator",
+        "description": "Generate comprehensive unit tests for any function or module",
+        "version": "1.0.0"
+      },
+      {
+        "name": "update-branch",
+        "path": "plugins/update-branch",
+        "description": "Rebase and update feature branches with conflict resolution",
+        "version": "1.0.0"
+      },
+      {
+        "name": "vision-specialist",
+        "path": "plugins/vision-specialist",
+        "description": "Image and visual analysis with screenshot interpretation and text extraction",
+        "version": "1.0.0"
+      },
+      {
+        "name": "visual-regression",
+        "path": "plugins/visual-regression",
+        "description": "Visual regression testing with screenshot comparison",
+        "version": "1.0.0"
+      },
+      {
+        "name": "web-dev",
+        "path": "plugins/web-dev",
+        "description": "Full-stack web development with app scaffolding and page generation",
+        "version": "1.0.0"
+      },
+      {
+        "name": "workflow-optimizer",
+        "path": "plugins/workflow-optimizer",
+        "description": "Development workflow analysis and optimization recommendations",
         "version": "1.0.0"
       }
     ]

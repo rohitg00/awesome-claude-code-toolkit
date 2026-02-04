@@ -1,0 +1,6 @@
+{
+  "name": "desktop-app",
+  "version": "1.0.0",
+  "description": "Desktop application scaffolding with Electron or Tauri",
+  "commands": ["commands/scaffold-desktop.md"]
+}

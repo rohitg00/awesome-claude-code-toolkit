@@ -1,0 +1,6 @@
+{
+  "name": "type-migrator",
+  "version": "1.0.0",
+  "description": "Migrate JavaScript files to TypeScript with proper types",
+  "commands": ["commands/migrate-file.md", "commands/add-types.md"]
+}

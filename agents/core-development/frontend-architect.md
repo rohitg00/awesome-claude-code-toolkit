@@ -2,7 +2,7 @@
 name: frontend-architect
 description: React/Next.js specialist with performance optimization, SSR/SSG, and accessibility
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Frontend Architect Agent

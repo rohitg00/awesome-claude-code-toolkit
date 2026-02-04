@@ -1,0 +1,6 @@
+{
+  "name": "terraform-helper",
+  "version": "1.0.0",
+  "description": "Terraform module creation and infrastructure planning",
+  "commands": ["commands/create-module.md", "commands/plan-apply.md"]
+}

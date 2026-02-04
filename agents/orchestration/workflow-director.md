@@ -2,7 +2,7 @@
 name: workflow-director
 description: End-to-end workflow orchestration, checkpoint management, and error recovery
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Workflow Director Agent

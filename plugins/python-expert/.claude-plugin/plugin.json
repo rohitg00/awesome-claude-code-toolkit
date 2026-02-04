@@ -1,0 +1,6 @@
+{
+  "name": "python-expert",
+  "version": "1.0.0",
+  "description": "Python-specific development with type hints and idiomatic refactoring",
+  "commands": ["commands/refactor-py.md", "commands/type-hints.md"]
+}

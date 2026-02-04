@@ -2,7 +2,7 @@
 name: security-auditor
 description: OWASP Top 10, dependency scanning, secrets detection, and penetration testing guidance
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Security Auditor Agent

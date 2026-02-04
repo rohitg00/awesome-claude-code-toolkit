@@ -1,0 +1,6 @@
+{
+  "name": "compliance-checker",
+  "version": "1.0.0",
+  "description": "Regulatory compliance verification for GDPR, SOC2, and HIPAA",
+  "commands": ["commands/check-gdpr.md", "commands/check-soc2.md"]
+}

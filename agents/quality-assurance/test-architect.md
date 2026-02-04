@@ -2,7 +2,7 @@
 name: test-architect
 description: Testing strategy with unit/integration/e2e, TDD, property-based testing, and mutation testing
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Test Architect Agent

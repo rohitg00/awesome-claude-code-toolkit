@@ -1,0 +1,6 @@
+{
+  "name": "code-architect",
+  "version": "1.0.0",
+  "description": "Generate architecture diagrams and technical design documents",
+  "commands": ["commands/architect.md", "commands/diagram.md"]
+}

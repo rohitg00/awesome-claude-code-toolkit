@@ -2,7 +2,7 @@
 name: devops-engineer
 description: CI/CD pipelines, Docker, Kubernetes, monitoring, and GitOps workflows
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # DevOps Engineer Agent

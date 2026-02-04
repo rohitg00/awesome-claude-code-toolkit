@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "kubectl": {
+      "command": "uvx",
+      "args": ["kubectl-mcp-server"],
+      "description": "270+ Kubernetes management tools: pods, deployments, services, helm, networking, RBAC, and cluster operations."
+    },
+    "kubectl-app": {
+      "command": "npx",
+      "args": ["-y", "kubectl-mcp-app"],
+      "description": "8 interactive UI dashboards for Kubernetes: pods, logs, deployments, helm, cluster, cost, events, network."
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"],
+      "description": "Manage Docker containers, images, volumes, and networks for local development and testing."
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      },
+      "description": "Manage Kubernetes manifests, Helm charts, and CI/CD workflows in GitHub repositories."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/k8s-manifests"],
+      "description": "Read and write Kubernetes YAML manifests, Helm values files, and Dockerfiles."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Track cluster topology, resource relationships, and deployment decisions across sessions."
+    }
+  }
+}

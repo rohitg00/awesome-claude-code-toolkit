@@ -1,0 +1,6 @@
+{
+  "name": "monorepo-manager",
+  "version": "1.0.0",
+  "description": "Manage monorepo packages with affected detection and version synchronization",
+  "commands": ["commands/affected.md", "commands/sync-versions.md"]
+}

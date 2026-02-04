@@ -2,7 +2,7 @@
 name: performance-engineer
 description: Profiling, benchmarking, memory analysis, load testing, and optimization patterns
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Performance Engineer Agent

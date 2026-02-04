@@ -1,0 +1,6 @@
+{
+  "name": "model-evaluator",
+  "version": "1.0.0",
+  "description": "Evaluate and compare ML model performance metrics",
+  "commands": ["commands/evaluate-model.md", "commands/compare-models.md"]
+}

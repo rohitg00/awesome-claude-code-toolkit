@@ -1,0 +1,6 @@
+{
+  "name": "embedding-manager",
+  "version": "1.0.0",
+  "description": "Manage vector embeddings and similarity search",
+  "commands": ["commands/generate-embeddings.md", "commands/search-similar.md"]
+}

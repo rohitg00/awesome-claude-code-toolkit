@@ -2,7 +2,7 @@
 name: task-coordinator
 description: Multi-agent task distribution, dependency management, and parallel execution
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Task Coordinator Agent

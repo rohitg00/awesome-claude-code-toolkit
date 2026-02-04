@@ -2,7 +2,7 @@
 name: fullstack-engineer
 description: End-to-end feature development across frontend, backend, and database layers
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Fullstack Engineer Agent

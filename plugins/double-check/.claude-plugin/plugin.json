@@ -1,0 +1,6 @@
+{
+  "name": "double-check",
+  "version": "1.0.0",
+  "description": "Verify code correctness with systematic second-pass analysis",
+  "commands": ["commands/verify.md"]
+}

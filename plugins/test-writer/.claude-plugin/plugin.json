@@ -1,0 +1,6 @@
+{
+  "name": "test-writer",
+  "version": "1.0.0",
+  "description": "Generate comprehensive unit and integration tests with full coverage",
+  "commands": ["commands/unit-test.md", "commands/integration-test.md"]
+}

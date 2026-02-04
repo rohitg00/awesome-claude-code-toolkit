@@ -2,7 +2,7 @@
 name: python-engineer
 description: Python 3.12+ with typing, async/await, dataclasses, pydantic, and packaging
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Python Engineer Agent

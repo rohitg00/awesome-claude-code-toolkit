@@ -2,7 +2,7 @@
 name: api-designer
 description: REST and GraphQL API design with OpenAPI specs, versioning, and pagination patterns
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # API Designer Agent

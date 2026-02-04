@@ -1,0 +1,6 @@
+{
+  "name": "ai-prompt-lab",
+  "version": "1.0.0",
+  "description": "Improve and test AI prompts for better Claude Code interactions",
+  "commands": ["commands/improve-prompt.md", "commands/test-prompt.md"]
+}

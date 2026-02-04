@@ -2,7 +2,7 @@
 name: database-admin
 description: PostgreSQL, MySQL, MongoDB optimization, migrations, replication, and backup strategies
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Database Admin Agent

@@ -2,7 +2,7 @@
 name: cloud-architect
 description: AWS/GCP/Azure multi-cloud patterns, IaC, cost optimization, and well-architected framework
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Cloud Architect Agent

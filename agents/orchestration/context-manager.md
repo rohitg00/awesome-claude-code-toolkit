@@ -2,7 +2,7 @@
 name: context-manager
 description: Context window optimization, progressive loading, and strategic compaction
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Context Manager Agent

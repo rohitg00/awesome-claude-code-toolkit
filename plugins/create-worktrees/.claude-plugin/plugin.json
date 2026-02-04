@@ -1,0 +1,6 @@
+{
+  "name": "create-worktrees",
+  "version": "1.0.0",
+  "description": "Git worktree management for parallel development workflows",
+  "commands": ["commands/worktree-create.md", "commands/worktree-clean.md"]
+}

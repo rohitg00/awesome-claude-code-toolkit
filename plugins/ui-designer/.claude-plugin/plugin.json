@@ -1,0 +1,6 @@
+{
+  "name": "ui-designer",
+  "version": "1.0.0",
+  "description": "Implement UI designs from specs with pixel-perfect component generation",
+  "commands": ["commands/implement-design.md"]
+}

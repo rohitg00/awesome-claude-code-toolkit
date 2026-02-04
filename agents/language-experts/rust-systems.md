@@ -2,7 +2,7 @@
 name: rust-systems
 description: Rust ownership, lifetimes, async runtime, FFI, unsafe patterns, and performance tuning
 tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
-model: sonnet
+model: opus
 ---
 
 # Rust Systems Agent
