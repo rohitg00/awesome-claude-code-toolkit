@@ -3,7 +3,7 @@
 **The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+15,000 via [SkillKit](https://agenstskills.com)), 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, 6 MCP configs, and more.**
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Last Updated](https://img.shields.io/badge/Last%20Updated-Feb%202026-orange.svg)](#)
 [![Files](https://img.shields.io/badge/Files-796-blueviolet.svg)](#project-structure)
@@ -730,4 +730,4 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 ## License
 
-[MIT](LICENSE)
+[Apache-2.0](LICENSE)

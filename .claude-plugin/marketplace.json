@@ -5,7 +5,7 @@
     "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 35 skills, 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
     "author": "Rohit Ghumare",
     "repository": "https://github.com/rohitg00/awesome-claude-code-toolkit",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "version": "1.0.0",
     "categories": [
       "plugins",
