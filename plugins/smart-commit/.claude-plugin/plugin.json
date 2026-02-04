@@ -1,0 +1,6 @@
+{
+  "name": "smart-commit",
+  "version": "1.0.0",
+  "description": "Intelligent git commits with conventional format, semantic analysis, and changelog generation",
+  "commands": ["commands/commit.md", "commands/changelog.md"]
+}

@@ -1,0 +1,70 @@
+{
+  "hooks": [
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "description": "Block dev server commands outside tmux to prevent orphaned processes",
+      "command": "node hooks/scripts/block-dev-server.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "description": "Remind before git push to verify branch and remote",
+      "command": "node hooks/scripts/pre-push-check.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Write",
+      "description": "Block unnecessary .md file creation outside of docs directories",
+      "command": "node hooks/scripts/block-md-creation.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Run linter check after file edits",
+      "command": "node hooks/scripts/post-edit-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Run linter check after file edits",
+      "command": "node hooks/scripts/post-edit-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Bash",
+      "description": "Track edit count and suggest compaction at intervals",
+      "command": "node hooks/scripts/suggest-compact.js"
+    },
+    {
+      "type": "SessionStart",
+      "description": "Load previous context and detect package manager",
+      "command": "node hooks/scripts/session-start.js"
+    },
+    {
+      "type": "SessionEnd",
+      "description": "Save current context state for next session",
+      "command": "node hooks/scripts/session-end.js"
+    },
+    {
+      "type": "PreCompact",
+      "description": "Save important context before compaction",
+      "command": "node hooks/scripts/pre-compact.js"
+    },
+    {
+      "type": "Stop",
+      "description": "Remind to run tests if code was modified",
+      "command": "node hooks/scripts/stop-check.js"
+    },
+    {
+      "type": "Notification",
+      "description": "Log notifications for later review",
+      "command": "node hooks/scripts/notification-log.js"
+    },
+    {
+      "type": "UserPromptSubmit",
+      "description": "Detect vague prompts and suggest clarification",
+      "command": "node hooks/scripts/prompt-check.js"
+    }
+  ]
+}

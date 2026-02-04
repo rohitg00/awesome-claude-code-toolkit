@@ -1,0 +1,7 @@
+{
+  "name": "api-architect",
+  "version": "1.0.0",
+  "description": "API design, documentation, and testing with OpenAPI spec generation",
+  "commands": ["commands/design-api.md", "commands/generate-openapi.md"],
+  "agents": ["agents/api-expert.md"]
+}

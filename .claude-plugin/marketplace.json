@@ -1,0 +1,50 @@
+{
+  "marketplace": {
+    "name": "claude-code-toolkit",
+    "displayName": "Claude Code Toolkit",
+    "description": "Complete developer toolkit for Claude Code -- plugins, agents, skills, commands, hooks, rules, templates, and setup guides.",
+    "author": "Rohit Ghumare",
+    "repository": "https://github.com/rohitg00/awesome-claude-code-toolkit",
+    "license": "MIT",
+    "version": "1.0.0",
+    "categories": ["plugins", "agents", "skills", "commands", "hooks", "rules", "templates"],
+    "plugins": [
+      {
+        "name": "smart-commit",
+        "path": "plugins/smart-commit",
+        "description": "Analyzes diffs and generates conventional commit messages with scope detection and breaking change flags.",
+        "version": "1.0.0"
+      },
+      {
+        "name": "code-guardian",
+        "path": "plugins/code-guardian",
+        "description": "Real-time code quality enforcement with linting, complexity analysis, and security checks.",
+        "version": "1.0.0"
+      },
+      {
+        "name": "deploy-pilot",
+        "path": "plugins/deploy-pilot",
+        "description": "End-to-end deployment orchestration for Docker, Kubernetes, Vercel, AWS, and custom pipelines.",
+        "version": "1.0.0"
+      },
+      {
+        "name": "api-architect",
+        "path": "plugins/api-architect",
+        "description": "Generates OpenAPI specs, route handlers, validation schemas, and client SDKs from natural language.",
+        "version": "1.0.0"
+      },
+      {
+        "name": "perf-profiler",
+        "path": "plugins/perf-profiler",
+        "description": "Profiles memory, CPU, bundle size, and database queries with actionable performance recommendations.",
+        "version": "1.0.0"
+      },
+      {
+        "name": "doc-forge",
+        "path": "plugins/doc-forge",
+        "description": "Generates READMEs, API references, changelogs, and architecture decision records from code.",
+        "version": "1.0.0"
+      }
+    ]
+  }
+}

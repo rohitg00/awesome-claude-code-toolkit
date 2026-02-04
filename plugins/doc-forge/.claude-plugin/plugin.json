@@ -1,0 +1,6 @@
+{
+  "name": "doc-forge",
+  "version": "1.0.0",
+  "description": "Documentation generation, API docs, and README maintenance",
+  "commands": ["commands/generate-docs.md", "commands/update-readme.md", "commands/api-docs.md"]
+}
