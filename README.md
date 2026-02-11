@@ -434,6 +434,12 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
 
+### Community Skills
+
+| Skill | Install | What It Teaches |
+|-------|---------|------------------|
+| [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+
 ### Installing Skills
 
 **Browse and install via SkillKit** (recommended):
