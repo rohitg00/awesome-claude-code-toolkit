@@ -438,7 +438,7 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
-| [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skills add reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
 
 ### Installing Skills
 
