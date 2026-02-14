@@ -724,6 +724,14 @@ claude-code-toolkit/               796 files
 
 ---
 
+## Related Projects
+
+| Project | Description |
+|---------|-------------|
+| [claude-pipe](https://github.com/bluzir/claude-pipe) | Conventions for multi-step Claude Code pipelines. File-based YAML state, flat orchestration, data layer contracts, resume-from-failure. Complements this toolkit's orchestration agents with end-to-end pipeline patterns |
+
+---
+
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
