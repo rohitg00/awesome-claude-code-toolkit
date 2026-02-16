@@ -434,6 +434,14 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
 
+### Community Skill Collections
+
+External skill packages contributed by the community.
+
+| Collection | Skills | What It Covers |
+|------------|--------|----------------|
+| [pm-skills](https://github.com/product-on-purpose/pm-skills) | 24 | Product management across the Triple Diamond — discovery, definition, delivery, PRDs, roadmaps, stakeholder alignment |
+
 ### Installing Skills
 
 **Browse and install via SkillKit** (recommended):
