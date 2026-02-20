@@ -45,6 +45,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Contexts](#contexts) (5)
 - [Examples](#examples) (3)
 - [Setup](#setup)
+- [Companion Tools](#companion-tools)
 - [Contributing](#contributing)
 
 ---
