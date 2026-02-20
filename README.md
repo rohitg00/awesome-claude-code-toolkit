@@ -724,6 +724,14 @@ claude-code-toolkit/               796 files
 
 ---
 
+## Companion Tools
+
+| Tool | Description |
+|------|-------------|
+| [Mantra](https://mantra.gonewx.com) | Time machine for AI coding sessions. Automatically captures, browses, searches, and restores Claude Code sessions. Desktop app with CLI support for macOS, Linux, and Windows. |
+
+---
+
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
