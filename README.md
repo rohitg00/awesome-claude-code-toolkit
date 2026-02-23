@@ -440,6 +440,7 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [mycrab-tunnel-skill](https://github.com/isgudtek/mycrab-tunnel-skill) | Clone repo to `~/.claude/skills/mycrab-tunnel-skill` | Autonomous Cloudflare Tunnel setup with mycrab.space API - enables agents to host public content with free subdomains or custom paid domains |
 
 ### Installing Skills
 
