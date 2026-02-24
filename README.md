@@ -45,6 +45,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Contexts](#contexts) (5)
 - [Examples](#examples) (3)
 - [Setup](#setup)
+- [Companion Tools](#companion-tools)
 - [Contributing](#contributing)
 
 ---
@@ -728,6 +729,14 @@ claude-code-toolkit/               796 files
   examples/                        3 walkthrough examples
   setup/                           Interactive installer
 ```
+
+---
+
+## Companion Tools
+
+| Tool | Description |
+|------|-------------|
+| [Mantra](https://mantra.gonewx.com) | Time machine for AI coding sessions. Automatically captures, browses, searches, and restores Claude Code sessions. Desktop app with CLI support for macOS, Linux, and Windows. |
 
 ---
 
