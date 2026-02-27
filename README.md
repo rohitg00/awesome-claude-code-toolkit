@@ -440,6 +440,7 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [Silicon Friendly](https://github.com/unlikefraction/silicon-friendly) | MCP server: `https://siliconfriendly.com/mcp` | AI-agent-friendliness checker: rates websites on 30 criteria across 5 levels (L1-L5), finds optimal agent entry points (llms.txt, APIs, discovery endpoints) for integration planning |
 
 ### Installing Skills
 
