@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+15,000 via [SkillKit](https://agenstskills.com)), 42 commands, 121 plugins, 19 hooks, 15 rules, 7 templates, 6 MCP configs, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+15,000 via [SkillKit](https://agenstskills.com)), 42 commands, 122 plugins, 19 hooks, 15 rules, 7 templates, 6 MCP configs, and more.**
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -34,7 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 ## Table of Contents
 
-- [Plugins](#plugins) (121)
+- [Plugins](#plugins) (122)
 - [Agents](#agents) (135)
 - [Skills](#skills) (35)
 - [Commands](#commands) (42)
@@ -51,7 +51,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 ## Plugins
 
-One hundred twenty-one production-ready plugins that extend Claude Code with domain-specific capabilities.
+One hundred twenty-two production-ready plugins that extend Claude Code with domain-specific capabilities.
 
 | Plugin | Description |
 |--------|-------------|
