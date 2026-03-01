@@ -95,6 +95,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | [debug-session](plugins/debug-session/) | Interactive debugging workflow with git bisect integration |
 | [dependency-manager](plugins/dependency-manager/) | Audit, update, and manage project dependencies with safety checks |
 | [deploy-pilot](plugins/deploy-pilot/) | Deployment automation with Dockerfile generation, CI/CD pipelines, and infrastructure as code |
+| [discoclaw](https://github.com/DiscoClaw/discoclaw) | Personal AI orchestrator that bridges Discord to Claude Code with durable memory, task tracking, and cron-based automation |
 | [desktop-app](plugins/desktop-app/) | Desktop application scaffolding with Electron or Tauri |
 | [devops-automator](plugins/devops-automator/) | DevOps automation scripts for CI/CD, health checks, and deployments |
 | [discuss](plugins/discuss/) | Debate implementation approaches with structured pros and cons analysis |
