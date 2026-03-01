@@ -440,6 +440,7 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [OpenPaw](https://github.com/daxaur/openpaw) | `npx pawmode` | 38 skills that turn Claude Code into a personal assistant: git, Telegram, Discord, Obsidian, daily briefing, and more |
 
 ### Installing Skills
 
