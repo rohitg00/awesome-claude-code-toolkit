@@ -56,6 +56,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | Plugin | Description |
 |--------|-------------|
 | [aws-cost-saver](https://github.com/prajapatimehul/aws-cost-saver) | AWS cost optimization scanner with 173 automated checks, ML-powered rightsizing, and Zero Hallucination Pricing - Real result: 60% cost reduction |
+| [PUIUX Pilot](https://github.com/PUIUX-Cloud/puiux-pilot) | Auto-configures Claude Code hooks, MCPs, and skills for any project. Scans 95+ project types, selects from 28+ hooks, scores quality (0-100), translates configs across AI tools. Safe: dry-run, atomic writes, backup + rollback. |
 | [a11y-audit](plugins/a11y-audit/) | Full accessibility audit with WCAG compliance checking |
 | [accessibility-checker](plugins/accessibility-checker/) | Scan for accessibility issues and fix ARIA attributes in web applications |
 | [adr-writer](plugins/adr-writer/) | Architecture Decision Records authoring and management |
