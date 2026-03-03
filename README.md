@@ -56,6 +56,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | Plugin | Description |
 |--------|-------------|
 | [aws-cost-saver](https://github.com/prajapatimehul/aws-cost-saver) | AWS cost optimization scanner with 173 automated checks, ML-powered rightsizing, and Zero Hallucination Pricing - Real result: 60% cost reduction |
+| [skillboss-ai-gateway](https://github.com/heeyo-life/skillboss-mcp) | Unified AI gateway for 100+ services (Claude, GPT, Gemini, DALL-E, Midjourney, Runway, ElevenLabs). One API key, OpenAI-compatible. |
 | [a11y-audit](plugins/a11y-audit/) | Full accessibility audit with WCAG compliance checking |
 | [accessibility-checker](plugins/accessibility-checker/) | Scan for accessibility issues and fix ARIA attributes in web applications |
 | [adr-writer](plugins/adr-writer/) | Architecture Decision Records authoring and management |
