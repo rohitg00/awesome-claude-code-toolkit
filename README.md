@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+15,000 via [SkillKit](https://agenstskills.com)), 42 commands, 137 plugins, 19 hooks, 15 rules, 7 templates, 6 MCP configs, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+15,000 via [SkillKit](https://agenstskills.com)), 42 commands, 121 plugins, 19 hooks, 15 rules, 7 templates, 6 MCP configs, and more.**
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -34,7 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 ## Table of Contents
 
-- [Plugins](#plugins) (137)
+- [Plugins](#plugins) (121 + 16 community)
 - [Agents](#agents) (135)
 - [Skills](#skills) (35)
 - [Commands](#commands) (42)
@@ -51,7 +51,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 ## Plugins
 
-One hundred thirty-seven production-ready plugins that extend Claude Code with domain-specific capabilities.
+One hundred twenty-one production-ready plugins that extend Claude Code with domain-specific capabilities.
 
 | Plugin | Description |
 |--------|-------------|
@@ -176,6 +176,13 @@ One hundred thirty-seven production-ready plugins that extend Claude Code with d
 | [visual-regression](plugins/visual-regression/) | Visual regression testing with screenshot comparison |
 | [web-dev](plugins/web-dev/) | Full-stack web development with app scaffolding and page generation |
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
+
+### Community Plugins
+
+External plugins maintained by the community. Install individually via their GitHub repos.
+
+| Plugin | Description |
+|--------|-------------|
 | [ai-humanizer](https://github.com/ofershap/ai-humanizer) | Remove AI-detectable patterns from generated content |
 | [conversation-memory](https://github.com/ofershap/conversation-memory) | Cross-session agent memory for context continuity |
 | [drizzle-best-practices](https://github.com/ofershap/drizzle-best-practices) | Drizzle ORM best practices and patterns |
@@ -185,7 +192,7 @@ One hundred thirty-seven production-ready plugins that extend Claude Code with d
 | [go-best-practices](https://github.com/ofershap/go-best-practices) | Modern Go patterns and best practices |
 | [prompt-compression](https://github.com/ofershap/prompt-compression) | Compress docs into minimal tokens for agent context |
 | [python-best-practices](https://github.com/ofershap/python-best-practices) | Python 3.12+ with Pydantic v2 best practices |
-| [readme-best-practices](https://github.com/ofershap/readme-best-practices) | Write READMEs that sell open source projects |
+| [readme-best-practices](https://github.com/ofershap/readme-best-practices) | Write READMEs that sell open-source projects |
 | [shadcn-best-practices](https://github.com/ofershap/shadcn-best-practices) | shadcn/ui component patterns and best practices |
 | [sveltekit-best-practices](https://github.com/ofershap/sveltekit-best-practices) | Svelte 5 runes patterns and best practices |
 | [tailwind-best-practices](https://github.com/ofershap/tailwind-best-practices) | Tailwind CSS v4 patterns and best practices |
