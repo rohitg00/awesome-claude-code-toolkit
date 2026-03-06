@@ -1,0 +1,21 @@
+{
+  "name": "pitchdocs",
+  "version": "1.15.0",
+  "description": "Generate professional, marketing-ready repository documentation — README, CHANGELOG, CONTRIBUTING, ROADMAP, AI context files, and 15+ more files from slash commands. Evidence-based feature extraction, quality scoring, GEO optimisation, and cross-platform support.",
+  "repository": "https://github.com/littlebearapps/pitchdocs",
+  "commands": [
+    "commands/readme.md",
+    "commands/features.md",
+    "commands/changelog.md",
+    "commands/docs-audit.md",
+    "commands/ai-context.md",
+    "commands/llms-txt.md",
+    "commands/docs-verify.md",
+    "commands/doc-refresh.md",
+    "commands/user-guide.md",
+    "commands/launch.md",
+    "commands/roadmap.md",
+    "commands/platform.md",
+    "commands/context-guard.md"
+  ]
+}
