@@ -140,7 +140,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | [perf-profiler](plugins/perf-profiler/) | Performance analysis, profiling, and optimization recommendations |
 | [performance-monitor](plugins/performance-monitor/) | Profile API endpoints and run benchmarks to identify performance bottlenecks |
 | [plan](plugins/plan/) | Structured planning with risk assessment and time estimation |
-| [pitchdocs](plugins/pitchdocs/) | Generate professional, marketing-ready repository documentation with evidence-based feature extraction, quality scoring, and GEO optimisation |
+| [pitchdocs](plugins/pitchdocs/) | Generate professional, marketing-ready repository documentation with evidence-based feature extraction, quality scoring, and GEO optimization |
 | [pr-reviewer](plugins/pr-reviewer/) | Review pull requests with structured analysis and approve with confidence |
 | [product-shipper](plugins/product-shipper/) | Ship features end-to-end with launch checklists and rollout plans |
 | [project-scaffold](plugins/project-scaffold/) | Scaffold new projects and add features with best-practice templates |
