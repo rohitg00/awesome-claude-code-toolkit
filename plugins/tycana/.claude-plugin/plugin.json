@@ -1,0 +1,27 @@
+{
+  "name": "tycana",
+  "version": "1.0.1",
+  "description": "AI productivity partner — persistent tasks, energy-aware planning, intelligent reviews, and daily workflows through natural conversation. Requires a Tycana account.",
+  "author": {
+    "name": "Tycana",
+    "email": "hello@tycana.com",
+    "url": "https://github.com/tycana"
+  },
+  "homepage": "https://www.tycana.com",
+  "repository": "https://github.com/tycana/tycana-claude-plugin",
+  "license": "MIT",
+  "keywords": [
+    "productivity",
+    "tasks",
+    "planning",
+    "daily-planning",
+    "reviews",
+    "mcp",
+    "energy-management",
+    "brain-dump",
+    "capture"
+  ],
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": "./.mcp.json"
+}

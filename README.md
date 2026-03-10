@@ -168,6 +168,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | [test-writer](plugins/test-writer/) | Generate comprehensive unit and integration tests with full coverage |
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
+| [tycana](plugins/tycana/) | Persistent task management and productivity intelligence via MCP with computed pattern awareness |
 | [ui-designer](plugins/ui-designer/) | Implement UI designs from specs with pixel-perfect component generation |
 | [ultrathink](plugins/ultrathink/) | Deep analysis mode with extended reasoning for complex problems |
 | [unit-test-generator](plugins/unit-test-generator/) | Generate comprehensive unit tests for any function or module |
