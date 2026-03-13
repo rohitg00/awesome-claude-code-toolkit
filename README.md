@@ -541,12 +541,13 @@ Forty-two slash commands organized into eight categories. Drop these into your p
 | `/deploy` | [`deploy.md`](commands/devops/deploy.md) | Deploy to configured environment |
 | `/monitor` | [`monitor.md`](commands/devops/monitor.md) | Set up monitoring and alerting |
 
-### Workflow (3 commands)
+### Workflow (4 commands)
 
 | Command | File | Description |
 |---------|------|-------------|
 | `/checkpoint` | [`checkpoint.md`](commands/workflow/checkpoint.md) | Save session progress and context |
 | `/wrap-up` | [`wrap-up.md`](commands/workflow/wrap-up.md) | End session with summary and learnings |
+| `/close` | [`close.md`](commands/workflow/close.md) | Session-closing ritual — cleans up markdown, writes handoff ([source](https://github.com/fogarasy/close-skill)) |
 | `/orchestrate` | [`orchestrate.md`](commands/workflow/orchestrate.md) | Run multi-agent workflow pipeline |
 
 ### Using Commands
