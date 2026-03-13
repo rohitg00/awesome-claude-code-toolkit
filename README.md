@@ -85,6 +85,7 @@ One hundred twenty-one production-ready plugins that extend Claude Code with dom
 | [compliance-checker](plugins/compliance-checker/) | Regulatory compliance verification for GDPR, SOC2, and HIPAA |
 | [content-creator](plugins/content-creator/) | Technical content generation for blog posts and social media |
 | [context7-docs](plugins/context7-docs/) | Fetch up-to-date library documentation via Context7 for accurate coding |
+| [ContextDocs](https://github.com/littlebearapps/contextdocs) | Your AI agent maintains its own context files — a Claude Code plugin with an AGENTS-first model that covers Codex, Copilot, Cursor, Gemini, and 3 more tools |
 | [contract-tester](plugins/contract-tester/) | API contract testing with Pact for microservice compatibility |
 | [create-worktrees](plugins/create-worktrees/) | Git worktree management for parallel development workflows |
 | [cron-scheduler](plugins/cron-scheduler/) | Cron job configuration and schedule validation |
