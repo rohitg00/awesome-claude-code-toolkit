@@ -440,6 +440,7 @@ Thirty-five curated skill modules included in this repo, with access to **15,000
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [Humanizer](https://github.com/agentwireandy/humanizer) | Drop `SKILL.md` into `.claude/skills/` | 8-pass AI text humanization targeting 28 documented AI tell-tale patterns. 3 modes (Quick/Standard/Master), 50-point quality rubric, statistical signals table. Scored 55/60 in controlled eval (+77% over vanilla rewriting) |
 
 ### Installing Skills
 
