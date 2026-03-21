@@ -486,6 +486,12 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [n8n-skills](https://github.com/czlonkowski/n8n-skills) | `git clone` | 7 complementary skills for building production-ready n8n workflows. Covers 525+ nodes, 2,653+ templates. 3,400+ stars |
 | [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) | `git clone` | Comprehensive reference implementation for Claude Code configuration -- skills, subagents, hooks, commands with practical examples. 17,400+ stars |
 
+| [Overnight Worker](https://github.com/fullstackcrew-alpha/skill-overnight-worker) | `git clone` | Autonomous overnight work agent — assign tasks before sleep, get structured results by morning. Smart task decomposition, web research, multi-format output, progress logging |
+| [Cost Optimizer](https://github.com/fullstackcrew-alpha/skill-cost-optimizer) | `git clone` | Save 60-80% on AI token costs with smart model routing, context compression, and heartbeat tuning |
+| [DevOps Agent](https://github.com/fullstackcrew-alpha/skill-devops-agent) | `git clone` | One-click deploy, monitoring setup, scheduled backups, fault diagnosis with safety-first design |
+| [CN Content Matrix](https://github.com/fullstackcrew-alpha/skill-cn-content-matrix) | `git clone` | Chinese multi-platform content generator for Xiaohongshu, WeChat, Douyin, Bilibili with true style transfer |
+| [Smart PR Review](https://github.com/fullstackcrew-alpha/skill-smart-pr-review) | `git clone` | Opinionated AI code reviewer with 6-layer deep review, Devil's Advocate mode, MUST FIX/SHOULD FIX/SUGGESTION output |
+
 ### Installing Skills
 
 **Browse and install via SkillKit** (recommended):
