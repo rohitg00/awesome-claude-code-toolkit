@@ -818,6 +818,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [myclaude](https://github.com/stellarlinkco/myclaude) | 2,400+ | Multi-agent orchestration routing to Claude Code, Codex, Gemini, and OpenCode |
 | [claude-code-mcp](https://github.com/steipete/claude-code-mcp) | 1,100+ | Run Claude Code as a one-shot MCP server -- an agent in your agent |
 | [ccmanager](https://github.com/kbwo/ccmanager) | 940+ | Session manager supporting 8 coding agents with smart auto-approval |
+| [Skillfold](https://github.com/byronxlg/skillfold) | -- | YAML compiler for multi-agent pipelines. Composes skills, validates state, generates orchestrators from team flow definitions. Compiles to the Agent Skills standard |
 
 ---
 
