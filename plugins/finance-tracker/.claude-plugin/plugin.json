@@ -1,0 +1,6 @@
+{
+  "name": "finance-tracker",
+  "version": "1.0.0",
+  "description": "Development cost tracking with time estimates and budget reporting",
+  "commands": ["commands/track-cost.md", "commands/report-cost.md"]
+}

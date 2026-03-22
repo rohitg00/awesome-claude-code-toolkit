@@ -1,0 +1,6 @@
+{
+  "name": "product-shipper",
+  "version": "1.0.0",
+  "description": "Ship features end-to-end with launch checklists and rollout plans",
+  "commands": ["commands/ship.md", "commands/launch-checklist.md"]
+}

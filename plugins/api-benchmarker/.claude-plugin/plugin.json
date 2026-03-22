@@ -1,0 +1,6 @@
+{
+  "name": "api-benchmarker",
+  "version": "1.0.0",
+  "description": "API endpoint benchmarking and performance reporting",
+  "commands": ["commands/benchmark.md", "commands/report.md"]
+}

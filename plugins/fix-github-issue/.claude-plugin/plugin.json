@@ -1,0 +1,6 @@
+{
+  "name": "fix-github-issue",
+  "version": "1.0.0",
+  "description": "Auto-fix GitHub issues by analyzing issue details and implementing solutions",
+  "commands": ["commands/fix-issue.md"]
+}

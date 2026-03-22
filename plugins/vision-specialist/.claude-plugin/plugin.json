@@ -1,0 +1,6 @@
+{
+  "name": "vision-specialist",
+  "version": "1.0.0",
+  "description": "Image and visual analysis with screenshot interpretation and text extraction",
+  "commands": ["commands/analyze-screenshot.md", "commands/extract-text.md"]
+}

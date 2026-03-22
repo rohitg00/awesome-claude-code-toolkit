@@ -1,0 +1,6 @@
+{
+  "name": "migrate-tool",
+  "version": "1.0.0",
+  "description": "Generate database migrations and code migration scripts for framework upgrades",
+  "commands": ["commands/db-migrate.md", "commands/code-migrate.md"]
+}

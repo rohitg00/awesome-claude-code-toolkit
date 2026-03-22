@@ -1,0 +1,6 @@
+{
+  "name": "pr-reviewer",
+  "version": "1.0.0",
+  "description": "Review pull requests with structured analysis and approve with confidence",
+  "commands": ["commands/review-pr.md", "commands/approve-pr.md"]
+}

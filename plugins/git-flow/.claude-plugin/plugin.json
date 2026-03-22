@@ -1,0 +1,6 @@
+{
+  "name": "git-flow",
+  "version": "1.0.0",
+  "description": "Git workflow management with feature branches, releases, and hotfix flows",
+  "commands": ["commands/flow-start.md", "commands/flow-release.md"]
+}

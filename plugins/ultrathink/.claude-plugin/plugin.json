@@ -1,0 +1,6 @@
+{
+  "name": "ultrathink",
+  "version": "1.0.0",
+  "description": "Deep analysis mode with extended reasoning for complex problems",
+  "commands": ["commands/think.md"]
+}

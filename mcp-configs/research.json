@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "bgpt": {
+      "type": "sse",
+      "url": "https://mcp.bgpt.pro/sse",
+      "description": "Search scientific papers with full-text experimental data via BGPT. 50 free searches, no API key needed."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch web pages, documentation, and research resources as markdown."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent knowledge graph for tracking research findings, citations, and insights across sessions."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "<replace-with-absolute-project-path>"],
+      "description": "Read and write research notes, papers, and data files. Replace the placeholder with your project root."
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "<your-brave-api-key>"
+      },
+      "description": "Web search for supplementary sources, preprints, and grey literature."
+    }
+  }
+}

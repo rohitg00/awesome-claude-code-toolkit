@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "jupyter": {
+      "command": "uvx",
+      "args": ["mcp-jupyter"],
+      "description": "Create, edit, and execute Jupyter notebook cells. Manage kernels and inspect outputs."
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite", "/path/to/analysis.db"],
+      "description": "Query SQLite databases for local data exploration, schema inspection, and ad-hoc analytics."
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://analyst:password@localhost:5432/warehouse"
+      },
+      "description": "Query the data warehouse for production analytics, reporting, and data validation."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/data-project"],
+      "description": "Read CSV, Parquet, and JSON data files. Write processed outputs and reports."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch datasets from public APIs, download documentation, and access data catalogs."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Track experiment results, feature engineering decisions, and model performance across sessions."
+    }
+  }
+}

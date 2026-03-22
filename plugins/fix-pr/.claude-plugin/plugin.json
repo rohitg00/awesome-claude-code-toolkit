@@ -1,0 +1,6 @@
+{
+  "name": "fix-pr",
+  "version": "1.0.0",
+  "description": "Fix PR review comments automatically with context-aware patches",
+  "commands": ["commands/fix-comments.md"]
+}

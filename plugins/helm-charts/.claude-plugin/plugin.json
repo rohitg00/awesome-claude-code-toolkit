@@ -1,0 +1,6 @@
+{
+  "name": "helm-charts",
+  "version": "1.0.0",
+  "description": "Helm chart generation and upgrade management",
+  "commands": ["commands/create-chart.md", "commands/upgrade-chart.md"]
+}

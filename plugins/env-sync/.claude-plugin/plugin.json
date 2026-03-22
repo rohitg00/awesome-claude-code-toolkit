@@ -1,0 +1,6 @@
+{
+  "name": "env-sync",
+  "version": "1.0.0",
+  "description": "Environment variable syncing and diff across environments",
+  "commands": ["commands/sync-env.md", "commands/diff-env.md"]
+}

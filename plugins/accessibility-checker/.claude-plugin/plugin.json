@@ -1,0 +1,6 @@
+{
+  "name": "accessibility-checker",
+  "version": "1.0.0",
+  "description": "Scan for accessibility issues and fix ARIA attributes in web applications",
+  "commands": ["commands/a11y-scan.md", "commands/aria-fix.md"]
+}

@@ -1,0 +1,140 @@
+{
+  "hooks": [
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "description": "Block dev server commands outside tmux to prevent orphaned processes",
+      "command": "node hooks/scripts/block-dev-server.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "description": "Remind before git push to verify branch and remote",
+      "command": "node hooks/scripts/pre-push-check.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Write",
+      "description": "Block unnecessary .md file creation outside of docs directories",
+      "command": "node hooks/scripts/block-md-creation.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
+      "description": "Validate conventional commit message format before git commit",
+      "command": "node hooks/scripts/commit-guard.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Write",
+      "description": "Scan for leaked secrets before writing files",
+      "command": "node hooks/scripts/secret-scanner.js"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Edit",
+      "description": "Scan for leaked secrets before editing files",
+      "command": "node hooks/scripts/secret-scanner.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Run linter check after file edits",
+      "command": "node hooks/scripts/post-edit-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Run linter check after file edits",
+      "command": "node hooks/scripts/post-edit-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Auto-fix lint issues after writing files",
+      "command": "node hooks/scripts/lint-fix.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Auto-fix lint issues after editing files",
+      "command": "node hooks/scripts/lint-fix.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Run TypeScript type checking after writing .ts/.tsx files",
+      "command": "node hooks/scripts/type-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Run TypeScript type checking after editing .ts/.tsx files",
+      "command": "node hooks/scripts/type-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Run related tests after editing source files",
+      "command": "node hooks/scripts/auto-test.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Run related tests after editing source files",
+      "command": "node hooks/scripts/auto-test.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Check bundle size after modifying frontend assets",
+      "command": "node hooks/scripts/bundle-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Bash",
+      "description": "Track edit count and suggest compaction at intervals",
+      "command": "node hooks/scripts/suggest-compact.js"
+    },
+    {
+      "type": "SessionStart",
+      "description": "Load previous context and detect package manager",
+      "command": "node hooks/scripts/session-start.js"
+    },
+    {
+      "type": "SessionStart",
+      "description": "Load project context including git state, config files, and pending todos",
+      "command": "node hooks/scripts/context-loader.js"
+    },
+    {
+      "type": "SessionEnd",
+      "description": "Save current context state for next session",
+      "command": "node hooks/scripts/session-end.js"
+    },
+    {
+      "type": "SessionEnd",
+      "description": "Save session learnings and recent commits to daily log",
+      "command": "node hooks/scripts/learning-log.js"
+    },
+    {
+      "type": "PreCompact",
+      "description": "Save important context before compaction",
+      "command": "node hooks/scripts/pre-compact.js"
+    },
+    {
+      "type": "Stop",
+      "description": "Remind to run tests if code was modified",
+      "command": "node hooks/scripts/stop-check.js"
+    },
+    {
+      "type": "Notification",
+      "description": "Log notifications for later review",
+      "command": "node hooks/scripts/notification-log.js"
+    },
+    {
+      "type": "UserPromptSubmit",
+      "description": "Detect vague prompts and suggest clarification",
+      "command": "node hooks/scripts/prompt-check.js"
+    }
+  ]
+}

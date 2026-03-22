@@ -1,0 +1,6 @@
+{
+  "name": "api-tester",
+  "version": "1.0.0",
+  "description": "Test API endpoints and run load tests against services",
+  "commands": ["commands/test-endpoint.md", "commands/load-test.md"]
+}

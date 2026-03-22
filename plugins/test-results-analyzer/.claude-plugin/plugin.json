@@ -1,0 +1,6 @@
+{
+  "name": "test-results-analyzer",
+  "version": "1.0.0",
+  "description": "Analyze test failures, identify patterns, and suggest targeted fixes",
+  "commands": ["commands/analyze-failures.md"]
+}

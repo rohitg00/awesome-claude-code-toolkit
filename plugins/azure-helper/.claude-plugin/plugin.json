@@ -1,0 +1,6 @@
+{
+  "name": "azure-helper",
+  "version": "1.0.0",
+  "description": "Azure service configuration and deployment automation",
+  "commands": ["commands/setup-functions.md", "commands/configure-blob.md"]
+}

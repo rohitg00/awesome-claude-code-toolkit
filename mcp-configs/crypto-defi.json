@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "defi-mcp": {
+      "command": "npx",
+      "args": ["defi-mcp"],
+      "description": "DeFi and crypto data — token prices, gas fees, swap quotes, wallet balances, and trending tokens across 9 chains."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "<ABSOLUTE_PATH_TO_CRYPTO_PROJECT>"],
+      "description": "Read and write strategy files, portfolio configs, and analysis outputs."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch blockchain explorer data, protocol documentation, and governance proposals."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Track portfolio positions, price alerts, and research findings across sessions."
+    }
+  }
+}

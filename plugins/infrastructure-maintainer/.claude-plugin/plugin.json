@@ -1,0 +1,6 @@
+{
+  "name": "infrastructure-maintainer",
+  "version": "1.0.0",
+  "description": "Infrastructure maintenance with security audits and update management",
+  "commands": ["commands/audit-infra.md", "commands/update-infra.md"]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "adr-writer",
+  "version": "1.0.0",
+  "description": "Architecture Decision Records authoring and management",
+  "commands": ["commands/write-adr.md", "commands/list-adrs.md"]
+}
