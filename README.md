@@ -60,6 +60,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | Plugin | Stars | Description |
 |--------|-------|-------------|
 | [pro-workflow](https://github.com/rohitg00/pro-workflow) | 1,400+ | Battle-tested Claude Code workflows from power users. Self-correcting memory, parallel worktrees, wrap-up rituals, 8 hook types, 5 agents, and the 80/20 AI coding ratio. Install: `/plugin marketplace add rohitg00/pro-workflow` |
+| [claw-army/claude-node](https://github.com/claw-army/claude-node) | Python subprocess bridge for Claude Code CLI, giving Python code direct access to Claude Code native capabilities via stream-json. |
 | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) | 78,600+ | The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, OpenCode, Cursor, and beyond. |
 | [gstack](https://github.com/garrytan/gstack) | 15,000+ | Garry Tan's exact Claude Code setup: 6 opinionated tools that serve as CEO, Eng Manager, Release Manager, and QA Engineer. 15K+ stars in 5 days. |
 
