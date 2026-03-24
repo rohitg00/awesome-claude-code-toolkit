@@ -52,6 +52,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 ---
 
 ## Plugins
+| [claude-sounds](https://github.com/culminationAI/claude-sounds) | - | Your Claude Code shouldn't be silent. Sound effects for all hooks — spells, chimes, clicks. Drop mp3s to customize. |
 
 Over 150 production-ready plugins that extend Claude Code with domain-specific capabilities.
 
