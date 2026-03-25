@@ -179,6 +179,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [production-grade](https://github.com/nagisanzenin/claude-code-production-grade-plugin) | 14-agent autonomous pipeline — PM, Architect, Backend, Frontend, QA, Security, Code Review, DevOps, SRE, Data Scientist, Technical Writer, Skill Maker, Polymath co-pilot. Two-wave parallel execution, brownfield-safe. |
 | [project-scaffold](plugins/project-scaffold/) | Scaffold new projects and add features with best-practice templates |
 | [prompt-optimizer](plugins/prompt-optimizer/) | Analyze and optimize AI prompts for better results |
+| [pulse](https://github.com/chsm04/pulse) | Local Channel plugin — push notifications into Claude Code sessions via HTTP POST. No Discord/Slack needed, just curl. Three levels (info/warn/error), source tracking, dedup. |
 | [PUIUX Pilot](https://github.com/PUIUX-Cloud/puiux-pilot) | Auto-configures Claude Code hooks, MCPs, and skills for any project. Scans 95+ project types, selects from 28+ hooks, scores quality (0-100), translates configs across AI tools. Safe: dry-run, atomic writes, backup + rollback. |
 | [python-expert](plugins/python-expert/) | Python-specific development with type hints and idiomatic refactoring |
 | [query-optimizer](plugins/query-optimizer/) | SQL query optimization and execution plan analysis |
