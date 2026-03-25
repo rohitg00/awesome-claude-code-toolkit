@@ -799,6 +799,8 @@ claude-code-toolkit/               800+ files
 
 ## Ecosystem
 
+| [claude-code-power-stack](https://github.com/bluzername/claude-code-power-stack) | | Curated toolkit bundling Ghost (persistent memory), cc-conversation-search (cross-project session search), session naming, and Manus-style file-based planning into one-command install with cheat sheet PDF |
+
 Notable projects, directories, and resources across the Claude Code ecosystem.
 
 | Name | Stars | Description |
