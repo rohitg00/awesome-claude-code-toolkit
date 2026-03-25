@@ -124,6 +124,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [desktop-app](plugins/desktop-app/) | Desktop application scaffolding with Electron or Tauri |
 | [devops-automator](plugins/devops-automator/) | DevOps automation scripts for CI/CD, health checks, and deployments |
 | [discuss](plugins/discuss/) | Debate implementation approaches with structured pros and cons analysis |
+| [claw-army/claude-node](https://github.com/claw-army/claude-node) | Python subprocess bridge for Claude Code CLI, giving Python code direct access to Claude Code native capabilities via stream-json |
 | [discoclaw](https://github.com/DiscoClaw/discoclaw) | Personal AI orchestrator that bridges Discord to Claude Code with durable memory, task tracking, and cron-based automation |
 | [dna-claude-analysis](https://github.com/shmlkv/dna-claude-analysis) | Personal genome analysis toolkit that analyzes raw DNA data across 17 categories and generates a terminal-style HTML dashboard |
 | [doc-forge](plugins/doc-forge/) | Documentation generation, API docs, and README maintenance |
