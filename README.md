@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 150+ plugins, 19 hooks, 15 rules, 7 templates, 8 MCP configs, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 150+ plugins, 20 hooks, 15 rules, 7 templates, 8 MCP configs, and more.**
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -38,7 +38,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Agents](#agents) (135)
 - [Skills](#skills) (35 curated + community)
 - [Commands](#commands) (42)
-- [Hooks](#hooks) (19 scripts)
+- [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
 - [Templates](#templates) (7)
 - [MCP Configs](#mcp-configs) (8)
@@ -615,7 +615,7 @@ Then invoke in Claude Code:
 
 ## Hooks
 
-Nineteen hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
+Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
 
 ### Hook Scripts
 
@@ -626,6 +626,7 @@ Nineteen hook scripts covering all eight Claude Code lifecycle events. Place `ho
 | `context-loader.js` | SessionStart | Load CLAUDE.md, git status, pending todos |
 | `learning-log.js` | SessionEnd | Extract and save session learnings |
 | `pre-compact.js` | PreCompact | Save important context before compaction |
+| [`smart-approve.py`](https://github.com/liberzon/claude-hooks) | PreToolUse (Bash) | Decompose compound bash commands (&&, \|\|, ;, \|, $()) into sub-commands and check each against allow/deny patterns |
 | `block-dev-server.js` | PreToolUse (Bash) | Block dev server commands outside tmux |
 | `pre-push-check.js` | PreToolUse (Bash) | Verify branch and remote before push |
 | `block-md-creation.js` | PreToolUse (Write) | Block unnecessary .md file creation |
@@ -766,7 +767,7 @@ claude-code-toolkit/               800+ files
   skills/                          35 SKILL.md files
   commands/                        42 commands across 8 categories
   hooks/
-    hooks.json                     24 hook entries
+    hooks.json                     25 hook entries
     scripts/                       19 Node.js scripts
   rules/                           15 coding rules
   templates/claude-md/             7 CLAUDE.md templates

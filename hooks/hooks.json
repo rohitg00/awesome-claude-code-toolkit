@@ -3,6 +3,12 @@
     {
       "type": "PreToolUse",
       "matcher": "Bash",
+      "description": "Decompose compound bash commands and check each sub-command against allow/deny patterns",
+      "command": "python3 hooks/scripts/smart-approve.py"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
       "description": "Block dev server commands outside tmux to prevent orphaned processes",
       "command": "node hooks/scripts/block-dev-server.js"
     },
