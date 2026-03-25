@@ -125,6 +125,8 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [devops-automator](plugins/devops-automator/) | DevOps automation scripts for CI/CD, health checks, and deployments |
 | [discuss](plugins/discuss/) | Debate implementation approaches with structured pros and cons analysis |
 | [discoclaw](https://github.com/DiscoClaw/discoclaw) | Personal AI orchestrator that bridges Discord to Claude Code with durable memory, task tracking, and cron-based automation |
+| [jarvis](https://github.com/Ramsbaby/jarvis) | Turns an idle Claude Max subscription into a 24/7 AI ops system — Discord bot, 76 scheduled tasks, 12 AI teams, local LanceDB RAG, 98% context compression via Nexus CIG, and 4-layer self-healing infrastructure. Uses `claude -p` headless mode at $0 extra cost. |
+| [jarvis-company-board](https://github.com/Ramsbaby/jarvis-company-board) | Real-time AI agent collaboration board built on Next.js 15 and SQLite WAL — 8 named AI board members debate decisions via SSE push, with a DEV task approval workflow and Railway deploy support. |
 | [dna-claude-analysis](https://github.com/shmlkv/dna-claude-analysis) | Personal genome analysis toolkit that analyzes raw DNA data across 17 categories and generates a terminal-style HTML dashboard |
 | [doc-forge](plugins/doc-forge/) | Documentation generation, API docs, and README maintenance |
 | [docker-helper](plugins/docker-helper/) | Build optimized Docker images and improve Dockerfile best practices |
