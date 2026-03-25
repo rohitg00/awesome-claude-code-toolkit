@@ -676,6 +676,9 @@ Fifteen coding rules that enforce consistent patterns. Add to `.claude/rules/` o
 
 ## Templates
 
+- **[claude-code-blueprint](https://github.com/faizkhairi/claude-code-blueprint)** - Battle-tested reference architecture for Claude Code power users. Specialized agents with model tiering, natural-language skills, lifecycle hooks, path-scoped rules, starter presets, benchmarks, battle stories, and cross-tool mapping. Zero dependencies, MIT licensed.
+
+
 Seven CLAUDE.md templates for different project types.
 
 | Template | File | Use Case |
