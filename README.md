@@ -205,6 +205,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
 | [ui-designer](plugins/ui-designer/) | Implement UI designs from specs with pixel-perfect component generation |
+| [ultraship](https://github.com/Houseofmvps/ultraship) | All-in-one builder toolkit with 22 automatic skills, 20 tools, 5 agents — brainstorming to deployment. Install: `claude plugin add npm:ultraship` |
 | [ultrathink](plugins/ultrathink/) | Deep analysis mode with extended reasoning for complex problems |
 | [unit-test-generator](plugins/unit-test-generator/) | Generate comprehensive unit tests for any function or module |
 | [update-branch](plugins/update-branch/) | Rebase and update feature branches with conflict resolution |
