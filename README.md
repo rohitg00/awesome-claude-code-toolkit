@@ -485,6 +485,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [claude-skills](https://github.com/alirezarezvani/claude-skills) | `git clone` | 192 production-ready skills across 9 domains (engineering, marketing, product, compliance, C-level advisory) with 254 Python automation tools. 5,300+ stars |
 | [n8n-skills](https://github.com/czlonkowski/n8n-skills) | `git clone` | 7 complementary skills for building production-ready n8n workflows. Covers 525+ nodes, 2,653+ templates. 3,400+ stars |
 | [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) | `git clone` | Comprehensive reference implementation for Claude Code configuration -- skills, subagents, hooks, commands with practical examples. 17,400+ stars |
+| [Public Google Drive](https://github.com/zagmoai/public-google-drive) | `git clone https://github.com/zagmoai/public-google-drive ~/.claude/skills/public-google-drive` | Create and edit Google Docs and Sheets without Google sign-in via Memyard |
 
 ### Installing Skills
 
