@@ -221,6 +221,8 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [wshobson/agents](https://github.com/wshobson/agents) | 112 specialized agents, 16 multi-agent workflow orchestrators, 146 skills, 79 tools in 72 focused plugins. 31,300+ stars |
 | [web-dev](plugins/web-dev/) | Full-stack web development with app scaffolding and page generation |
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
+| [background-timer](https://github.com/culminationAI/background-timer) | Background timer with task notifications -- set delayed checks without blocking conversation |
+| [claude-sounds](https://github.com/culminationAI/claude-sounds) | Audio feedback for Claude Code hooks -- 10 events, 21 sounds, random rotation, customizable (macOS) |
 
 ### Installing a Plugin
 
@@ -806,12 +808,11 @@ claude-code-toolkit/               800+ files
 | [TokenEater](https://github.com/AThevon/TokenEater) | 179 | Native macOS menu bar app for monitoring Claude AI usage limits and watching coding sessions live |
 | [Claw](https://github.com/jamesrochabrun/Claw) | 86 | Native macOS app wrapping Claude Code SDK in Swift. Plan Mode, MCP Integration, Custom System Prompts |
 | [The Claude Protocol](https://github.com/AvivK5498/The-Claude-Protocol) | 149 | Enforcement layer wrapping Claude Code with 13 hooks -- blocks unsafe operations, enforces worktree isolation |
+| [Notch So Good](https://github.com/deepshal99/notch-so-good) | new | macOS notch-based session monitor with pixel-art companion, 13 animations, smart notifications, multi-session support |
 
 ---
 
 ## Ecosystem
-
-| [claude-code-power-stack](https://github.com/bluzername/claude-code-power-stack) | | Curated toolkit bundling Ghost (persistent memory), cc-conversation-search (cross-project session search), session naming, and Manus-style file-based planning into one-command install with cheat sheet PDF |
 
 Notable projects, directories, and resources across the Claude Code ecosystem.
 
@@ -838,6 +839,9 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [openclaw-self-evolving](https://github.com/Ramsbaby/openclaw-self-evolving) | 2+ | Weekly self-improvement pipeline — scans Claude Code logs, proposes CLAUDE.md/AGENTS.md rule changes, zero API cost |
 | [claude-starter-kit](https://github.com/awrshift/claude-starter-kit) | new | Ready-to-use project structure with persistent memory, session continuity, hooks, and 3 bundled skills (Gemini, Brainstorm, Design) |
 | [claude-code-kickstart](https://github.com/ypollak2/claude-code-kickstart) | New | Opinionated starter kit — one command to install curated MCP servers, hooks, agents, and profiles. Includes auto-detect, 12 agents, 10 profiles, and 20+ shell commands |
+| [claude-code-power-stack](https://github.com/bluzername/claude-code-power-stack) | new | Ghost memory, conversation search, session naming, and Manus-style planning in a single install with cheat sheet PDF |
+| [clooks](https://github.com/mauribadnights/clooks) | new | Persistent hook daemon that replaces per-invocation spawning -- 112x faster hooks with batching, dependency resolution, metrics |
+| [gemini-claude-bridge](https://github.com/weijiafu14/gemini-claude-bridge) | new | Gemini-to-Claude protocol converter for using Gemini models as Claude Code backend. Fixes 3 LiteLLM bugs |
 
 ---
 
