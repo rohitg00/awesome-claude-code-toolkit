@@ -806,6 +806,7 @@ claude-code-toolkit/               800+ files
 | [parallel-code](https://github.com/johannesjo/parallel-code) | 370+ | Run Claude Code, Codex, and Gemini side by side -- each in its own git worktree |
 | [Poirot](https://github.com/LeonardoCardoso/Poirot) | 96 | macOS app for browsing Claude Code sessions, viewing diffs, and re-running commands. Reads local transcripts, runs offline |
 | [TokenEater](https://github.com/AThevon/TokenEater) | 179 | Native macOS menu bar app for monitoring Claude AI usage limits and watching coding sessions live |
+| [claude-dash](https://github.com/krabat-l/claude-dash) | new | Real-time statusline for Claude Code -- context, cost, quota, cache, tools, and git status. Zero dependencies, component-based with themes |
 | [Claw](https://github.com/jamesrochabrun/Claw) | 86 | Native macOS app wrapping Claude Code SDK in Swift. Plan Mode, MCP Integration, Custom System Prompts |
 | [The Claude Protocol](https://github.com/AvivK5498/The-Claude-Protocol) | 149 | Enforcement layer wrapping Claude Code with 13 hooks -- blocks unsafe operations, enforces worktree isolation |
 | [Notch So Good](https://github.com/deepshal99/notch-so-good) | new | macOS notch-based session monitor with pixel-art companion, 13 animations, smart notifications, multi-session support |
