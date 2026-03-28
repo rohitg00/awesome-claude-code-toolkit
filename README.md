@@ -120,6 +120,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [data-privacy](plugins/data-privacy/) | Data privacy implementation with PII detection and anonymization |
 | [database-optimizer](plugins/database-optimizer/) | Database query optimization with index recommendations and EXPLAIN analysis |
 | [dead-code-finder](plugins/dead-code-finder/) | Find and remove dead code across the codebase |
+| [claude-debug](https://github.com/krabat-l/claude-debug) | Phase-gated debugging — hooks block edits until root cause confirmed. 6 strategies, 3 read-only agents |
 | [debug-session](plugins/debug-session/) | Interactive debugging workflow with git bisect integration |
 | [dependency-manager](plugins/dependency-manager/) | Audit, update, and manage project dependencies with safety checks |
 | [deploy-pilot](plugins/deploy-pilot/) | Deployment automation with Dockerfile generation, CI/CD pipelines, and infrastructure as code |
