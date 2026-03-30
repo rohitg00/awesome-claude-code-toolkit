@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "clarvia": {
+      "command": "npx",
+      "args": ["-y", "clarvia-mcp-server"],
+      "description": "AEO (Agent Experience Optimization) scoring for AI tools. Evaluate MCP servers, APIs, and CLIs for agent-readiness. Search 15,400+ indexed tools by category, score, or name. Use before adding any external tool to your workflow."
+    }
+  }
+}

@@ -741,7 +741,7 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Eight curated Model Context Protocol server configurations.
+Nine curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -753,6 +753,7 @@ Eight curated Model Context Protocol server configurations.
 | Crypto / DeFi | [`crypto-defi.json`](mcp-configs/crypto-defi.json) | defi-mcp, Filesystem, Fetch, Memory |
 | DevOps | [`devops.json`](mcp-configs/devops.json) | AWS, Docker, GitHub, Terraform, Sentry |
 | Research | [`research.json`](mcp-configs/research.json) | BGPT scientific papers, Brave Search, Fetch, Memory, Filesystem |
+| Clarvia AEO | [`clarvia-aeo.json`](mcp-configs/clarvia-aeo.json) | AEO scoring for 15,400+ indexed AI tools |
 
 ---
 
