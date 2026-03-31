@@ -213,7 +213,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [pulse](https://github.com/chsm04/pulse) | Local Channel plugin — push notifications into Claude Code sessions via HTTP POST. No Discord/Slack needed, just curl. Three levels (info/warn/error), source tracking, dedup. |
 | [PUIUX Pilot](https://github.com/PUIUX-Cloud/puiux-pilot) | Auto-configures Claude Code hooks, MCPs, and skills for any project. Scans 95+ project types, selects from 28+ hooks, scores quality (0-100), translates configs across AI tools. Safe: dry-run, atomic writes, backup + rollback. |
 | [python-expert](plugins/python-expert/) | Python-specific development with type hints and idiomatic refactoring |
-| [pulser](https://github.com/whynowlab/pulser) | Diagnostic CLI for Claude Code SKILL.md files — scans 8 rules, auto-classifies, prescribes fixes with templates, --fix with rollback |
+| [pulser](https://github.com/TheStack-ai/pulser) | Diagnostic CLI for Claude Code SKILL.md files — scans 8 rules, auto-classifies, prescribes fixes with templates, --fix with rollback |
 | [query-optimizer](plugins/query-optimizer/) | SQL query optimization and execution plan analysis |
 | [rag-builder](plugins/rag-builder/) | Build Retrieval-Augmented Generation pipelines |
 | [rapid-prototyper](plugins/rapid-prototyper/) | Quick prototype scaffolding with minimal viable structure |
@@ -953,7 +953,11 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [Code Insights](https://github.com/melagiri/code-insights) | 8 | Local-first CLI and dashboard for analyzing AI coding sessions from Claude Code, Cursor, Codex CLI, Copilot CLI, and VS Code Copilot. SQLite-backed with terminal analytics, browser dashboard, and LLM-powered insights |
 | [claude-code-cheat-sheet](https://cc.storyfox.cz/) | new | Complete one-page printable reference — all shortcuts, commands, CLI flags, MCP config, memory, skills, agents. Auto-updated daily from official docs. [EN](https://cc.storyfox.cz/) · [ZH](https://cc.storyfox.cz/zh/) · [JA](https://cc.storyfox.cz/jp/) · [KO](https://cc.storyfox.cz/kr/) |
 | [agent-dotfiles](https://github.com/saqibameen/agent-dotfiles) | new | Write AI coding rules once, sync to every agent. Supports Command Code, Claude Code, Cursor, Copilot, Codex, OpenCode. |
-| [zclean](https://github.com/whynowlab/zclean) | 19+ | Kills orphaned processes left behind by Claude Code and Codex. Stops zombie node/python/esbuild from eating your RAM |
+| [zclean](https://github.com/TheStack-ai/zclean) | 27+ | Kills orphaned processes left behind by Claude Code and Codex. Stops zombie node/python/esbuild from eating your RAM |
+| [swing-skills](https://github.com/TheStack-ai/swing-skills) | 31+ | 6 cognitive firewalls for Claude Code agents -- hallucination guard, scope lock, confirmation gate, rollback shield, bias firewall, and context validator |
+| [mrstack](https://github.com/TheStack-ai/mrstack) | 14+ | Claude Code + Telegram bot running as a 24/7 daemon. Send tasks via Telegram, get results with full conversation context and persistent sessions |
+| [jarvis-orb](https://github.com/TheStack-ai/jarvis-orb) | 2+ | Persistent memory MCP server with 4-tier memory architecture (episodic, semantic, project, procedural) and a 3D brain visualizer |
+| [ur-dashboard](https://github.com/TheStack-ai/ur-dashboard) | new | Real-time monitoring dashboard for Claude Code agent sessions -- tracks active agents, task progress, token usage, and system health |
 | [Hindsight](https://github.com/vectorize-io/hindsight) | -- | State-of-the-art long-term memory for AI agents by Vectorize. Biomimetic retain/recall/reflect with 4 parallel retrieval strategies. Self-hosted or cloud, MIT-licensed. [Claude Code integration](https://hindsight.vectorize.io/integrations) |
 | [healthcare-agents](https://github.com/ajhcs/healthcare-agents) | New | 51 specialized healthcare administration agents with MHA-level expertise across 10 divisions -- revenue cycle, compliance, quality, clinical ops, payer relations, health IT, and more |
 | [cc-switch](https://github.com/farion1231/cc-switch) | 35,500+ | Cross-platform desktop All-in-One assistant for Claude Code, Codex, OpenCode, and Gemini CLI |
