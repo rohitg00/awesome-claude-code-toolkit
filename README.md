@@ -556,6 +556,8 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [Markdown to EPUB](https://github.com/smerchek/claude-epub-skill) | `git clone` | Convert markdown files into EPUB ebooks |
 | [CSV Data Summarizer](https://github.com/coffeefuelbump/csv-data-summarizer-claude-skill) | `git clone` | Generate insights and summaries from CSV data files |
 | [tapestry](https://github.com/michalparkola/tapestry-skills-for-claude-code) | `git clone` | Knowledge networks, iterative learning, article extraction, and YouTube transcript processing |
+| [github-optimization-skill](https://github.com/199-biotechnologies/github-optimization-skill) | `git clone https://github.com/199-biotechnologies/github-optimization-skill ~/.claude/skills/github-optimization` | Turn any GitHub repo into a star-magnet landing page. README optimization, SEO, and repo marketing |
+| [humanise-text-skill](https://github.com/199-biotechnologies/humanise-text-skill) | `git clone https://github.com/199-biotechnologies/humanise-text-skill ~/.claude/skills/humanise-text` | Strip AI writing patterns from any text. 507-entry banned word list, structural pattern detection, and 12-check validation |
 
 ### Installing Skills
 
