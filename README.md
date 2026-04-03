@@ -966,6 +966,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [serena](https://github.com/oraios/serena) | 22,200+ | Semantic retrieval and editing MCP server for coding agents -- code-aware search and navigation |
 | [Understand-Anything](https://github.com/Lum1104/Understand-Anything) | 7,000+ | Turns any codebase into an interactive knowledge graph for exploration |
 | [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) | 17,000+ | MCP for Claude Code to build and manage n8n automation workflows |
+| [Marketing AI Toolkit](https://ccromp.github.io/marketing-ai-toolkit/) | new | Curated directory of 230+ Claude Code skills and MCP servers quality-scored for marketing professionals -- SEO, content creation, email, social media, analytics, and ad copy. MarketCore Score system rates each tool on 5 dimensions |
 
 ---
 
