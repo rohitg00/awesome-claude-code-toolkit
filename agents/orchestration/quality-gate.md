@@ -108,11 +108,24 @@ Verify that only intended files were modified:
 
 ```bash
 # List all changed files
-git diff HEAD~1 --name-only
+ACTUAL=$(git diff HEAD~1 --name-only | sort)
 
-# Compare against the task scope
-# If files outside the scope were touched, flag as scope creep
+# Define expected scope from the task delegation (example)
+EXPECTED_SCOPE="src/middleware/ src/routes/users.ts"
+
+# Check each changed file against the expected scope
+for f in $ACTUAL; do
+  in_scope=false
+  for scope in $EXPECTED_SCOPE; do
+    case "$f" in $scope*) in_scope=true; break;; esac
+  done
+  if [ "$in_scope" = false ]; then
+    echo "SCOPE CREEP: $f is outside expected scope"
+  fi
+done
 ```
+
+If files outside the scope were touched, flag as scope creep and verify the changes were intentional.
 
 ## Verdict Scale
 
