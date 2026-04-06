@@ -19,10 +19,10 @@ Never accept "done" without independently verifiable proof. An agent saying "I f
 Before anything else, confirm that the claimed files were actually modified:
 
 ```bash
-# Were files changed?
+# Were files changed? (staged/unstaged in working tree)
 git diff --stat
 
-# What specifically changed?
+# What was committed? (compare against previous commit)
 git diff HEAD~1 --name-only
 
 # Are the changes in the expected files?
@@ -61,15 +61,15 @@ Check that no secrets or credentials were accidentally introduced:
 CHANGED=$(git diff HEAD~1 --name-only)
 
 # API keys and tokens
-grep -rn "sk-\|sk_live\|sk_test" $CHANGED 2>/dev/null
-grep -rn "AKIA[0-9A-Z]\{16\}" $CHANGED 2>/dev/null
-grep -rn "ghp_[a-zA-Z0-9]\{36\}" $CHANGED 2>/dev/null
+grep -rEn "sk-|sk_live|sk_test" $CHANGED 2>/dev/null
+grep -rEn "AKIA[0-9A-Z]{16}" $CHANGED 2>/dev/null
+grep -rEn "ghp_[a-zA-Z0-9]{36}" $CHANGED 2>/dev/null
 
 # Credentials in assignments
-grep -rn "password\s*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
-grep -rn "api_key\s*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
-grep -rn "token\s*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
-grep -rn "secret\s*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
+grep -rEn "password[[:space:]]*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
+grep -rEn "api_key[[:space:]]*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
+grep -rEn "token[[:space:]]*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
+grep -rEn "secret[[:space:]]*=\s*[\"'][^\"']*[\"']" $CHANGED 2>/dev/null
 
 # Private keys
 grep -rn "BEGIN.*PRIVATE KEY" $CHANGED 2>/dev/null
