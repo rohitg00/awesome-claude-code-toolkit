@@ -19,10 +19,10 @@ Never accept "done" without independently verifiable proof. An agent saying "I f
 Before anything else, confirm that the claimed files were actually modified:
 
 ```bash
-# Were files changed? (staged/unstaged in working tree)
-git diff --stat
+# What was committed in the last commit?
+git diff HEAD~1 --stat
 
-# What was committed? (compare against previous commit)
+# What specific files were changed?
 git diff HEAD~1 --name-only
 
 # Are the changes in the expected files?
