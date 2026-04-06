@@ -968,6 +968,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) | 17,000+ | MCP for Claude Code to build and manage n8n automation workflows |
 
 | [guardian-agent-prompts](https://github.com/milkomida77/guardian-agent-prompts) | new | 49 production-tested AGENT.md system prompts from a 57-agent system running 24/7 for 6+ months. Orchestrator, security auditor, code architect, trading analyst, and 45 more specialized roles with quality gates and anti-hallucination rules. Free orchestrator sample included |
+
 ---
 
 ## XVARY Stock Research
