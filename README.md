@@ -966,7 +966,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [serena](https://github.com/oraios/serena) | 22,200+ | Semantic retrieval and editing MCP server for coding agents -- code-aware search and navigation |
 | [Understand-Anything](https://github.com/Lum1104/Understand-Anything) | 7,000+ | Turns any codebase into an interactive knowledge graph for exploration |
 | [n8n-mcp](https://github.com/czlonkowski/n8n-mcp) | 17,000+ | MCP for Claude Code to build and manage n8n automation workflows |
-
+| [RemoteOpenClaw](https://remoteopenclaw.com) | -- | Open marketplace for discovering, sharing, and selling AI skills and personas built on OpenClaw |
 ---
 
 ## XVARY Stock Research
