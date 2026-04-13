@@ -125,6 +125,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [cc-safe-setup](https://github.com/yurukusa/cc-safe-setup) | One command (`npx cc-safe-setup`) to install 6 essential safety hooks in 10 seconds. Zero dependencies |
 | [knowledge-graph](https://github.com/hilyfux/knowledge-graph) | Built on Anthropic internal engineering practices and Karpathy's AutoResearch methodology. A zero-dependency, git-native memory layer for Claude Code that persists learned context across sessions. Pure bash, ~3ms/event, privacy-first |
 | [claude-supermemory](https://github.com/supermemoryai/claude-supermemory) | Persistent memory across sessions and projects using Supermemory. User profile injection at session start, automatic conversation capture. 2,300+ stars |
+| [claude-token-lens](https://github.com/wassimbensalem/claude-token-lens) | Real-time terminal dashboard that attributes token burn to specific tools, agents, MCP servers, and skills. Shows which agent or tool is eating your quota. Live TUI + CLI report + sessions breakdown. npm install -g claude-token-lens |
 | [code-architect](plugins/code-architect/) | Generate architecture diagrams and technical design documents |
 | [code-explainer](plugins/code-explainer/) | Explain complex code and annotate files with inline documentation |
 | [code-guardian](plugins/code-guardian/) | Automated code review, security scanning, and quality enforcement |
