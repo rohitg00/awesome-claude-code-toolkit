@@ -1133,6 +1133,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | 15,600+ | 100+ specialized Claude Code subagents |
 | [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) | 25,000+ | Comprehensive reference implementation for Claude Code config |
 | [awesome-claude-skills (Composio)](https://github.com/ComposioHQ/awesome-claude-skills) | 49,300+ | 30 curated skills + 832 SaaS automation templates via Composio. Strong on document processing, creative, and business skills |
+| [awesome-claude-design](https://github.com/rohitg00/awesome-claude-design) | ![Stars](https://img.shields.io/github/stars/rohitg00/awesome-claude-design?style=flat-square&label=) | DESIGN.md files grouped by aesthetic family (editorial, terminal, warm, data-dense, cinematic, playful, glass, brutalist, indie) + remix recipes + prompt packs for Claude Design (Anthropic Labs) |
 
 ## Contributing
 
