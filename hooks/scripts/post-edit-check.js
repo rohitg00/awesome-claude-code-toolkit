@@ -4,6 +4,7 @@ const path = require("path");
 const input = JSON.parse(process.argv[2] || "{}");
 const filePath = input.file_path || input.filePath || "";
 if (!filePath) process.exit(0);
+if (!path.resolve(filePath).startsWith(process.cwd() + path.sep) && path.resolve(filePath) !== process.cwd()) process.exit(0);
 
 const ext = path.extname(filePath).toLowerCase();
 const lintCommands = {
