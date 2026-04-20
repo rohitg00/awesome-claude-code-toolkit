@@ -1,3 +1,7 @@
+---
+name: smart-commit:commit
+description: Analyze all staged git changes and generate an intelligent conventional commit message.
+---
 # /smart-commit:commit
 
 Analyze all staged git changes and generate an intelligent conventional commit message.

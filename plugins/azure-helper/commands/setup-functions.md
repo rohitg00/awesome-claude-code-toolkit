@@ -1,3 +1,7 @@
+---
+name: setup-functions
+description: Setup Azure Functions
+---
 # /setup-functions - Setup Azure Functions
 
 Configure and deploy an Azure Functions application.

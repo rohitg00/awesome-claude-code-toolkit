@@ -1,3 +1,7 @@
+---
+name: update-deps
+description: Safely update project dependencies with compatibility verification.
+---
 Safely update project dependencies with compatibility verification.
 
 ## Steps

@@ -1,3 +1,7 @@
+---
+name: code-guardian:review
+description: Perform a thorough code review of the current uncommitted changes or a specified file/directory.
+---
 # /code-guardian:review
 
 Perform a thorough code review of the current uncommitted changes or a specified file/directory.

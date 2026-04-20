@@ -1,3 +1,7 @@
+---
+name: suggest-improvements
+description: Suggest concrete development workflow improvements based on analysis findings.
+---
 Suggest concrete development workflow improvements based on analysis findings.
 
 ## Steps

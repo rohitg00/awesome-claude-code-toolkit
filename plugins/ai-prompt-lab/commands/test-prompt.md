@@ -1,3 +1,7 @@
+---
+name: test-prompt
+description: Test an AI prompt against multiple scenarios to verify consistent, quality output.
+---
 Test an AI prompt against multiple scenarios to verify consistent, quality output.
 
 ## Steps

@@ -1,3 +1,7 @@
+---
+name: generate-changelog
+description: Generate a changelog from git history, grouping commits by type and version.
+---
 Generate a changelog from git history, grouping commits by type and version.
 
 ## Steps

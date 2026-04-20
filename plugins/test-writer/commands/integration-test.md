@@ -1,3 +1,7 @@
+---
+name: integration-test
+description: Generate integration tests verifying component interactions and real data flows.
+---
 Generate integration tests verifying component interactions and real data flows.
 
 ## Steps

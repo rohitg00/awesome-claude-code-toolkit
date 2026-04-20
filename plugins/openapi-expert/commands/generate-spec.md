@@ -1,3 +1,7 @@
+---
+name: generate-spec
+description: Generate an OpenAPI 3.1 specification from existing API routes and handlers.
+---
 Generate an OpenAPI 3.1 specification from existing API routes and handlers.
 
 ## Steps

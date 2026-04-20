@@ -1,3 +1,7 @@
+---
+name: commit-push
+description: Stage, commit, and push changes with an auto-generated conventional commit message.
+---
 Stage, commit, and push changes with an auto-generated conventional commit message.
 
 ## Steps

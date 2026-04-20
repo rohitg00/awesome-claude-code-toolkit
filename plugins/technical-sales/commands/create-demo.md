@@ -1,3 +1,7 @@
+---
+name: create-demo
+description: Create a technical demo that showcases product capabilities to prospective customers.
+---
 Create a technical demo that showcases product capabilities to prospective customers.
 
 ## Steps

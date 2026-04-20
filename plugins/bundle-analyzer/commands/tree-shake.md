@@ -1,3 +1,7 @@
+---
+name: tree-shake
+description: Optimize Tree Shaking
+---
 # /tree-shake - Optimize Tree Shaking
 
 Improve tree shaking effectiveness to reduce bundle size.

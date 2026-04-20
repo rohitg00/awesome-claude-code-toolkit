@@ -1,3 +1,7 @@
+---
+name: triage-issues
+description: Triage GitHub Issues
+---
 # /triage-issues - Triage GitHub Issues
 
 Analyze and triage open GitHub issues for prioritization.

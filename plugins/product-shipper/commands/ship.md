@@ -1,3 +1,7 @@
+---
+name: ship
+description: Execute a complete feature shipping workflow from code to production deployment.
+---
 Execute a complete feature shipping workflow from code to production deployment.
 
 ## Steps

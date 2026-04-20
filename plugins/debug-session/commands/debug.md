@@ -1,3 +1,7 @@
+---
+name: debug
+description: Start an interactive debugging session to diagnose and fix a runtime issue.
+---
 Start an interactive debugging session to diagnose and fix a runtime issue.
 
 ## Steps

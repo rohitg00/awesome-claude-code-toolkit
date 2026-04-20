@@ -1,3 +1,7 @@
+---
+name: capture-baseline
+description: Capture Visual Baseline
+---
 # /capture-baseline - Capture Visual Baseline
 
 Capture baseline screenshots for visual regression testing.

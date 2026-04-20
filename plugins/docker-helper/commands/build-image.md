@@ -1,3 +1,7 @@
+---
+name: build-image
+description: Build a Docker image with best practices for caching, security, and size optimization.
+---
 Build a Docker image with best practices for caching, security, and size optimization.
 
 ## Steps

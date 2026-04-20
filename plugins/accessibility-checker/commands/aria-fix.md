@@ -1,3 +1,7 @@
+---
+name: aria-fix
+description: Fix ARIA attributes and accessibility issues in web components.
+---
 Fix ARIA attributes and accessibility issues in web components.
 
 ## Steps

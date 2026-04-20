@@ -1,3 +1,7 @@
+---
+name: improve-prompt
+description: Analyze and improve an AI prompt for clarity, specificity, and effectiveness.
+---
 Analyze and improve an AI prompt for clarity, specificity, and effectiveness.
 
 ## Steps

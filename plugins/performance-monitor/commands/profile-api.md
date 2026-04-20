@@ -1,3 +1,7 @@
+---
+name: profile-api
+description: Profile an API endpoint to identify performance bottlenecks and optimization opportunities.
+---
 Profile an API endpoint to identify performance bottlenecks and optimization opportunities.
 
 ## Steps

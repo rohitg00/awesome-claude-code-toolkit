@@ -1,3 +1,7 @@
+---
+name: upgrade-chart
+description: Upgrade Helm Release
+---
 # /upgrade-chart - Upgrade Helm Release
 
 Upgrade an existing Helm release with new chart version or values.

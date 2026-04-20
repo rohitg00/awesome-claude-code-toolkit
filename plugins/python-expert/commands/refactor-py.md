@@ -1,3 +1,7 @@
+---
+name: refactor-py
+description: Refactor Python code for clarity, performance, and Pythonic idioms.
+---
 Refactor Python code for clarity, performance, and Pythonic idioms.
 
 ## Steps

@@ -1,3 +1,7 @@
+---
+name: fetch-docs
+description: Fetch up-to-date library documentation via Context7 to ensure accurate code generation.
+---
 Fetch up-to-date library documentation via Context7 to ensure accurate code generation.
 
 ## Steps

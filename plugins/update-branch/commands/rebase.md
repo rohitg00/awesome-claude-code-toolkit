@@ -1,3 +1,7 @@
+---
+name: rebase
+description: Rebase the current feature branch onto the latest upstream branch and resolve conflicts.
+---
 Rebase the current feature branch onto the latest upstream branch and resolve conflicts.
 
 ## Steps

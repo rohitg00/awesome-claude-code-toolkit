@@ -1,3 +1,7 @@
+---
+name: track
+description: Track an ML experiment by logging parameters, metrics, and artifacts for comparison.
+---
 Track an ML experiment by logging parameters, metrics, and artifacts for comparison.
 
 ## Steps

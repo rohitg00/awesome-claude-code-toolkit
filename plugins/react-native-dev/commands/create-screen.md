@@ -1,3 +1,7 @@
+---
+name: create-screen
+description: Create a React Native screen with navigation, layout, and platform-specific handling.
+---
 Create a React Native screen with navigation, layout, and platform-specific handling.
 
 ## Steps

@@ -1,3 +1,7 @@
+---
+name: analyze-ci-failure
+description: Analyze CI/CD Failure
+---
 # /analyze-ci-failure - Analyze CI/CD Failure
 
 Analyze and diagnose a CI/CD pipeline failure.

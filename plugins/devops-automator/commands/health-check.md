@@ -1,3 +1,7 @@
+---
+name: health-check
+description: Create health check scripts to verify service and infrastructure availability.
+---
 Create health check scripts to verify service and infrastructure availability.
 
 ## Steps

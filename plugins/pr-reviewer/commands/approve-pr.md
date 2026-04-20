@@ -1,3 +1,7 @@
+---
+name: approve-pr
+description: Approve a pull request after verifying it meets quality standards.
+---
 Approve a pull request after verifying it meets quality standards.
 
 ## Steps

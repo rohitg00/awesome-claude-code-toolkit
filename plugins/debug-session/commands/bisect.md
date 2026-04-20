@@ -1,3 +1,7 @@
+---
+name: bisect
+description: Use git bisect to find the exact commit that introduced a bug through binary search.
+---
 Use git bisect to find the exact commit that introduced a bug through binary search.
 
 ## Steps

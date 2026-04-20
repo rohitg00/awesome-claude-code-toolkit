@@ -1,3 +1,7 @@
+---
+name: code-guardian:security-scan
+description: Perform a security-focused scan of the codebase targeting OWASP Top 10 and common vulnerability p...
+---
 # /code-guardian:security-scan
 
 Perform a security-focused scan of the codebase targeting OWASP Top 10 and common vulnerability patterns.

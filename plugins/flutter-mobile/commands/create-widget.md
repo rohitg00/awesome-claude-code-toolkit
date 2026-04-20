@@ -1,3 +1,7 @@
+---
+name: create-widget
+description: Create a Flutter widget with proper state management and Material/Cupertino design.
+---
 Create a Flutter widget with proper state management and Material/Cupertino design.
 
 ## Steps

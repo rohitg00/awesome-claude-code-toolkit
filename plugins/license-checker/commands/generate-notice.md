@@ -1,3 +1,7 @@
+---
+name: generate-notice
+description: Generate License Notice
+---
 # /generate-notice - Generate License Notice
 
 Generate a NOTICE file with all third-party license attributions.

@@ -1,3 +1,7 @@
+---
+name: send-update
+description: Send Slack Update
+---
 # /send-update - Send Slack Update
 
 Send a formatted status update to a Slack channel.

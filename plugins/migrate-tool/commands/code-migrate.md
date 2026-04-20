@@ -1,3 +1,7 @@
+---
+name: code-migrate
+description: Migrate code from one framework version, library, or pattern to another.
+---
 Migrate code from one framework version, library, or pattern to another.
 
 ## Steps

@@ -1,3 +1,7 @@
+---
+name: platform-channel
+description: Create a Flutter platform channel for native iOS and Android communication.
+---
 Create a Flutter platform channel for native iOS and Android communication.
 
 ## Steps

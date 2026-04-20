@@ -1,3 +1,7 @@
+---
+name: bump-version
+description: Bump the project version following semantic versioning rules based on changes since last release.
+---
 Bump the project version following semantic versioning rules based on changes since last release.
 
 ## Steps

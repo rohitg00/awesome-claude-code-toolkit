@@ -1,3 +1,7 @@
+---
+name: native-module
+description: Create a React Native native module to bridge platform-specific functionality.
+---
 Create a React Native native module to bridge platform-specific functionality.
 
 ## Steps

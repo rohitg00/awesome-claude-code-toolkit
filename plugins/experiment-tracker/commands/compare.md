@@ -1,3 +1,7 @@
+---
+name: compare
+description: Compare multiple ML experiment runs side-by-side to identify the best configuration.
+---
 Compare multiple ML experiment runs side-by-side to identify the best configuration.
 
 ## Steps

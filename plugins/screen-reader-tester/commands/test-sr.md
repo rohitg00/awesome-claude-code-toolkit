@@ -1,3 +1,7 @@
+---
+name: test-sr
+description: Test Screen Reader Compatibility
+---
 # /test-sr - Test Screen Reader Compatibility
 
 Test application compatibility with screen readers.

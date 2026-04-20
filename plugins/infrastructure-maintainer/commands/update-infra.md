@@ -1,3 +1,7 @@
+---
+name: update-infra
+description: Plan and execute infrastructure updates with safety checks and rollback procedures.
+---
 Plan and execute infrastructure updates with safety checks and rollback procedures.
 
 ## Steps
