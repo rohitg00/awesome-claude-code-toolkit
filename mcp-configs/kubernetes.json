@@ -10,6 +10,11 @@
       "args": ["-y", "kubectl-mcp-app"],
       "description": "8 interactive UI dashboards for Kubernetes: pods, logs, deployments, helm, cluster, cost, events, network."
     },
+    "kubestellar-console": {
+      "command": "go",
+      "args": ["run", "github.com/kubestellar/console/cmd/kc-agent@latest"],
+      "description": "Multi-cluster Kubernetes MCP bridge: manage workloads, policies, RBAC, and compliance across clusters via KubeStellar Console."
+    },
     "docker": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-docker"],

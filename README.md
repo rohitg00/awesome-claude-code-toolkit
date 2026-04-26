@@ -203,6 +203,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [infrastructure-maintainer](plugins/infrastructure-maintainer/) | Infrastructure maintenance with security audits and update management |
 | [ios-developer](plugins/ios-developer/) | iOS and Swift development with SwiftUI views and models |
 | [k8s-helper](plugins/k8s-helper/) | Generate Kubernetes manifests and debug pod issues with kubectl |
+| [kubestellar-console](https://github.com/kubestellar/console) | Multi-cluster Kubernetes dashboard with built-in MCP server for AI agents — manage workloads, policies, RBAC, and compliance across clusters. 50+ dashboard cards, real-time WebSocket streaming, and Claude/Copilot integration via kc-agent. |
 | [leapfrog-mcp](https://github.com/anthonybono21-cloud/leapfrog) | Multi-session browser MCP server -- 15 parallel isolated Chromium sessions so multiple Claude Code terminals can browse simultaneously. 37 tools for navigation, extraction, interaction, network interception, and session profiles. 797 tests. Install: `npx -y leapfrog-mcp` |
 | [license-checker](plugins/license-checker/) | License compliance checking and NOTICE file generation |
 | [lighthouse-runner](plugins/lighthouse-runner/) | Run Lighthouse audits and fix performance issues |
@@ -885,7 +886,7 @@ Thirteen curated Model Context Protocol server configurations.
 |--------|------|-----------------|
 | Recommended | [`recommended.json`](mcp-configs/recommended.json) | 14 essential servers for general development |
 | Full Stack | [`fullstack.json`](mcp-configs/fullstack.json) | Filesystem, GitHub, Postgres, Redis, Puppeteer |
-| Kubernetes | [`kubernetes.json`](mcp-configs/kubernetes.json) | kubectl-mcp-server, Docker, GitHub |
+| Kubernetes | [`kubernetes.json`](mcp-configs/kubernetes.json) | kubectl-mcp-server, KubeStellar Console, Docker, GitHub |
 | Data Science | [`data-science.json`](mcp-configs/data-science.json) | Jupyter, SQLite, PostgreSQL, Filesystem |
 | Frontend | [`frontend.json`](mcp-configs/frontend.json) | Puppeteer, Figma, Storybook |
 | Crypto / DeFi | [`crypto-defi.json`](mcp-configs/crypto-defi.json) | defi-mcp, Filesystem, Fetch, Memory |
