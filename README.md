@@ -545,6 +545,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 
 | Skill | Directory | What It Teaches |
 |-------|-----------|-----------------|
+| agent-lsp | [`blackwell-systems/agent-lsp`](https://github.com/blackwell-systems/agent-lsp) | 24 LSP-backed code intelligence skills (refactor, rename, impact, verify, test-correlation, cross-repo, simulate) across 30 languages. Provides semantic understanding of code structure, references, type hierarchies, and call graphs. |
 | TDD Mastery | `skills/tdd-mastery/` | Red-green-refactor, test-first design, coverage targets |
 | API Design Patterns | `skills/api-design-patterns/` | RESTful conventions, versioning, pagination, error responses |
 | Database Optimization | `skills/database-optimization/` | Query planning, indexing, N+1 prevention, connection pooling |
