@@ -19,6 +19,11 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "description": "Track portfolio positions, price alerts, and research findings across sessions."
+    },
+    "eterna": {
+      "type": "streamable-http",
+      "url": "https://mcp.eterna.exchange/mcp",
+      "description": "OAuth-based MCP for Eterna Exchange trading workflows. Search SDK docs/examples and run managed TypeScript against the injected eterna.* SDK; keep trading actions behind explicit user confirmation."
     }
   }
 }
