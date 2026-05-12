@@ -593,6 +593,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [cc-inspect](https://github.com/howardpen9/cc-inspect) | `git clone https://github.com/howardpen9/cc-inspect ~/.claude/skills/cc-inspect` | Inspect all installed Claude Code skills, plugins, MCP servers, commands, and hooks in a browser dashboard. Scope-aware (user/project/local), zero dependencies (pure bash + python3), generates self-contained HTML |
 | [Edison](https://github.com/kilnside/edison) | `git clone https://github.com/kilnside/edison ~/.claude/skills/edison` | Design decision skill — the phase between brainstorming and building. Research-first progressive deepening with self-executing specs. Three modes: Check, Explore, Audit |
 | [claude-handoff](https://github.com/REMvisual/claude-handoff) | `git clone https://github.com/REMvisual/claude-handoff ~/.claude/skills/handoff` | Cross-session handoff system with chain tracking, context summaries, and structured work continuity between Claude Code sessions |
+| [html-anything](https://github.com/clockless-org/html-anything) | `npx skills add clockless-org/html-anything` | Turn any file, folder, URL, or service export (Amazon orders, Kindle highlights, Spotify history, WhatsApp/WeChat, Google Photos Takeout, LinkedIn connections, CSV, PDF, DOCX, logs, GPX, …) into a polished single-file HTML page. Auto picks one of 18 design styles (`teaching`, `timeline-story`, `map-atlas`, `developer`, `living-essay`, `editorial-carousel`, `terminal-cli`, …). Self-contained — inline CSS/JS, no CDN, works offline. [Live gallery](https://clockless-org.github.io/html-anything/examples/) |
 | [ClawSec](https://clawsec.cc) | Visit [clawsec.cc](https://clawsec.cc) | Security audit platform for AI agent skills — automated 5-tier assessments, vulnerability detection, and configuration auditing for 33,000+ skills |
 | [ClawSearch](https://clawsearch.cc) | `npm install -g clawsearch` | Security-first skill discovery engine with Trust Score ratings, knowledge graph, and pre-install guard (`clawsearch-guard`) to vet skills before installation |
 | [MUSE](https://github.com/myths-labs/muse) | `git clone` + `./scripts/install.sh --tool claude` | Pure-Markdown memory OS with 48 skills, cross-conversation memory, 8 roles with permission isolation. Works with 6 AI coding tools. |
@@ -920,7 +921,7 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Fifteen curated Model Context Protocol server configurations.
+Sixteen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -939,6 +940,7 @@ Fifteen curated Model Context Protocol server configurations.
 | Mobile | [`mobile.json`](mcp-configs/mobile.json) | Android ADB automation, Xcode build tools |
 | Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
+| LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
 
 ---
 
@@ -1130,6 +1132,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 17,600+ | Manus-style persistent markdown planning skill for structured project management |
 | [claude-hud](https://github.com/jarrodwatts/claude-hud) | 15,200+ | Plugin showing context usage, active tools, running agents, todo progress in a HUD overlay |
 | [codachi](https://github.com/vincent-k2026/codachi) | New | Tamagotchi-style statusline pet that grows with context usage, shows cache hit rate and burn speed |
+| [claude-skins](https://github.com/basicScandal/claude-skins) | New | 9 custom visual themes for Claude Code — terminal colors, ASCII art banners, personality voices, status lines, and tool sounds. One-command install, pure bash engine. |
 | [claude-code-memory-guide](https://github.com/Acteq1391gp/claude-code-memory-guide) | 2 | Zero-to-production memory setup: CLAUDE.md + MEMORY.md + MemPalace semantic search + session hooks + warm-model daemon + nightly Karpathy compile with free-LLM key rotation. Three guides — linear tutorial, memory format reference, automation reference. Runnable scripts, secrets-in-git precommit guard, end-to-end verification checklist. MIT |
 | [cc-hud](https://github.com/WaterTian/cc-hud) | New | Compact single-line Claude Code statusline -- model, context usage (1/8-char progress bar), active subagents, 5h/7d rate-limit countdowns. Pure Node.js, zero deps, Windows-safe. |
 | [awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | 15,600+ | 100+ specialized Claude Code subagents organized by domain |
@@ -1158,6 +1161,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [Drevon](https://drevon.dev) | new | Mac desktop workspace for GTM engineers. Run parallel AI agents powered by Claude Code, Codex, or Copilot to build target lists, score accounts, and pull prospect intel. |
 | [voidly-mcp-server](https://github.com/voidly-ai/mcp-server) | new | 116 tools for Claude Code covering censorship intelligence (19.6M OONI measurements, 126 countries), E2E encrypted agent-to-agent messaging, and agent payments. Install: `claude mcp add voidly -- npx -y @voidly/mcp-server` |
 | [systemprompt-template](https://github.com/systempromptio/systemprompt-template) | -- | Governance infrastructure for Claude Code. Single compiled Rust binary that authenticates, authorises, rate-limits, logs, and attributes costs for every AI interaction before it reaches a tool or database. Self-hosted, air-gap capable, MCP + A2A compatible. BSL-1.1 |
+| [llm-prices](https://github.com/benbencodes/llm-prices) | new | CLI + Python library + MCP server to look up and compare LLM API costs across 167 models from 23 providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Groq, and more). Ask Claude "what's the cheapest model for 10k input + 2k output?" before making API calls. Zero deps, no API key. `pipx install git+https://github.com/benbencodes/llm-prices` |
 | [Eterna AI](https://github.com/EternaHybridExchange/eterna-ai) | new | OAuth-based MCP + CLI for Eterna Exchange trading workflows. Agents can search SDK docs/examples and run managed TypeScript against the injected `eterna.*` SDK; trading actions should stay behind explicit user confirmation. Endpoint: `https://mcp.eterna.exchange/mcp` |
 
 ---
