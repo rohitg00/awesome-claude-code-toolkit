@@ -19,6 +19,11 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "description": "Track portfolio positions, price alerts, and research findings across sessions."
+    },
+    "eterna": {
+      "type": "sse",
+      "url": "https://mcp.eterna.exchange/mcp",
+      "description": "Eterna hybrid perp exchange — deploy an autonomous perp trading AI via Claude Code in 60 seconds. $10B+ aggregated liquidity across 500+ pairs, 24/7 execution."
     }
   }
 }
