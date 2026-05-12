@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 36 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -48,7 +48,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 - [Plugins](#plugins) (176+)
 - [Agents](#agents) (135)
-- [Skills](#skills) (35 curated + 28 community)
+- [Skills](#skills) (36 curated + 28 community)
 - [Commands](#commands) (42)
 - [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
@@ -541,10 +541,11 @@ Reference an agent in your `CLAUDE.md`:
 
 ## Skills
 
-Thirty-five curated skill modules included in this repo, with access to **400,000+ additional skills** via the [SkillKit marketplace](https://agenstskills.com). Each included skill teaches Claude Code domain-specific patterns with code examples, anti-patterns, and checklists.
+Thirty-six curated skill modules included in this repo, with access to **400,000+ additional skills** via the [SkillKit marketplace](https://agenstskills.com). Each included skill teaches Claude Code domain-specific patterns with code examples, anti-patterns, and checklists.
 
 | Skill | Directory | What It Teaches |
 |-------|-----------|-----------------|
+| agent-lsp | [`blackwell-systems/agent-lsp`](https://github.com/blackwell-systems/agent-lsp) | 24 LSP-backed code intelligence skills (refactor, rename, impact, verify, test-correlation, cross-repo, simulate) across 30 languages. Provides semantic understanding of code structure, references, type hierarchies, and call graphs. |
 | TDD Mastery | `skills/tdd-mastery/` | Red-green-refactor, test-first design, coverage targets |
 | API Design Patterns | `skills/api-design-patterns/` | RESTful conventions, versioning, pagination, error responses |
 | Database Optimization | `skills/database-optimization/` | Query planning, indexing, N+1 prevention, connection pooling |
