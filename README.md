@@ -1158,7 +1158,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [Drevon](https://drevon.dev) | new | Mac desktop workspace for GTM engineers. Run parallel AI agents powered by Claude Code, Codex, or Copilot to build target lists, score accounts, and pull prospect intel. |
 | [voidly-mcp-server](https://github.com/voidly-ai/mcp-server) | new | 116 tools for Claude Code covering censorship intelligence (19.6M OONI measurements, 126 countries), E2E encrypted agent-to-agent messaging, and agent payments. Install: `claude mcp add voidly -- npx -y @voidly/mcp-server` |
 | [systemprompt-template](https://github.com/systempromptio/systemprompt-template) | -- | Governance infrastructure for Claude Code. Single compiled Rust binary that authenticates, authorises, rate-limits, logs, and attributes costs for every AI interaction before it reaches a tool or database. Self-hosted, air-gap capable, MCP + A2A compatible. BSL-1.1 |
-| [Eterna](https://github.com/EternaHybridExchange/eterna-ai) | new | Hybrid perp exchange MCP — deploy your own autonomous perp trading AI via Claude Code in 60 seconds. $10B+ aggregated liquidity across 500+ pairs, 24/7 live execution. Endpoint: `https://mcp.eterna.exchange/mcp` |
+| [Eterna AI](https://github.com/EternaHybridExchange/eterna-ai) | new | OAuth-based MCP + CLI for Eterna Exchange trading workflows. Agents can search SDK docs/examples and run managed TypeScript against the injected `eterna.*` SDK; trading actions should stay behind explicit user confirmation. Endpoint: `https://mcp.eterna.exchange/mcp` |
 
 ---
 
