@@ -336,6 +336,7 @@ Or install all plugins at once:
 
 ## Agents
 
+- [Septim Agents Pack](https://septimlabs.com/agents) - 10 named Claude Code sub-agents (Atlas, Luca, Canon, Ember, Tally, Nova, Ward, Mira, Juno, Pip) covering the full solo-founder exec layer. Pip is open-sourced under MIT at github.com/septimlabs-code/septim-agents-pack-sample.
 One hundred thirty-five specialized agents organized into ten categories. Each agent defines a persona, system instructions, and tool access patterns.
 
 ### Core Development (13 agents)
