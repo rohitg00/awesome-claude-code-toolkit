@@ -1,0 +1,19 @@
+{
+  "name": "skill-auto-installer",
+  "description": "Natural language intent analysis → skill recommendation → auto-install. Claude analyzes what you want, discovers matching skills from marketplaces, and installs them silently so they're ready to use immediately.",
+  "version": "1.0.0",
+  "author": {
+    "name": "QM152"
+  },
+  "homepage": "https://github.com/maimai-dot/skill-auto-installer",
+  "repository": "https://github.com/maimai-dot/skill-auto-installer",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "skill",
+    "auto-install",
+    "intent-analysis",
+    "meta-skill",
+    "marketplace"
+  ]
+}
