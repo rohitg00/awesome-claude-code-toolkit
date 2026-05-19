@@ -867,6 +867,17 @@ gateguard install
 
 See [GateGuard](https://github.com/zunoworks/gateguard) | [PyPI](https://pypi.org/project/gateguard-ai/) for details. By [ZUNO WORKS K.K.](https://github.com/zunoworks)
 
+### pinrule — Universal AI Behavior Rule Runtime
+
+Pin the 5-10 rules your AI must not drift from during long tasks. Hook-enforced across `UserPromptSubmit` / `PreToolUse` / `Stop` / `SessionStart` — pure engineering (regex + counting, zero LLM, zero network, zero runtime deps). Ships with a 7-rule dev preset; **`/pinrule <scenario, switch to this>` skill auto-adapts a 5-7 rule pack from 4 signal sources** (your local `CLAUDE.md` / online best practices / Karpathy baseline / session context) for non-dev scenarios (UX research / academic writing / legal / etc.), with two-phase approval + atomic batch write + backup. Works across Claude Code / Codex / Cursor (1.7+).
+
+```bash
+pip install pinrule
+pinrule init
+```
+
+See [pinrule](https://github.com/jhaizhou-ops/pinrule) | [PyPI](https://pypi.org/project/pinrule/) for details.
+
 ---
 
 ## Rules
