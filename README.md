@@ -817,6 +817,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 | `learning-log.js` | SessionEnd | Extract and save session learnings |
 | `pre-compact.js` | PreCompact | Save important context before compaction |
 | [`smart-approve.py`](https://github.com/liberzon/claude-hooks) | PreToolUse (Bash) | Decompose compound bash commands (&&, \|\|, ;, \|, $()) into sub-commands and check each against allow/deny patterns |
+| [`retro-daily`](https://github.com/gyanesh-m/retro-daily) | SessionStart | Prints a daily retro at the top of every session — competency grade (0–100, A–F), 14-day efficiency sparklines, year-long contributions heatmap. Spawns a detached, sandboxed `claude -p` worker that researches your weakest metrics on docs.anthropic.com and GitHub and surfaces findings inline next session. [Demo](https://gyanesh-m.github.io/retro-daily/) · MIT |
 | `block-dev-server.js` | PreToolUse (Bash) | Block dev server commands outside tmux |
 | `pre-push-check.js` | PreToolUse (Bash) | Verify branch and remote before push |
 | `block-md-creation.js` | PreToolUse (Write) | Block unnecessary .md file creation |
