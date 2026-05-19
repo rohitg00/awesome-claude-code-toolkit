@@ -1215,6 +1215,7 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 [Apache-2.0](LICENSE)
 | [AutoSearch](https://github.com/0xmariowu/Autosearch) | new | Self-evolving deep research plugin for Claude Code -- 32 dedicated search channels (arXiv, GitHub, Reddit, HN, zhihu, bilibili, CSDN + 25 more), LLM-scored evaluation, cited reports in Markdown/HTML/Slides, cross-session learning. Zero API keys required |
+| [harness-maker](https://github.com/Ecro/harness-maker) | new | Project-tailored AI coding harness generator for Claude Code · Cursor · Codex. 12+ stack profiler + 10-dim interview, grade-gated review with auto-fix loop, edit-preserving block-merge upgrades (\), weekly anti-rot crawl (Anthropic / GitHub / arXiv / OSV), worktree-isolated execute, privilege-separated reviewers (read-only), 100% local telemetry. \ or \Adding marketplace…. MIT |
 
 
 ---
