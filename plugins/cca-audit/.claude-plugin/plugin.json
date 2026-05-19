@@ -1,0 +1,7 @@
+{
+  "name": "cca-audit",
+  "version": "1.0.0",
+  "description": "6-layer parallel code audit pipeline — runs 6 specialized LLM auditors with non-overlapping scopes, deduplicates findings, auto-fixes P1+P2, re-verifies, architect review gate",
+  "commands": ["commands/audit-fix.md"],
+  "homepage": "https://github.com/GiulioDER/cca-audit"
+}
