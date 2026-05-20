@@ -867,6 +867,26 @@ gateguard install
 
 See [GateGuard](https://github.com/zunoworks/gateguard) | [PyPI](https://pypi.org/project/gateguard-ai/) for details. By [ZUNO WORKS K.K.](https://github.com/zunoworks)
 
+### verify-before-stop — Blocking Stop Hook
+
+The bundled `stop-check.js` *reminds* the agent to run tests when code was modified. [`verify-before-stop`](https://github.com/ianymu/claude-verify-before-stop) is the **blocking** complement: it fires on `Stop`, checks `git diff` + untracked files, and if files changed but no `VERIFIED` entry was logged to `.claude/state/stop-verify.log` within the last 5 minutes, it blocks the session from ending and prints the exact verification steps the agent must take (run tests, `curl` the deploy, `playwright` the UI, etc.). Forces the model to prove it verified or admit it didn't.
+
+Zero dependencies (pure bash + python3 stdlib), MIT, single ~80-line script.
+
+```bash
+mkdir -p .claude/hooks
+curl -O https://raw.githubusercontent.com/ianymu/claude-verify-before-stop/main/verify-before-stop.sh
+mv verify-before-stop.sh .claude/hooks/ && chmod +x .claude/hooks/verify-before-stop.sh
+```
+
+Then add to `.claude/settings.json`:
+
+```json
+{ "hooks": { "Stop": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "bash .claude/hooks/verify-before-stop.sh" }] }] } }
+```
+
+See [claude-verify-before-stop](https://github.com/ianymu/claude-verify-before-stop) for details.
+
 ---
 
 ## Rules
