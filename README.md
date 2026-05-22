@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 54 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -1092,6 +1092,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [Cortex](https://github.com/SKULLFIRE07/cortex-memory) | -- | Persistent AI memory for coding assistants. Auto-captures decisions, patterns, and context across sessions. VSCode extension + CLI + MCP server. Free |
 | [openclaw-self-healing](https://github.com/Ramsbaby/openclaw-self-healing) | 32+ | 4-tier autonomous crash recovery for Claude Code and any service — 64% auto-resolved, LLM-agnostic (Claude/GPT-4/Gemini/Ollama), Prometheus metrics |
 | [CCM](https://github.com/dr5hn/ccm) | 8+ | Power-user toolkit for Claude Code — multi-account management with project bindings, session cleanup, environment snapshots, permissions audit, health diagnostics. Single bash script, no runtime dependencies beyond bash 4.4+ and jq. |
+| [Alfred](https://github.com/luminik-io/alfred-os) | -- | Self-hosted runtime for autonomous Claude Code and Codex agents that turn GitHub issues into pull requests. Worktree isolation, label-driven state machine, role-based engine routing, and Slack reports. MIT, Python, macOS/Linux. |
 | [openclaw-memorybox](https://github.com/Ramsbaby/openclaw-memorybox) | 8+ | Memory hygiene CLI for Claude Code — prevents context overflow crashes, 83% MEMORY.md size reduction, zero dependencies |
 | [openclaw-self-evolving](https://github.com/Ramsbaby/openclaw-self-evolving) | 2+ | Weekly self-improvement pipeline — scans Claude Code logs, proposes CLAUDE.md/AGENTS.md rule changes, zero API cost |
 | [caliber](https://github.com/caliber-ai-org/ai-setup) | -- | CLI that fingerprints projects and generates AI agent configs (CLAUDE.md, skills, AGENTS.md). Scores quality, auto-refreshes, supports Claude Code + Cursor + Codex |
