@@ -1079,7 +1079,6 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [claude-code-system-prompts](https://github.com/Piebald-AI/claude-code-system-prompts) | 5,900+ | Extracted system prompts from Claude Code, updated for each release |
 | [claude-context](https://github.com/zilliztech/claude-context) | 5,600+ | Semantic code search MCP by Zilliz -- hybrid BM25 + vector search, ~40% token reduction |
 | [claude-skills](https://github.com/alirezarezvani/claude-skills) | 5,300+ | 192 skills across 9 domains with 254 Python automation tools |
-| [Alfred](https://github.com/luminik-io/alfred-os) | new | Local agent-fleet runtime for Claude Code and Codex. GitHub issues become scheduled jobs with isolated worktrees, label state, per-agent engine routing, and Slack reports |
 | [paco-framework](https://github.com/PenguinAlleyApps/paco-framework) | 1+ | Markdown-first multi-agent OS for Claude Code. Coordinates 3-16 specialized AI agents (Engineering, QA, Growth, Finance) with file-based dispatch, institutional memory, CEO Gate approval, and 24/7 scheduling. No Python required. MIT |
 | [peon-ping](https://github.com/PeonPing/peon-ping) | 3,900+ | Warcraft III Peon voice notifications for Claude Code and other agents |
 | [n8n-skills](https://github.com/czlonkowski/n8n-skills) | 3,400+ | Skills for building production-ready n8n workflows |
@@ -1093,6 +1092,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [Cortex](https://github.com/SKULLFIRE07/cortex-memory) | -- | Persistent AI memory for coding assistants. Auto-captures decisions, patterns, and context across sessions. VSCode extension + CLI + MCP server. Free |
 | [openclaw-self-healing](https://github.com/Ramsbaby/openclaw-self-healing) | 32+ | 4-tier autonomous crash recovery for Claude Code and any service — 64% auto-resolved, LLM-agnostic (Claude/GPT-4/Gemini/Ollama), Prometheus metrics |
 | [CCM](https://github.com/dr5hn/ccm) | 8+ | Power-user toolkit for Claude Code — multi-account management with project bindings, session cleanup, environment snapshots, permissions audit, health diagnostics. Single bash script, no runtime dependencies beyond bash 4.4+ and jq. |
+| [Alfred](https://github.com/luminik-io/alfred-os) | new | Local agent-fleet runtime for Claude Code and Codex. GitHub issues become scheduled jobs with isolated worktrees, label state, per-agent engine routing, and Slack reports |
 | [openclaw-memorybox](https://github.com/Ramsbaby/openclaw-memorybox) | 8+ | Memory hygiene CLI for Claude Code — prevents context overflow crashes, 83% MEMORY.md size reduction, zero dependencies |
 | [openclaw-self-evolving](https://github.com/Ramsbaby/openclaw-self-evolving) | 2+ | Weekly self-improvement pipeline — scans Claude Code logs, proposes CLAUDE.md/AGENTS.md rule changes, zero API cost |
 | [caliber](https://github.com/caliber-ai-org/ai-setup) | -- | CLI that fingerprints projects and generates AI agent configs (CLAUDE.md, skills, AGENTS.md). Scores quality, auto-refreshes, supports Claude Code + Cursor + Codex |
