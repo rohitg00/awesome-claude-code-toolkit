@@ -165,6 +165,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [desktop-app](plugins/desktop-app/) | Desktop application scaffolding with Electron or Tauri |
 | [devops-automator](plugins/devops-automator/) | DevOps automation scripts for CI/CD, health checks, and deployments |
 | [discuss](plugins/discuss/) | Debate implementation approaches with structured pros and cons analysis |
+| [dot-me](https://github.com/thebestmensch/dot-me) | Loads `~/.me/identity.yaml` into session context at SessionStart and ships `/me` for managing four user-context files (identity, voice, preferences, working-style). Reference Claude Code consumer of the dot-me v0.3 spec; sibling consumers ship for Codex CLI, Cursor, and Gemini CLI. |
 | [claw-army/claude-node](https://github.com/claw-army/claude-node) | Python subprocess bridge for Claude Code CLI, giving Python code direct access to Claude Code native capabilities via stream-json |
 | [discoclaw](https://github.com/DiscoClaw/discoclaw) | Personal AI orchestrator that bridges Discord to Claude Code with durable memory, task tracking, and cron-based automation |
 | [jarvis](https://github.com/Ramsbaby/jarvis) | Turns an idle Claude Max subscription into a 24/7 AI ops system — Discord bot, 76 scheduled tasks, 12 AI teams, local LanceDB RAG, 98% context compression via Nexus CIG, and 4-layer self-healing infrastructure. Uses `claude -p` headless mode at $0 extra cost. |
