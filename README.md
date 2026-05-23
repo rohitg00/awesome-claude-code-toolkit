@@ -155,6 +155,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [cron-scheduler](plugins/cron-scheduler/) | Cron job configuration and schedule validation |
 | [css-cleaner](plugins/css-cleaner/) | Find unused CSS and consolidate stylesheets |
 | [cup](https://github.com/krodak/clickup-cli) | ClickUp CLI for AI agents with task management, sprints, and time tracking |
+| [cue](https://github.com/recodeee/cue) ([npm](https://www.npmjs.com/package/cue-ai)) | Agent profile manager — per-directory skill/MCP/plugin isolation with inheritance, content-addressed caching (<5ms), TUI picker, 19 profiles, 110+ skills. Supports 10 agents (Claude Code, Codex, Cursor, Cline, Gemini, Copilot, Windsurf, Roo, Amp, Aider). `npm i -g cue-ai` |
 | [data-privacy](plugins/data-privacy/) | Data privacy implementation with PII detection and anonymization |
 | [database-optimizer](plugins/database-optimizer/) | Database query optimization with index recommendations and EXPLAIN analysis |
 | [dead-code-finder](plugins/dead-code-finder/) | Find and remove dead code across the codebase |
