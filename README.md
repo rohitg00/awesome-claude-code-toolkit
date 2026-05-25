@@ -748,6 +748,7 @@ Forty-two slash commands organized into eight categories. Drop these into your p
 
 ### Security (5 commands)
 
+- [HOL Guard](https://github.com/hashgraph-online/hol-guard) - Local-first runtime security for AI coding agents. Intercepts shell commands, secret reads, and MCP changes before execution with configurable protection levels.
 | Command | File | Description |
 |---------|------|-------------|
 | `/audit` | [`audit.md`](commands/security/audit.md) | Run security audit on code and dependencies |
