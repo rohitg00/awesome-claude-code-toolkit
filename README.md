@@ -756,6 +756,7 @@ Forty-two slash commands organized into eight categories. Drop these into your p
 | `/csp` | [`csp.md`](commands/security/csp.md) | Generate Content Security Policy headers |
 | `/dependency-audit` | [`dependency-audit.md`](commands/security/dependency-audit.md) | Audit dependencies for vulnerabilities |
 
+- [HOL Guard](https://github.com/hashgraph-online/hol-guard) - Local-first runtime security for AI coding agents. Intercepts shell commands, secret reads, and MCP changes before execution with configurable protection levels.
 ### Refactoring (5 commands)
 
 | Command | File | Description |
