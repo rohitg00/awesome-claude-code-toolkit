@@ -48,7 +48,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 
 - [Plugins](#plugins) (176+)
 - [Agents](#agents) (135)
-- [Skills](#skills) (35 curated + 28 community)
+- [Skills](#skills) (35 curated + 29 community)
 - [Commands](#commands) (42)
 - [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
