@@ -2,7 +2,7 @@
 
   A system- and setting-agnostic vault template for running solo tabletop RPGs with Claude Code as the GM.
 
-  ## What it does
+## What it does
 
   A scaffolding kit for multi-month solo TTRPG campaigns where the LLM is the GM and the human is the player. Distilled from two real solo campaigns (Imperium Maledictum d100 and Cyberpunk RED d10). System- and setting-agnostic — you bring the system, PC, and setting; the
   template provides the structural conventions that make multi-month campaigns work.
@@ -16,7 +16,7 @@
   - **NPC scaffolds** — per-PC custom-tracker pattern, motivation-first NPC formula (want + distinctive marker + relationship memory + optional secret for antagonists), functionary templates
   - **MIGRATION.md** for forking older versions
 
-  ## Quick start
+## Quick start
 
   1. Click **Use this template** at https://github.com/Mirsellus/solo-ttrpg-vault-template or clone the repo
   2. Open Claude Code in the cloned directory; ask: *"I just cloned this, what is it and where do I start?"*
@@ -24,12 +24,12 @@
   4. Walk Stages 2–7 (rulebooks → tone → character creation → slash commands → world bible → permissions)
   5. Run the Stage 8 readiness gates before session 1
 
-  ## Links
+## Links
 
   - **Repository**: https://github.com/Mirsellus/solo-ttrpg-vault-template
   - **License**: MIT
 
-  ## Why use this
+## Why use this
 
   Fills the empty quadrant in public Claude Code TTRPG tooling. Most existing public projects are d20-locked (built-in 5e rules), solo-without-GM (oracle-driven, no LLM-GM structure), or RAG-dependent. This one is system-agnostic, GM-with-human-player, and ships scaffolds rather
   than rules.
