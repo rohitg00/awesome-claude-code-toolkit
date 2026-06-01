@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "forevertools": {
+      "command": "forevertools-mcp",
+      "env": {
+        "FOREVERTOOLS_API_KEY": "<your-kiprio-api-key>"
+      },
+      "description": "Developer API toolkit: email validation, SSL inspection, WHOIS lookup, Schema.org generation, and webpage screenshots. Get a free API key at kiprio.com/signup (100 req/day, no card required)."
+    }
+  }
+}
