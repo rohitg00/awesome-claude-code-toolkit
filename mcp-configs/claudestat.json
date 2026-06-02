@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "claudestat": {
+      "command": "npx",
+      "args": ["-y", "@statforge/claudestat"],
+      "description": "Real-time Claude Code monitor. Query quota status, session cost, top tools, usage insights, model breakdown, and weekly statistics directly from inside Claude Code. No setup required — starts instantly.",
+      "tools": [
+        "get_quota_status",
+        "get_current_session",
+        "get_session_stats",
+        "get_top_tools",
+        "get_usage_insights",
+        "get_model_breakdown",
+        "get_weekly_insight"
+      ]
+    }
+  }
+}
