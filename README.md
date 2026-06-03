@@ -260,6 +260,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [seed-generator](plugins/seed-generator/) | Database seeding script generation with realistic data |
 | [sitemd](https://github.com/sitemd-cc/sitemd) | Build websites from Markdown via MCP. 22 tools for creating pages, generating content, configuring settings, running SEO audits, and deploying static sites to Cloudflare Pages |
 | [simmer](https://github.com/2389-research/simmer) | Iterative artifact refinement using judge subagents that score against user-defined criteria across multiple rounds |
+| [Skillpack Forge](https://github.com/guorunjie/skillpack-forge) | Zero-dependency CLI that compiles one `skillpack.yaml` into AGENTS.md, CLAUDE.md, Claude/Codex Skills, Cursor rules, GitHub Copilot instructions, MCP resources, and MCPB bundles. Keeps AI coding-agent context synchronized across tools. |
 | [slack-notifier](plugins/slack-notifier/) | Slack integration for deployment and build notifications |
 | [smart-commit](plugins/smart-commit/) | Intelligent git commits with conventional format, semantic analysis, and changelog generation |
 | [sprint-prioritizer](plugins/sprint-prioritizer/) | Sprint planning with story prioritization and capacity estimation |
