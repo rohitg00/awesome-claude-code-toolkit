@@ -586,6 +586,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 
 | Skill | Install | What It Teaches |
 |-------|---------|------------------|
+| [staff-engineer-mode](https://github.com/sirmarkz/staff-engineer-mode) | `/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git && /plugin install staff-engineer-mode@staff-engineer-mode` | Major-outage lessons routed across architecture, reliability, security, delivery, and operations. One native router skill loads 54 specialist references for Claude Code, Codex, Cursor, OpenCode, Copilot, and Gemini. |
 | [deep-dive](https://github.com/kimsb2429/deep-dive-skill) | `git clone https://github.com/kimsb2429/deep-dive-skill && cp -r deep-dive-skill/deep-dive ~/.claude/skills/` | DAG-based deep research — breaks questions into a dependency graph, runs parallel subagents, identifies gaps, writes a sourced report. Single markdown file, no external APIs or MCP servers. |
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
 | [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) | `git clone https://github.com/conorbronsdon/avoid-ai-writing ~/.claude/skills/avoid-ai-writing` | AI writing pattern detection and rewriting (21 categories, 43 replacements) |
