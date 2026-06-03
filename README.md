@@ -837,6 +837,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 If you prefer a typed, npm-installable foundation for writing hooks rather than raw scripts:
 
 - [claude-code-hooks](https://github.com/Payshak/claude-code-hooks) — TypeScript SDK with `defineHook()`, typed event payloads for all 5 hook events, response builders, and unit-testable `.handle()` method. Zero dependencies.
+- [polyhook](https://github.com/tupe12334/polyhook) — Multi-language SDK (TypeScript, Rust, Go, Python, .NET) for writing AI coding agent hooks that run unchanged across Claude Code, Cursor, Windsurf, Cline, and Amp. Rust core compiled to WASM.
 - [EchoCoding](https://github.com/launsion-boop/EchoCoding) — Audio layer for coding agents with hook-triggered SFX, ambient soundscape, and optional cloud TTS/ASR voice interaction. Works with Claude Code hooks and also supports Cursor/Windsurf, Codex CLI, and Gemini CLI.
 
 ### Installing Hooks
