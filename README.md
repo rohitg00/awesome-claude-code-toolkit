@@ -581,6 +581,9 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Mobile Development | `skills/mobile-development/` | React Native, Flutter, responsive layouts |
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
+| GitHub Profile Beautifier | `skills/github-profile-beautifier/` | One-click GitHub profile README generation with 5 themes and smart project recommendations |
+| Docker Build & Deploy | `skills/docker-build-deploy/` | Docker CI/CD workflow generation with GHCR push and SSH deploy |
+| Release Notes Generator | `skills/release-notes-generator/` | Standardized release notes from git history with conventional commit categorization |
 
 ### Community Skills
 
