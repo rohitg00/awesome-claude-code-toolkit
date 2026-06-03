@@ -19,7 +19,7 @@ One-click generation of beautiful GitHub profile READMEs. Auto-detects repos, an
 
 ```bash
 # Check gh CLI
-command -v gh || echo "Install gh CLI: brew install gh" && exit 1
+command -v gh || { echo "Install gh CLI: brew install gh"; exit 1; }
 
 # Get user info and repos
 gh api users/$USERNAME --jq '.login,.name,.bio'
