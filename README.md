@@ -112,6 +112,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [ccusage](https://github.com/ryoppippi/ccusage) | CLI for analyzing Claude Code/Codex usage from local JSONL files. Daily, monthly, session, billing-window reports. Offline, zero API calls. 11,500+ stars |
 | [cc-cost](https://github.com/lob-labs/cc-cost) | Single-file Python CLI that parses Claude Code transcript JSONL and reports cost, prompt-cache hit rate, tool-call distribution, top expensive turns, and actionable optimization recommendations (`--diagnose`, `--md`, `--top N`). MIT, no third-party deps. |
 | [getburnd](https://github.com/garvitsurana271/burnd) | Local-first cost-control CLI for Claude Code. Reads `~/.claude/projects/*.jsonl`, identifies 8 leak patterns (verbose context, tool loops, large file re-reads), prints savings estimates, generates a shareable report URL. MIT, zero telemetry. |
+| [build-cache-analyzer](https://github.com/mturac/build-cache-analyzer) | Analyzes Turborepo/Nx/Webpack cache hit rates and finds what is busting the build cache |
 | [building-multiagent-systems](https://github.com/2389-research/building-multiagent-systems) | Architecture patterns for multi-agent systems: orchestrator-worker, pipeline, debate, and MapReduce topologies |
 | [bundle-analyzer](plugins/bundle-analyzer/) | Frontend bundle size analysis and tree-shaking optimization |
 | [chief](https://github.com/MiniCodeMonkey/chief) | CLI that wraps Claude Code in a loop. Define a PRD, run chief, go do anything else. Commits after each task, picks up where it left off. Homebrew installable. 380+ stars |
@@ -147,6 +148,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [commit-commands](plugins/commit-commands/) | Advanced commit workflows with smart staging and push automation |
 | [complexity-reducer](plugins/complexity-reducer/) | Reduce cyclomatic complexity and simplify functions |
 | [compliance-checker](plugins/compliance-checker/) | Regulatory compliance verification for GDPR, SOC2, and HIPAA |
+| [config-schema-validator](https://github.com/mturac/config-schema-validator) | Validates Docker Compose, GitHub Actions, K8s, and other config files with auto-fix suggestions |
 | [content-creator](plugins/content-creator/) | Technical content generation for blog posts and social media |
 | [context7-docs](plugins/context7-docs/) | Fetch up-to-date library documentation via Context7 for accurate coding |
 | [contract-tester](plugins/contract-tester/) | API contract testing with Pact for microservice compatibility |
@@ -158,8 +160,10 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [data-privacy](plugins/data-privacy/) | Data privacy implementation with PII detection and anonymization |
 | [database-optimizer](plugins/database-optimizer/) | Database query optimization with index recommendations and EXPLAIN analysis |
 | [dead-code-finder](plugins/dead-code-finder/) | Find and remove dead code across the codebase |
+| [dead-end-finder](https://github.com/mturac/dead-end-finder) | Finds unused exports, unreachable code, and orphaned API endpoints that silently accumulate |
 | [debug-session](plugins/debug-session/) | Interactive debugging workflow with git bisect integration |
 | [dig2crawl](https://github.com/ZENG3LD/dig2crawl) | Universal web crawler with Claude-powered CSS selector discovery. 4-level AI extraction escalation (CSS, browser actions, Claude Vision, captcha). Rust. |
+| [dependency-graph-viz](https://github.com/mturac/dependency-graph-viz) | Builds module import graph, detects circular dependencies and deep chains in the architecture |
 | [dependency-manager](plugins/dependency-manager/) | Audit, update, and manage project dependencies with safety checks |
 | [deploy-pilot](plugins/deploy-pilot/) | Deployment automation with Dockerfile generation, CI/CD pipelines, and infrastructure as code |
 | [desktop-app](plugins/desktop-app/) | Desktop application scaffolding with Electron or Tauri |
@@ -172,6 +176,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [dna-claude-analysis](https://github.com/shmlkv/dna-claude-analysis) | Personal genome analysis toolkit that analyzes raw DNA data across 17 categories and generates a terminal-style HTML dashboard |
 | [codetape](https://github.com/888wing/codetape) | The flight recorder for AI coding — auto-records semantic traces and syncs README, CHANGELOG, CLAUDE.md. Zero deps. `npx codetape init` |
 | [doc-forge](plugins/doc-forge/) | Documentation generation, API docs, and README maintenance |
+| [docs-sync-checker](https://github.com/mturac/docs-sync-checker) | Detects documentation drift — function names, paths, and CLI commands in docs that no longer match code |
 | [docker-helper](plugins/docker-helper/) | Build optimized Docker images and improve Dockerfile best practices |
 | [double-check](plugins/double-check/) | Verify code correctness with systematic second-pass analysis |
 | [e2e-runner](plugins/e2e-runner/) | End-to-end test execution and recording for web applications |
@@ -186,6 +191,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [finance-tracker](plugins/finance-tracker/) | Development cost tracking with time estimates and budget reporting |
 | [fix-github-issue](plugins/fix-github-issue/) | Auto-fix GitHub issues by analyzing issue details and implementing solutions |
 | [fix-pr](plugins/fix-pr/) | Fix PR review comments automatically with context-aware patches |
+| [flaky-test-hunter](https://github.com/mturac/flaky-test-hunter) | Statistically detects and quarantines flaky tests by analyzing CI run history and timing variance |
 | [flutter-mobile](plugins/flutter-mobile/) | Flutter app development with widget creation and platform channels |
 | [frontend-developer](plugins/frontend-developer/) | Frontend component development with accessibility and responsive design |
 | [gcp-helper](plugins/gcp-helper/) | Google Cloud Platform service configuration and deployment |
@@ -202,6 +208,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [k8s-helper](plugins/k8s-helper/) | Generate Kubernetes manifests and debug pod issues with kubectl |
 | [leapfrog-mcp](https://github.com/anthonybono21-cloud/leapfrog) | Multi-session browser MCP server -- 15 parallel isolated Chromium sessions so multiple Claude Code terminals can browse simultaneously. 37 tools for navigation, extraction, interaction, network interception, and session profiles. 797 tests. Install: `npx -y leapfrog-mcp` |
 | [license-checker](plugins/license-checker/) | License compliance checking and NOTICE file generation |
+| [license-guard](https://github.com/mturac/license-guard) | Enforces license compliance policy on dependencies and generates SPDX-format Software Bill of Materials |
 | [lighthouse-runner](plugins/lighthouse-runner/) | Run Lighthouse audits and fix performance issues |
 | [lightcms](https://github.com/jonradoff/lightcms) | AI-native CMS with 41 MCP tools for managing websites through natural language — pages, templates, assets, themes, collections, redirects, and more with full content versioning |
 | [linear-helper](plugins/linear-helper/) | Linear issue tracking integration and workflow management |
@@ -250,6 +257,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [react-native-dev](plugins/react-native-dev/) | React Native mobile development with platform-specific optimizations |
 | [readme-generator](plugins/readme-generator/) | Smart README generation from project analysis |
 | [refactor-engine](plugins/refactor-engine/) | Extract functions, simplify complex code, and reduce cognitive complexity |
+| [refactor-preview](https://github.com/mturac/refactor-preview) | Shows blast radius before applying refactors — direct callers, indirect callers, test coverage, public API impact |
 | [regex-builder](plugins/regex-builder/) | Build, test, and debug regular expression patterns |
 | [release-manager](plugins/release-manager/) | Semantic versioning management and automated release workflows |
 | [responsive-designer](plugins/responsive-designer/) | Responsive design implementation and testing |
@@ -258,6 +266,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [screen-reader-tester](plugins/screen-reader-tester/) | Screen reader compatibility testing and ARIA fixes |
 | [security-guidance](plugins/security-guidance/) | Security best practices advisor with vulnerability detection and fixes |
 | [seed-generator](plugins/seed-generator/) | Database seeding script generation with realistic data |
+| [semantic-release-notes](https://github.com/mturac/semantic-release-notes) | Generates changelogs and release notes from conventional commits with semver bump detection |
 | [sitemd](https://github.com/sitemd-cc/sitemd) | Build websites from Markdown via MCP. 22 tools for creating pages, generating content, configuring settings, running SEO audits, and deploying static sites to Cloudflare Pages |
 | [simmer](https://github.com/2389-research/simmer) | Iterative artifact refinement using judge subagents that score against user-defined criteria across multiple rounds |
 | [slack-notifier](plugins/slack-notifier/) | Slack integration for deployment and build notifications |
@@ -271,6 +280,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [test-results-analyzer](plugins/test-results-analyzer/) | Analyze test failures, identify patterns, and suggest targeted fixes |
 | [test-writer](plugins/test-writer/) | Generate comprehensive unit and integration tests with full coverage |
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
+| [type-coverage](https://github.com/mturac/type-coverage) | Finds every TypeScript `any`, unsafe cast, @ts-ignore, and missing return type across the codebase |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
 | [ui-designer](plugins/ui-designer/) | Implement UI designs from specs with pixel-perfect component generation |
 | [ultrathink](plugins/ultrathink/) | Deep analysis mode with extended reasoning for complex problems |
