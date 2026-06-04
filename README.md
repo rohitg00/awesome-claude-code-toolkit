@@ -273,6 +273,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
 | [ui-designer](plugins/ui-designer/) | Implement UI designs from specs with pixel-perfect component generation |
+| [ux](https://github.com/Laith0003/ux-skill) | Design intelligence for Claude Code: 25 slash commands, 5 sub-agents, deterministic 152-rule anti-slop linter (no LLM), 160 brand specs (Apple, Stripe, Linear, Figma, Tesla and more). Anti-AI-slop. MIT. |
 | [ultrathink](plugins/ultrathink/) | Deep analysis mode with extended reasoning for complex problems |
 | [unit-test-generator](plugins/unit-test-generator/) | Generate comprehensive unit tests for any function or module |
 | [update-branch](plugins/update-branch/) | Rebase and update feature branches with conflict resolution |
