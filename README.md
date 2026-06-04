@@ -91,14 +91,17 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer) | Installable cost-mode skill (30-60% cost savings, up to 70% in strict mode) + 10 guides, 10 templates, budget hooks. Install: `npx skills add Sagargupta16/claude-cost-optimizer` |
 | [fractal](https://github.com/rmolines/fractal) | Recursive project management for Claude Code. Decomposes goals into predicates, works the riskiest piece first, and re-evaluates as it learns |
 | [a11y-audit](plugins/a11y-audit/) | Full accessibility audit with WCAG compliance checking |
+| [a11y-ci](https://github.com/mturac/a11y-ci) | Automated WCAG accessibility audits with line-level annotations and fix suggestions for HTML/JSX/Vue components |
 | [accessibility-checker](plugins/accessibility-checker/) | Scan for accessibility issues and fix ARIA attributes in web applications |
 | [adr-writer](plugins/adr-writer/) | Architecture Decision Records authoring and management |
+| [adr-sync](https://github.com/mturac/adr-sync) | Keeps Architecture Decision Records aligned with actual code — detects stale ADRs and drafts new ones |
 | [AgentLint](https://github.com/0xmariowu/AgentLint) | Lint your repo for AI agent compatibility. 33 evidence-backed checks across 5 dimensions. Claude Code plugin. |
 | [ai-prompt-lab](plugins/ai-prompt-lab/) | Improve and test AI prompts for better Claude Code interactions |
 | [analytics-reporter](plugins/analytics-reporter/) | Generate analytics reports and dashboard configurations from project data |
 | [android-developer](plugins/android-developer/) | Android and Kotlin development with Jetpack Compose |
 | [api-architect](plugins/api-architect/) | API design, documentation, and testing with OpenAPI spec generation |
 | [api-benchmarker](plugins/api-benchmarker/) | API endpoint benchmarking and performance reporting |
+| [api-contract](https://github.com/mturac/api-contract) | Validates frontend API calls match backend schemas, detects breaking changes before deploy, generates typed clients |
 | [api-reference](plugins/api-reference/) | API reference documentation generation from source code |
 | [api-tester](plugins/api-tester/) | Test API endpoints and run load tests against services |
 | [aws-helper](plugins/aws-helper/) | AWS service configuration and deployment automation |
@@ -137,6 +140,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [claude-supermemory](https://github.com/supermemoryai/claude-supermemory) | Persistent memory across sessions and projects using Supermemory. User profile injection at session start, automatic conversation capture. 2,300+ stars |
 | [cortex](https://github.com/cdeust/Cortex) | Persistent memory for Claude Code — neuroscience-backed retrieval with thermodynamic decay, backed by 41 published papers. PostgreSQL + pgvector + sentence-transformers. 6 lifecycle hooks (SessionStart, UserPromptSubmit, PostToolUse, SessionEnd, Notification, SubagentStart), hierarchical recall, causal chains, knowledge graph navigation. Install and forget. |
 | [code-architect](plugins/code-architect/) | Generate architecture diagrams and technical design documents |
+| [code-archaeologist](https://github.com/mturac/code-archaeologist) | Uncovers intent and evolution in legacy codebases through git history, blame analysis, and bus factor scoring |
 | [code-explainer](plugins/code-explainer/) | Explain complex code and annotate files with inline documentation |
 | [code-guardian](plugins/code-guardian/) | Automated code review, security scanning, and quality enforcement |
 | [code-review-assistant](plugins/code-review-assistant/) | Automated code review with severity levels and actionable feedback |
@@ -159,6 +163,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [database-optimizer](plugins/database-optimizer/) | Database query optimization with index recommendations and EXPLAIN analysis |
 | [dead-code-finder](plugins/dead-code-finder/) | Find and remove dead code across the codebase |
 | [debug-session](plugins/debug-session/) | Interactive debugging workflow with git bisect integration |
+| [dep-drift](https://github.com/mturac/dep-drift) | Detects when lockfile diverges from package.json, silent transitive dep updates, and license incompatibilities |
 | [dig2crawl](https://github.com/ZENG3LD/dig2crawl) | Universal web crawler with Claude-powered CSS selector discovery. 4-level AI extraction escalation (CSS, browser actions, Claude Vision, captcha). Rust. |
 | [dependency-manager](plugins/dependency-manager/) | Audit, update, and manage project dependencies with safety checks |
 | [deploy-pilot](plugins/deploy-pilot/) | Deployment automation with Dockerfile generation, CI/CD pipelines, and infrastructure as code |
@@ -186,6 +191,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [finance-tracker](plugins/finance-tracker/) | Development cost tracking with time estimates and budget reporting |
 | [fix-github-issue](plugins/fix-github-issue/) | Auto-fix GitHub issues by analyzing issue details and implementing solutions |
 | [fix-pr](plugins/fix-pr/) | Fix PR review comments automatically with context-aware patches |
+| [flag-ops](https://github.com/mturac/flag-ops) | Manages feature flags — finds orphaned/stale flags, safely removes them, tracks rollout status |
 | [flutter-mobile](plugins/flutter-mobile/) | Flutter app development with widget creation and platform channels |
 | [frontend-developer](plugins/frontend-developer/) | Frontend component development with accessibility and responsive design |
 | [gcp-helper](plugins/gcp-helper/) | Google Cloud Platform service configuration and deployment |
@@ -194,6 +200,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [github-issue-manager](plugins/github-issue-manager/) | GitHub issue triage, creation, and management |
 | [harness-evolver](https://github.com/raphaelchristi/harness-evolver) | LangSmith-native autonomous agent optimization. Multi-agent proposers evolve prompts, routing, tools, and architecture in isolated git worktrees. Install: `npx harness-evolver@latest` |
 | [helm-charts](plugins/helm-charts/) | Helm chart generation and upgrade management |
+| [i18n-sync](https://github.com/mturac/i18n-sync) | Keeps translation keys in sync across locales, detects missing/duplicate/untranslated keys |
 | [idle-timing](https://github.com/clankercode/claude-inject-idle-time) | Injects hidden timing context (local time with UTC offset, idle seconds since last reply, previous-turn duration) into every user prompt so the model knows how long the conversation has been paused. Ships a statusline fragment for a live elapsed-time readout and a visible `[after Xm Ys]` note when you return from >10s idle. 57 tests, dual Unlicense/CC0. |
 | [immich-photo-manager](https://github.com/drolosoft/immich-photo-manager) | Turn your self-hosted Immich photo library into a conversation — natural language search, geographic album curation, duplicate detection via perceptual hashing, library health audits, and interactive HTML galleries. 22 MCP tools, 11 skills, 5 slash commands |
 | [import-organizer](plugins/import-organizer/) | Organize, sort, and clean import statements |
@@ -208,6 +215,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [load-tester](plugins/load-tester/) | Load and stress testing for APIs and web services |
 | [memory-profiler](plugins/memory-profiler/) | Memory leak detection and heap analysis |
 | [migrate-tool](plugins/migrate-tool/) | Generate database migrations and code migration scripts for framework upgrades |
+| [migrate-safe](https://github.com/mturac/migrate-safe) | Analyzes database migrations for destructive operations, estimates lock duration, and generates rollback scripts |
 | [migration-generator](plugins/migration-generator/) | Database migration generation and rollback management |
 | [model-context-protocol](plugins/model-context-protocol/) | MCP server development helper with tool and resource scaffolding |
 | [model-evaluator](plugins/model-evaluator/) | Evaluate and compare ML model performance metrics |
@@ -230,6 +238,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [paco-framework](https://github.com/PenguinAlleyApps/paco-framework) | 1+ | Markdown-first multi-agent OS for Claude Code. Coordinates 3-16 specialized AI agents (Engineering, QA, Growth, Finance) with file-based dispatch, institutional memory, CEO Gate approval, and 24/7 scheduling. No Python required. MIT |
 | [peon-ping](https://github.com/PeonPing/peon-ping) | Warcraft III Peon voice notifications (+ StarCraft, Portal, Zelda) for Claude Code and other agents. Desktop banners, auto-detects SSH/devcontainers. 3,900+ stars |
 | [perf-profiler](plugins/perf-profiler/) | Performance analysis, profiling, and optimization recommendations |
+| [perf-lens](https://github.com/mturac/perf-lens) | Identifies N+1 query patterns, redundant React re-renders, and bundle bloat before they hit production |
 | [performance-monitor](plugins/performance-monitor/) | Profile API endpoints and run benchmarks to identify performance bottlenecks |
 | [plan](plugins/plan/) | Structured planning with risk assessment and time estimation |
 | [preflight](https://github.com/preflight-dev/preflight) | 24-tool MCP server that catches vague prompts before they cost 2-3x in wrong→fix cycles. 12-category scorecards, correction pattern learning, cross-service contract awareness, session history search with LanceDB vectors, and cost estimation. `npx preflight-dev` |
@@ -269,6 +278,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [test-data-generator](plugins/test-data-generator/) | Generate realistic test data and seed databases |
 | [test-kitchen](https://github.com/2389-research/test-kitchen) | Parallel implementation exploration using competing subagents, with structured comparison and winner selection |
 | [test-results-analyzer](plugins/test-results-analyzer/) | Analyze test failures, identify patterns, and suggest targeted fixes |
+| [test-scout](https://github.com/mturac/test-scout) | Finds untested code paths and generates targeted unit test stubs by analyzing coverage gaps and control flow |
 | [test-writer](plugins/test-writer/) | Generate comprehensive unit and integration tests with full coverage |
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
