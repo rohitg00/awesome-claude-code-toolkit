@@ -1,0 +1,6 @@
+{
+  "name": "code-explainer",
+  "version": "1.0.0",
+  "description": "Explain complex code and annotate files with inline documentation",
+  "commands": ["commands/explain.md", "commands/annotate.md"]
+}

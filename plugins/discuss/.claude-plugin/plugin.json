@@ -1,0 +1,6 @@
+{
+  "name": "discuss",
+  "version": "1.0.0",
+  "description": "Debate implementation approaches with structured pros and cons analysis",
+  "commands": ["commands/discuss.md"]
+}

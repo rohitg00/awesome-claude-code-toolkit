@@ -1,0 +1,98 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/project"],
+      "description": "Read, write, and manage files and directories. Replace /path/to/project with your actual project root."
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      },
+      "description": "Create issues, PRs, read repositories, manage branches and releases on GitHub."
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+      },
+      "description": "Query PostgreSQL databases, inspect schemas, run read-only or read-write SQL."
+    },
+    "redis": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-redis"],
+      "env": {
+        "REDIS_URL": "redis://localhost:6379"
+      },
+      "description": "Interact with Redis: get/set keys, inspect data structures, manage cache."
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"],
+      "description": "Manage Docker containers, images, volumes, and networks."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent knowledge graph for storing entities, relationships, and facts across sessions."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch web pages and convert to markdown. Useful for reading documentation, API references, and web content."
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "<your-brave-api-key>"
+      },
+      "description": "Web search via Brave Search API. Find documentation, solutions, and current information."
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite", "/path/to/database.db"],
+      "description": "Query and manage SQLite databases. Replace path with your actual database file."
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Browser automation for testing, screenshots, and web scraping via Puppeteer."
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "<your-slack-bot-token>"
+      },
+      "description": "Read and send Slack messages, manage channels, search message history."
+    },
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "mcp-linear"],
+      "env": {
+        "LINEAR_API_KEY": "<your-linear-api-key>"
+      },
+      "description": "Manage Linear issues, projects, and cycles. Create, update, and query issues."
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@sentry/mcp-server"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "<your-sentry-auth-token>"
+      },
+      "description": "Query Sentry for errors, performance issues, and release health."
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "<your-firecrawl-api-key>"
+      },
+      "description": "Crawl, scrape, and extract structured data from websites."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "changelog-gen",
+  "version": "1.0.0",
+  "description": "Generate changelogs from git history with conventional commit parsing",
+  "commands": ["commands/generate-changelog.md"]
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "buywhere": {
+      "command": "npx",
+      "args": ["-y", "@buywhere/mcp-server"],
+      "env": {
+        "BUYWHERE_API_KEY": "<your-buywhere-api-key>"
+      },
+      "description": "Agent-native product catalog API for Southeast Asia commerce. Search 1.5M+ products across Shopee, Lazada, Amazon SG, and 50+ merchants. Real-time price comparison, deal discovery, and multi-currency support (SGD, USD, MYR, IDR, THB, PHP, VND). Tools: search_products, get_product, compare_prices, get_deals, browse_categories, get_category_products."
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "mcpServers": {
+    "aws": {
+      "command": "uvx",
+      "args": ["awslabs.aws-mcp-server"],
+      "env": {
+        "AWS_PROFILE": "default",
+        "AWS_REGION": "us-east-1"
+      },
+      "description": "Manage AWS resources: EC2, S3, Lambda, ECS, RDS, CloudFormation, and IAM."
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"],
+      "description": "Build, run, and manage Docker containers, images, volumes, and networks."
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      },
+      "description": "Manage repositories, Actions workflows, releases, and infrastructure-as-code PRs."
+    },
+    "terraform": {
+      "command": "npx",
+      "args": ["-y", "mcp-terraform"],
+      "description": "Plan, apply, and inspect Terraform state. Browse provider documentation and module registry."
+    },
+    "kubectl": {
+      "command": "uvx",
+      "args": ["kubectl-mcp-server"],
+      "description": "270+ Kubernetes tools for cluster management, deployments, troubleshooting, and monitoring."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/infra"],
+      "description": "Read and write Terraform configs, Dockerfiles, CI/CD workflows, and Kubernetes manifests."
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@sentry/mcp-server"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "<your-sentry-auth-token>"
+      },
+      "description": "Query production errors, performance issues, and release health from Sentry."
+    }
+  }
+}

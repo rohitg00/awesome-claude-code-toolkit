@@ -1,0 +1,6 @@
+{
+  "name": "aws-helper",
+  "version": "1.0.0",
+  "description": "AWS service configuration and deployment automation",
+  "commands": ["commands/setup-lambda.md", "commands/configure-s3.md"]
+}

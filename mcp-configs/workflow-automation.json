@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "n8n": {
+      "command": "npx",
+      "args": ["-y", "n8n-mcp-server"]
+    },
+    "pipedream": {
+      "command": "npx",
+      "args": ["-y", "@pipedream/mcp"]
+    }
+  }
+}

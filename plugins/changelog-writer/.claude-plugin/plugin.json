@@ -1,0 +1,6 @@
+{
+  "name": "changelog-writer",
+  "version": "1.0.0",
+  "description": "Detailed changelog authoring from git history and PRs",
+  "commands": ["commands/write-changelog.md"]
+}

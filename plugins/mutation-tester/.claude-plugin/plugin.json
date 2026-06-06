@@ -1,0 +1,6 @@
+{
+  "name": "mutation-tester",
+  "version": "1.0.0",
+  "description": "Mutation testing to measure test suite quality",
+  "commands": ["commands/mutate.md"]
+}

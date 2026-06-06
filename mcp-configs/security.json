@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ghidra": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-ghidra"]
+    },
+    "snyk": {
+      "command": "npx",
+      "args": ["-y", "snyk-mcp-server"]
+    }
+  }
+}

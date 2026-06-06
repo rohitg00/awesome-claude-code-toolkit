@@ -1,0 +1,6 @@
+{
+  "name": "debug-session",
+  "version": "1.0.0",
+  "description": "Interactive debugging workflow with git bisect integration",
+  "commands": ["commands/debug.md", "commands/bisect.md"]
+}

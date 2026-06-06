@@ -1,0 +1,6 @@
+{
+  "name": "lighthouse-runner",
+  "version": "1.0.0",
+  "description": "Run Lighthouse audits and fix performance issues",
+  "commands": ["commands/run-audit.md", "commands/fix-issues.md"]
+}

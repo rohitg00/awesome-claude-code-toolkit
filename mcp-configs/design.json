@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-figma"]
+    },
+    "blender": {
+      "command": "npx",
+      "args": ["-y", "blender-mcp"]
+    }
+  }
+}

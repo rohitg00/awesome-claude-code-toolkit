@@ -1,0 +1,6 @@
+{
+  "name": "docker-helper",
+  "version": "1.0.0",
+  "description": "Build optimized Docker images and improve Dockerfile best practices",
+  "commands": ["commands/build-image.md", "commands/optimize-dockerfile.md"]
+}

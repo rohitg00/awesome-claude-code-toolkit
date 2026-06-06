@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "android": {
+      "command": "npx",
+      "args": ["-y", "android-mcp-server"]
+    },
+    "xcode": {
+      "command": "npx",
+      "args": ["-y", "xcode-mcp"]
+    }
+  }
+}

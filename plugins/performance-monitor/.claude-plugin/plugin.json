@@ -1,0 +1,6 @@
+{
+  "name": "performance-monitor",
+  "version": "1.0.0",
+  "description": "Profile API endpoints and run benchmarks to identify performance bottlenecks",
+  "commands": ["commands/profile-api.md", "commands/benchmark.md"]
+}

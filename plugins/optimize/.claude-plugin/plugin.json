@@ -1,0 +1,6 @@
+{
+  "name": "optimize",
+  "version": "1.0.0",
+  "description": "Code optimization for performance and bundle size reduction",
+  "commands": ["commands/optimize-perf.md", "commands/optimize-size.md"]
+}

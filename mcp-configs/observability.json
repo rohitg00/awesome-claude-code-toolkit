@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "iris": {
+      "command": "npx",
+      "args": ["-y", "@iris-eval/mcp-server"]
+    }
+  }
+}

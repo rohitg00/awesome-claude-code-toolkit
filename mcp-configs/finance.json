@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "helium": {
+      "url": "https://heliumtrades.com/mcp",
+      "description": "Real-time news with bias scoring across 5,000+ sources, live stock/ETF/crypto data with AI bull/bear cases and price forecasts, ML options pricing with probability ITM, balanced news synthesis, and meme search. 9 tools, free tier (50 queries), no API key needed."
+    },
+    "chart-library": {
+      "command": "python",
+      "args": ["-m", "chartlibrary_mcp"],
+      "description": "Historical chart pattern search engine. Search 24M+ pre-computed embeddings across 15K+ symbols and 10 years of data. 19 tools for pattern matching, forward returns, regime analysis, anomaly detection, and trading signals. Free tier: 200 calls/day, no signup. Install: pip install chartlibrary-mcp"
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch financial news, SEC filings, and market data from web sources."
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Track trade ideas, watchlists, and analysis findings across sessions."
+    }
+  }
+}

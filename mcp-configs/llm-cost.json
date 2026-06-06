@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "llm-prices": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/benbencodes/llm-prices#egg=llm-prices[mcp]",
+        "llm-prices-mcp"
+      ],
+      "description": "Look up and compare LLM API costs across 167 models from 23 providers. Ask Claude 'what's the cheapest model for 10k input + 2k output tokens?' or 'compare gpt-4o vs claude-sonnet-4-6 for my workload'. No API key required — pricing data is bundled."
+    }
+  }
+}
