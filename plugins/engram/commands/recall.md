@@ -6,7 +6,8 @@ Recall past Claude Code work relevant to: $ARGUMENTS
 
 Engram archives every session to an Obsidian vault. Find its root in this order:
 1. the `ENGRAM_VAULT` environment variable, else
-2. `~/claude-code-memory` (the default).
+2. the `vault` field in `~/.config/engram/config.json` (or `$XDG_CONFIG_HOME/engram/config.json`), else
+3. `~/claude-code-memory` (the default).
 
 Inside that vault:
 - `Sessions/` — one Markdown note per past session (full transcript)

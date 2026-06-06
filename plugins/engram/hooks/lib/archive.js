@@ -92,15 +92,17 @@ function archiveSession(hook, opts = {}) {
     ensureDir(P.sessions);
     fs.writeFileSync(path.join(P.sessions, `${noteName}.md`), fm.join('\n') + body, 'utf8');
 
-    // daily index (idempotent)
+    // daily index — atomic header create + dedup + append.
+    // Append (not rewrite) so concurrent SessionEnd hooks can't clobber each
+    // other's lines; the dedup read keeps it idempotent on re-runs.
     ensureDir(P.daily);
     const dailyPath = path.join(P.daily, `${date}.md`);
-    let daily = '';
-    try { daily = fs.readFileSync(dailyPath, 'utf8'); } catch { daily = `# ${date}\n\n## Claude Code sessions\n\n`; }
-    if (!daily.includes(noteName)) {
-      daily += `- ${time} — [[Sessions/${noteName}|${alias}]] (${turns.length} msgs, ${toolCount} tools)\n`;
+    try { fs.writeFileSync(dailyPath, `# ${date}\n\n## Claude Code sessions\n\n`, { flag: 'wx' }); } catch { /* already exists */ }
+    let existing = '';
+    try { existing = fs.readFileSync(dailyPath, 'utf8'); } catch { /* ignore */ }
+    if (!existing.includes(noteName)) {
+      fs.appendFileSync(dailyPath, `- ${time} — [[Sessions/${noteName}|${alias}]] (${turns.length} msgs, ${toolCount} tools)\n`, 'utf8');
     }
-    fs.writeFileSync(dailyPath, daily, 'utf8');
 
     return { status: 'written', note: `${noteName}.md`, turns: turns.length };
   } catch (e) {
