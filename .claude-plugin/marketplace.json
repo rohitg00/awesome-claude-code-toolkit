@@ -18,6 +18,12 @@
   ],
   "plugins": [
     {
+      "name": "engram",
+      "source": "plugins/engram",
+      "description": "Persistent memory for Claude Code: auto-archive every session to an Obsidian vault, recall recent work at startup, and /recall your history. Zero-dependency, MIT.",
+      "version": "0.1.0"
+    },
+    {
       "name": "a11y-audit",
       "source": "plugins/a11y-audit",
       "description": "Full accessibility audit with WCAG compliance checking",
