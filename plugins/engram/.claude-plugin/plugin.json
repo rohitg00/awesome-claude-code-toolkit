@@ -1,0 +1,39 @@
+{
+  "name": "engram",
+  "description": "Persistent memory for Claude Code. Auto-archives every session to your Obsidian vault, injects recent work at startup, and adds /recall to search your whole history.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nandu",
+    "url": "https://github.com/nandukmelath"
+  },
+  "homepage": "https://github.com/nandukmelath/engram",
+  "keywords": ["memory", "obsidian", "productivity", "knowledge-base"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/recall-digest.js\"",
+            "timeout": 20,
+            "statusMessage": "Recalling recent work…"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/log-session.js\"",
+            "timeout": 30,
+            "statusMessage": "Archiving session to Obsidian…"
+          }
+        ]
+      }
+    ]
+  }
+}
