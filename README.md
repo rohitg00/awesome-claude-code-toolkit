@@ -1058,6 +1058,7 @@ claude-code-toolkit/               850+ files
 | [cctally](https://github.com/omrikais/cctally) | new | Track Claude Code subscription usage as a weekly $-per-1% trend. Local web dashboard, terminal UI, forecasts, threshold alerts. Apache-2.0, zero telemetry. |
 | [claude-code-notifier](https://github.com/saiso/claude-code-notifier) | new | Native macOS notifier for Claude Code. Swift + UserNotifications, custom Heroicons-derived icon (SF Symbols–free), click-through to your IDE (VS Code, Cursor, Windsurf, JetBrains, iTerm2, Terminal) via bundle ID swap, per-event sound labels, hardened inputs (allowlists, length caps, control-character stripping). Universal binary (arm64 + x86_64), macOS 12+, MIT |
 | [ToutKit](https://github.com/toutkit/toutkit) | new | Desktop notebook for AI CLIs (Claude Code, Codex, Gemini). Pairs a sidebar of notes with a built-in terminal and an in-app webview that renders whatever the AI writes — each note is a self-contained folder with its own SQLite, key/value store, attached files, and scripts, so a note can grow from a static page into a sortable table, dashboard, or research tool. Local-first, AGPL-3.0 |
+| [AgentBox](https://github.com/madarco/agentbox) | 41 | Run multiple coding agents in parallel, each teleported into its own sandboxed box — local Docker (FUSE overlay) or a cloud VM via Hetzner/Daytona/Vercel/E2B. Sub-1s starts from checkpoints, per-box browser (noVNC) + VS Code/Cursor, persistent shells, and git credentials kept on the host. Works with Claude Code, Codex, and OpenCode. MIT |
 
 ---
 
