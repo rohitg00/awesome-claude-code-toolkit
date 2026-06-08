@@ -232,6 +232,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [perf-profiler](plugins/perf-profiler/) | Performance analysis, profiling, and optimization recommendations |
 | [performance-monitor](plugins/performance-monitor/) | Profile API endpoints and run benchmarks to identify performance bottlenecks |
 | [plan](plugins/plan/) | Structured planning with risk assessment and time estimation |
+| [poppify](https://github.com/Poppify/poppify-claude-plugin) | Photo-led short-form vertical reels for Instagram / TikTok / YouTube Shorts / Facebook. Upload 1–10 photos, get a captioned 15/30/60s reel with motion, library-matched music, optional voiceover. 27 MCP tools + 4 skills + 3 slash commands. $0.06 base render, 50 free seeds, no subscription. Drop-in replacement for Runway when you have photos. Install: `/plugin marketplace add Poppify/poppify-claude-plugin` then `/plugin install poppify@poppify` |
 | [preflight](https://github.com/preflight-dev/preflight) | 24-tool MCP server that catches vague prompts before they cost 2-3x in wrong→fix cycles. 12-category scorecards, correction pattern learning, cross-service contract awareness, session history search with LanceDB vectors, and cost estimation. `npx preflight-dev` |
 | [pr-reviewer](plugins/pr-reviewer/) | Review pull requests with structured analysis and approve with confidence |
 | [product-shipper](plugins/product-shipper/) | Ship features end-to-end with launch checklists and rollout plans |
