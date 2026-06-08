@@ -581,6 +581,12 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Mobile Development | `skills/mobile-development/` | React Native, Flutter, responsive layouts |
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
+| Rarefriend Network Manager | `skills/network-and-relationship-manager/` | Personal network manager — contacts, notes, tags, calendar, LinkedIn, Outlook via Rarefriend MCP |
+| Rarefriend LinkedIn Network | `skills/manage-linkedin-network/` | Search and manage LinkedIn-synced connections with relationship context |
+| Rarefriend Google Calendar | `skills/schedule-with-google-calendar/` | Schedule meetings and check availability via Google Calendar |
+| Rarefriend Google Contacts | `skills/organize-google-contacts/` | Search, sync, and manage Google Contacts with CRM notes |
+| Rarefriend Outlook Calendar | `skills/schedule-with-outlook/` | Microsoft Outlook calendar scheduling and Teams meetings |
+| Rarefriend Outlook Email | `skills/find-outlook-emails/` | Search Outlook email threads with contact relationship context |
 
 ### Community Skills
 
