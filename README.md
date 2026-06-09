@@ -1019,6 +1019,7 @@ claude-code-toolkit/               850+ files
 | [Opcode](https://github.com/winfunc/opcode) | 21,000+ | Tauri 2 desktop GUI and toolkit for Claude Code -- create custom agents with visual editor, usage analytics, MCP integration |
 | [CloudCLI](https://github.com/siteboon/claudecodeui) | 8,400+ | Free open-source web/mobile UI for Claude Code, Cursor CLI, and Codex. Responsive design, integrated shell, file explorer, git explorer |
 | [Companion](https://github.com/The-Vibe-Company/companion) | 2,200+ | Web & mobile UI for Claude Code & Codex. Launch parallel sessions, stream responses, approve tools, session recovery |
+| [HagiCode](https://hagicode.com/) | - | Local-first AI coding workspace for Claude Code, Codex, and Gemini workflows with proposal planning, parallel multi-agent execution, and multi-repository coordination |
 | [CCHub](https://github.com/Moresl/cchub) | - | Tauri 2 desktop app for managing Claude Code ecosystem: MCP marketplace, config profiles, skills, workflows, hooks, security audit, autopilot. Cross-platform (~20MB) |
 | [Ruflo](https://github.com/ruvnet/ruflo) | 21,200+ | Agent orchestration platform -- deploy multi-agent swarms, coordinate autonomous workflows, distributed swarm intelligence, RAG integration |
 | [Vibe Kanban](https://github.com/BloopAI/vibe-kanban) | 23,200+ | Kanban-based orchestration for 10+ coding agents with isolated git worktrees per agent |
