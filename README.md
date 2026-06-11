@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 54 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -1075,6 +1075,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [claude-token-lens](https://github.com/wassimbensalem/claude-token-lens) | 587+ installs | Real-time token attribution from local Claude Code JSONL sessions — see which tool, agent, MCP server, or skill is burning your quota. Live Ink dashboard, burn rate, ETA, 5h + 7-day tracking, zero telemetry. `npm install -g claude-token-lens` |
 | [cc-statistics](https://github.com/androidZzT/cc-statistics) | 270+ | Three-in-one Claude Code stats: CLI + Web + native macOS SwiftUI panel. Token costs, code changes by language, efficiency scoring, weekly reports. Supports Codex and Cursor too |
 | [cc-discipline](https://github.com/TechHU-GS/cc-discipline) | new | Guardrails for Claude Code — shell hooks that physically block bad behavior (edit loops, skipped verification, destructive git), not just markdown rules. Streak-breaker hard-stops at 5 edits, pre-edit-guard enforces debugging process, 7 rules, 7 skills, 2 subagents. Interactive installer with append mode. `bash ~/.cc-discipline/init.sh` |
+| [Ariadne Loop](https://github.com/zhangzeyu99-web/ariadne-loop) | new | Loop-writing workbench for Claude Code, Codex, and AI coding agents. Turns rough task context into verifiable inspect-act-verify-decide packets, stop rules, rollback gates, and JSON reports. Includes `/ariadne-loop` command. |
 | [ccpm](https://github.com/automazeio/ccpm) | 7,600+ | Project management with GitHub Issues + Git worktrees for parallel agent execution |
 | [claude-code-system-prompts](https://github.com/Piebald-AI/claude-code-system-prompts) | 5,900+ | Extracted system prompts from Claude Code, updated for each release |
 | [claude-context](https://github.com/zilliztech/claude-context) | 5,600+ | Semantic code search MCP by Zilliz -- hybrid BM25 + vector search, ~40% token reduction |
