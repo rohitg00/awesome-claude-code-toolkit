@@ -263,6 +263,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [slack-notifier](plugins/slack-notifier/) | Slack integration for deployment and build notifications |
 | [smart-commit](plugins/smart-commit/) | Intelligent git commits with conventional format, semantic analysis, and changelog generation |
 | [sprint-prioritizer](plugins/sprint-prioritizer/) | Sprint planning with story prioritization and capacity estimation |
+| [Tandem](https://github.com/DATA-AI-XYZ/Tandem) | The Claude Code project-management plugin: drives a North Star → Done delivery lifecycle from slash commands, with enforced DoR/DoD gates, mandatory Story↔Testplan pairing, automatic ADRs, auto-filed bugs on test failure, and a self-generating live HTML Command Center. Plain Markdown, no external tools, stack-agnostic. [Demo](https://data-ai-xyz.github.io/Tandem/) |
 | [technical-sales](plugins/technical-sales/) | Technical demo creation and POC proposal writing |
 | [the-pragmatic-pm](https://github.com/marfoerst/the-pragmatic-pm) | PM leadership toolkit with 43 skills, 5 agents, 4 workflows. Covers PRD generation, OKR lifecycle, pricing, AI pricing, positioning, sales enablement, and quarterly planning. |
 | [terraform-helper](plugins/terraform-helper/) | Terraform module creation and infrastructure planning |
