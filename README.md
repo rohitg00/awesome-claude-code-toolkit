@@ -270,8 +270,8 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [test-kitchen](https://github.com/2389-research/test-kitchen) | Parallel implementation exploration using competing subagents, with structured comparison and winner selection |
 | [test-results-analyzer](plugins/test-results-analyzer/) | Analyze test failures, identify patterns, and suggest targeted fixes |
 | [test-writer](plugins/test-writer/) | Generate comprehensive unit and integration tests with full coverage |
-| [TweetClaw](https://github.com/Xquik-dev/tweetclaw) | OpenClaw plugin for X/Twitter automation: search tweets and replies, post tweets and replies, export followers, manage media, monitor tweets, send direct messages, and run giveaway draws. Installs from npm as `@xquik/tweetclaw`; optional live calls use OpenClaw approval gates. |
 | [tool-evaluator](plugins/tool-evaluator/) | Evaluate and compare developer tools with structured scoring criteria |
+| [TweetClaw](https://github.com/Xquik-dev/tweetclaw) | OpenClaw plugin for X/Twitter automation: search tweets and replies, post tweets and replies, export followers, manage media, monitor tweets, send direct messages, and run giveaway draws. Installs from npm as `@xquik/tweetclaw`; optional live calls use OpenClaw approval gates. |
 | [type-migrator](plugins/type-migrator/) | Migrate JavaScript files to TypeScript with proper types |
 | [ui-designer](plugins/ui-designer/) | Implement UI designs from specs with pixel-perfect component generation |
 | [ultrathink](plugins/ultrathink/) | Deep analysis mode with extended reasoning for complex problems |
