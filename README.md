@@ -1206,6 +1206,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [awesome-claude-design](https://github.com/rohitg00/awesome-claude-design) | ![Stars](https://img.shields.io/github/stars/rohitg00/awesome-claude-design?style=flat-square&label=) | DESIGN.md files grouped by aesthetic family (editorial, terminal, warm, data-dense, cinematic, playful, glass, brutalist, indie) + remix recipes + prompt packs for Claude Design (Anthropic Labs) |
 | [ai-skill](https://github.com/anomalyco/ai-skill) | - | AI skill discovery and management system - helps users find, evaluate, install and manage agent skills, tools, plugins and extensions |
 | [Awesome AI Startups](https://github.com/nowork-studio/awesome-ai-startups) | new | Curated directory of ~440 indie-built AI products (bootstrapped, pre-seed, angel-funded) across 18 categories — AI agents, coding tools, marketing, audio/voice, image/design, video, and more |
+| [Hookstack](https://github.com/steve-magne/hookstack) | ![Stars](https://img.shields.io/github/stars/steve-magne/hookstack?style=flat-square&label=) | Community catalogue of 90 production-ready Claude Code hooks covering 25 lifecycle events. Browse at hookstack.app, install with `npx hookstack-cli@latest install`. MIT. |
 
 ## Contributing
 
