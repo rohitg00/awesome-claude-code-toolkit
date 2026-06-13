@@ -232,6 +232,7 @@ Over 150 production-ready plugins that extend Claude Code with domain-specific c
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
 | [background-timer](https://github.com/culminationAI/background-timer) | Background timer with task notifications -- set delayed checks without blocking conversation |
 | [claude-sounds](https://github.com/culminationAI/claude-sounds) | Audio feedback for Claude Code hooks -- 10 events, 21 sounds, random rotation, customizable (macOS) |
+| [google-doc-claude](https://github.com/anaypaul/google-doc-claude) | MCP server + CLI for Claude Code to read, write, and add true inline (anchored) comments to Google Docs -- anchored comments no public Google API can create, via Playwright browser automation. Tools: gdoc_comment, gdoc_read, gdoc_list_comments, gdoc_login, gdoc_status. MIT |
 
 ### Installing a Plugin
 
