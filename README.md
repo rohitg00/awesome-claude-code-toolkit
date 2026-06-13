@@ -286,6 +286,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
 | [background-timer](https://github.com/culminationAI/background-timer) | Background timer with task notifications -- set delayed checks without blocking conversation |
 | [claude-sounds](https://github.com/culminationAI/claude-sounds) | Audio feedback for Claude Code hooks -- 10 events, 21 sounds, random rotation, customizable (macOS) |
+| [google-doc-claude](https://github.com/anaypaul/google-doc-claude) | MCP server + CLI for Claude Code to read, write, and add true inline (anchored) comments to Google Docs -- anchored comments no public Google API can create, via Playwright browser automation. Tools: gdoc_comment, gdoc_read, gdoc_list_comments, gdoc_login, gdoc_status. MIT |
 
 | [notch-so-good](https://github.com/deepshal99/notch-so-good) | Pixel-art crab (Chawd) lives in your Mac's notch and watches Claude Code for you. Live session timers, color-coded notifications, 13 idle animations, mouse-reactive eyes, drowsiness system. Universal binary, one-line install: `npx notch-so-good`. MIT, 130+ users |
 | [codebase-graph](https://github.com/Phoenixrr2113/codebase-graph) | Code intelligence MCP server — 42-language tree-sitter AST parsing, FalkorDB knowledge graphs, 0.944 MRR search quality. npm: `@anthropic/codegraph` |
