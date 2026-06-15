@@ -320,6 +320,8 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [axme-code](https://github.com/AxmeAI/axme-code) | Persistent project memory across sessions, architectural decisions with enforce levels, and pre-execution safety hooks that block dangerous commands at the harness level (not via prompts). Local-only storage, multi-repo workspace support, automatic knowledge extraction via background auditor. 100% on ToolEmu safety, 89% on LongMemEval at ~10x fewer tokens than competitors. |
 | [logic-lens](https://github.com/hyhmrright/logic-lens) | Logic-first code review plugin for Claude Code — detects behavioral bugs via semi-formal execution tracing. Finds logic errors linters and type checkers miss. Structured findings: Premises → Trace → Divergence → Remedy with L1–L6 risk codes. Six skills: logic-review, logic-explain, logic-diff, logic-locate, logic-health, logic-fix-all. |
 
+| [superhighway-mcp](https://github.com/patwalls/superhighway-mcp) | Live web search, news, images, scrape, and research for Claude Code — five MCP tools; agents pay per call in USDC via x402 (no signup) or free API key. `npx -y superhighway-mcp` |
+
 ### Installing a Plugin
 
 ```bash
