@@ -258,6 +258,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [screen-reader-tester](plugins/screen-reader-tester/) | Screen reader compatibility testing and ARIA fixes |
 | [security-guidance](plugins/security-guidance/) | Security best practices advisor with vulnerability detection and fixes |
 | [seed-generator](plugins/seed-generator/) | Database seeding script generation with realistic data |
+| [ship-gate](https://github.com/aksheyw/claude-code-ship-gate) | A pre-push quality gate: a PreToolUse hook that blocks pushes to your protected branch until tests, code review, security, and a secret scan pass, so the usual "git push --no-verify" escape does not work. Hardened by a 14-lens review and 3 red-team passes. Install: /plugin marketplace add aksheyw/claude-code-ship-gate |
 | [sitemd](https://github.com/sitemd-cc/sitemd) | Build websites from Markdown via MCP. 22 tools for creating pages, generating content, configuring settings, running SEO audits, and deploying static sites to Cloudflare Pages |
 | [simmer](https://github.com/2389-research/simmer) | Iterative artifact refinement using judge subagents that score against user-defined criteria across multiple rounds |
 | [slack-notifier](plugins/slack-notifier/) | Slack integration for deployment and build notifications |
