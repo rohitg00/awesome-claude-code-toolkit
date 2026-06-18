@@ -2,7 +2,7 @@
   "mcpServers": {
     "agentage-memory": {
       "url": "https://memory.agentage.io/mcp",
-      "description": "agentage Memory - one memory shared across every AI, owned by you. Remote MCP server (Streamable HTTP) for a markdown memory that Claude, Cursor, and ChatGPT read and write through 6 tools (memory__search, memory__read, memory__write, memory__edit, memory__list, memory__delete). OAuth 2.1 + PKCE + Dynamic Client Registration; no manual token. https://memory.agentage.io"
+      "description": "Agentage Memory - one memory shared across every AI, owned by you. Remote MCP server (Streamable HTTP) for a markdown memory that Claude, Cursor, and ChatGPT read and write through 6 tools (memory__search, memory__read, memory__write, memory__edit, memory__list, memory__delete). OAuth 2.1 + PKCE + Dynamic Client Registration; no manual token. https://memory.agentage.io"
     }
   }
 }
