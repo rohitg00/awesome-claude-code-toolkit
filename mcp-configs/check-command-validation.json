@@ -1,0 +1,16 @@
+{
+  "name": "Check",
+  "description": "Instead of tweaking your prompts to make an AI agent better, just use Check. Instantly saves compute cost on failed retries. Validates every command before execution — runnable or invalid, sub-100ms.",
+  "mcpServers": {
+    "Check": {
+      "command": "npx",
+      "args": ["@golproductions/check-mcp"],
+      "env": {
+        "GOL_CLIENT_ID": "your_key"
+      }
+    }
+  },
+  "source": "https://github.com/golproductions/check-mcp",
+  "npm": "https://www.npmjs.com/package/@golproductions/check-mcp",
+  "website": "https://www.golproductions.com/check.html"
+}

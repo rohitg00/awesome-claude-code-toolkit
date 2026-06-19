@@ -1,0 +1,24 @@
+{
+  "name": "Check Firewall",
+  "description": "Instead of tweaking your prompts to make an AI agent better, just use Check. Instantly saves compute cost on failed retries. PreToolUse hook for Claude Code — validates every command before execution.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx",
+            "args": ["@golproductions/check-firewall"]
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "GOL_CLIENT_ID": "your_key"
+  },
+  "source": "https://github.com/golproductions/check-mcp",
+  "npm": "https://www.npmjs.com/package/@golproductions/check-firewall",
+  "website": "https://www.golproductions.com/check.html"
+}
