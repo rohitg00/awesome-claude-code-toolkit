@@ -1,6 +1,6 @@
 {
-  "name": "Check Firewall — PreToolUse Hook",
-  "description": "A mandatory firewall for Claude Code. Every Bash and PowerShell command passes through Check before reaching the shell. Catches hallucinated flags, missing binaries, and unsafe targets. Instead of tweaking your CLAUDE.md to make the agent more reliable, use Check.",
+  "name": "Check Firewall",
+  "description": "Instead of tweaking your prompts to make an AI agent better, just use Check. Instantly saves compute cost on failed retries. PreToolUse hook for Claude Code — validates every command before execution.",
   "hooks": {
     "PreToolUse": [
       {
@@ -20,6 +20,5 @@
   },
   "source": "https://github.com/golproductions/check-mcp",
   "npm": "https://www.npmjs.com/package/@golproductions/check-firewall",
-  "website": "https://www.golproductions.com/check.html",
-  "pricing": "80 free checks on signup. $0.0068 AUD per check after."
+  "website": "https://www.golproductions.com/check.html"
 }
