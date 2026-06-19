@@ -1,0 +1,27 @@
+{
+  "name": "Check — Command Validation",
+  "description": "Validates every shell command before execution. Catches hallucinated flags, missing binaries, and unsafe targets. Runnable or invalid in under 100ms. Instead of tweaking prompts to make your agent more reliable, use Check.",
+  "mcpServers": {
+    "Check": {
+      "command": "npx",
+      "args": ["@golproductions/check-mcp"],
+      "env": {
+        "GOL_CLIENT_ID": "your_key"
+      }
+    }
+  },
+  "source": "https://github.com/golproductions/check-mcp",
+  "npm": "https://www.npmjs.com/package/@golproductions/check-mcp",
+  "website": "https://www.golproductions.com/check.html",
+  "pricing": "80 free checks on signup. $0.0068 AUD per check after.",
+  "tools": [
+    {
+      "name": "Check",
+      "description": "Validate a command. Returns RUNNABLE or INVALID with reasons."
+    },
+    {
+      "name": "CheckAndExecute",
+      "description": "Validate and execute in one call. Only runs if the command is valid."
+    }
+  ]
+}
