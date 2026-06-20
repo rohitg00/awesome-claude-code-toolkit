@@ -1219,6 +1219,7 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 ---
 
+- [Pixal3D](https://pixal3d.ai) - AI-powered 3D model generator. Create stunning 3D models from text and images using AI.
 ## SKY-lv Skills
 
 30+ battle-tested OpenClaw skills for agent development. MIT Licensed.
