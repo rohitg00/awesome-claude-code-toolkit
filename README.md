@@ -1190,6 +1190,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Dispatch & Remote Control](https://claude.com/blog/dispatch-and-computer-use) | Blog | Run Claude Code from phone/web, schedule recurring tasks, remote session control |
 | [Claude Code Cheat Sheet](https://cc.storyfox.cz/) | Reference | One-page printable reference, auto-updated daily, 4 languages |
 | [Multi-Agent Orchestra](https://addyosmani.com/blog/code-agent-orchestra/) | Blog | Addy Osmani's survey of multi-agent coding patterns |
+| [ClaudeCodeManual](https://github.com/NickScherbakov/ClaudeCodeManual) | Course | Free 15-chapter interactive course on Claude Code's Workflow tool (multi-agent orchestration) — pipeline() vs parallel(), loop-until-dry, adversarial verify, budget-aware loops. 14 hands-on labs. Browser-based, no install. |
 
 ## Related Awesome Lists
 
