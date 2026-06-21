@@ -90,6 +90,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [claude-context](https://github.com/zilliztech/claude-context) | Semantic code search MCP server by Zilliz (Milvus creators). Hybrid BM25 + dense vector search. ~40% token reduction. 5,600+ stars |
 | [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer) | Installable cost-mode skill (30-60% cost savings, up to 70% in strict mode) + 10 guides, 10 templates, budget hooks. Install: `npx skills add Sagargupta16/claude-cost-optimizer` |
 | [fractal](https://github.com/rmolines/fractal) | Recursive project management for Claude Code. Decomposes goals into predicates, works the riskiest piece first, and re-evaluates as it learns |
+| [t3d](https://github.com/coolsocket/t3d) | DDD + TDD harness for Python projects -- 5 hooks deny external-framework imports in Domain layers, deny cross-context internal imports, and block Stop when Domain was edited but tests are red. Ships 4 skills (init, new-context, grill-me, sinkin) and project templates with a 4-layer bounded-context skeleton. Install: `/plugin marketplace add coolsocket/t3d` |
 | [a11y-audit](plugins/a11y-audit/) | Full accessibility audit with WCAG compliance checking |
 | [accessibility-checker](plugins/accessibility-checker/) | Scan for accessibility issues and fix ARIA attributes in web applications |
 | [adr-writer](plugins/adr-writer/) | Architecture Decision Records authoring and management |
