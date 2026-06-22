@@ -1068,6 +1068,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | Name | Stars | Description |
 |------|-------|-------------|
 | [claude-mem](https://github.com/thedotmack/claude-mem) | 35,900+ | Auto-captures everything Claude does, compresses with AI, injects context into future sessions. #1 trending GitHub Feb 2026 |
+| [context-audit](https://github.com/ishwar170695/context-audit) | -- | CLI that audits Claude Code session transcripts. Benchmarks token distribution across 27 real sessions: found 94.5% context reuse and <1% prompt caching savings — falsifying two common optimization assumptions. Identifies workspace-recoverable vs. conversational memory for safe compaction. MIT. |
 | [wshobson/agents](https://github.com/wshobson/agents) | 31,300+ | 112 specialized agents, 16 orchestrators, 146 skills, 79 tools in 72 focused plugins |
 | [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | 9,900+ | Teams-first multi-agent orchestration with 19 specialized agents and 28 skills |
 | [ccusage](https://github.com/ryoppippi/ccusage) | 11,500+ | CLI for analyzing Claude Code usage from local JSONL files. Offline mode, zero API calls needed |
