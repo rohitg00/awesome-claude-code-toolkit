@@ -101,6 +101,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [api-benchmarker](plugins/api-benchmarker/) | API endpoint benchmarking and performance reporting |
 | [api-reference](plugins/api-reference/) | API reference documentation generation from source code |
 | [api-tester](plugins/api-tester/) | Test API endpoints and run load tests against services |
+| [automatic-episodic-memory](https://github.com/automattf/automatic-episodic-memory) | Episodic memory with automatic recall for Claude Code: captures work across context compactions and surfaces relevant past episodes automatically on prompts, tool calls, and turn end, with no manual logging or lookup. Install: `/plugin marketplace add automattf/claude-plugins` then `/plugin install automatic-episodic-memory@automattf-plugins` |
 | [aws-helper](plugins/aws-helper/) | AWS service configuration and deployment automation |
 | [azure-helper](plugins/azure-helper/) | Azure service configuration and deployment automation |
 | [backend-architect](plugins/backend-architect/) | Backend service architecture design with endpoint scaffolding |

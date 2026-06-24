@@ -36,6 +36,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "automatic-episodic-memory",
+      "source": "https://github.com/automattf/automatic-episodic-memory",
+      "description": "Episodic memory with automatic recall for Claude Code: captures work across context compactions and surfaces relevant past episodes automatically on prompts, tool calls, and turn end, with no manual logging or lookup.",
+      "version": "1.0.0"
+    },
+    {
       "name": "ai-prompt-lab",
       "source": "plugins/ai-prompt-lab",
       "description": "Improve and test AI prompts for better Claude Code interactions",
