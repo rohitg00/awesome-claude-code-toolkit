@@ -8,6 +8,5 @@
   "author": {
     "name": "ArmorIQ AI",
     "url": "https://armoriq.ai"
-  },
-  "install": "curl -fsSL https://armoriq.ai/install_armorclaude.sh | bash"
+  }
 }
