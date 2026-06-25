@@ -1,0 +1,12 @@
+{
+  "name": "armorclaude",
+  "version": "0.2.4",
+  "description": "Intent-based security plugin for Claude Code. Registers a structured plan per prompt and enforces a configurable policy on every tool call via hooks (PreToolUse, PostToolUse, UserPromptSubmit). Blocks shell commands and file edits that drift from the registered plan or match policy deny rules. Includes an MCP server (policy_read, policy_update, register_intent_plan) and an audit pipeline.",
+  "homepage": "https://github.com/armoriq/armorClaude",
+  "repository": "https://github.com/armoriq/armorClaude",
+  "license": "MIT",
+  "author": {
+    "name": "ArmorIQ AI",
+    "url": "https://armoriq.ai"
+  }
+}
