@@ -532,6 +532,7 @@ Reference an agent in your `CLAUDE.md`:
 
 ```markdown
 ## Agents
+- [ai-delivery-spec](https://github.com/franklinxkk/ai-delivery-spec) - Product-side SDD framework: Interaction Ledger (12x compression), FRR Gate, AC-YAML, 3 work paths. skills.sh compatible.
 - Use `agents/core-development/fullstack-engineer.md` for feature development
 - Use `agents/quality-assurance/code-reviewer.md` for PR reviews
 - Use `agents/data-ai/prompt-engineer.md` for prompt optimization
