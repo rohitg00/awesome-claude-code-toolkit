@@ -4,6 +4,10 @@
       "url": "https://heliumtrades.com/mcp",
       "description": "Real-time news with bias scoring across 5,000+ sources, live stock/ETF/crypto data with AI bull/bear cases and price forecasts, ML options pricing with probability ITM, balanced news synthesis, and meme search. 9 tools, free tier (50 queries), no API key needed."
     },
+    "bankbridge": {
+      "url": "https://bankbridge.money/api/mcp",
+      "description": "Read-only access to your real bank accounts, transactions, and investment holdings. 12 tools — balances, spending summaries, recurring charges, monthly cashflow, holdings, investment txns. Live-fetched on every call. OAuth 2.1 or Bearer API key (bbk_...). $5/mo per connected bank. Hosted at https://bankbridge.money."
+    },
     "chart-library": {
       "command": "python",
       "args": ["-m", "chartlibrary_mcp"],

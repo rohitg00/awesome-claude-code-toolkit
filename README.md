@@ -938,7 +938,7 @@ Sixteen curated Model Context Protocol server configurations.
 | Design | [`design.json`](mcp-configs/design.json) | Figma design context, Blender 3D automation |
 | Workflow Automation | [`workflow-automation.json`](mcp-configs/workflow-automation.json) | n8n workflow builder, Pipedream integration |
 | Mobile | [`mobile.json`](mcp-configs/mobile.json) | Android ADB automation, Xcode build tools |
-| Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
+| Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, BankBridge read-only bank accounts/transactions/investments, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
 | LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
 
