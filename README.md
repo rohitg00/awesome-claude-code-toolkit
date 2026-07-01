@@ -1189,6 +1189,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Computer Use from CLI](https://code.claude.com/docs/en/computer-use) | Docs | Let Claude control your desktop — open apps, click, type, screenshot. macOS, Pro/Max, v2.1.85+. Per-app approval, tiered access, Esc abort |
 | [Dispatch & Remote Control](https://claude.com/blog/dispatch-and-computer-use) | Blog | Run Claude Code from phone/web, schedule recurring tasks, remote session control |
 | [Claude Code Cheat Sheet](https://cc.storyfox.cz/) | Reference | One-page printable reference, auto-updated daily, 4 languages |
+| [Vexilo · A field guide to Claude Code](https://vexilo.app/?lang=en) | Field Guide | Visual interactive index — 31 agents · 99 commands · 123 skills · 13 rules, organized around the 5-step workflow (Research → Plan → Test-first → Security → Commit). One-click "Teach Claude this handbook" feeds the whole guide into a local Claude session in 30 seconds. Runs in browser, no install ([companion repo](https://github.com/lilhawk7077/claude-code-resources)) |
 | [Multi-Agent Orchestra](https://addyosmani.com/blog/code-agent-orchestra/) | Blog | Addy Osmani's survey of multi-agent coding patterns |
 
 ## Related Awesome Lists
