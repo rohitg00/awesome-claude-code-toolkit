@@ -103,6 +103,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [api-tester](plugins/api-tester/) | Test API endpoints and run load tests against services |
 | [aws-helper](plugins/aws-helper/) | AWS service configuration and deployment automation |
 | [azure-helper](plugins/azure-helper/) | Azure service configuration and deployment automation |
+| [b2-cloud-storage](https://github.com/backblaze-labs/claude-skill-b2-cloud-storage) | Manage Backblaze B2 cloud storage from the terminal: list buckets, audit usage, detect stale or large objects, review security posture, and safely clean up data. MIT. Install: `npx skills add backblaze-labs/claude-skill-b2-cloud-storage` |
 | [backend-architect](plugins/backend-architect/) | Backend service architecture design with endpoint scaffolding |
 | [bug-detective](plugins/bug-detective/) | Debug issues systematically with root cause analysis and execution tracing |
 | [Bouncer](https://github.com/buildingopen/bouncer) | Independent quality gate that uses Gemini to audit Claude Code's output. Includes Stop hook (automatic), quick audit skill, and deep audit with full tool access. One-liner install. |
