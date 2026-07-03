@@ -632,6 +632,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [D3.js Visualization](https://github.com/chrisvoncsefalvay/claude-d3js-skill) | `git clone` | Generate interactive D3.js data visualizations from Claude Code |
 | [Google Drive – Memyard](https://github.com/zagmoai/public-google-drive) | `git clone https://github.com/zagmoai/public-google-drive ~/.claude/skills/public-google-drive` | Create and edit Google Docs and Sheets without sign-in. Documents hosted on Memyard with shareable links. No API keys or OAuth required |
 | [iOS Simulator](https://github.com/conorluddy/ios-simulator-skill) | `git clone` | Interact with iOS Simulator for mobile testing and screenshot capture |
+| [agent-qa](https://github.com/vostride/agent-qa) | `git clone https://github.com/vostride/agent-qa && cp -r agent-qa/skills/agent-qa-* ~/.claude/skills/` | Self-improving QA agent skills for authoring natural-language web/mobile tests, debugging failed runs, and triaging results |
 | [Playwright Automation](https://github.com/lackeyjb/playwright-skill) | `git clone` | Browser automation skill for end-to-end testing and web interaction |
 | [threat-hunting-with-sigma-rules](https://github.com/jthack/threat-hunting-with-sigma-rules-skill) | `git clone` | Sigma-rule-based threat detection and security log analysis |
 | [FFUF Web Fuzzing](https://github.com/jthack/ffuf_claude_skill) | `git clone` | Web vulnerability fuzzing and security testing via FFUF |
