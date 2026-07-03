@@ -838,6 +838,7 @@ If you prefer a typed, npm-installable foundation for writing hooks rather than 
 
 - [claude-code-hooks](https://github.com/Payshak/claude-code-hooks) — TypeScript SDK with `defineHook()`, typed event payloads for all 5 hook events, response builders, and unit-testable `.handle()` method. Zero dependencies.
 - [EchoCoding](https://github.com/launsion-boop/EchoCoding) — Audio layer for coding agents with hook-triggered SFX, ambient soundscape, and optional cloud TTS/ASR voice interaction. Works with Claude Code hooks and also supports Cursor/Windsurf, Codex CLI, and Gemini CLI.
+- [agent-guardrails](https://github.com/greggreg488/agent-guardrails) — Ready-to-use cross-agent guardrail hooks (Claude Code + Codex) from one shared rule engine, plus a Codex safe-full-auto layer that hard-blocks destructive commands (rm -rf, force-push, destructive SQL, payments) even under danger-full-access, with a kill-switch and append-only audit log. Fail-open, MIT.
 
 ### Installing Hooks
 
