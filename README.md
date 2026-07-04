@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 54 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -1095,6 +1095,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [openclaw-memorybox](https://github.com/Ramsbaby/openclaw-memorybox) | 8+ | Memory hygiene CLI for Claude Code — prevents context overflow crashes, 83% MEMORY.md size reduction, zero dependencies |
 | [openclaw-self-evolving](https://github.com/Ramsbaby/openclaw-self-evolving) | 2+ | Weekly self-improvement pipeline — scans Claude Code logs, proposes CLAUDE.md/AGENTS.md rule changes, zero API cost |
 | [caliber](https://github.com/caliber-ai-org/ai-setup) | -- | CLI that fingerprints projects and generates AI agent configs (CLAUDE.md, skills, AGENTS.md). Scores quality, auto-refreshes, supports Claude Code + Cursor + Codex |
+| [Cosmosmith](https://github.com/devnomad-byte/cosmosmith) | 3+ | Multi-agent project governance initializer. Generates AGENTS.md, task.md, proposal/design templates, and adapters for Claude Code, Cursor, Copilot, OpenCode, and Trae via `npx cosmosmith@latest init --all` |
 | [claude-overlay](https://github.com/mzmmoazam/claude-overlay) | -- | CLI for managing Claude Code project configs across custom providers (Databricks, Bedrock, OpenRouter, LiteLLM, Cloudflare). Overlay merge/remove, MCP web search setup, multi-provider switching, team config export/import |
 | [faf-cli](https://github.com/Wolfe-Jam/faf-cli) | -- | The package.json for AI context. IANA-registered `.faf` format — init, score, bi-sync with `CLAUDE.md`, export to AGENTS.md, GEMINI.md, .cursorrules. Built with Bun. |
 | [git-parsec](https://github.com/erishforG/git-parsec) | 6+ | Git worktree lifecycle manager — gives each AI agent an isolated workspace tied to issue tickets (Jira, GitHub Issues, GitLab). No index.lock conflicts in parallel workflows |
