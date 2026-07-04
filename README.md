@@ -540,6 +540,7 @@ Reference an agent in your `CLAUDE.md`:
 ---
 
 ## Skills
+- **[Context Kit](https://github.com/JDDavenport/context-kit)** — Personal Context Artifacts for Claude Code: 4 structured Markdown templates + 5 skills (crm-everything, open-loops, watchers, morning-briefing, session-digest). Start every session context-full, not context-zero.
 
 Thirty-five curated skill modules included in this repo, with access to **400,000+ additional skills** via the [SkillKit marketplace](https://agenstskills.com). Each included skill teaches Claude Code domain-specific patterns with code examples, anti-patterns, and checklists.
 
