@@ -206,7 +206,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [lightcms](https://github.com/jonradoff/lightcms) | AI-native CMS with 41 MCP tools for managing websites through natural language — pages, templates, assets, themes, collections, redirects, and more with full content versioning |
 | [linear-helper](plugins/linear-helper/) | Linear issue tracking integration and workflow management |
 | [load-tester](plugins/load-tester/) | Load and stress testing for APIs and web services |
-| [manifest-dev](https://github.com/doodledood/manifest-dev) | 69+ | Manifest-driven workflows: /figure-out adversarial understanding, /define acceptance criteria, /do execution with an independent verifier per criterion |
+| [manifest-dev](https://github.com/doodledood/manifest-dev) | Manifest-driven workflows: /figure-out adversarial understanding, /define acceptance criteria, /do execution with an independent verifier per criterion |
 | [memory-profiler](plugins/memory-profiler/) | Memory leak detection and heap analysis |
 | [migrate-tool](plugins/migrate-tool/) | Generate database migrations and code migration scripts for framework upgrades |
 | [migration-generator](plugins/migration-generator/) | Database migration generation and rollback management |
