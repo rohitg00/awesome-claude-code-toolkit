@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "engram": {
+      "type": "http",
+      "url": "https://mcp.getengram.app/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-engram-api-key>"
+      },
+      "description": "Persistent, searchable long-term memory for Claude Code. Stores verbatim conversation transcripts and makes them searchable by meaning across sessions. Provides search, create_conversation, append_messages, and vault key-value tools. Sign up at https://getengram.app for a free API key (1,000 messages/month)."
+    }
+  }
+}
