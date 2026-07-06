@@ -156,6 +156,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [css-cleaner](plugins/css-cleaner/) | Find unused CSS and consolidate stylesheets |
 | [cup](https://github.com/krodak/clickup-cli) | ClickUp CLI for AI agents with task management, sprints, and time tracking |
 | [data-privacy](plugins/data-privacy/) | Data privacy implementation with PII detection and anonymization |
+| [taisly-agent-kit](https://github.com/taisly/agent) | Official Taisly Agent Kit for Claude Code: MCP server, CLI, SDK, and agent skill for publishing short-form videos to TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. Remote MCP: `https://app.taisly.com/mcp`; npm: `@taisly/agent` |
 | [database-optimizer](plugins/database-optimizer/) | Database query optimization with index recommendations and EXPLAIN analysis |
 | [dead-code-finder](plugins/dead-code-finder/) | Find and remove dead code across the codebase |
 | [debug-session](plugins/debug-session/) | Interactive debugging workflow with git bisect integration |
