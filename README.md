@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 54 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -1124,6 +1124,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [agent-dotfiles](https://github.com/saqibameen/agent-dotfiles) | new | Write AI coding rules once, sync to every agent. Supports Command Code, Claude Code, Cursor, Copilot, Codex, OpenCode. |
 | [zclean](https://github.com/whynowlab/zclean) | 19+ | Kills orphaned processes left behind by Claude Code and Codex. Stops zombie node/python/esbuild from eating your RAM |
 | [Hindsight](https://github.com/vectorize-io/hindsight) | -- | State-of-the-art long-term memory for AI agents by Vectorize. Biomimetic retain/recall/reflect with 4 parallel retrieval strategies. Self-hosted or cloud, MIT-licensed. [Claude Code integration](https://hindsight.vectorize.io/integrations) |
+| [Tree Ring Memory](https://github.com/TerminallyLazy/Tree-Ring-Memory) | 2 | Framework-agnostic, local-first memory lifecycle for AI agents. Rust CLI/TUI with SQLite/FTS recall, audit, explicit forgetting/redaction, deterministic consolidation, DOX/Revolve adapters, and discovery notes for Claude Code, Codex, Agent Zero, OpenCode, and more |
 | [healthcare-agents](https://github.com/ajhcs/healthcare-agents) | New | 51 specialized healthcare administration agents with MHA-level expertise across 10 divisions -- revenue cycle, compliance, quality, clinical ops, payer relations, health IT, and more |
 | [cc-switch](https://github.com/farion1231/cc-switch) | 35,500+ | Cross-platform desktop All-in-One assistant for Claude Code, Codex, OpenCode, and Gemini CLI |
 | [claude-code-router](https://github.com/musistudio/claude-code-router) | 30,700+ | Use Claude Code as coding infrastructure foundation with custom model routing and interaction |
