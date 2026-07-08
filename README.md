@@ -214,6 +214,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [monitoring-setup](plugins/monitoring-setup/) | Monitoring and alerting configuration with dashboard generation |
 | [monorepo-manager](plugins/monorepo-manager/) | Manage monorepo packages with affected detection and version synchronization |
 | [mutation-tester](plugins/mutation-tester/) | Mutation testing to measure test suite quality |
+| [my-poor-ai](https://github.com/hicucu/my-poor-ai) | Engineering discipline for AI coding agents — 19 skills (TDD, systematic debugging, brainstorming, plan review), 24 single-responsibility subagents, and 12 slash commands wired by an orchestrator that routes every request through DEBUG/SIMPLE/FULL pipelines and refuses to report "done" without proof. CI-validated agent contracts, adversarially pressure-tested skills. MIT. |
 | [myclaude](https://github.com/stellarlinkco/myclaude) | Multi-agent orchestration routing tasks to Claude Code, Codex, Gemini, and OpenCode based on complexity. OmO skill for intelligent routing. 2,400+ stars |
 | [nimbalyst](https://nimbalyst.com) | Visual workspace for building with Codex and Claude Code. Session and task manager. Visual editing |
 | [n8n-workflow](plugins/n8n-workflow/) | Generate n8n automation workflows from natural language descriptions |
