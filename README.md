@@ -232,6 +232,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [perf-profiler](plugins/perf-profiler/) | Performance analysis, profiling, and optimization recommendations |
 | [performance-monitor](plugins/performance-monitor/) | Profile API endpoints and run benchmarks to identify performance bottlenecks |
 | [plan](plugins/plan/) | Structured planning with risk assessment and time estimation |
+| [praetor](https://github.com/luoxianzi/praetor) | Claude plans, the Codex CLI executes the grunt work, and a binding fresh-context judge — never saw the plan, cannot be overridden — decides what merges. Criteria frozen in git before the executor runs; Legion Mode runs 2–5 parallel Codex workers in isolated worktrees behind an integration judge. Zero config, MIT. Install: `/plugin marketplace add luoxianzi/praetor` |
 | [preflight](https://github.com/preflight-dev/preflight) | 24-tool MCP server that catches vague prompts before they cost 2-3x in wrong→fix cycles. 12-category scorecards, correction pattern learning, cross-service contract awareness, session history search with LanceDB vectors, and cost estimation. `npx preflight-dev` |
 | [pr-reviewer](plugins/pr-reviewer/) | Review pull requests with structured analysis and approve with confidence |
 | [product-shipper](plugins/product-shipper/) | Ship features end-to-end with launch checklists and rollout plans |
