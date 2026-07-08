@@ -805,7 +805,7 @@ Then invoke in Claude Code:
 
 ## Hooks
 
-Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
+Twenty-one hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
 
 ### Hook Scripts
 
@@ -817,6 +817,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 | `learning-log.js` | SessionEnd | Extract and save session learnings |
 | `pre-compact.js` | PreCompact | Save important context before compaction |
 | [`smart-approve.py`](https://github.com/liberzon/claude-hooks) | PreToolUse (Bash) | Decompose compound bash commands (&&, \|\|, ;, \|, $()) into sub-commands and check each against allow/deny patterns |
+| [`agent-guard.py`](https://github.com/dkx955/agent-guard) | PreToolUse (Bash) | Block catastrophic, irreversible commands *by blast radius* (`rm -rf ~`, force-push to `main`, `curl\|sh`, `dd`, `chmod -R 777`, fork bomb) while allowing safe cases like `rm -rf node_modules`; denies even under `--dangerously-skip-permissions`; zero-dep, fails open, 38-case test suite |
 | `block-dev-server.js` | PreToolUse (Bash) | Block dev server commands outside tmux |
 | `pre-push-check.js` | PreToolUse (Bash) | Verify branch and remote before push |
 | `block-md-creation.js` | PreToolUse (Write) | Block unnecessary .md file creation |
