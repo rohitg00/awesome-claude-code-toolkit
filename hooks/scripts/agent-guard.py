@@ -37,10 +37,6 @@ def deny(reason: str) -> None:
 # --- rm -rf on a catastrophic target -------------------------------------
 # We do NOT block every `rm -rf` (deleting node_modules is fine). We block it
 # only when the target is a place that wipes your machine/home/repo root.
-_RM_RECURSIVE_FORCE = re.compile(r"\brm\b(?=[^\n;|&]*\brf?\b|[^\n;|&]*-[a-zA-Z]*r[a-zA-Z]*f"
-                                 r"|[^\n;|&]*-[a-zA-Z]*f[a-zA-Z]*r"
-                                 r"|[^\n;|&]*--recursive|[^\n;|&]*--force)"
-                                 r"[^\n;|&]*-[a-zA-Z]*", re.IGNORECASE)
 _RM_FLAGS = re.compile(r"-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|--recursive|--force", re.IGNORECASE)
 _CATASTROPHIC_TARGET = re.compile(
     r"(?:^|\s)(?:"
@@ -60,10 +56,6 @@ _CATASTROPHIC_TARGET = re.compile(
 def check_rm(cmd: str):
     for seg in re.split(r"[;\n]|&&|\|\|", cmd):
         seg = seg.strip()
-        if not seg.startswith("rm ") and " rm " not in f" {seg} ":
-            # cheap prefilter
-            if not re.search(r"\brm\b", seg):
-                continue
         if not re.search(r"\brm\b", seg):
             continue
         if not _RM_FLAGS.search(seg):
@@ -90,7 +82,7 @@ PATTERNS = [
      "Piping a downloaded script straight into a shell runs unreviewed remote "
      "code as you. Download it, read it, then run it."),
 
-    (re.compile(r"\b(?:dd\b[^\n]*\bof=/dev/|mkfs(?:\.\w+)?\s+/dev/|>\s*/dev/(?:sd|nvme|hd|disk)\w*)",
+    (re.compile(r"(?:\b(?:dd\b[^\n]*\bof=/dev/|mkfs(?:\.\w+)?\s+/dev/)|>\s*/dev/(?:sd|nvme|hd|disk)\w*)",
                 re.IGNORECASE),
      "Writing directly to a block device (dd/mkfs/redirect to /dev/sdX) "
      "wipes a disk irrecoverably."),
@@ -102,8 +94,6 @@ PATTERNS = [
 
     (re.compile(r":\s*\(\s*\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:"),
      "Fork bomb detected. This will hang or crash the machine."),
-
-    (re.compile(r">\s*/dev/sd[a-z]\b"), "Redirecting output onto a raw disk device destroys the partition table."),
 ]
 
 
