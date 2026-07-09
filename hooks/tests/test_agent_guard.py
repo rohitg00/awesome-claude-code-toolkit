@@ -69,8 +69,13 @@ def is_blocked(command: str) -> bool:
         text=True,
         check=False,
     )
-    if result.returncode != 0 or not result.stdout.strip():
-        return result.returncode != 0
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"hook crashed (exit {result.returncode}) on: {command}\n"
+            f"stderr: {result.stderr.strip()}"
+        )
+    if not result.stdout.strip():
+        return False
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError:
