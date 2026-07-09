@@ -9,6 +9,12 @@
     {
       "type": "PreToolUse",
       "matcher": "Bash",
+      "description": "Block catastrophic, irreversible bash commands by blast radius (rm -rf ~, force-push to main, curl|sh, dd to disk, chmod -R 777, fork bomb); allows safe cases like rm -rf node_modules; blocks even under --dangerously-skip-permissions; zero-dep, fails open",
+      "command": "python3 hooks/scripts/agent-guard.py"
+    },
+    {
+      "type": "PreToolUse",
+      "matcher": "Bash",
       "description": "Block dev server commands outside tmux to prevent orphaned processes",
       "command": "node hooks/scripts/block-dev-server.js"
     },
