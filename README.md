@@ -1081,6 +1081,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [claude-skills](https://github.com/alirezarezvani/claude-skills) | 5,300+ | 192 skills across 9 domains with 254 Python automation tools |
 | [paco-framework](https://github.com/PenguinAlleyApps/paco-framework) | 1+ | Markdown-first multi-agent OS for Claude Code. Coordinates 3-16 specialized AI agents (Engineering, QA, Growth, Finance) with file-based dispatch, institutional memory, CEO Gate approval, and 24/7 scheduling. No Python required. MIT |
 | [peon-ping](https://github.com/PeonPing/peon-ping) | 3,900+ | Warcraft III Peon voice notifications for Claude Code and other agents |
+| [VoxQueue](https://github.com/frslvr/voxqueue) | new | Serialized TTS queue for Windows — speaks task-complete and AskUserQuestion announcements from concurrent Claude Code sessions one at a time. Tray, hotkeys, web dashboard, instant positional pause via mpv IPC |
 | [n8n-skills](https://github.com/czlonkowski/n8n-skills) | 3,400+ | Skills for building production-ready n8n workflows |
 | [claude-hooks-mastery](https://github.com/disler/claude-code-hooks-mastery) | 3,300+ | Complete mastery guide for Claude Code hooks with production-ready scripts |
 | [claude-supermemory](https://github.com/supermemoryai/claude-supermemory) | 2,300+ | Persistent memory across sessions using Supermemory |
