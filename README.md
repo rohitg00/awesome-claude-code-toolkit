@@ -181,6 +181,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [experiment-tracker](plugins/experiment-tracker/) | ML experiment tracking with metrics logging and run comparison |
 | [explore](plugins/explore/) | Smart codebase exploration with dependency mapping and structure analysis |
 | [faf-skills](https://github.com/Wolfe-Jam/faf-skills) | 31 Claude Code skills for persistent project context (.faf, `application/vnd.faf+yaml`). Scoring, sync, testing, publishing, MCP server creation, architecture docs. Anthropic MCP #2759. |
+| [fable-baton](https://github.com/realgarit/fable-baton) | Makes Fable 5 the orchestrator: Fable keeps judgment, tiered Opus/Sonnet/Haiku subagents do the labor, and hooks enforce the delegation (per-prompt reminder plus a deterministic inline-call counter with a CI functional test). MIT. |
 | [feature-dev](plugins/feature-dev/) | Full feature development workflow from spec to completion |
 | [fractal](https://github.com/rmolines/fractal) | Recursive project management plugin. Decomposes any goal into verifiable predicates, works on the riskiest unknown first. Features `/fractal:run` (idempotent state machine), `/fractal:init`, `/fractal:patch`, dry run mode, and incremental decomposition with re-evaluation. |
 | [finance-tracker](plugins/finance-tracker/) | Development cost tracking with time estimates and budget reporting |
