@@ -151,6 +151,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [context7-docs](plugins/context7-docs/) | Fetch up-to-date library documentation via Context7 for accurate coding |
 | [contract-tester](plugins/contract-tester/) | API contract testing with Pact for microservice compatibility |
 | [cozempic](https://github.com/Ruya-AI/cozempic) | ✨ v1.2.x — Self-updating now, atomic writes, strict session guard, zero false positives on team detection. 13 pruning strategies, Agent Team protection, MCP server, JSONL doctor. Install: `/plugin marketplace add Ruya-AI/cozempic` |
+| [craftsman](https://github.com/bufferBrew/craftsman) | Engineering-discipline toolkit — minimal-diff coding, root-cause debugging with recurring-bug detection, environment-quirk memory, and honest completion reports. 10 agents, 7 skills, cross-platform hooks. Install: `/plugin marketplace add bufferBrew/craftsman` |
 | [create-worktrees](plugins/create-worktrees/) | Git worktree management for parallel development workflows |
 | [cron-scheduler](plugins/cron-scheduler/) | Cron job configuration and schedule validation |
 | [css-cleaner](plugins/css-cleaner/) | Find unused CSS and consolidate stylesheets |
