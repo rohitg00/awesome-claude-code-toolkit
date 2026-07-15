@@ -55,18 +55,28 @@ sshepherd check kernel lms-server
 # logs
 sshepherd logs docker lms-server lms-app --tail 100
 sshepherd logs service lms-server nginx --tail 100
+sshepherd logs docker-daemon lms-server --tail 100
 sshepherd logs nginx lms-server error --tail 100
 
 # services — docker + systemd
 sshepherd services ps lms-server
+sshepherd services stats lms-server
+sshepherd services inspect lms-server lms-app
+sshepherd services compose-ps lms-server /opt/lms/docker-compose.yml
 sshepherd services healthcheck lms-server lms-app
+sshepherd services systemctl-status lms-server nginx
 sshepherd services restart lms-server lms-app --yes
+sshepherd services systemctl-start lms-server nginx --yes
+sshepherd services systemctl-stop lms-server nginx --yes
 sshepherd services systemctl-restart lms-server nginx --yes
+sshepherd services systemctl-reload lms-server nginx --yes
 
 # files — .env masked by default
 sshepherd files ls lms-server /opt/lms
 sshepherd files cat lms-server /opt/lms/.env --reveal DB_HOST
+sshepherd files tail lms-server /var/log/syslog --n 100
 sshepherd files download lms-server /opt/lms/backup.sql ./backup.sql
+sshepherd files disk-usage lms-server /var/lib/docker
 sshepherd files upload lms-server ./local.conf /opt/lms/local.conf --yes
 
 # config — backs up before writing, allowlist-gated
@@ -79,7 +89,9 @@ sshepherd config reload lms-server nginx --yes
 sshepherd db list
 sshepherd db tables prod
 sshepherd db activity prod
+sshepherd db connections prod
 sshepherd db slow prod
+sshepherd db size prod
 sshepherd db query prod "SELECT count(*) FROM users"
 
 # deploy — declarative TOML recipes
@@ -87,11 +99,13 @@ sshepherd deploy run demo --dry-run
 sshepherd deploy run demo --yes
 sshepherd deploy status demo
 sshepherd deploy rollback demo --yes
+sshepherd deploy logs demo --tail 100
 sshepherd deploy migrate demo --yes
 
 # security
 sshepherd security harden lms-server --yes
 sshepherd security ssh-audit lms-server
+sshepherd security listeners lms-server
 sshepherd security authorized-keys lms-server
 sshepherd security fail2ban lms-server
 ```
