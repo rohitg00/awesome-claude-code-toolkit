@@ -581,6 +581,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Mobile Development | `skills/mobile-development/` | React Native, Flutter, responsive layouts |
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
+| sshepherd | `skills/sshepherd/` | Zero-knowledge SSH server ops — health, docker/systemd, logs, config, read-only Postgres, declarative deploys |
 
 ### Community Skills
 
