@@ -581,6 +581,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Mobile Development | `skills/mobile-development/` | React Native, Flutter, responsive layouts |
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
+| anywrite | `skills/anywrite/` | Drive Anytype from the CLI — objects, properties, tags, types, lists, files, chat, search across all 52 local-API endpoints |
 
 ### Community Skills
 
