@@ -1190,6 +1190,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Dispatch & Remote Control](https://claude.com/blog/dispatch-and-computer-use) | Blog | Run Claude Code from phone/web, schedule recurring tasks, remote session control |
 | [Claude Code Cheat Sheet](https://cc.storyfox.cz/) | Reference | One-page printable reference, auto-updated daily, 4 languages |
 | [Multi-Agent Orchestra](https://addyosmani.com/blog/code-agent-orchestra/) | Blog | Addy Osmani's survey of multi-agent coding patterns |
+| [Running Claude Code Unattended](https://github.com/joeyycli/agent-ops-kit-guide) | Guide | Free write-up of the pattern for running Claude Code as a scheduled, unattended process — systemd lock/timeout/backstop-commit, prompt-injection defense via authority order, file-based memory, spend rails ([site](https://joeyycli.github.io/agent-ops-kit-guide/)) |
 
 ## Related Awesome Lists
 
