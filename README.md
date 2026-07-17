@@ -1067,6 +1067,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 
 | Name | Stars | Description |
 |------|-------|-------------|
+| [Alex](https://github.com/madhavajay/alex) | 28+ | Local Rust proxy with an optional UI that routes Claude Code and other coding agents across providers, with local request/cost/session/tool traces, scriptable middleware, subscription bonding, failover, and messenger-assisted re-authentication |
 | [claude-mem](https://github.com/thedotmack/claude-mem) | 35,900+ | Auto-captures everything Claude does, compresses with AI, injects context into future sessions. #1 trending GitHub Feb 2026 |
 | [wshobson/agents](https://github.com/wshobson/agents) | 31,300+ | 112 specialized agents, 16 orchestrators, 146 skills, 79 tools in 72 focused plugins |
 | [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | 9,900+ | Teams-first multi-agent orchestration with 19 specialized agents and 28 skills |
