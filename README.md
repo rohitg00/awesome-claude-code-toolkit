@@ -837,6 +837,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 If you prefer a typed, npm-installable foundation for writing hooks rather than raw scripts:
 
 - [claude-code-hooks](https://github.com/Payshak/claude-code-hooks) — TypeScript SDK with `defineHook()`, typed event payloads for all 5 hook events, response builders, and unit-testable `.handle()` method. Zero dependencies.
+- [Darkmoon](https://github.com/ASCIT31/Dark-Moon) - Open source autonomous pentest engine (GPL-3.0): AD + Kubernetes + web, evidence trail on every finding, runs on local or hosted models.
 - [EchoCoding](https://github.com/launsion-boop/EchoCoding) — Audio layer for coding agents with hook-triggered SFX, ambient soundscape, and optional cloud TTS/ASR voice interaction. Works with Claude Code hooks and also supports Cursor/Windsurf, Codex CLI, and Gemini CLI.
 
 ### Installing Hooks
