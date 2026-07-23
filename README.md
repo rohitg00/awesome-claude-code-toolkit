@@ -676,6 +676,8 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [Gear Foundation Skills](https://github.com/gear-foundation/vara-skills) | [Repo](https://github.com/gear-foundation/vara-skills) | 21 skills teaching AI coding agents to build and ship Rust smart contracts on Vara Network with Gear/Sails. Covers planning, implementation, testing, frontend, indexing, on-chain deployment, and safe program evolution. MIT. |
 | [Superpower Builder](https://github.com/redhuntlabs/superpower-builder) | `/plugin marketplace add redhuntlabs/superpower-builder` then `/plugin install superpower-builder@superpower-builder` | Interview-driven meta-builder that turns recurring tasks into reusable `SKILL.md` files. Routes by workflow/discipline/content/subagent kind, then pressure-tests baseline-without-skill vs. with-skill before saving. MIT, no telemetry. |
 
+| [Formo Analytics](https://github.com/getformo/cli/tree/main/skills/formo-analytics) | `npx @formo/cli` | Query [Formo](https://formo.so) product and onchain analytics through MCP, CLI, or REST — KPIs, SQL, funnels, retention, revenue, users, and wallet profiles |
+
 ### Installing Skills
 
 **Browse and install via SkillKit** (recommended):
