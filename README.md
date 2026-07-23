@@ -1206,6 +1206,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [awesome-claude-design](https://github.com/rohitg00/awesome-claude-design) | ![Stars](https://img.shields.io/github/stars/rohitg00/awesome-claude-design?style=flat-square&label=) | DESIGN.md files grouped by aesthetic family (editorial, terminal, warm, data-dense, cinematic, playful, glass, brutalist, indie) + remix recipes + prompt packs for Claude Design (Anthropic Labs) |
 | [ai-skill](https://github.com/anomalyco/ai-skill) | - | AI skill discovery and management system - helps users find, evaluate, install and manage agent skills, tools, plugins and extensions |
 | [Awesome AI Startups](https://github.com/nowork-studio/awesome-ai-startups) | new | Curated directory of ~440 indie-built AI products (bootstrapped, pre-seed, angel-funded) across 18 categories — AI agents, coding tools, marketing, audio/voice, image/design, video, and more |
+| [url-manager](https://github.com/Piccolo123/url-manager) | - | Agent-first cross-platform URL collection & knowledge management. AI agents collect, categorize, search, and share web links via CLI commands. Collaborative shared categories, full-text search, magic-link delivery. Install: `openclaw skills install @piccolo123/url-manager` |
 
 ## Contributing
 
