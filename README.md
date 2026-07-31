@@ -1026,7 +1026,7 @@ claude-code-toolkit/               850+ files
 | [ccswarm](https://github.com/nwiizo/ccswarm) | 127 | Rust-based multi-agent orchestration with specialized agent pools, Git worktree isolation, 93% token reduction |
 | [parallel-code](https://github.com/johannesjo/parallel-code) | 370+ | Run Claude Code, Codex, and Gemini side by side -- each in its own git worktree |
 | [Bernstein](https://github.com/sipyourdrink-ltd/bernstein) | 288 | Python orchestrator for 40+ CLI coding agents (Claude Code, Codex, Gemini CLI). Git worktree isolation, MCP server mode, HMAC audit trail. Plan-driven, deterministic. Apache-2.0 |
-| [AICraft](https://github.com/Easlie114514/AICraft) | — | Desktop AI capability launcher for Windows — manage LLM Skills, MCP tools, and memory like Minecraft mods. Uses Anthropic SDK compatible with Claude API, one-click DeepSeek setup, built-in MCP servers, portable exe. MIT. | 桌面AI能力启动器，使用Anthropic SDK兼容Claude API，一键配置DeepSeek
+| [AICraft](https://github.com/Easlie114514/AICraft) | — | Desktop AI capability launcher for Windows with Anthropic SDK/Claude API compatibility. Manage LLM Skills, MCP tools, and memory like Minecraft mods. One-click DeepSeek setup, built-in MCP servers, portable exe. MIT. |
 | [Poirot](https://github.com/LeonardoCardoso/Poirot) | 96 | macOS app for browsing Claude Code sessions, viewing diffs, and re-running commands. Reads local transcripts, runs offline |
 | [TokenEater](https://github.com/AThevon/TokenEater) | 179 | Native macOS menu bar app for monitoring Claude AI usage limits and watching coding sessions live |
 | [Claw](https://github.com/jamesrochabrun/Claw) | 86 | Native macOS app wrapping Claude Code SDK in Swift. Plan Mode, MCP Integration, Custom System Prompts |
