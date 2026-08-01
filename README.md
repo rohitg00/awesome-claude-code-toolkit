@@ -1004,7 +1004,7 @@ claude-code-toolkit/               850+ files
     scripts/                       19 Node.js scripts
   rules/                           15 coding rules
   templates/claude-md/             7 CLAUDE.md templates
-  mcp-configs/                     8 server configurations
+  mcp-configs/                    17 server configurations
   contexts/                        5 context modes
   examples/                        3 walkthrough examples
   setup/                           Interactive installer
