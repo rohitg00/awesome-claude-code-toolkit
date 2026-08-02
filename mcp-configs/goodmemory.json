@@ -3,7 +3,7 @@
     "goodmemory": {
       "command": "goodmemory-mcp",
       "args": ["--standalone", "--user-id", "YOUR_USER_ID"],
-      "description": "Local-first, scoped memory for Claude Code. Exposes recall context, provenance, traces, stats, and artifact inspection; read-only by default, with governed writeback opt-in via --allow-write. Install first: npm install -g goodmemory@0.7.1."
+      "description": "Local-first, scoped memory for Claude Code. Exposes recall context, provenance, traces, stats, and artifact inspection; read-only by default, with governed writeback opt-in via --allow-write. Install first: npm install -g goodmemory@0.7.2."
     }
   }
 }
