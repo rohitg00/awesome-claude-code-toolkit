@@ -805,7 +805,7 @@ Then invoke in Claude Code:
 
 ## Hooks
 
-Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
+Twenty-one hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
 
 ### Hook Scripts
 
@@ -831,7 +831,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 | `stop-check.js` | Stop | Remind to run tests if code was modified |
 | `notification-log.js` | Notification | Log notifications for later review |
 | `prompt-check.js` | UserPromptSubmit | Detect vague prompts, suggest clarification |
-| [`prompt-hook.sh`](https://github.com/dotcomjack/claude-session-tint) | UserPromptSubmit | Run a command from the input box with zero model turns by returning `decision:"block"` with `suppressOriginalPrompt`; used to tag a terminal window with a project color |
+| [`prompt-hook.sh`](https://github.com/dotcomjack/claude-session-tint) | UserPromptSubmit | Run a command from the input box with zero model turns by returning `decision:"block"` with `suppressOriginalPrompt`, then exiting 2. Must be wired non-async, since an async hook returns after the prompt has already reached the model. Used to tag a terminal window with a project color |
 
 ### Related SDKs
 
