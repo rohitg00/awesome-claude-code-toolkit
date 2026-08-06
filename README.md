@@ -1060,6 +1060,8 @@ claude-code-toolkit/               850+ files
 | [ToutKit](https://github.com/toutkit/toutkit) | new | Desktop notebook for AI CLIs (Claude Code, Codex, Gemini). Pairs a sidebar of notes with a built-in terminal and an in-app webview that renders whatever the AI writes — each note is a self-contained folder with its own SQLite, key/value store, attached files, and scripts, so a note can grow from a static page into a sortable table, dashboard, or research tool. Local-first, AGPL-3.0 |
 
 ---
+| [Launchpad](https://github.com/noambrand/Launchpad-CLI) | 21 | One-command Claude Code installer for Windows/macOS/Linux with a GUI folder picker, per-project profiles, a live status bar (context + rate-limit resets), and voice alerts |
+| [Kivun](https://github.com/noambrand/kivun-terminal-wsl) | 13 | Claude Code installer with correct Hebrew/Arabic/Persian right-to-left terminal rendering, plus per-project profiles, status bar, and voice alerts |
 
 ## Ecosystem
 
