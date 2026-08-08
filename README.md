@@ -1031,7 +1031,7 @@ claude-code-toolkit/               850+ files
 | [Claw](https://github.com/jamesrochabrun/Claw) | 86 | Native macOS app wrapping Claude Code SDK in Swift. Plan Mode, MCP Integration, Custom System Prompts |
 | [The Claude Protocol](https://github.com/AvivK5498/The-Claude-Protocol) | 149 | Enforcement layer wrapping Claude Code with 13 hooks -- blocks unsafe operations, enforces worktree isolation |
 | [Notch So Good](https://github.com/deepshal99/notch-so-good) | new | macOS notch-based session monitor with pixel-art companion, 13 animations, smart notifications, multi-session support |
-| [Agent Island](https://github.com/tristan666666/agent-island) | new | Open-source status companion for Claude Code and Codex with live session state, your-turn alerts, and local monitoring on macOS and Windows |
+| [Agent Island](https://github.com/tristan666666/agent-island) | 110 | Native companion for Claude, Codex, Gemini, Grok, and Cursor with local session status, your-turn alerts, and provider usage views |
 | [Anima](https://github.com/btangonan/anima) | new | Native macOS companion for Claude Code. Per-project ASCII familiars, nim token economy, cross-session watcher daemon. Tauri v2 + Rust, 4MB binary |
 | [crit](https://github.com/tomasz-tomczyk/crit) | 105 | Local browser UI for inline code review of any file or agent output; integrates with Claude Code via plan-hook to review and approve plans before execution, outputs structured .crit.json for agent consumption. |
 | [telegram-ai-bridge](https://github.com/AliceLJY/telegram-ai-bridge) | new | Run N parallel Claude Code sessions from your phone via Telegram. War Room mode, per-bot personas, A2A multi-agent collaboration, tool approval from phone. Supports Claude Code, Codex, and Gemini backends |
