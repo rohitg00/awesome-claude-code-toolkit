@@ -932,7 +932,7 @@ Sixteen curated Model Context Protocol server configurations.
 | Frontend | [`frontend.json`](mcp-configs/frontend.json) | Puppeteer, Figma, Storybook |
 | Crypto / DeFi | [`crypto-defi.json`](mcp-configs/crypto-defi.json) | defi-mcp, Filesystem, Fetch, Memory |
 | DevOps | [`devops.json`](mcp-configs/devops.json) | AWS, Docker, GitHub, Terraform, Sentry |
-| Research | [`research.json`](mcp-configs/research.json) | BGPT scientific papers, Brave Search, Fetch, Memory, Filesystem |
+| Research | [`research.json`](mcp-configs/research.json) | BGPT scientific papers, Parallel web search, Brave Search, Fetch, Memory, Filesystem |
 | Observability | [`observability.json`](mcp-configs/observability.json) | Iris eval & observability for agent tracing, quality evaluation, and cost tracking |
 | Security | [`security.json`](mcp-configs/security.json) | Ghidra reverse engineering, Snyk vulnerability scanning |
 | Design | [`design.json`](mcp-configs/design.json) | Figma design context, Blender 3D automation |

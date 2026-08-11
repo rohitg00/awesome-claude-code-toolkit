@@ -5,6 +5,11 @@
       "url": "https://mcp.bgpt.pro/sse",
       "description": "Search scientific papers with full-text experimental data via BGPT. 50 free searches, no API key needed."
     },
+    "parallel-search": {
+      "type": "http",
+      "url": "https://search.parallel.ai/mcp",
+      "description": "Search the web and retrieve page content for research. No API key needed."
+    },
     "fetch": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-fetch"],
