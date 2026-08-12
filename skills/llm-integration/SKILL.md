@@ -30,6 +30,40 @@ async function generateResponse(
 }
 ```
 
+## MiniMax Provider Configuration
+
+The same SDK can call MiniMax through its Anthropic-compatible API. Select the
+endpoint for the account region and keep the API key in the environment.
+
+```typescript
+const MINIMAX_BASE_URLS = {
+  global: "https://api.minimax.io/anthropic",
+  china: "https://api.minimaxi.com/anthropic",
+} as const;
+
+type MiniMaxRegion = keyof typeof MINIMAX_BASE_URLS;
+
+function createMiniMaxClient(region: MiniMaxRegion = "global"): Anthropic {
+  const apiKey = process.env.MINIMAX_API_KEY;
+  if (!apiKey) throw new Error("MINIMAX_API_KEY is required");
+
+  return new Anthropic({
+    apiKey,
+    baseURL: MINIMAX_BASE_URLS[region],
+  });
+}
+
+const miniMaxClient = createMiniMaxClient(
+  process.env.MINIMAX_REGION === "china" ? "china" : "global"
+);
+
+const miniMaxResponse = await miniMaxClient.messages.create({
+  model: "MiniMax-M3",
+  max_tokens: 4096,
+  messages: [{ role: "user", content: "Design a resilient job queue" }],
+});
+```
+
 ## Streaming Responses
 
 ```typescript
