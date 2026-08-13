@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 17 MCP configs, 26 companion apps, 96 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -53,7 +53,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
 - [Templates](#templates) (7)
-- [MCP Configs](#mcp-configs) (14)
+- [MCP Configs](#mcp-configs) (17)
 - [Contexts](#contexts) (5)
 - [Examples](#examples) (3)
 - [Companion Apps & GUIs](#companion-apps--guis)
@@ -921,7 +921,7 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Sixteen curated Model Context Protocol server configurations.
+Seventeen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -941,6 +941,7 @@ Sixteen curated Model Context Protocol server configurations.
 | Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
 | LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
+| Agent Memory | [`lians-memory.json`](mcp-configs/lians-memory.json) | Lians: local SQLite memory with current and point-in-time recall, inspect/correct/delete tools, and memory receipts |
 
 ---
 
@@ -1003,7 +1004,7 @@ claude-code-toolkit/               850+ files
     scripts/                       19 Node.js scripts
   rules/                           15 coding rules
   templates/claude-md/             7 CLAUDE.md templates
-  mcp-configs/                     8 server configurations
+  mcp-configs/                     17 server configurations
   contexts/                        5 context modes
   examples/                        3 walkthrough examples
   setup/                           Interactive installer
@@ -1084,6 +1085,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [n8n-skills](https://github.com/czlonkowski/n8n-skills) | 3,400+ | Skills for building production-ready n8n workflows |
 | [claude-hooks-mastery](https://github.com/disler/claude-code-hooks-mastery) | 3,300+ | Complete mastery guide for Claude Code hooks with production-ready scripts |
 | [claude-supermemory](https://github.com/supermemoryai/claude-supermemory) | 2,300+ | Persistent memory across sessions using Supermemory |
+| [Lians](https://github.com/Lians-ai/Lians) | new | Local-first MCP memory for Claude Code and other agents. SQLite-backed cross-session recall, point-in-time queries, inspect/correct/delete tools. Apache-2.0. `uvx --from 'lians-sdk[mcp]' lians-mcp` |
 | [myclaude](https://github.com/stellarlinkco/myclaude) | 2,400+ | Multi-agent orchestration routing to Claude Code, Codex, Gemini, and OpenCode |
 | [claude-code-mcp](https://github.com/steipete/claude-code-mcp) | 1,100+ | Run Claude Code as a one-shot MCP server -- an agent in your agent |
 | [ccmanager](https://github.com/kbwo/ccmanager) | 940+ | Session manager supporting 8 coding agents with smart auto-approval |
