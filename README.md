@@ -80,6 +80,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 
 | Plugin | Description |
 |--------|-------------|
+| [cicada-husk](https://github.com/blazephoenixxyz-crypto/cicada-husk) | Token-lean operating discipline for Claude Code: reads code by symbol instead of by whole file, cites prior findings by name, doses effort per task, never polls, and budgets every sub-agent by risk. Applies its own doctrine to itself -- knowledge ships as documentation, so the runtime surface is two commands, one script and a ~25-token session banner: ~0 tokens per turn. Fully read-only, MIT |
 | [agento-patronum](https://github.com/emaarco/agento-patronum) | Protects sensitive files, credentials, and shell commands from unintended AI access via Claude Code hooks. Unlike settings.json deny rules, hooks are an enforcement layer you own and can verify. Ships with defaults for .env files, SSH keys, AWS credentials, and kubeconfig. |
 | [skills-janitor](https://github.com/khendzel/skills-janitor) | Audit, deduplicate, check, fix, and track usage of your Claude Code skills. 9 slash commands, zero dependencies |
 | [great_cto](https://github.com/avelikiy/great_cto) | Full SDLC pipeline plugin with 7 agents (tech-lead, senior-dev, qa-engineer, security-officer, devops, l3-support, project-auditor), 12-angle code review, 10 project archetypes, 13 compliance frameworks (SOC2/HIPAA/PCI-DSS/GDPR/ISO 27001), two-gate approval flow. Opus 4.7 advisor escalation, file-based, MIT |
