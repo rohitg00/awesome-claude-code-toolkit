@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "lians-memory": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "lians-sdk[mcp]",
+        "lians-mcp"
+      ],
+      "description": "Local-first agent memory with SQLite-backed recall across sessions, point-in-time queries, and tools to inspect, correct, and delete stored memory."
+    }
+  }
+}
