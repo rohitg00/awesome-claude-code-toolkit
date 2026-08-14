@@ -1,0 +1,10 @@
+{
+  "name": "dsh-plugin-cc",
+  "version": "1.0.0",
+  "description": "Bridge Claude Code to the DeepSeek Harness agent for review, critique, delegation, and resumable sessions",
+  "homepage": "https://github.com/cpj-dev/dsh-plugin-cc",
+  "repository": "https://github.com/cpj-dev/dsh-plugin-cc",
+  "license": "MIT",
+  "keywords": ["deepseek", "dsh", "code-review", "delegation", "bridge"],
+  "commands": ["commands/install.md"]
+}
