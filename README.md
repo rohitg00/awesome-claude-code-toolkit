@@ -340,6 +340,8 @@ One hundred thirty-five specialized agents organized into ten categories. Each a
 
 ### Core Development (13 agents)
 
+- [Clickyy](https://github.com/jayamitkatariya/clickyyy) - Shake your cursor to summon an AI agent that sees your screen and clicks, types, drags, and acts for you on macOS. Open-source, MIT.
+
 | Agent | File | Purpose |
 |-------|------|---------|
 | Fullstack Engineer | [`fullstack-engineer.md`](agents/core-development/fullstack-engineer.md) | End-to-end feature delivery across frontend, backend, and database |
