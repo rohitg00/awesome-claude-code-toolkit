@@ -1,0 +1,5 @@
+{
+  "name": "dsh-deepread",
+  "version": "0.5.4",
+  "description": "Deep-reading assistant: five modes (quick, deep, knowledge-map, Feynman, full book) to extract core claims, argument structure, and key evidence from books and articles; exports Markdown, FreeMind/XMind mindmaps, and HTML reports."
+}

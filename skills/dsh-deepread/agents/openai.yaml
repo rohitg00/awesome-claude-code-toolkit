@@ -1,0 +1,4 @@
+interface:
+  display_name: "DeepRead — Evidence-first Reading"
+  short_description: "Trace claims to evidence across articles, books, PDFs, and document sets."
+  default_prompt: "Use $dsh-deepread to analyze this content and trace every important claim to its supporting evidence."
