@@ -1,6 +1,13 @@
 ---
 name: dsh-deepread
-description: Evidence-first deep reading for books, articles, PDFs, and document sets. Extract core claims, argument structure, supporting evidence, source locations, confidence levels, knowledge maps, and recall questions. Use when the user asks to deep-read, analyze an article, extract claims, trace evidence, map knowledge, compare documents, or learn with the Feynman technique; also matches Chinese requests such as 精读、分析文章、核心观点、论证逻辑、知识地图、费曼读书法. Five modes: quick, deep, map, feynman, and book.
+description: >-
+  Evidence-first deep reading for books, articles, PDFs, and document sets.
+  Extract core claims, argument structure, supporting evidence, source locations,
+  confidence levels, knowledge maps, and recall questions. Use when the user asks
+  to deep-read, analyze an article, extract claims, trace evidence, map knowledge,
+  compare documents, or learn with the Feynman technique; also matches Chinese
+  requests such as 精读、分析文章、核心观点、论证逻辑、知识地图、费曼读书法.
+  Five modes: quick, deep, map, feynman, and book.
 ---
 
 # DeepRead 精读
