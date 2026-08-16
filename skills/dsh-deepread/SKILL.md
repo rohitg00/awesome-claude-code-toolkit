@@ -1,6 +1,6 @@
 ---
 name: dsh-deepread
-description: 精读一本书或一篇文章：提取核心观点、论证结构与关键论据。当用户要求「精读/分析这篇文章」「提取核心观点」「梳理论证逻辑」「做知识地图」「用费曼读书法读书」时使用本技能。五种模式：quick 快速要点 / deep 深度精读 / map 知识地图 / feynman 费曼读书法 / book 全书精读。Deep-reading assistant for books and articles: extract core claims, arguments and evidence.
+description: Evidence-first deep reading for books, articles, PDFs, and document sets. Extract core claims, argument structure, supporting evidence, source locations, confidence levels, knowledge maps, and recall questions. Use when the user asks to deep-read, analyze an article, extract claims, trace evidence, map knowledge, compare documents, or learn with the Feynman technique; also matches Chinese requests such as 精读、分析文章、核心观点、论证逻辑、知识地图、费曼读书法. Five modes: quick, deep, map, feynman, and book.
 ---
 
 # DeepRead 精读
@@ -10,7 +10,7 @@ description: 精读一本书或一篇文章：提取核心观点、论证结构�
 ## 第 0 步：读入内容
 
 1. 用户给了**文件路径**：读该文件（.txt/.md/.markdown/.html/.pdf）。
-   - PDF 没有现成解析工具时：若环境有 pdftotext 用之；否则读取原始字节，抽取 `stream...endstream` 内容流，解压 FlateDecode（zlib），解析文本算子 `(...)Tj`/`[...]TJ`，并用字体 `/ToUnicode` CMap 映射中文（CMap 字符串是 UTF-16BE，逐字节 `(b1<<8)|b2` 解码）。扫描版 PDF 提示用户 OCR。
+   - PDF 必须使用环境中可靠、经过验证的文本提取工具（如 `pdftotext`、宿主提供的 PDF 阅读器或 OCR）。抽取后检查页数、文本完整性和乱码情况；如果无法可靠读取，明确说明限制并请用户提供 OCR 版本或正文，不能基于不完整抽取继续生成结论。扫描版 PDF 必须先 OCR。
 2. 用户给了**链接**：先抓取页面（微信公众号 mp.weixin.qq.com 是服务端渲染可直接抓）。正文容器优先 `id=js_content`、`class=rich_media_content`、`article`、`main`；剔除 script/style/nav/footer；实体解码。知乎/掘金等反爬站点抓不到就请用户粘贴正文。
 3. **粘贴的正文**：直接使用。
 4. 内容超过约 9000 字：按段落切成每段 ≤6000 字的小节，逐节分析，最后综合。
@@ -44,4 +44,5 @@ description: 精读一本书或一篇文章：提取核心观点、论证结构�
 - `.md`：报告 Markdown（按模式模板顺序）。
 - `.mm`：FreeMind 思维导图 XML（`<map version="1.0.1">` + 嵌套 `<node TEXT="...">`，XMind 可「导入→FreeMind」）。
 - `.html`：独立网页报告（自带 CSS，深色模式自适应，报告正文 + 思维导图嵌套列表视图）。
+- 生成 `.mm` / `.html` 时，来源文本、标题、观点和文件名一律视为不可信输入：分别进行 XML 属性、HTML 文本和 HTML 属性转义；禁止直接拼接原始 HTML，确需保留格式时仅允许经过严格白名单清洗的标签与属性。
 - 写入用户工作区 `deepread-output/` 目录（不存在则建），文件名用报告标题去非法字符。
