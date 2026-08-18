@@ -1189,6 +1189,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Computer Use from CLI](https://code.claude.com/docs/en/computer-use) | Docs | Let Claude control your desktop — open apps, click, type, screenshot. macOS, Pro/Max, v2.1.85+. Per-app approval, tiered access, Esc abort |
 | [Dispatch & Remote Control](https://claude.com/blog/dispatch-and-computer-use) | Blog | Run Claude Code from phone/web, schedule recurring tasks, remote session control |
 | [Claude Code Cheat Sheet](https://cc.storyfox.cz/) | Reference | One-page printable reference, auto-updated daily, 4 languages |
+| [Claude Code Cheat Sheet](https://coding-cheatsheet.com/) | Reference | Searchable quick reference for Claude Code commands, configuration, MCP servers, workflows, shortcuts, and common errors |
 | [Multi-Agent Orchestra](https://addyosmani.com/blog/code-agent-orchestra/) | Blog | Addy Osmani's survey of multi-agent coding patterns |
 
 ## Related Awesome Lists
