@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "submittal-log.schema.json",
+  "title": "Section — Submittal Register",
+  "description": "The submittal register, in CSI MasterFormat order. Built by scanning the Summary QTO and the specs for every likely required submittal — product data, samples, engineered/shop drawings, certificates — each tagged with its MasterFormat division and trade and an estimated manufacturer lead time (the long-lead feed for the critical path). Whether a submittal complies is the submittal-review skill's job; this section structures the register.",
+  "type": "object",
+  "required": ["section", "entries"],
+  "properties": {
+    "section": { "type": "string", "const": "submittal_log" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["submittal_id", "description"],
+        "properties": {
+          "submittal_id": { "type": "string", "description": "Stable id, e.g. 'SUB-0951-01'." },
+          "spec_section": { "type": "string", "description": "MasterFormat section requiring the submittal." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "description": { "type": "string" },
+          "submittal_type": { "type": "string", "enum": ["product_data", "shop_drawing", "sample", "mockup", "certificate", "test_report", "om_manual", "warranty", "schedule", "other", "unknown"] },
+          "scope_item_id": { "type": "string" },
+          "responsible_party": { "type": "string", "description": "Trade/sub responsible (party_id or name) when assignable." },
+          "lead_time": { "type": "string", "description": "Stated procurement/fabrication lead time, verbatim." },
+          "lead_time_weeks": { "type": ["number", "null"], "description": "Estimated manufacturer lead time normalized to weeks — feeds the critical-path long-lead analysis." },
+          "required_by_date": { "type": ["string", "null"] },
+          "status": { "type": "string", "enum": ["required", "submitted", "under_review", "approved", "approved_as_noted", "revise_resubmit", "unknown"] },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

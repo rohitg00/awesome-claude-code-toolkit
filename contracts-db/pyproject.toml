@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ntxp-contracts"
+version = "0.1.0"
+description = "NTXP Master Contracts database: one adaptable, pollable source of truth for Job Order, Cooperative, and Master Subcontract Agreements, with an inline-editable web dashboard and per-contract profile."
+requires-python = ">=3.10"
+dependencies = []           # core runs on the standard library alone
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ntxp-contracts = "ntxp_contracts.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ntxp_contracts*"]
+
+[tool.setuptools.package-data]
+ntxp_contracts = ["db/migrations/*.sql", "web/static/*"]

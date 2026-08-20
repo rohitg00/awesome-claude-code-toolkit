@@ -145,6 +145,30 @@ install_mcp_config() {
   echo "and replace placeholder values with your actual credentials."
 }
 
+install_paperclip_mcp() {
+  echo "--- Paperclip AI MCP Server ---"
+
+  local script="$CLAUDE_DIR/hooks/scripts/paperclip-mcp-server.js"
+  if [[ ! -f "$script" ]]; then
+    echo "Paperclip MCP server script not installed (install hooks first). Skipping."
+    return
+  fi
+
+  echo ""
+  echo "To enable the Paperclip MCP server, add this to your"
+  echo "~/.claude/settings.json (or project .claude/settings.json)"
+  echo "under the \"mcpServers\" key:"
+  echo ""
+  echo "  \"paperclip\": {"
+  echo "    \"command\": \"node\","
+  echo "    \"args\": [\"$script\"],"
+  echo "    \"env\": { \"PAPERCLIP_BASE_URL\": \"http://127.0.0.1:3100/api\" }"
+  echo "  }"
+  echo ""
+  echo "Credentials are auto-discovered from ~/.paperclip/connector-state.json."
+  echo "Toggle on/off with: /paperclip-ai:toggle"
+}
+
 main() {
   print_header
 
@@ -172,6 +196,11 @@ main() {
 
   if prompt_yn "Copy MCP server config reference?" "y"; then
     install_mcp_config
+    echo ""
+  fi
+
+  if prompt_yn "Show Paperclip AI MCP server setup?" "y"; then
+    install_paperclip_mcp
     echo ""
   fi
 

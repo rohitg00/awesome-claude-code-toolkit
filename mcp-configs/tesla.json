@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "tesla": {
+      "command": "node",
+      "args": ["~/path/to/awesome-claude-code-toolkit/mcp-servers/tesla/dist/index.js"],
+      "env": {
+        "TESLA_REFRESH_TOKEN": "<your refresh token — see mcp-servers/tesla/README.md>",
+        "TESLA_VIN": "<optional default VIN>",
+        "TESLA_AUTH_MODE": "owner",
+        "TESLA_MOCK": "0"
+      },
+      "description": "Tesla connector: locate the car (find my Tesla / drop a pin / navigate-to-car), lock & unlock, climate, charging, trunk, windows, sentry, navigation share, media — the full Fleet/Owner API surface as 72 MCP tools. Companion 'tesla-bridge' serves the Tesla-themed dashboard and Siri/ChatGPT endpoints."
+    }
+  }
+}

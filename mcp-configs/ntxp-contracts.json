@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ntxp-contracts": {
+      "command": "ntxp-contracts",
+      "args": ["mcp-serve"],
+      "env": {
+        "NTXP_CONTRACTS_DB": "~/.ntxp/contracts.db"
+      },
+      "description": "Poll and update the NTXP Master Contracts database: search contracts, fetch a full profile (terms + owner-entity contact info + jobs/sales roll-up), look up reference fields (coefficient, cooperative fee, expiration, allowable scope, signed-PDF link), list expiring contracts, upsert, and cache JobTread jobs. The single source of truth for contract reference data across NTXP tools."
+    }
+  }
+}

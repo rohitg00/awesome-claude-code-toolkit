@@ -1,0 +1,155 @@
+/* NTXP Contracts — all color/type comes from CSS vars set at runtime by
+   brand.js (resolved from the live brand skill in Claude's settings). */
+:root{
+  --dark:#10243E; --light:#F7F8FA; --surface:#FFFFFF; --muted:#6B7785;
+  --border:#DCE2EA; --primary:#10243E; --accent:#E2562B; --accent2:#2F80ED;
+  --success:#2E7D52; --warning:#B7791F; --danger:#C0392B;
+  --font-heading:Poppins,'Segoe UI',Arial,sans-serif;
+  --font-body:Inter,'Segoe UI',Arial,sans-serif;
+  --radius:10px; --shadow:0 1px 3px rgba(16,36,62,.08),0 4px 16px rgba(16,36,62,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--light);color:var(--dark);font-family:var(--font-body);
+  font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.brandfont{font-family:var(--font-heading);font-weight:600}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--primary);color:#fff;
+  display:flex;align-items:center;gap:16px;padding:12px 20px;box-shadow:var(--shadow)}
+.topbar .logo{height:30px}
+.topbar .title{font-family:var(--font-heading);font-weight:600;font-size:18px;letter-spacing:.2px}
+.topbar .sub{color:rgba(255,255,255,.7);font-size:12px;margin-left:2px}
+.topbar .spacer{flex:1}
+.topbar .who{font-size:12px;color:rgba(255,255,255,.85)}
+.topbar .who input{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;border-radius:6px;padding:3px 8px;font-size:12px;width:120px}
+.topbar .who input::placeholder{color:rgba(255,255,255,.6)}
+
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border)}
+.toolbar .search{flex:1;min-width:200px;max-width:420px;padding:8px 12px;
+  border:1px solid var(--border);border-radius:8px;font-size:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--dark);padding:8px 14px;border-radius:8px;
+  font-size:13px;font-weight:500;cursor:pointer;transition:.12s}
+.btn:hover{border-color:var(--accent2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(.95)}
+.btn.ghost{background:transparent}
+.saveflash{font-size:12px;color:var(--success);opacity:0;transition:opacity .25s}
+.saveflash.show{opacity:1}
+
+.wrap{padding:18px 20px 60px}
+
+/* Contract log table */
+.tablecard{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+thead th{position:sticky;top:0;background:var(--light);text-align:left;
+  font-family:var(--font-heading);font-weight:600;font-size:11px;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--muted);padding:10px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:2px 6px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:hover{background:#fbfcfe}
+tbody tr.expired{background:rgba(192,57,43,.05)}
+tbody tr.soon{background:rgba(183,121,31,.06)}
+
+/* Inline editors — look like text until focused */
+.cell{width:100%;border:1px solid transparent;background:transparent;border-radius:6px;
+  padding:6px 7px;font:inherit;color:inherit;min-width:60px}
+.cell:hover{border-color:var(--border)}
+.cell:focus{outline:none;border-color:var(--accent2);background:#fff;
+  box-shadow:0 0 0 2px rgba(47,128,237,.15)}
+select.cell{appearance:none;cursor:pointer}
+td.num input{font-variant-numeric:tabular-nums}
+
+.cono{display:flex;align-items:center;gap:6px}
+.cono a{font-weight:600;color:var(--accent2);white-space:nowrap}
+.pencil{cursor:pointer;color:var(--muted);font-size:12px;opacity:.5}
+.pencil:hover{opacity:1;color:var(--accent2)}
+
+/* executed flag toggle */
+.flag{display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  padding:4px 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid transparent}
+.flag.exec{background:rgba(46,125,82,.12);color:var(--success)}
+.flag.unexec{background:rgba(192,57,43,.12);color:var(--danger)}
+.flag .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.exp.exp-expired{color:var(--danger);font-weight:600}
+.exp.exp-soon{color:var(--warning);font-weight:600}
+
+.pdf-yes{color:var(--accent2)}
+.pdf-no{color:var(--muted);opacity:.6}
+
+.rowtools{display:flex;gap:4px;opacity:0;transition:.1s}
+tr:hover .rowtools{opacity:1}
+.iconbtn{border:none;background:transparent;cursor:pointer;color:var(--muted);
+  font-size:14px;padding:4px;border-radius:6px}
+.iconbtn:hover{color:var(--danger);background:rgba(192,57,43,.08)}
+
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:12px 4px}
+.legend b{color:var(--dark)}
+
+/* ---------- Profile screen ---------- */
+.profile{max-width:1000px;margin:0 auto;padding:24px 20px 80px}
+.crumbs{font-size:13px;margin-bottom:14px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:24px;margin-bottom:18px}
+.hero .eyebrow{color:var(--accent);font-family:var(--font-heading);font-weight:600;
+  font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.hero h1{margin:6px 0 4px;font-size:26px}
+.hero .cono-big{color:var(--muted);font-size:14px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.badge{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;
+  background:var(--light);border:1px solid var(--border)}
+.badge.ok{background:rgba(46,125,82,.12);color:var(--success);border-color:transparent}
+.badge.bad{background:rgba(192,57,43,.12);color:var(--danger);border-color:transparent}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:18px}
+.card h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--border)}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--muted)}
+.kv .v{font-weight:600;text-align:right}
+.stat{font-family:var(--font-heading);font-size:30px;font-weight:700;color:var(--primary)}
+.stat.accent{color:var(--accent)}
+
+.contact-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 0;border-bottom:1px dashed var(--border)}
+.contact-row:last-child{border-bottom:none}
+.contact-actions{display:flex;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;
+  padding:6px 11px;border-radius:8px;border:1px solid var(--border);background:var(--light);
+  color:var(--dark);cursor:pointer}
+.chip:hover{border-color:var(--accent2);text-decoration:none}
+.chip.call{color:var(--success)}
+.chip.text{color:var(--accent2)}
+
+.jobs-table{width:100%;border-collapse:collapse;font-size:13px}
+.jobs-table th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;
+  letter-spacing:.4px;padding:8px 8px;border-bottom:1px solid var(--border)}
+.jobs-table td{padding:9px 8px;border-bottom:1px solid var(--border)}
+.jobs-table tfoot td{font-weight:700;border-top:2px solid var(--border)}
+.muted{color:var(--muted)}
+
+/* ---------- Print / PDF: 8.5 x 11 letter ---------- */
+@page{size:letter portrait;margin:.5in}
+@media print{
+  .topbar,.toolbar,.rowtools,.pencil,.legend,.no-print,.iconbtn{display:none!important}
+  body{background:#fff;font-size:10pt}
+  .wrap,.profile{padding:0}
+  .tablecard,.card,.hero{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+  .cell{border:none!important;box-shadow:none!important;padding:2px 4px}
+  thead th{position:static}
+  table{font-size:8.5pt}
+  a{color:#000;text-decoration:none}
+  .printhead{display:block!important}
+}
+.printhead{display:none;margin-bottom:10px}
+.printhead h1{margin:0;font-size:18pt}
+.printhead .meta{color:#444;font-size:9pt}

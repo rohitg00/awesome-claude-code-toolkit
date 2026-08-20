@@ -1,0 +1,6 @@
+{
+  "name": "ntxp-contracts-db",
+  "version": "0.1.0",
+  "description": "NTXP Master Contracts database: one adaptable, pollable source of truth for Job Order, Cooperative, and Master Subcontract Agreements, with an inline-editable web dashboard and per-contract profile",
+  "commands": ["commands/ntxp-contracts.md"]
+}

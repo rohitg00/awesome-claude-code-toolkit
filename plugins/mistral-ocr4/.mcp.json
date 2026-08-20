@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mistral-ocr4": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/server/dist/index.js"],
+      "env": {
+        "MISTRAL_API_KEY": "${MISTRAL_API_KEY}"
+      }
+    }
+  }
+}

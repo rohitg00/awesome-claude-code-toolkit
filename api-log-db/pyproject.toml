@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ntxp-apilog"
+version = "0.1.0"
+description = "NTXP API Log: one shared registry of API endpoints, credentials, and cost — with a branded dashboard, a CLI, and an MCP server so Claude can fill in APIs on demand."
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.1",          # CLI
+    "cryptography>=3.4",   # at-rest encryption of secret fields (Fernet)
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ntxp-apilog = "ntxp_apilog.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ntxp_apilog*"]
+
+[tool.setuptools.package-data]
+ntxp_apilog = ["db/migrations/*.sql", "dashboard/*.html"]

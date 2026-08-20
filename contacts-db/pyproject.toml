@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ntxp-contacts"
+version = "0.1.0"
+description = "NTXP master contacts database: one de-duplicated source of truth for all NTXP tools, with idempotent imports and bi-directional CRM sync."
+requires-python = ">=3.10"
+dependencies = [
+    "openpyxl>=3.1",      # .xlsx readers
+    "xlrd>=2.0",          # legacy .xls readers
+    "phonenumbers>=8.13", # E.164 normalization
+    "rapidfuzz>=3.0",     # fuzzy identity resolution
+    "click>=8.1",         # CLI
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0"]
+ocr = ["pytesseract>=0.3", "pdf2image>=1.17", "Pillow>=10.0"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ntxp = "ntxp_contacts.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ntxp_contacts*"]
+
+[tool.setuptools.package-data]
+ntxp_contacts = ["db/migrations/*.sql"]

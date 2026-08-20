@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quantity-takeoff.schema.json",
+  "title": "Section — Summary Quantity Takeoff (QTO)",
+  "description": "The single source of truth for quantities. Every other section (budget, trade pages, submittal register, bid log) pulls its quantities from here — they never restate a quantity, they reference a takeoff_id. Each line is tied to a MasterFormat division (the universal sort key), a unit of measure, and (where known) a scope item and location. Listed in CSI MasterFormat division order. The initial QTO is built from the OCR4 extraction; conflicts are verified against the real drawings and sanity-checked. The model carries only quantities supported by the documents/drawings — it never invents measurement or pricing.",
+  "type": "object",
+  "required": ["section", "items"],
+  "properties": {
+    "section": { "type": "string", "const": "quantity_takeoff" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["takeoff_id", "description", "quantity"],
+        "properties": {
+          "takeoff_id": { "type": "string", "description": "Stable id, e.g. 'QTO-0951-0007'." },
+          "scope_item_id": { "type": "string", "description": "Link back to scope.items[].scope_item_id." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "description": { "type": "string" },
+          "quantity": { "$ref": "common.defs.schema.json#/$defs/quantity" },
+          "location": { "type": "string", "description": "Area / room / level / zone / grid the quantity belongs to, when stated — supports area- and phase-based estimating." },
+          "cost_code": { "type": "string", "description": "Sub-division cost code within the trade (e.g. 'demo', 'new_work', 'schedule') so budgets can split a division." },
+          "source_type": { "type": "string", "enum": ["drawing", "schedule", "spec_table", "quantity_survey", "bid_form", "stated", "unknown"], "description": "Where the quantity came from." },
+          "sheet": { "type": "string", "description": "Drawing sheet / schedule id the quantity was read from." },
+          "verified_against_drawings": { "type": ["boolean", "null"], "description": "True once a conflict/sanity-check was reconciled against the real drawings." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" },
+          "normalization": { "$ref": "common.defs.schema.json#/$defs/normalization" }
+        }
+      }
+    },
+    "by_division_summary": {
+      "type": "array",
+      "description": "Optional roll-up of total quantity by CSI division and UOM, for quick conceptual checks.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "masterformat_division": { "type": "string" },
+          "uom": { "type": "string" },
+          "total_quantity": { "type": "number" },
+          "line_count": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

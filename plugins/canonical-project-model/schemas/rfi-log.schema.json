@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rfi-log.schema.json",
+  "title": "Section — RFI Log",
+  "description": "Request-for-Information register. During bid/estimating these are pre-bid questions and scope clarifications; at start-up they seed the project RFI log. Captures the question, the spec/drawing reference, ball-in-court, and any stated cost/schedule impact — verbatim. Resolving an RFI or assessing its impact is downstream work; this section structures the log.",
+  "type": "object",
+  "required": ["section", "entries"],
+  "properties": {
+    "section": { "type": "string", "const": "rfi_log" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rfi_id", "subject"],
+        "properties": {
+          "rfi_id": { "type": "string", "description": "RFI number as logged, or assigned id, e.g. 'RFI-007'." },
+          "subject": { "type": "string" },
+          "question": { "type": "string", "description": "The question text, verbatim." },
+          "answer": { "type": "string", "description": "The response, verbatim, when present (e.g. answered in an addendum)." },
+          "discipline": { "type": "string", "description": "Architectural, Structural, MEP, Civil, etc." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "spec_drawing_ref": { "type": "string", "description": "Spec section / drawing sheet the RFI references." },
+          "scope_item_id": { "type": "string" },
+          "ball_in_court": { "type": "string", "description": "Who owes the next action (e.g. 'A/E', 'Owner', 'Contractor')." },
+          "submitted_date": { "type": ["string", "null"] },
+          "needed_by_date": { "type": ["string", "null"] },
+          "cost_impact_noted": { "type": "string", "description": "Cost impact as stated in the document, verbatim. Not assessed here." },
+          "schedule_impact_noted": { "type": "string" },
+          "status": { "type": "string", "enum": ["open", "answered", "closed", "void", "unknown"] },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

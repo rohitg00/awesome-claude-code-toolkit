@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "activity-stream.schema.json",
+  "title": "Section \u2014 Activity Stream",
+  "description": "Chronological feed of project activity synced ONE-WAY into the knowledge base from connectors (JobTread daily logs/photos, OCR4 document snips such as submittal pages, schedule updates, and workspace-intelligence summaries of emails and meeting minutes). Sync prioritizes the most recent five days, then backfills. Entries are facts with provenance; the stream never editorializes about project success.",
+  "type": "object",
+  "required": [
+    "section",
+    "entries"
+  ],
+  "properties": {
+    "section": {
+      "type": "string",
+      "const": "activity_stream"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ts",
+          "text"
+        ],
+        "properties": {
+          "ts": {
+            "type": "string",
+            "description": "ISO 8601 timestamp."
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "jobtread",
+              "ocr4",
+              "submittal",
+              "rfi",
+              "schedule",
+              "email",
+              "meeting",
+              "workspace_intel",
+              "manual",
+              "other"
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "photo",
+              "pdf_snip",
+              "note",
+              "event",
+              "document",
+              "email_summary",
+              "meeting_minutes",
+              "other"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "description": "Photo or snip: URL or data URI (data URI keeps the dashboard self-contained)."
+          },
+          "doc_ref": {
+            "type": "string",
+            "description": "Related doc/page (e.g. 'SUB-0951-01 p.3')."
+          },
+          "masterformat_division": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "provenance": {
+            "$ref": "common.defs.schema.json#/$defs/provenance"
+          }
+        }
+      }
+    }
+  }
+}

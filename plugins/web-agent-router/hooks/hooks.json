@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "type": "UserPromptSubmit",
+      "description": "Detect remote/web task intent across any tool and nudge toward the routing gate before one gets picked",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-remote-work-intent.js"
+    }
+  ]
+}

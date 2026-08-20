@@ -1,7 +1,7 @@
 {
   "name": "claude-code-toolkit",
   "displayName": "Claude Code Toolkit",
-  "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 35 skills, 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
+  "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 42 skills, 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
   "owner": { "name": "Rohit Ghumare" },
   "repository": "https://github.com/rohitg00/awesome-claude-code-toolkit",
   "license": "Apache-2.0",
@@ -108,6 +108,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "canonical-project-model",
+      "source": "plugins/canonical-project-model",
+      "description": "Normalization layer of the construction-doc-intelligence pipeline: turns the verbatim project-intake dossier (which Mistral OCR4 produced) into the Canonical Project Record - one reusable, CSI MasterFormat-organized, provenance-carrying source of truth - and renders it as an interlinked Excel workbook (dashboard + sub-pages for project bio, contacts, quick links, trades, Summary QTO as single source of truth, per-trade budget pages with ITB/QR, submittal register, schedule, critical path, bid log, editable budget rollup). MasterFormat division is the sole classification and universal sort key. Parallel agents normalize each section; deterministic scripts assemble canonical-model.json and build the workbook. It organizes - it never prices, levels, or decides.",
+      "version": "1.0.0"
+    },
+    {
       "name": "changelog-gen",
       "source": "plugins/changelog-gen",
       "description": "Generate changelogs from git history with conventional commit parsing",
@@ -177,6 +183,12 @@
       "name": "compliance-checker",
       "source": "plugins/compliance-checker",
       "description": "Regulatory compliance verification for GDPR, SOC2, and HIPAA",
+      "version": "1.0.0"
+    },
+    {
+      "name": "construction-doc-intelligence",
+      "source": "plugins/construction-doc-intelligence",
+      "description": "End-to-end pipeline for reviewing RFP, vendor, invoicing, submittal, and engineering/design documents - chains mistral-ocr4 extraction to domain-review skills, senior-PM lean judgment, presentation, and a self-improvement loop. Mistral extracts; Claude reasons.",
       "version": "1.0.0"
     },
     {
@@ -450,6 +462,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "mistral-ocr4",
+      "source": "plugins/mistral-ocr4",
+      "description": "Lean, tool-agnostic Mistral OCR4 + Document AI access layer (custom MCP server, extraction skill, intent hooks, handoff seam) for construction/RFP/vendor/invoice/submittal/engineering documents - extraction only, reasoning stays with the calling model",
+      "version": "1.0.0"
+    },
+    {
       "name": "model-context-protocol",
       "source": "plugins/model-context-protocol",
       "description": "MCP server development helper with tool and resource scaffolding",
@@ -484,6 +502,24 @@
       "source": "plugins/n8n-workflow",
       "description": "Generate n8n automation workflows from natural language descriptions",
       "version": "1.0.0"
+    },
+    {
+      "name": "tesla-connector",
+      "source": "plugins/tesla-connector",
+      "description": "Tesla vehicle control from Claude: find my Tesla / drop a pin / navigate-to-car, lock & unlock, climate, charging, sentry — 72 MCP tools with zero-touch first-run setup, a themed dashboard GUI, and Siri/ChatGPT bridge",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ntxp-contacts",
+      "source": "plugins/ntxp-contacts",
+      "description": "NTXP master contacts database: one de-duplicated source of truth with idempotent imports, full-text search, and bi-directional CRM sync",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ntxp-contracts-db",
+      "source": "plugins/ntxp-contracts-db",
+      "description": "NTXP Master Contracts database: one adaptable, pollable source of truth for Job Order, Cooperative, and Master Subcontract Agreements, with an inline-editable web dashboard and per-contract profile",
+      "version": "0.1.0"
     },
     {
       "name": "onboarding-guide",
@@ -522,6 +558,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "plugin-dev",
+      "source": "plugins/plugin-dev",
+      "description": "Plugin development toolkit with skills for creating agents, commands, hooks, MCP integrations, and comprehensive plugin structure guidance",
+      "version": "1.0.0"
+    },
+    {
       "name": "pr-reviewer",
       "source": "plugins/pr-reviewer",
       "description": "Review pull requests with structured analysis and approve with confidence",
@@ -531,6 +573,12 @@
       "name": "product-shipper",
       "source": "plugins/product-shipper",
       "description": "Ship features end-to-end with launch checklists and rollout plans",
+      "version": "1.0.0"
+    },
+    {
+      "name": "project-intake",
+      "source": "plugins/project-intake",
+      "description": "Project document intake: auto-names a folder from the project title, runs Mistral OCR4 across the document set, builds a dossier (product tables, products, finish/equipment schedules, contacts, scope, requirements with provenance), and emits handoff.json to the construction-doc-intelligence orchestrator.",
       "version": "1.0.0"
     },
     {

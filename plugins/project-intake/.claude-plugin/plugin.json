@@ -1,0 +1,7 @@
+{
+  "name": "project-intake",
+  "version": "1.0.0",
+  "description": "Project document intake: auto-names a folder from the project title, runs Mistral OCR4 across the document set in parallel, builds a structured dossier (all product tables, specified products, finish/equipment schedules, contacts, scope, requirements - each with provenance), and emits a handoff.json that hands control to the construction-doc-intelligence orchestrator for the next step.",
+  "commands": ["commands/intake.md"],
+  "agents": ["agents/intake-agent.md"]
+}

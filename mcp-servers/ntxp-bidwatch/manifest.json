@@ -1,0 +1,42 @@
+{
+  "manifest_version": "0.2",
+  "name": "ntxp-bidwatch",
+  "display_name": "NTXP BidWatch",
+  "version": "0.1.0",
+  "description": "NTXP BidWatch — unified search across public procurement / bidding sources: SAM.gov, HigherGov, BidBanana, Texas ESBD, Bonfire (UT Dallas, Lewisville), Jaggaer (UNT, Texas A&M), Ionwave (Denton), OpenGov, DemandStar, PlanetBids.",
+  "long_description": "NTXP BidWatch is an MCP connector hub for federal, state, local, and university procurement opportunities. Keyless sources (Texas ESBD/TxSmartBuy, Bonfire RSS) work out of the box; credentialed sources (SAM.gov, HigherGov, BidBanana, OpenGov) activate when you provide their keys. Every source declares its reliability so results are honest: API-backed sources return structured data, while client-side-rendered portals (Jaggaer, DemandStar, PlanetBids) return a verified portal link instead of fabricated rows.",
+  "author": { "name": "awesome-claude-code-toolkit" },
+  "license": "MIT",
+  "keywords": ["ntxp", "bidwatch", "procurement", "rfp", "bids", "tenders", "samgov", "highergov", "bonfire", "esbd", "texas"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "SAM_GOV_API_KEY": "${user_config.sam_gov_api_key}",
+        "HIGHERGOV_API_KEY": "${user_config.highergov_api_key}",
+        "BIDBANANA_API_KEY": "${user_config.bidbanana_api_key}",
+        "OPENGOV_CLIENT_ID": "${user_config.opengov_client_id}",
+        "OPENGOV_CLIENT_SECRET": "${user_config.opengov_client_secret}",
+        "OPENGOV_SEARCH_PATH": "${user_config.opengov_search_path}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "bidwatch_list_sources", "description": "List sources with platform, auth, reliability, and readiness." },
+    { "name": "bidwatch_search", "description": "Search a single procurement source for opportunities." },
+    { "name": "bidwatch_search_all", "description": "Search across multiple sources and aggregate results." },
+    { "name": "bidwatch_get_opportunity", "description": "Fetch one opportunity by id (where supported)." }
+  ],
+  "user_config": {
+    "sam_gov_api_key": { "type": "string", "title": "SAM.gov API Key", "description": "Free key from api.data.gov.", "sensitive": true, "required": false },
+    "highergov_api_key": { "type": "string", "title": "HigherGov API Key", "description": "From your paid HigherGov subscription.", "sensitive": true, "required": false },
+    "bidbanana_api_key": { "type": "string", "title": "BidBanana API Key", "description": "Provisioned by The Bid Lab.", "sensitive": true, "required": false },
+    "opengov_client_id": { "type": "string", "title": "OpenGov Client ID", "description": "OAuth2 client-credentials ID from developer.opengov.com.", "required": false },
+    "opengov_client_secret": { "type": "string", "title": "OpenGov Client Secret", "description": "OAuth2 client secret from developer.opengov.com.", "sensitive": true, "required": false },
+    "opengov_search_path": { "type": "string", "title": "OpenGov Search Path", "description": "Gateway resource path for solicitations (default /procurement/v1/projects). Confirm from your OpenGov developer docs.", "required": false }
+  },
+  "compatibility": { "runtimes": { "node": ">=18.0.0" } }
+}

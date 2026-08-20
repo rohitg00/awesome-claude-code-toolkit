@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "type": "SessionStart",
+      "description": "Detect Tesla connector first run and surface the setup command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/first-run-check.mjs"
+    }
+  ]
+}

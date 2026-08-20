@@ -1,0 +1,97 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "project_dossier",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "project_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "project_title": { "type": "string" },
+            "project_number": { "type": "string" },
+            "owner": { "type": "string" },
+            "location": { "type": "string" }
+          }
+        },
+        "products": {
+          "type": "array",
+          "description": "Every product specified in this document.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "manufacturer": { "type": "string" },
+              "model_no": { "type": "string" },
+              "spec_section": { "type": "string" },
+              "csi_division": { "type": "string" },
+              "ratings": { "type": "array", "items": { "type": "string" } },
+              "page_ref": { "type": "string" }
+            }
+          }
+        },
+        "schedules": {
+          "type": "array",
+          "description": "Every schedule (finish, equipment, door, window, etc.) as rows.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schedule_type": { "type": "string", "description": "e.g. finish, equipment, door, window, plumbing fixture." },
+              "sheet": { "type": "string" },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "tag": { "type": "string" },
+                    "description": { "type": "string" },
+                    "manufacturer": { "type": "string" },
+                    "model": { "type": "string" },
+                    "attributes": { "type": "string", "description": "Any remaining columns as a single 'key: value; key: value' text blob (size, rating, finish, capacity, electrical, etc.)." }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "description": "People/companies named in the document (owner, A/E, GC, subs, suppliers).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": { "type": "string" },
+              "company": { "type": "string" },
+              "name": { "type": "string" },
+              "email": { "type": "string" },
+              "phone": { "type": "string" }
+            }
+          }
+        },
+        "scope_items": {
+          "type": "array",
+          "description": "Scope-of-work line items as written.",
+          "items": { "type": "string" }
+        },
+        "requirements": {
+          "type": "array",
+          "description": "Binding requirements quoted verbatim (RFP/spec 'shall' statements), each with a page reference.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": { "type": "string" },
+              "page_ref": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

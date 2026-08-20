@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTXP · API Log</title>
+<style>
+  :root{
+    --ntxp-navy:#0b1f3a; --ntxp-navy-2:#13294b; --ntxp-accent:#16b8a6;
+    --ntxp-accent-2:#3b82f6; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --bg:#f1f5f9; --card:#ffffff; --danger:#dc2626; --ok:#16a34a; --warn:#d97706;
+    --radius:12px; --shadow:0 1px 3px rgba(15,23,42,.08),0 8px 24px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  a{color:var(--ntxp-accent-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Header */
+  header{background:linear-gradient(135deg,var(--ntxp-navy),var(--ntxp-navy-2));
+         color:#fff;padding:18px 28px;display:flex;align-items:center;gap:16px;
+         box-shadow:var(--shadow);position:sticky;top:0;z-index:20}
+  .logo{display:flex;align-items:center;gap:12px}
+  .mark{width:40px;height:40px;border-radius:9px;
+        background:linear-gradient(135deg,var(--ntxp-accent),var(--ntxp-accent-2));
+        display:grid;place-items:center;font-weight:800;letter-spacing:.5px;
+        font-size:13px;color:#06243a;box-shadow:0 2px 8px rgba(22,184,166,.4)}
+  .brand h1{margin:0;font-size:18px;font-weight:700;letter-spacing:.3px}
+  .brand .tag{font-size:11px;color:#9fb3cc;letter-spacing:1.5px;text-transform:uppercase}
+  header .spacer{flex:1}
+  .locknote{font-size:12px;color:#9fb3cc;display:flex;align-items:center;gap:6px}
+
+  main{max-width:1240px;margin:0 auto;padding:24px 28px 64px}
+
+  /* Stat cards */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        padding:18px 20px;box-shadow:var(--shadow)}
+  .stat .label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+  .stat .value{font-size:28px;font-weight:700;margin-top:6px}
+  .stat .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .stat.accent .value{color:var(--ntxp-accent)}
+
+  /* Toolbar */
+  .toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
+  .toolbar input[type=search],.toolbar select{padding:9px 12px;border:1px solid var(--line);
+       border-radius:9px;background:#fff;font-size:14px;color:var(--ink)}
+  .toolbar input[type=search]{flex:1;min-width:220px}
+  .toolbar .spacer{flex:1}
+  button{cursor:pointer;border:none;border-radius:9px;font-size:14px;font-weight:600;
+         padding:9px 16px;transition:transform .05s,box-shadow .15s,background .15s}
+  button:active{transform:translateY(1px)}
+  .btn-primary{background:var(--ntxp-accent);color:#06243a}
+  .btn-primary:hover{box-shadow:0 4px 12px rgba(22,184,166,.4)}
+  .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{background:#f8fafc}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .btn-danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+
+  /* Table */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+         box-shadow:var(--shadow);overflow:hidden}
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:920px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
+     padding:12px 16px;border-bottom:1px solid var(--line);background:#f8fafc;white-space:nowrap}
+  td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafcff}
+  .name{font-weight:600}
+  .provider{font-size:12px;color:var(--muted)}
+  .url{font-size:12px;color:var(--ntxp-accent-2);word-break:break-all;max-width:220px;display:inline-block}
+  .secret{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+          background:#f1f5f9;border:1px solid var(--line);border-radius:6px;padding:2px 7px;
+          display:inline-flex;align-items:center;gap:6px;max-width:240px}
+  .secret .val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .secret button{background:none;padding:0;font-size:11px;color:var(--ntxp-accent-2)}
+  .none{color:#cbd5e1}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600;text-transform:capitalize}
+  .pill.active{background:#dcfce7;color:#15803d}
+  .pill.inactive{background:#f1f5f9;color:#64748b}
+  .pill.revoked{background:#fee2e2;color:#b91c1c}
+  .pill.trial{background:#fef9c3;color:#a16207}
+  .cat{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .spend{font-weight:600;font-variant-numeric:tabular-nums}
+  .actions{display:flex;gap:6px;white-space:nowrap}
+  .empty{padding:48px;text-align:center;color:var(--muted)}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(11,31,58,.55);display:none;
+           align-items:flex-start;justify-content:center;padding:40px 16px;z-index:40;overflow:auto}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;width:100%;max-width:640px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{margin:0;padding:20px 24px;border-bottom:1px solid var(--line);font-size:16px}
+  .modal .body{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .modal .body .full{grid-column:1/-1}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .field input,.field select,.field textarea{width:100%;padding:9px 11px;border:1px solid var(--line);
+       border-radius:9px;font-size:14px;font-family:inherit}
+  .field textarea{resize:vertical;min-height:60px}
+  .field .hint{font-size:11px;color:var(--muted);margin-top:4px}
+  fieldset{grid-column:1/-1;border:1px solid var(--line);border-radius:10px;padding:14px;margin:0}
+  fieldset legend{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:0 6px}
+  .secgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .modal .foot{padding:16px 24px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
+
+  /* Toast */
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ntxp-navy);
+         color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;box-shadow:var(--shadow);
+         opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+  #toast.err{background:var(--danger)}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+  @media(max-width:680px){.modal .body,.secgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="mark">NTXP</div>
+    <div class="brand"><h1>API Log</h1><div class="tag">Shared Credential &amp; Cost Registry</div></div>
+  </div>
+  <div class="spacer"></div>
+  <div id="user" class="locknote"></div>
+  <div class="locknote">🔒 Secrets encrypted at rest</div>
+</header>
+
+<main>
+  <section class="stats" id="stats"></section>
+
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Search APIs by name, provider, purpose, tag…">
+    <select id="fcat"><option value="">All categories</option></select>
+    <select id="fstatus"><option value="">All statuses</option></select>
+    <div class="spacer"></div>
+    <button class="btn-ghost" id="refresh">↻ Refresh</button>
+    <button class="btn-primary" id="addBtn">+ Add API</button>
+  </div>
+
+  <div class="panel">
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>API</th><th>Category</th><th>Base URL</th><th>Key</th>
+          <th>Login</th><th>Cost model</th><th>Spend</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" style="display:none">No APIs yet. Click <b>+ Add API</b> to register one.</div>
+  </div>
+  <footer>NTXP API Log · one shared SQLite database · Python · CLI · MCP · Dashboard</footer>
+</main>
+
+<!-- Add/Edit modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Add API</h2>
+    <div class="body">
+      <input type="hidden" id="f_id">
+      <div class="field"><label>Name *</label><input id="f_name" placeholder="OpenAI"></div>
+      <div class="field"><label>Provider</label><input id="f_provider" placeholder="OpenAI, Inc."></div>
+      <div class="field"><label>Category</label><select id="f_category"></select></div>
+      <div class="field"><label>Status</label><select id="f_status"></select></div>
+      <div class="field full"><label>Base URL</label><input id="f_base_url" placeholder="https://api.openai.com/v1"></div>
+      <div class="field"><label>Docs URL</label><input id="f_docs_url" placeholder="https://platform.openai.com/docs"></div>
+      <div class="field"><label>Login / console URL</label><input id="f_login_url" placeholder="https://platform.openai.com"></div>
+      <div class="field full"><label>Purpose</label><input id="f_purpose" placeholder="LLM completions for the invoice-reconciliation skill"></div>
+
+      <fieldset>
+        <legend>🔒 Credentials (encrypted at rest)</legend>
+        <div class="secgrid">
+          <div class="field"><label>Auth type</label><select id="f_auth_type"></select></div>
+          <div class="field"><label>Key number / account / project id</label><input id="f_key_number" placeholder="proj_abc123"></div>
+          <div class="field full"><label>API key / secret</label><input id="f_api_key" placeholder="sk-… (leave blank to keep existing)">
+            <div class="hint">On edit, leave blank to keep the stored key unchanged.</div></div>
+          <div class="field"><label>Login username / email</label><input id="f_login_user" placeholder="ops@ntxp.com"></div>
+          <div class="field"><label>Login password</label><input id="f_login_secret" type="password" placeholder="leave blank to keep existing"></div>
+        </div>
+      </fieldset>
+
+      <div class="field"><label>Cost model</label><input id="f_cost_model" placeholder="$0.01 / 1K tokens"></div>
+      <div class="field"><label>Monthly budget ($)</label><input id="f_monthly_budget" type="number" step="0.01" placeholder="50"></div>
+      <div class="field"><label>Owner</label><input id="f_owner" placeholder="alex@ntxp.com"></div>
+      <div class="field"><label>Tags</label><input id="f_tags" placeholder="comma, separated"></div>
+      <div class="field full"><label>Notes</label><textarea id="f_notes"></textarea></div>
+    </div>
+    <div class="foot">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="saveBtn">Save API</button>
+    </div>
+  </div>
+</div>
+
+<!-- Log cost modal -->
+<div class="overlay" id="costOverlay">
+  <div class="modal" style="max-width:460px">
+    <h2 id="costTitle">Log cost</h2>
+    <div class="body">
+      <input type="hidden" id="c_id">
+      <div class="field"><label>Cost ($) *</label><input id="c_cost" type="number" step="0.0001" placeholder="1.25"></div>
+      <div class="field"><label>Units</label><input id="c_units" type="number" step="any" placeholder="125000"></div>
+      <div class="field"><label>Unit kind</label><input id="c_unit_kind" placeholder="tokens"></div>
+      <div class="field"><label>Requested by</label><input id="c_requested_by" placeholder="skill:invoice-reconciliation"></div>
+      <div class="field full"><label>Description</label><input id="c_description" placeholder="batch run 2026-06-28"></div>
+    </div>
+    <div class="foot">
+      <button class="btn-ghost" onclick="closeCost()">Cancel</button>
+      <button class="btn-primary" id="costSaveBtn">Log cost</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+let META = {categories:[], auth_types:[], statuses:[]};
+
+function toast(msg, isErr){
+  const t=$('#toast'); t.textContent=msg; t.className='show'+(isErr?' err':'');
+  setTimeout(()=>t.className='',2400);
+}
+async function api(path, opts){
+  const r = await fetch(path, opts);
+  if(r.status===401){ location.href='/auth/login'; throw new Error('Sign-in required'); }
+  if(!r.ok){ let m='Request failed'; try{m=(await r.json()).error||m}catch(e){} throw new Error(m); }
+  return r.status===204?null:r.json();
+}
+async function loadUser(){
+  try{
+    const u = await api('/auth/me');
+    if(u.enabled && u.authenticated){
+      $('#user').innerHTML = `👤 ${esc(u.email)} · <a href="/auth/logout" style="color:#16b8a6">Sign out</a>`;
+    }
+  }catch(e){/* auth disabled or unreachable — leave chip empty */}
+}
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function fmt$(n){return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+async function loadMeta(){
+  META = await api('/api/meta');
+  const fill=(sel,arr,blank)=>{const e=$(sel);e.innerHTML=(blank?`<option value="">${blank}</option>`:'')+
+    arr.map(x=>`<option value="${x}">${x}</option>`).join('');};
+  fill('#fcat',META.categories,'All categories');
+  fill('#fstatus',META.statuses,'All statuses');
+  fill('#f_category',META.categories,'—');
+  fill('#f_status',META.statuses,'');
+  fill('#f_auth_type',META.auth_types,'');
+}
+
+async function loadStats(){
+  const s = await api('/api/stats');
+  const active = s.by_status.active||0;
+  const topMonth = (s.spend_by_month[0]||{}).spend||0;
+  $('#stats').innerHTML = `
+    <div class="stat"><div class="label">Registered APIs</div><div class="value">${s.total_apis}</div>
+      <div class="sub">${active} active · ${Object.keys(s.by_category).length} categories</div></div>
+    <div class="stat accent"><div class="label">Total spend logged</div><div class="value">${fmt$(s.total_spend)}</div>
+      <div class="sub">${fmt$(topMonth)} this month</div></div>
+    <div class="stat"><div class="label">Top spend</div><div class="value" style="font-size:20px">${esc((s.spend_by_api[0]||{}).name||'—')}</div>
+      <div class="sub">${fmt$((s.spend_by_api[0]||{}).spend||0)} lifetime</div></div>
+    <div class="stat"><div class="label">Status mix</div><div class="value" style="font-size:18px">${
+      Object.entries(s.by_status).map(([k,v])=>`${v} ${k}`).join(' · ')||'—'}</div></div>`;
+}
+
+async function loadRows(){
+  const q=$('#q').value.trim(), cat=$('#fcat').value, st=$('#fstatus').value;
+  let url='/api/apis?';
+  if(q) url+='q='+encodeURIComponent(q)+'&';
+  if(cat) url+='category='+encodeURIComponent(cat)+'&';
+  if(st) url+='status='+encodeURIComponent(st);
+  let rows = await api(url);
+  if(q && (cat||st)) rows = rows.filter(r=>(!cat||r.category===cat)&&(!st||r.status===st));
+  const tb=$('#rows'); tb.innerHTML='';
+  $('#empty').style.display = rows.length?'none':'block';
+  for(const r of rows){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><div class="name">${esc(r.name)}</div><div class="provider">${esc(r.provider||'')}</div>
+        ${r.docs_url?`<a class="provider" href="${esc(r.docs_url)}" target="_blank" rel="noopener">docs ↗</a>`:''}</td>
+      <td><span class="cat">${esc(r.category||'—')}</span></td>
+      <td>${r.base_url?`<a class="url" href="${esc(r.base_url)}" target="_blank" rel="noopener">${esc(r.base_url)}</a>`:'<span class="none">—</span>'}</td>
+      <td>${secretCell(r,'api_key')}</td>
+      <td>${loginCell(r)}</td>
+      <td>${esc(r.cost_model||'—')}${r.monthly_budget?`<div class="provider">budget ${fmt$(r.monthly_budget)}/mo</div>`:''}</td>
+      <td class="spend">${fmt$(r.spend_total)}</td>
+      <td><span class="pill ${esc(r.status)}">${esc(r.status)}</span></td>
+      <td class="actions">
+        <button class="btn-ghost btn-sm" data-edit="${r.api_id}">Edit</button>
+        <button class="btn-ghost btn-sm" data-cost="${r.api_id}" data-name="${esc(r.name)}">+ Cost</button>
+        <button class="btn-danger btn-sm" data-del="${r.api_id}" data-name="${esc(r.name)}">Del</button>
+      </td>`;
+    tb.appendChild(tr);
+  }
+}
+function secretCell(r,field){
+  if(!r['has_'+field]) return '<span class="none">—</span>';
+  return `<span class="secret" data-secret="${r.api_id}:${field}">
+      <span class="val">${esc(r[field+'_masked'])}</span>
+      <button data-reveal="${r.api_id}" data-field="${field}">show</button></span>`;
+}
+function loginCell(r){
+  const u = r.login_user?`<div class="provider">${esc(r.login_user)}</div>`:'';
+  const p = r.has_login_secret?secretCell(r,'login_secret'):(r.login_user?'':'<span class="none">—</span>');
+  return u+p;
+}
+
+// reveal (audited)
+document.addEventListener('click', async e=>{
+  const rv=e.target.closest('[data-reveal]');
+  if(rv){
+    const id=rv.dataset.reveal, field=rv.dataset.field;
+    try{
+      const full = await api(`/api/apis/${id}/reveal`,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({accessor:'dashboard',purpose:'manual view'})});
+      const wrap=rv.closest('.secret'); const val=full[field]||'';
+      wrap.querySelector('.val').textContent=val;
+      rv.textContent='copy';
+      rv.dataset.reveal=''; rv.onclick=()=>{navigator.clipboard.writeText(val);toast('Copied to clipboard');};
+    }catch(err){toast(err.message,true);}
+    return;
+  }
+  const ed=e.target.closest('[data-edit]'); if(ed){openEdit(ed.dataset.edit);return;}
+  const co=e.target.closest('[data-cost]'); if(co){openCost(co.dataset.cost,co.dataset.name);return;}
+  const dl=e.target.closest('[data-del]');
+  if(dl){
+    if(!confirm(`Remove "${dl.dataset.name}" from the log? (soft delete, recoverable)`)) return;
+    try{await api('/api/apis/'+dl.dataset.del,{method:'DELETE'});toast('Removed');refresh();}
+    catch(err){toast(err.message,true);}
+  }
+});
+
+// Add / Edit
+function openAdd(){
+  $('#modalTitle').textContent='Add API';
+  ['id','name','provider','base_url','docs_url','login_url','purpose','key_number',
+   'api_key','login_user','login_secret','cost_model','monthly_budget','owner','tags','notes']
+    .forEach(f=>$('#f_'+f).value='');
+  $('#f_status').value='active';
+  $('#overlay').classList.add('open');
+}
+async function openEdit(id){
+  const r = await api('/api/apis/'+id);
+  $('#modalTitle').textContent='Edit · '+r.name;
+  const set=(f,v)=>$('#f_'+f).value=v==null?'':v;
+  set('id',r.api_id);set('name',r.name);set('provider',r.provider);set('category',r.category||'');
+  set('status',r.status);set('base_url',r.base_url);set('docs_url',r.docs_url);set('login_url',r.login_url);
+  set('purpose',r.purpose);set('auth_type',r.auth_type);set('key_number','');set('api_key','');
+  set('login_user',r.login_user);set('login_secret','');set('cost_model',r.cost_model);
+  set('monthly_budget',r.monthly_budget);set('owner',r.owner);set('tags',(r.tags||[]).join(', '));set('notes',r.notes);
+  $('#f_key_number').placeholder = r.has_key_number ? '•••• (stored — blank keeps it)' : 'proj_abc123';
+  $('#overlay').classList.add('open');
+}
+function closeModal(){$('#overlay').classList.remove('open');}
+async function save(){
+  const g=f=>$('#f_'+f).value.trim();
+  if(!g('name')){toast('Name is required',true);return;}
+  const body={name:g('name'),provider:g('provider'),category:g('category'),status:g('status'),
+    base_url:g('base_url'),docs_url:g('docs_url'),login_url:g('login_url'),purpose:g('purpose'),
+    auth_type:g('auth_type'),key_number:g('key_number'),api_key:g('api_key'),login_user:g('login_user'),
+    login_secret:g('login_secret'),cost_model:g('cost_model'),owner:g('owner'),tags:g('tags'),notes:g('notes')};
+  const mb=g('monthly_budget'); if(mb) body.monthly_budget=parseFloat(mb);
+  try{await api('/api/apis',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    closeModal();toast('Saved');refresh();}
+  catch(err){toast(err.message,true);}
+}
+
+// Log cost
+function openCost(id,name){$('#c_id').value=id;$('#costTitle').textContent='Log cost · '+name;
+  ['cost','units','unit_kind','requested_by','description'].forEach(f=>$('#c_'+f).value='');
+  $('#costOverlay').classList.add('open');}
+function closeCost(){$('#costOverlay').classList.remove('open');}
+async function saveCost(){
+  const id=$('#c_id').value, cost=$('#c_cost').value;
+  if(!cost){toast('Cost is required',true);return;}
+  const body={cost:parseFloat(cost),units:$('#c_units').value?parseFloat($('#c_units').value):null,
+    unit_kind:$('#c_unit_kind').value,requested_by:$('#c_requested_by').value,description:$('#c_description').value};
+  try{await api('/api/apis/'+id+'/usage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    closeCost();toast('Cost logged');refresh();}
+  catch(err){toast(err.message,true);}
+}
+
+function refresh(){loadStats();loadRows();}
+$('#addBtn').onclick=openAdd;
+$('#saveBtn').onclick=save;
+$('#costSaveBtn').onclick=saveCost;
+$('#refresh').onclick=refresh;
+$('#q').addEventListener('input',()=>{clearTimeout(window._t);window._t=setTimeout(loadRows,200);});
+$('#fcat').onchange=loadRows; $('#fstatus').onchange=loadRows;
+$('#overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal();});
+$('#costOverlay').addEventListener('click',e=>{if(e.target.id==='costOverlay')closeCost();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeCost();}});
+
+(async()=>{try{loadUser();await loadMeta();refresh();}catch(e){toast('Cannot reach server. Run: ntxp-apilog serve',true);}})();
+</script>
+</body>
+</html>

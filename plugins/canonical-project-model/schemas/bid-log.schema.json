@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bid-log.schema.json",
+  "title": "Section — Bid Log",
+  "description": "The bid-management log. The top block lists every trade with its estimated budget (pulled from the trade budget pages, which pull quantities from the QTO), a confidence score, and a variance range. The bottom block lists subcontractor bids: every bidder who was invited or intends to bid, a flag for who actually responded, and their actual bid amount. Listed in CSI MasterFormat division order. This layer logs and structures the bids; it does NOT level them, validate the low bid, or pick a winner — that is vendor-bid-leveling's job.",
+  "type": "object",
+  "required": ["section", "trades", "bids"],
+  "properties": {
+    "section": { "type": "string", "const": "bid_log" },
+    "trades": {
+      "type": "array",
+      "description": "One row per trade: the estimated budget and how confident we are in it.",
+      "items": {
+        "type": "object",
+        "required": ["trade_id"],
+        "properties": {
+          "trade_id": { "type": "string", "description": "trades.trades[].trade_id." },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "estimated_budget": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Pulled from the trade's budget page total." },
+          "confidence_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "How confident the estimate is (0..1), driven by QTO confidence and scope completeness." },
+          "variance_low": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Low end of the expected cost range." },
+          "variance_high": { "$ref": "common.defs.schema.json#/$defs/money", "description": "High end of the expected cost range." }
+        }
+      }
+    },
+    "bids": {
+      "type": "array",
+      "description": "Subcontractor bids: invited / intends-to-bid / responded, with actual amounts.",
+      "items": {
+        "type": "object",
+        "required": ["bid_id", "trade_id", "party_id"],
+        "properties": {
+          "bid_id": { "type": "string", "description": "Stable id, e.g. 'BID-26-003'." },
+          "trade_id": { "type": "string" },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "party_id": { "type": "string", "description": "Bidder (subcontractors.parties[].party_id)." },
+          "invited": { "type": "boolean", "description": "Was this sub solicited / provided the bid docs?" },
+          "intends_to_bid": { "type": ["boolean", "null"], "description": "Did they indicate they intend to respond?" },
+          "responded": { "type": "boolean", "description": "Have they actually submitted a bid?" },
+          "bid_amount": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Actual submitted amount (present only when responded)." },
+          "scope_covered": { "type": "array", "items": { "type": "string" }, "description": "scope_item_ids the bid covers." },
+          "exclusions": { "type": "array", "items": { "type": "string" }, "description": "Verbatim; a blank is never assumed to mean 'included'." },
+          "received_date": { "type": ["string", "null"] },
+          "status": { "type": "string", "enum": ["invited", "intends", "received", "declined", "no_response", "unknown"] },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

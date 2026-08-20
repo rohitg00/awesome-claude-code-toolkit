@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-identity.schema.json",
+  "title": "Section — Project Identity / Project Bio",
+  "description": "Everything needed to CREATE the project in any downstream system: who, what, where, how it is delivered and paid, the key dates, and the bonding/insurance/wage regime. For JOC/IDIQ work, the contract-vehicle and unit-price-book block is populated. Values are normalized but never invented; each carries provenance.",
+  "type": "object",
+  "required": ["section"],
+  "properties": {
+    "section": { "type": "string", "const": "project_identity" },
+    "title": { "type": "string", "description": "Official project name." },
+    "number": { "type": "string", "description": "Project / solicitation / bid / task-order number." },
+    "description": { "type": "string", "description": "One-line scope-of-project summary." },
+    "owner": { "type": "string", "description": "Owner / issuing agency / client." },
+    "owner_type": { "type": "string", "enum": ["federal", "state", "municipal", "k12", "higher_ed", "healthcare", "private_commercial", "other", "unknown"] },
+    "location": {
+      "type": "object",
+      "properties": {
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "zip": { "type": "string" },
+        "county": { "type": "string" }
+      }
+    },
+    "market_sector": { "type": "string", "description": "e.g. commercial office, healthcare, education, federal, industrial, multifamily." },
+    "project_type": { "type": "string", "enum": ["new_construction", "renovation", "tenant_improvement", "addition", "repair_maintenance", "mixed", "unknown"] },
+    "phase": { "type": "string", "enum": ["estimate", "project", "closeout", "unknown"], "description": "Lifecycle stage. 'estimate' = bidding; 'project' = awarded/under way — the dashboard's budget section flips to the Buyout Budget with profit shown." },
+    "delivery_method": { "type": "string", "enum": ["design_bid_build", "design_build", "cm_at_risk", "cm_agency", "joc", "idiq", "design_assist", "ipd", "other", "unknown"] },
+    "contract_type": { "type": "string", "enum": ["lump_sum", "gmp", "unit_price", "cost_plus", "time_and_materials", "joc_coefficient", "other", "unknown"] },
+    "building": {
+      "type": "object",
+      "description": "Physical facts useful for unit-rate and conceptual estimating.",
+      "properties": {
+        "gross_sf": { "type": ["number", "null"] },
+        "stories": { "type": ["integer", "null"] },
+        "site_acres": { "type": ["number", "null"] },
+        "occupancy_type": { "type": "string" },
+        "construction_type": { "type": "string", "description": "IBC construction type (e.g. II-B, V-A) when stated." }
+      }
+    },
+    "key_dates": {
+      "type": "array",
+      "description": "All important dates, rendered in date order. Use these standard NTXP labels when present: 'Prebid / Questions Deadline', 'Job Walk' (only if not the same as prebid), 'RFP Opening', 'NTXP Sub Bids Due', 'Bid Review', plus contractual dates (NTP, Substantial Completion). Any additional dated item is allowed.",
+      "items": { "$ref": "common.defs.schema.json#/$defs/key_date" }
+    },
+    "bid_documents": {
+      "type": "array",
+      "description": "The list of documents in the bid set, in date order (most recent addenda last). Feeds the Project Bio page and the ITB document links.",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string", "description": "Document title (e.g. 'Drawings — Architectural', 'Project Manual / Specs', 'Addendum 02')." },
+          "doc_id": { "type": "string", "description": "Source document id from the intake handoff." },
+          "doc_date": { "type": ["string", "null"], "description": "Issue/revision date (ISO when parseable) — used to order the list." },
+          "pages": { "type": ["integer", "null"] },
+          "url": { "type": "string", "description": "Link to the document (PDF / OCR4 source)." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "commercial_terms": {
+      "type": "object",
+      "description": "Bonding, insurance, wage, and tax regime that drive estimate markups and eligibility.",
+      "properties": {
+        "bid_bond": { "type": "string", "description": "Required bid bond (e.g. '5% of bid')." },
+        "performance_payment_bond": { "type": "string", "description": "P&P bond requirement (e.g. '100% of contract')." },
+        "insurance_requirements": { "type": "array", "items": { "type": "string" } },
+        "prevailing_wage": { "type": "string", "enum": ["davis_bacon", "state_prevailing", "none", "unknown"], "description": "Wage determination regime." },
+        "tax_status": { "type": "string", "description": "e.g. tax-exempt owner, sales tax on materials applies." },
+        "liquidated_damages": { "type": "string" },
+        "retainage": { "type": "string", "description": "e.g. '5% until substantial completion'." },
+        "funding_source": { "type": "string" },
+        "set_aside": { "type": "string", "description": "Socioeconomic set-aside (e.g. SDVOSB, 8(a), small business) when applicable." }
+      }
+    },
+    "joc": {
+      "type": "object",
+      "description": "Job Order Contracting / IDIQ specifics. Populated only when delivery_method is joc/idiq.",
+      "properties": {
+        "contract_vehicle": { "type": "string", "description": "Master IDIQ/JOC contract id this task/job order falls under." },
+        "task_order_number": { "type": "string" },
+        "unit_price_book": { "type": "string", "description": "Catalog the priced line items reference (e.g. RSMeans/Gordian, agency UPB) and its year/locality." },
+        "coefficient": { "type": ["number", "null"], "description": "Awarded adjustment factor applied to UPB unit prices (e.g. 0.92, 1.15)." },
+        "coefficient_band": { "type": "string", "description": "Which coefficient applies (e.g. normal hours, after-hours, secure facility) when multiple exist." },
+        "contract_ceiling": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "not_to_exceed": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "min_max_order": { "type": "string", "description": "Minimum/maximum single order value when stated." }
+      }
+    },
+    "key_parties": {
+      "type": "array",
+      "description": "Owner, A/E of record, GC/CM, program manager — references into the subcontractors/contacts directory by party_id.",
+      "items": { "$ref": "common.defs.schema.json#/$defs/party_ref" }
+    },
+    "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+  }
+}

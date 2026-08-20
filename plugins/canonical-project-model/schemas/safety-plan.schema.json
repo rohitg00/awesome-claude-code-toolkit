@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "safety-plan.schema.json",
+  "title": "Section — Site-Specific Safety Plan",
+  "description": "The structured inputs to a site-specific safety plan, harvested from the documents (owner safety requirements, Division 01 35 00, hazardous-materials reports, drawings). Organizes identified hazards, required programs, PPE, and emergency info so a safety/EHS tool can generate the SSSP and JHAs. The model collects and structures requirements; it does not author the plan or assess adequacy.",
+  "type": "object",
+  "required": ["section"],
+  "properties": {
+    "section": { "type": "string", "const": "safety_plan" },
+    "hazards": {
+      "type": "array",
+      "description": "Site/scope hazards identified in the documents (e.g. asbestos, lead, silica, fall, confined space, energized work, excavation).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hazard": { "type": "string" },
+          "associated_scope_item_id": { "type": "string" },
+          "associated_trade_id": { "type": "string" },
+          "control_noted": { "type": "string", "description": "Control/mitigation stated in the source, verbatim." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "required_programs": {
+      "type": "array",
+      "description": "OSHA / owner-required safety programs called out (e.g. fall protection, HazCom, confined space, LOTO, excavation, respiratory, EM 385-1-1 for federal).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "program": { "type": "string" },
+          "standard_ref": { "type": "string", "description": "Citation as written (e.g. '29 CFR 1926.501', 'EM 385-1-1')." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "required_ppe": { "type": "array", "items": { "type": "string" } },
+    "competent_persons_required": { "type": "array", "items": { "type": "string" }, "description": "Roles the documents require on site (e.g. competent person for excavation, fall protection)." },
+    "emergency_info": {
+      "type": "object",
+      "properties": {
+        "nearest_hospital": { "type": "string" },
+        "site_emergency_contacts": { "type": "array", "items": { "$ref": "common.defs.schema.json#/$defs/party_ref" } },
+        "notes": { "type": "string" }
+      }
+    },
+    "owner_safety_requirements": {
+      "type": "array",
+      "description": "Verbatim owner/contract safety requirements with provenance.",
+      "items": { "type": "object", "properties": { "text": { "type": "string" }, "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" } } }
+    }
+  }
+}

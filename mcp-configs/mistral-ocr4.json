@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mistral-ocr4": {
+      "command": "node",
+      "args": ["plugins/mistral-ocr4/server/dist/index.js"],
+      "env": {
+        "MISTRAL_API_KEY": "<your-mistral-api-key>"
+      },
+      "description": "Lean, tool-agnostic access layer for Mistral OCR4 + Document AI (OCR, structured annotations, bounding boxes, Files API, Batch, plus a generic passthrough). Extraction only - reasoning stays with the calling model. Build first: cd plugins/mistral-ocr4/server && npm install && npm run build."
+    }
+  }
+}

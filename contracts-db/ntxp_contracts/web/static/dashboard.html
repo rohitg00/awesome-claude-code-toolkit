@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NTXP — Master Contracts</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <img data-brand-logo class="logo" style="display:none" alt="">
+    <span class="title"><span data-brand-name>NTXP</span> <span class="sub">Master Contracts</span></span>
+    <span class="spacer"></span>
+    <span class="who">editing as
+      <input id="actor" placeholder="your name" title="Shown in the change log so edits are attributed">
+    </span>
+  </div>
+
+  <div class="toolbar no-print">
+    <input id="search" class="search" placeholder="Search title, number, owner, location, scope…">
+    <button class="btn primary" id="add">+ Add contract</button>
+    <button class="btn" id="printBtn" title="Print the log on Letter (8.5×11)">🖨 Print</button>
+    <button class="btn" id="pdfBtn" title="Save the log as PDF on Letter (8.5×11)">⬇ Download PDF</button>
+    <span class="spacer"></span>
+    <span class="saveflash" id="flash">saved ✓</span>
+  </div>
+
+  <div class="wrap">
+    <div class="printhead">
+      <h1><span data-brand-name>NTXP</span> — Master Contracts Log</h1>
+      <div class="meta" id="printmeta"></div>
+    </div>
+
+    <div class="tablecard">
+      <table id="grid">
+        <thead>
+          <tr>
+            <th>Contract #</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Owner entity</th>
+            <th>Coefficient</th>
+            <th>Co-op fee</th>
+            <th>Expiration</th>
+            <th>Scope</th>
+            <th>Signed</th>
+            <th>Status</th>
+            <th class="no-print"></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">No contracts yet — click <b>+ Add contract</b> to start.</div>
+    </div>
+
+    <div class="legend no-print">
+      <span><b>Click any cell</b> to edit — saves instantly.</span>
+      <span><span class="exp-soon" style="color:var(--warning)">●</span> expires within 90 days</span>
+      <span><span style="color:var(--danger)">●</span> expired / unexecuted</span>
+      <span>Click a <b>contract #</b> to open its profile.</span>
+    </div>
+  </div>
+
+  <script src="/static/util.js"></script>
+  <script src="/static/brand.js"></script>
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

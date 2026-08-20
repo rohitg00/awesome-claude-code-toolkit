@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.defs.schema.json",
+  "title": "Canonical Project Model — shared definitions",
+  "description": "Reusable building blocks referenced by every section schema via relative $ref (e.g. \"common.defs.schema.json#/$defs/provenance\"). Keeping these in one place is what makes the model 'common' across all projects: every value is wrapped the same way, every reference is shaped the same way. Tools that do not resolve $ref can still read the data — the shapes are documented here.",
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "description": "Where a value came from. Inherited from the Mistral OCR4 extraction envelope so any downstream tool can cite and re-verify. Carried on every normalized record.",
+      "properties": {
+        "source_doc": { "type": "string", "description": "doc_id from the project-intake handoff (e.g. doc002-rfp)." },
+        "page": { "type": ["integer", "null"], "description": "Zero-based page index in the source document." },
+        "bbox": {
+          "type": ["array", "null"],
+          "description": "[x0, y0, x1, y1] bounding box on the page, when the extraction provided one.",
+          "items": { "type": "number" }
+        },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "Extraction confidence for this value, when OCR4 reported one. Low values land in needs_human_review." },
+        "extracted_verbatim": { "type": "string", "description": "The raw text exactly as it appeared in the document, before any normalization. The single source of truth for the value." }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "description": "How a verbatim value was transformed into its canonical form. Present only when the structurer changed something (unit conversion, CSI mapping, entity merge). Makes every derived value auditable; empty means the value is used as written.",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "description": "What was done, e.g. 'uom: SY->SF', 'csi_mapped: 09 51 00', 'deduped: merged 2 contacts', 'split: lump sum allocated across SOV lines'.",
+          "items": { "type": "string" }
+        },
+        "by": { "type": "string", "description": "Section normalizer agent / rule that produced this value." }
+      }
+    },
+    "money": {
+      "type": "object",
+      "description": "A monetary value as carried in the model. amount is the normalized number; as_written preserves the source string. The model never invents a price — amount is null unless a value was present in a document.",
+      "properties": {
+        "amount": { "type": ["number", "null"] },
+        "currency": { "type": "string", "default": "USD" },
+        "basis": { "type": "string", "enum": ["lump_sum", "unit_price", "allowance", "alternate", "not_to_exceed", "time_and_materials", "unknown"], "description": "Pricing basis as stated in the source." },
+        "as_written": { "type": "string" }
+      }
+    },
+    "quantity": {
+      "type": "object",
+      "description": "A measured or stated quantity. value + uom are the normalized pair; as_written preserves the source.",
+      "properties": {
+        "value": { "type": ["number", "null"] },
+        "uom": { "type": "string", "description": "Normalized unit of measure: EA, LF, SF, SY, CY, CF, TON, LB, GAL, LS, HR, DAY, MO, etc." },
+        "as_written": { "type": "string" },
+        "waste_factor": { "type": ["number", "null"], "description": "Allowance/waste multiplier as a fraction (0.05 = 5%) when stated. Null = none applied." },
+        "takeoff_method": { "type": "string", "enum": ["count", "linear", "area", "volume", "weight", "lump", "stated", "unknown"], "description": "How the quantity was derived." }
+      }
+    },
+    "csi_ref": {
+      "type": "object",
+      "description": "Classification anchor. CSI MasterFormat (most recent version, divisions 01-32 primary) is the ONLY classification system in this model. masterformat_division is the universal sort and grouping key — every trade, line item, cost code, submittal, quick link, and critical-path item carries one, and documents/pages/tables/sheets are sorted by it. See resources/masterformat-divisions.json for the division list.",
+      "required": ["masterformat_division"],
+      "properties": {
+        "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$", "description": "Two-digit MasterFormat division, e.g. '09' (Finishes), '26' (Electrical). REQUIRED — the universal sort/grouping key. Use '01' for general requirements when no better fit; never leave blank." },
+        "division_title": { "type": "string", "description": "MasterFormat division title (e.g. 'Finishes')." },
+        "masterformat_section": { "type": "string", "description": "Full MasterFormat section number, e.g. '09 51 00' (Acoustical Ceilings)." },
+        "section_title": { "type": "string", "description": "MasterFormat section title." },
+        "company_cost_code": { "type": "string", "description": "The firm's internal cost code mapped from the MasterFormat code, when known (e.g. a demo vs. new-work split within a division)." }
+      }
+    },
+    "party_ref": {
+      "type": "object",
+      "description": "A pointer to an entry in the subcontractors/contacts directory, by stable id. Avoids duplicating company details across sections.",
+      "properties": {
+        "party_id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "key_date": {
+      "type": "object",
+      "description": "A dated milestone or deadline.",
+      "properties": {
+        "label": { "type": "string", "description": "e.g. 'Bid Due', 'RFI Cutoff', 'NTP', 'Substantial Completion'." },
+        "date": { "type": ["string", "null"], "description": "ISO 8601 date when parseable; null if only a relative term was stated." },
+        "as_written": { "type": "string" },
+        "provenance": { "$ref": "#/$defs/provenance" }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trades.schema.json",
+  "title": "Section — List of Subcontractor Trades / Bid Packages",
+  "description": "Every trade with scope on the job, in CSI MasterFormat division order — the unit of buyout and subcontracting, and the index the workbook's trade list and per-trade budget pages are built from. Each trade carries a one-sentence scope summary, an empty notes column for the estimator, and the content that heads its budget page: exclusions, clarifications, and the relevant spec notes (required products/systems/vendors/certifications) with a link to the spec PDF.",
+  "type": "object",
+  "required": ["section", "trades"],
+  "properties": {
+    "section": { "type": "string", "const": "trades" },
+    "trades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["trade_id", "name", "masterformat_division"],
+        "properties": {
+          "trade_id": { "type": "string", "description": "Stable id, e.g. 'TR-26' (Electrical)." },
+          "name": { "type": "string", "description": "Trade / bid-package name." },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$", "description": "Primary division — the sort key for the trade list and all trade pages." },
+          "csi_divisions": { "type": "array", "items": { "type": "string" }, "description": "All MasterFormat divisions/sections rolled into this package." },
+          "scope_summary": { "type": "string", "description": "One-sentence summary of the trade's scope (shown in the trade list)." },
+          "scope_item_ids": { "type": "array", "items": { "type": "string" }, "description": "Scope rows assigned to this trade." },
+          "estimated_value": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Rolled up from this trade's budget lines." },
+          "exclusions": { "type": "array", "items": { "type": "string" }, "description": "Bullet exclusions shown at the top of the trade budget page and carried onto the ITB." },
+          "clarifications": { "type": "array", "items": { "type": "string" }, "description": "Bullet clarifications shown at the top of the trade budget page and carried onto the ITB." },
+          "spec_notes": {
+            "type": "array",
+            "description": "Relevant spec requirements for the trade: required products, systems, vendors, certifications, etc. — quoted/summarized with provenance.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": { "type": "string" },
+                "spec_section": { "type": "string" },
+                "kind": { "type": "string", "enum": ["product", "system", "vendor", "certification", "warranty", "submittal", "general", "unknown"] },
+                "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+              }
+            }
+          },
+          "spec_pdf_url": { "type": "string", "description": "Link to the spec PDF (section) for this trade." },
+          "self_perform": { "type": "boolean", "description": "True if intended to be self-performed rather than subcontracted, when stated." },
+          "bid_package_status": { "type": "string", "enum": ["not_started", "soliciting", "bids_in", "leveling", "awarded", "unknown"], "description": "Buyout status as found in the documents; defaults unknown." },
+          "min_bidders_required": { "type": ["integer", "null"], "description": "Owner-required number of bidders for this package, when stated." },
+          "notes": { "type": "string", "description": "Empty by default — for the estimator to fill in the workbook." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

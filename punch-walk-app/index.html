@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111214" />
+  <title>NTXP Field / Punch Walk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <section id="setup" class="modal open">
+      <div class="sheet setup-sheet">
+        <span class="eyebrow">NTXP FIELD / NEW WALK</span>
+        <h1>Place your drawing.</h1>
+        <p>Upload one PDF page, then tap the drawing to set your starting point and orientation.</p>
+        <label class="upload">Choose drawing PDF<input id="drawingInput" type="file" accept="application/pdf,image/*" /></label>
+        <button id="startWalk" class="primary" disabled>Start punch walk <span>↗</span></button>
+      </div>
+    </section>
+
+    <header>
+      <button class="icon-button" id="prevItem" aria-label="Previous item">←</button>
+      <button class="counter" id="counter" aria-label="Edit item number">00</button>
+      <button class="icon-button" id="nextItem" aria-label="Next item">→</button>
+    </header>
+
+    <section class="map" id="map">
+      <div class="drawing" id="drawing"><span>LEVEL 01 · CLINIC PLAN</span></div>
+      <div class="location-ring"><div class="location-dot" id="locationDot"><i></i></div></div>
+      <div class="map-status"><b id="accuracy">LOCATING…</b><span id="address">Dallas, Texas</span></div>
+      <button class="recenter" id="recenter" aria-label="Recenter">⌖</button>
+    </section>
+
+    <section class="actions">
+      <button class="action-card" id="noteBtn"><span class="action-icon">≡</span><strong>Note</strong><small id="noteCount">ADD DETAIL</small></button>
+      <button class="action-card" id="cameraBtn"><span class="action-icon camera">◉</span><strong>Camera</strong><small id="photoCount">0 PHOTOS</small></button>
+      <input id="cameraInput" type="file" accept="image/*" capture="environment" multiple hidden />
+    </section>
+
+    <footer>
+      <button class="record" id="recordBtn"><span></span><b>REC</b></button>
+      <button class="stop" id="stopBtn" aria-label="Finish punch walk"><span></span></button>
+      <div class="walk-time"><span>WALK TIME</span><b id="timer">00:00</b></div>
+    </footer>
+  </main>
+
+  <dialog id="noteDialog"><form method="dialog" class="sheet"><span class="eyebrow">ITEM <i id="noteItem">00</i> / FIELD NOTE</span><h2>What needs attention?</h2><textarea id="noteText" rows="7" placeholder="Type inspection note…"></textarea><button class="primary" id="saveNote" value="save">Save note</button></form></dialog>
+  <dialog id="summaryDialog"><div class="sheet tall"><div class="sheet-head"><div><span class="eyebrow">PUNCH WALK / REVIEW</span><h2>Walk summary</h2></div><button class="close" id="resumeBtn">×</button></div><div id="summaryList" class="summary-list"></div><button class="primary" id="completeBtn">Report details <span>→</span></button></div></dialog>
+  <dialog id="detailsDialog"><form method="dialog" class="sheet tall" id="detailsForm"><span class="eyebrow">FINAL DETAILS</span><h2>Confirm your walk.</h2><label>Project name<input id="projectName" value="Texas A&amp;M University Dental Clinic" required /></label><label>Site address<input id="projectAddress" value="3302 Gaston Ave, Dallas, TX 75246" required /></label><p class="section-label">PARTIES PRESENT</p><div class="checks" id="parties"></div><div class="toggle-row"><span><b>Final punch?</b><small>Mark this as the final inspection.</small></span><input type="checkbox" id="finalPunch" class="toggle" /></div><button class="primary" id="generateBtn" value="submit">Generate report <span>→</span></button></form></dialog>
+
+  <section id="report" hidden>
+    <nav class="report-nav"><div class="brand"><b>NT<span>X</span>P</b><small>FIELD REPORT</small></div><div class="report-actions"><button onclick="window.print()">Export PDF</button><button id="ownerBtn" disabled>Submit to Owner</button></div></nav>
+    <div class="report-title"><span>PUNCHLIST REPORT</span><h1 id="reportProject"></h1><p id="reportMeta"></p></div>
+    <div id="reportItems" class="report-items"></div>
+  </section>
+  <dialog id="emailDialog"><form method="dialog" class="sheet tall"><span class="eyebrow">SUBMIT TO OWNER</span><h2>Sign &amp; send.</h2><label>Owner email<input type="email" required placeholder="owner@company.com" /></label><label>CC<input type="email" placeholder="architect@company.com" /></label><small>joc@ntxpllc.com is always copied.</small><label>Signature<canvas id="signature" width="520" height="150"></canvas></label><div class="two"><input required placeholder="Your name" /><input required placeholder="Title" /></div><button class="primary" value="submit">Send completed report</button></form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

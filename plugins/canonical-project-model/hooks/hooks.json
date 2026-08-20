@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "type": "PostToolUse",
+      "matcher": "Bash",
+      "description": "Announce a freshly assembled Canonical Project Record so a downstream tool/orchestrator picks up model-handoff.json",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/announce-model.js"
+    }
+  ]
+}

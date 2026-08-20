@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "critical-path.schema.json",
+  "title": "Section — Critical Path",
+  "description": "The most schedule-critical items distilled from the other sections (QTO, submittal lead times, schedule, scope), each ranked with a plain-language explanation of why it drives the job. A second list captures alternates — substitutions, sequencing, or procurement moves that would accelerate the schedule or head off a problem. Items carry a MasterFormat division so they sort and link to their trade.",
+  "type": "object",
+  "required": ["section", "items"],
+  "properties": {
+    "section": { "type": "string", "const": "critical_path" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rank", "description", "reason"],
+        "properties": {
+          "rank": { "type": "integer", "description": "1 = most critical." },
+          "description": { "type": "string" },
+          "reason": { "type": "string", "description": "Why this is on the critical path, in one or two sentences." },
+          "driver": { "type": "string", "enum": ["long_lead", "permit", "inspection", "sequence", "owner_decision", "design_gap", "site_access", "weather", "other"], "description": "What kind of constraint drives it." },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "trade_id": { "type": "string" },
+          "related_submittal_id": { "type": "string", "description": "submittal_log.entries[].submittal_id when a long-lead submittal drives it." },
+          "related_takeoff_ids": { "type": "array", "items": { "type": "string" }, "description": "QTO takeoff_ids this item depends on." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "alternates": {
+      "type": "array",
+      "description": "Alternates that would accelerate the schedule or prevent a problem.",
+      "items": {
+        "type": "object",
+        "required": ["description", "type"],
+        "properties": {
+          "description": { "type": "string" },
+          "type": { "type": "string", "enum": ["accelerate", "de_risk"], "description": "Does it speed the schedule or reduce risk?" },
+          "rationale": { "type": "string" },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "trade_id": { "type": "string" },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

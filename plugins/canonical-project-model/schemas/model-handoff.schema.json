@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "canonical-project-model handoff contract",
+  "description": "Shape of <model_dir>/model-handoff.json — the stable interface this plugin emits once the Canonical Project Record is assembled. Downstream tools (estimating, bid-leveling, scheduling, buyout, RFI/submittal, safety, logistics) read THIS to locate the model and know its status. Paths are relative to model_dir.",
+  "type": "object",
+  "required": ["schema_version", "status", "project", "model_dir", "model_file", "sections", "next_step"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "status": { "type": "string", "enum": ["pending", "partial", "ready", "error"] },
+    "project": {
+      "type": "object",
+      "required": ["title", "slug"],
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "number": { "type": "string" },
+        "owner": { "type": "string" },
+        "is_joc": { "type": "boolean" }
+      }
+    },
+    "source_dossier": { "type": "string", "description": "Path to the project-intake dossier this model was normalized from." },
+    "model_dir": { "type": "string" },
+    "model_file": { "type": "string", "description": "Relative path to canonical-model.json — the source of truth." },
+    "record_md": { "type": "string", "description": "Relative path to the human-readable project-record.md." },
+    "sections": {
+      "type": "object",
+      "description": "Per-section status + relative path. Absent keys mean nothing of that type was found.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "status": { "type": "string", "enum": ["ok", "empty", "invalid"] },
+          "count": { "type": "integer" }
+        }
+      }
+    },
+    "counts": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "overall": { "type": ["number", "null"] },
+        "by_section": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "needs_human_review": { "type": "array", "items": { "type": "string" } },
+    "next_step": { "type": "string", "description": "Default: construction-doc-pipeline:review" },
+    "created_at": { "type": "string" }
+  }
+}

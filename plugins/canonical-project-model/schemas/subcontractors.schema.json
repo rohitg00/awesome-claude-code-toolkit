@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "subcontractors.schema.json",
+  "title": "Section — Subcontractors & Suppliers Directory",
+  "description": "The deduplicated entity table of every company/person across all documents — owner, A/E, GC/CM, subs, suppliers. Cross-document dedup happens here (the same sub named three ways becomes one party with a stable party_id). Every other section references parties by party_id instead of repeating contact details. This is the directory a CRM, bid-invitation, or prequalification tool pulls from.",
+  "type": "object",
+  "required": ["section", "parties"],
+  "properties": {
+    "section": { "type": "string", "const": "subcontractors" },
+    "parties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["party_id", "company"],
+        "properties": {
+          "party_id": { "type": "string", "description": "Stable id, e.g. 'PTY-014'. Referenced everywhere a company appears." },
+          "company": { "type": "string" },
+          "roles": { "type": "array", "items": { "type": "string" }, "description": "owner | architect | engineer | gc | cm | subcontractor | supplier | manufacturer | inspector | other." },
+          "trade": { "type": "string", "description": "Primary trade for subs/suppliers." },
+          "csi_divisions": { "type": "array", "items": { "type": "string" } },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "title": { "type": "string" },
+                "email": { "type": "string" },
+                "phone": { "type": "string" }
+              }
+            }
+          },
+          "address": { "type": "string" },
+          "qualifications": {
+            "type": "object",
+            "description": "Prequal / eligibility facts as found in the documents. Recorded verbatim; whether a sub QUALIFIES is a downstream decision.",
+            "properties": {
+              "license_no": { "type": "string" },
+              "bondable": { "type": ["boolean", "null"] },
+              "bond_capacity": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "union_status": { "type": "string", "enum": ["union", "non_union", "unknown"] },
+              "socioeconomic": { "type": "array", "items": { "type": "string" }, "description": "MBE, WBE, DBE, SDVOSB, HUBZone, 8(a), small business, etc., as stated." },
+              "prequalified": { "type": ["boolean", "null"] }
+            }
+          },
+          "aliases": { "type": "array", "items": { "type": "string" }, "description": "Other spellings/names merged into this party during dedup." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" },
+          "normalization": { "$ref": "common.defs.schema.json#/$defs/normalization" }
+        }
+      }
+    }
+  }
+}

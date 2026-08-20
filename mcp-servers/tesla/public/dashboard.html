@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tesla Dashboard</title>
+<style>
+  :root {
+    --bg: #171a20;          /* Tesla app dark */
+    --panel: #1f242c;
+    --panel-2: #262c35;
+    --line: #333a44;
+    --ink: #f2f4f6;
+    --ink-2: #9aa3ab;
+    --ink-3: #6b737b;
+    --blue: #3e6ae1;        /* Tesla primary action blue */
+    --blue-press: #3457b1;
+    --red: #e82127;         /* Tesla red — brand + alerts only */
+    --good: #3d9a50;        /* battery / ok  */
+    --warn: #d9a514;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 "Gotham SSm A", "Gotham", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 6px 0 20px; }
+  .wordmark { font-size: 20px; font-weight: 700; letter-spacing: 0.42em; color: var(--red); }
+  .car-name { font-size: 20px; font-weight: 600; }
+  .chip {
+    font-size: 12px; padding: 2px 10px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--ink-2); background: var(--panel);
+  }
+  .chip.on { color: #9fd3ab; border-color: #2c5236; }
+  .spacer { flex: 1; }
+  button {
+    font: inherit; color: var(--ink); background: var(--panel-2);
+    border: 1px solid var(--line); border-radius: 10px; padding: 9px 14px;
+    cursor: pointer; transition: background 0.15s, transform 0.05s;
+  }
+  button:hover { background: #2d3540; }
+  button:active { transform: scale(0.98); }
+  button.primary { background: var(--blue); border-color: var(--blue); font-weight: 600; }
+  button.primary:hover { background: var(--blue-press); }
+  button.danger { border-color: #5c2a2c; color: #f2b8ba; }
+  button:disabled { opacity: 0.45; cursor: default; }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); }
+  .card {
+    grid-column: span 12; background: var(--panel);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
+  }
+  @media (min-width: 760px) {
+    .half { grid-column: span 6; }
+  }
+  .card h2 { margin: 0 0 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+
+  /* stat tiles */
+  .tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 16px; }
+  .tile { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .tile .v { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .tile .v small { font-size: 14px; font-weight: 500; color: var(--ink-2); margin-left: 2px; }
+  .tile .k { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+  /* battery gauge — single hue, rounded data end, value always printed */
+  .battery { margin: 4px 0 6px; }
+  .battery .track {
+    height: 14px; border-radius: 7px; background: #10131a;
+    border: 1px solid var(--line); overflow: hidden; position: relative;
+  }
+  .battery .fill {
+    height: 100%; border-radius: 7px 4px 4px 7px;
+    background: var(--good); width: 0%; transition: width 0.6s ease;
+  }
+  .battery .fill.low { background: var(--red); }
+  .battery .limit { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink-3); }
+  .battery .meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-2); margin-top: 6px; }
+
+  .actions { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+  .actions button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px; }
+  .actions .ic { font-size: 20px; line-height: 1; }
+  .actions .lb { font-size: 12.5px; color: var(--ink-2); }
+
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .kv { font-size: 13.5px; color: var(--ink-2); }
+  .kv b { color: var(--ink); font-weight: 600; }
+  input[type="range"] { flex: 1; accent-color: var(--blue); min-width: 120px; }
+  input[type="text"], input[type="password"], textarea, select {
+    font: inherit; color: var(--ink); background: #10131a;
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+  }
+  textarea { width: 100%; min-height: 64px; resize: vertical; font-family: ui-monospace, monospace; font-size: 13px; }
+
+  .addr { font-size: 14px; color: var(--ink-2); margin: 6px 0 12px; min-height: 20px; }
+  a.link { color: #8ab0ff; text-decoration: none; }
+  a.link:hover { text-decoration: underline; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    background: #0d0f13; border: 1px solid var(--line); color: var(--ink);
+    padding: 10px 18px; border-radius: 12px; font-size: 14px; max-width: 90vw;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 50;
+  }
+  #toast.show { opacity: 1; }
+  #toast.err { border-color: #5c2a2c; }
+
+  .setup { border-color: #3b4250; }
+  .toollist { display: grid; gap: 8px; max-height: 340px; overflow-y: auto; padding-right: 4px; }
+  .toolrow { display: flex; gap: 10px; align-items: baseline; font-size: 13px; border-bottom: 1px solid #232932; padding: 6px 2px; }
+  .toolrow code { color: #a8c7fa; cursor: pointer; }
+  .toolrow span { color: var(--ink-3); }
+  footer { margin-top: 26px; font-size: 12px; color: var(--ink-3); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="wordmark">TESLA</div>
+    <div class="car-name" id="carName">—</div>
+    <div class="chip" id="carState">connecting…</div>
+    <div class="spacer"></div>
+    <button id="refreshBtn" title="Refresh">⟳ Refresh</button>
+  </header>
+
+  <div class="grid">
+    <div class="card setup" id="setupCard" style="display:none">
+      <h2>Connect to bridge</h2>
+      <div class="row">
+        <input type="password" id="tokenInput" placeholder="Bridge token (TESLA_BRIDGE_TOKEN)" style="flex:1;min-width:220px" />
+        <button class="primary" id="saveToken">Connect</button>
+      </div>
+      <p class="kv" style="margin:10px 0 0">The token is printed when <code>tesla-bridge</code> starts. Stored only in this browser.</p>
+    </div>
+
+    <div class="card">
+      <h2>Vehicle</h2>
+      <div class="tiles">
+        <div class="tile"><div class="v" id="tBattery">—<small>%</small></div><div class="k">Battery</div></div>
+        <div class="tile"><div class="v" id="tRange">—<small>mi</small></div><div class="k">Range</div></div>
+        <div class="tile"><div class="v" id="tInside">—<small>°F</small></div><div class="k">Inside</div></div>
+        <div class="tile"><div class="v" id="tOutside">—<small>°F</small></div><div class="k">Outside</div></div>
+        <div class="tile"><div class="v" id="tLock">—</div><div class="k">Doors</div></div>
+        <div class="tile"><div class="v" id="tSentry">—</div><div class="k">Sentry</div></div>
+      </div>
+      <div class="battery">
+        <div class="track"><div class="fill" id="battFill"></div><div class="limit" id="battLimit" style="left:80%"></div></div>
+        <div class="meta"><span id="battLabel">Battery —%</span><span id="chargeLabel">—</span></div>
+      </div>
+      <div class="kv" id="metaLine"></div>
+    </div>
+
+    <div class="card half">
+      <h2>Controls</h2>
+      <div class="actions">
+        <button data-tool="tesla_lock_doors"><span class="ic">🔒</span><span class="lb">Lock</span></button>
+        <button data-tool="tesla_unlock_doors"><span class="ic">🔓</span><span class="lb">Unlock</span></button>
+        <button data-tool="tesla_flash_lights"><span class="ic">💡</span><span class="lb">Flash</span></button>
+        <button data-tool="tesla_honk_horn"><span class="ic">📣</span><span class="lb">Honk</span></button>
+        <button data-tool="tesla_climate_on"><span class="ic">❄️</span><span class="lb">Climate on</span></button>
+        <button data-tool="tesla_climate_off"><span class="ic">⛔</span><span class="lb">Climate off</span></button>
+        <button data-tool="tesla_actuate_trunk" data-args='{"which":"front"}'><span class="ic">🧳</span><span class="lb">Frunk</span></button>
+        <button data-tool="tesla_actuate_trunk" data-args='{"which":"rear"}'><span class="ic">🚪</span><span class="lb">Trunk</span></button>
+        <button data-tool="tesla_window_control" data-args='{"action":"vent"}'><span class="ic">🪟</span><span class="lb">Vent windows</span></button>
+        <button data-tool="tesla_window_control" data-args='{"action":"close"}'><span class="ic">🪟</span><span class="lb">Close windows</span></button>
+        <button data-tool="tesla_set_sentry_mode" data-args='{"on":true}'><span class="ic">👁</span><span class="lb">Sentry on</span></button>
+        <button data-tool="tesla_set_sentry_mode" data-args='{"on":false}'><span class="ic">💤</span><span class="lb">Sentry off</span></button>
+        <button data-tool="tesla_wake_up"><span class="ic">⏰</span><span class="lb">Wake up</span></button>
+        <button data-tool="tesla_remote_boombox"><span class="ic">🔔</span><span class="lb">Locate ping</span></button>
+      </div>
+    </div>
+
+    <div class="card half">
+      <h2>Find my Tesla</h2>
+      <div class="addr" id="addrLine">Location not loaded yet.</div>
+      <div class="row" style="margin-bottom:10px">
+        <button class="primary" id="findBtn">📍 Find my Tesla</button>
+        <button id="pinBtn">📌 Drop a pin (copy)</button>
+        <button id="navBtn">🧭 Navigate to car</button>
+      </div>
+      <div class="kv" id="mapLinks"></div>
+      <h2 style="margin-top:18px">Send destination to car</h2>
+      <div class="row">
+        <input type="text" id="destInput" placeholder="Address or place name" style="flex:1;min-width:180px" />
+        <button id="destBtn">Send</button>
+      </div>
+    </div>
+
+    <div class="card half">
+      <h2>Charging</h2>
+      <div class="row" style="margin-bottom:8px">
+        <span class="kv" style="width:110px">Limit <b id="limitVal">80%</b></span>
+        <input type="range" id="limitSlider" min="50" max="100" step="1" value="80" />
+        <button id="limitBtn">Set</button>
+      </div>
+      <div class="row" style="margin-bottom:8px">
+        <span class="kv" style="width:110px">Amps <b id="ampsVal">32A</b></span>
+        <input type="range" id="ampsSlider" min="5" max="48" step="1" value="32" />
+        <button id="ampsBtn">Set</button>
+      </div>
+      <div class="row">
+        <button data-tool="tesla_charge_start">▶ Start charging</button>
+        <button data-tool="tesla_charge_stop">⏸ Stop</button>
+        <button data-tool="tesla_charge_port_open">Port open</button>
+        <button data-tool="tesla_charge_port_close">Port close</button>
+      </div>
+    </div>
+
+    <div class="card half">
+      <h2>Climate</h2>
+      <div class="row" style="margin-bottom:8px">
+        <span class="kv" style="width:110px">Set temp <b id="tempVal">70°F</b></span>
+        <input type="range" id="tempSlider" min="59" max="82" step="1" value="70" />
+        <button id="tempBtn">Set</button>
+      </div>
+      <div class="row">
+        <button data-tool="tesla_max_defrost" data-args='{"on":true}'>Max defrost</button>
+        <button data-tool="tesla_set_climate_keeper" data-args='{"mode":"dog"}'>🐶 Dog mode</button>
+        <button data-tool="tesla_set_climate_keeper" data-args='{"mode":"camp"}'>⛺ Camp</button>
+        <button data-tool="tesla_set_climate_keeper" data-args='{"mode":"off"}'>Keeper off</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>All tools <span style="text-transform:none;color:var(--ink-3)">— everything the MCP server exposes, callable here</span></h2>
+      <div class="row" style="margin-bottom:10px">
+        <select id="toolSelect" style="min-width:240px"></select>
+        <button class="primary" id="toolRunBtn">Run</button>
+      </div>
+      <textarea id="toolArgs" placeholder='{"vehicle": "optional VIN", ...}'>{}</textarea>
+      <div class="toollist" id="toolList" style="margin-top:10px"></div>
+      <h2 style="margin-top:14px">Result</h2>
+      <textarea id="toolOut" readonly style="min-height:120px"></textarea>
+    </div>
+  </div>
+
+  <footer>Tesla connector bridge · not affiliated with Tesla, Inc. · token stays in this browser</footer>
+</div>
+<div id="toast"></div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const tokenKey = "tesla_bridge_token";
+  let token = localStorage.getItem(tokenKey) || "";
+  let lastStatus = null;
+
+  function toast(msg, isErr) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.className = "show" + (isErr ? " err" : "");
+    clearTimeout(t._h);
+    t._h = setTimeout(() => (t.className = ""), isErr ? 5200 : 2600);
+  }
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      ...opts,
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) },
+    });
+    if (res.status === 401) {
+      $("setupCard").style.display = "";
+      throw new Error("Bridge token required (or wrong). Paste it above.");
+    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || res.statusText);
+    return data;
+  }
+
+  const call = (name, args = {}) => api("/api/tools/" + name, { method: "POST", body: JSON.stringify(args) });
+
+  function fmt(v, digits = 0) { return v == null ? "—" : Number(v).toFixed(digits); }
+
+  function render(s) {
+    lastStatus = s;
+    $("carName").textContent = s.vehicle || "—";
+    const chip = $("carState");
+    chip.textContent = s.asleep ? "asleep" : (s.state || "online");
+    chip.className = "chip" + (s.asleep ? "" : " on");
+    if (s.asleep) { $("metaLine").textContent = s.hint || ""; return; }
+
+    $("tBattery").innerHTML = fmt(s.battery.level_percent) + "<small>%</small>";
+    $("tRange").innerHTML = fmt(s.battery.range_miles) + "<small>mi</small>";
+    $("tInside").innerHTML = fmt(s.climate.inside_f) + "<small>°F</small>";
+    $("tOutside").innerHTML = fmt(s.climate.outside_f) + "<small>°F</small>";
+    $("tLock").textContent = s.security.locked == null ? "—" : (s.security.locked ? "Locked" : "Unlocked");
+    $("tLock").style.color = s.security.locked === false ? "var(--warn)" : "";
+    $("tSentry").textContent = s.security.sentry_mode ? "On" : "Off";
+
+    const lvl = s.battery.level_percent ?? 0;
+    const fill = $("battFill");
+    fill.style.width = lvl + "%";
+    fill.className = "fill" + (lvl <= 20 ? " low" : "");
+    $("battLimit").style.left = (s.battery.charge_limit_percent ?? 80) + "%";
+    $("battLabel").textContent = "Battery " + fmt(lvl) + "% · limit " + fmt(s.battery.charge_limit_percent) + "%";
+    $("chargeLabel").textContent =
+      s.battery.charging_state === "Charging"
+        ? "⚡ Charging · " + fmt(s.battery.minutes_to_full) + " min to limit"
+        : (s.battery.charging_state || "Not plugged in");
+
+    $("metaLine").textContent =
+      "Odometer " + fmt(s.odometer_miles) + " mi · v" + (s.software_version || "?") +
+      (s.security.windows_open ? " · ⚠ windows open" : "") +
+      (s.security.trunk_open || s.security.frunk_open ? " · ⚠ trunk open" : "");
+
+    if (s.battery.charge_limit_percent) { $("limitSlider").value = s.battery.charge_limit_percent; $("limitVal").textContent = s.battery.charge_limit_percent + "%"; }
+    if (s.battery.charge_amps) { $("ampsSlider").value = s.battery.charge_amps; $("ampsVal").textContent = s.battery.charge_amps + "A"; }
+    if (s.location) {
+      $("mapLinks").innerHTML =
+        '<a class="link" target="_blank" href="' + s.location.links.apple_maps + '">Apple Maps</a> · ' +
+        '<a class="link" target="_blank" href="' + s.location.links.google_maps + '">Google Maps</a> · ' +
+        s.location.latitude.toFixed(5) + ", " + s.location.longitude.toFixed(5);
+    }
+  }
+
+  async function refresh() {
+    try {
+      const s = await api("/api/status");
+      $("setupCard").style.display = "none";
+      render(s);
+    } catch (e) { toast(e.message, true); }
+  }
+
+  // Quick-action buttons
+  document.querySelectorAll("button[data-tool]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const name = btn.dataset.tool;
+      const args = btn.dataset.args ? JSON.parse(btn.dataset.args) : {};
+      btn.disabled = true;
+      try {
+        await call(name, args);
+        toast("✓ " + (btn.textContent.trim() || name));
+        setTimeout(refresh, 1200);
+      } catch (e) { toast(e.message, true); }
+      btn.disabled = false;
+    });
+  });
+
+  // Find / pin / navigate
+  $("findBtn").onclick = async () => {
+    try {
+      const { result } = await call("tesla_find_my_tesla", {});
+      $("addrLine").textContent = result.speak;
+      $("mapLinks").innerHTML =
+        '<a class="link" target="_blank" href="' + result.links.apple_maps + '">Apple Maps</a> · ' +
+        '<a class="link" target="_blank" href="' + result.links.google_maps + '">Google Maps</a> · ' +
+        result.latitude.toFixed(5) + ", " + result.longitude.toFixed(5);
+      toast("Located ✓");
+    } catch (e) { toast(e.message, true); }
+  };
+  $("pinBtn").onclick = async () => {
+    try {
+      const { result } = await call("tesla_drop_pin", {});
+      await navigator.clipboard.writeText(result.share_message);
+      $("addrLine").textContent = result.speak;
+      toast("Pin copied — paste it to family 📌");
+    } catch (e) { toast(e.message, true); }
+  };
+  $("navBtn").onclick = async () => {
+    try {
+      const { result } = await call("tesla_navigate_to_tesla", {});
+      window.open(result.open_walking, "_blank");
+    } catch (e) { toast(e.message, true); }
+  };
+  $("destBtn").onclick = async () => {
+    const destination = $("destInput").value.trim();
+    if (!destination) return toast("Enter a destination first", true);
+    try { await call("tesla_send_destination", { destination }); toast("Sent to car navigation ✓"); }
+    catch (e) { toast(e.message, true); }
+  };
+
+  // Sliders
+  $("limitSlider").oninput = () => ($("limitVal").textContent = $("limitSlider").value + "%");
+  $("ampsSlider").oninput = () => ($("ampsVal").textContent = $("ampsSlider").value + "A");
+  $("tempSlider").oninput = () => ($("tempVal").textContent = $("tempSlider").value + "°F");
+  $("limitBtn").onclick = () => call("tesla_set_charge_limit", { percent: Number($("limitSlider").value) }).then(() => toast("Charge limit set ✓"), (e) => toast(e.message, true));
+  $("ampsBtn").onclick = () => call("tesla_set_charging_amps", { amps: Number($("ampsSlider").value) }).then(() => toast("Amps set ✓"), (e) => toast(e.message, true));
+  $("tempBtn").onclick = () => call("tesla_set_temperature", { temp: Number($("tempSlider").value), unit: "F" }).then(() => toast("Temperature set ✓"), (e) => toast(e.message, true));
+
+  // Generic tool runner
+  async function loadTools() {
+    try {
+      const tools = await api("/api/tools");
+      const sel = $("toolSelect");
+      sel.innerHTML = tools.map((t) => `<option value="${t.name}">${t.name}</option>`).join("");
+      $("toolList").innerHTML = tools
+        .map((t) => `<div class="toolrow"><code data-name="${t.name}">${t.name}</code><span>${t.description}</span></div>`)
+        .join("");
+      document.querySelectorAll(".toolrow code").forEach((c) => (c.onclick = () => { sel.value = c.dataset.name; sel.scrollIntoView({ block: "nearest" }); }));
+    } catch { /* token not set yet */ }
+  }
+  $("toolRunBtn").onclick = async () => {
+    try {
+      const args = JSON.parse($("toolArgs").value || "{}");
+      const out = await call($("toolSelect").value, args);
+      $("toolOut").value = JSON.stringify(out.result, null, 2);
+      toast("✓ " + $("toolSelect").value);
+    } catch (e) { $("toolOut").value = "Error: " + e.message; toast(e.message, true); }
+  };
+
+  // Token setup
+  $("saveToken").onclick = () => {
+    token = $("tokenInput").value.trim();
+    localStorage.setItem(tokenKey, token);
+    refresh().then(loadTools);
+  };
+  if (!token) $("setupCard").style.display = "";
+
+  refresh().then(loadTools);
+  setInterval(refresh, 30000);
+})();
+</script>
+</body>
+</html>

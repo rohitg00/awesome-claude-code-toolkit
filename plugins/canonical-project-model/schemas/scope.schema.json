@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scope.schema.json",
+  "title": "Section — Scope Register",
+  "description": "The master scope of work, normalized into CSI-coded line items. This is the spine of the whole record: takeoff quantities, estimate/SOV lines, trades, and sub bids all map back to a scope_item_id here. Inclusions, exclusions, alternates, and allowances are captured as written so downstream leveling/compliance tools have a single basis to compare against. Scope is organized, not judged — completeness/compliance reasoning is the RFP-analysis and bid-leveling skills' job.",
+  "type": "object",
+  "required": ["section", "items"],
+  "properties": {
+    "section": { "type": "string", "const": "scope" },
+    "basis": { "type": "string", "description": "What the scope was derived from (e.g. 'RFP Section 01 11 00 Summary of Work + drawing index')." },
+    "items": {
+      "type": "array",
+      "description": "One row per scope item — the master line-item basis for all comparison.",
+      "items": {
+        "type": "object",
+        "required": ["scope_item_id", "description"],
+        "properties": {
+          "scope_item_id": { "type": "string", "description": "Stable id, e.g. 'SC-0260-01'. Referenced by takeoff, estimate, trades, sub bids." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "description": { "type": "string", "description": "Scope item as written." },
+          "category": { "type": "string", "enum": ["base", "alternate", "allowance", "unit_price", "option", "owner_provided", "by_others", "exclusion"], "description": "How the scope item is treated commercially." },
+          "alternate_id": { "type": "string", "description": "Owner's alternate number when category=alternate." },
+          "add_deduct": { "type": "string", "enum": ["add", "deduct", "n/a"], "description": "For alternates." },
+          "responsible_party": { "type": "string", "description": "Who carries it: 'this_contractor', 'owner', 'by_others', or a named trade." },
+          "allowance_value": { "$ref": "common.defs.schema.json#/$defs/money" },
+          "uom": { "type": "string", "description": "Unit the scope is measured/paid in (for unit-price scope)." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" },
+          "normalization": { "$ref": "common.defs.schema.json#/$defs/normalization" }
+        }
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "description": "Project-level exclusions / clarifications stated in the documents, verbatim. Flagged because a blank reads as 'free' to a leveling tool.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

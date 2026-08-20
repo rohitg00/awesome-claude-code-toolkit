@@ -1,6 +1,23 @@
 node_modules/
 dist/
 build/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+venv/
+.venv/
+
+# Contacts DB — never commit real contact data (PII)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+contacts-db/data/raw/
 .env
 .env.local
 .env.*.local
@@ -23,3 +40,7 @@ yarn.lock
 .cache/
 tmp/
 temp/
+
+# Browserbase runtime data
+.browserbase/
+stagehand-cache/

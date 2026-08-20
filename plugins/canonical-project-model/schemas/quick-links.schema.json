@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quick-links.schema.json",
+  "title": "Section — Quick Links",
+  "description": "A quick-reference table that jumps an estimator straight to the page that matters. Each link names the document, the page, and the URL of the OCR4 screenshot/crop used (plus a PDF page link when available), tagged by category and, for trade work, by MasterFormat division and cost code. The workbook renders these as live hyperlinks grouped by category and sorted by division, with a row for every trade found on the job and sub-rows per cost code (demo, new work, schedule).",
+  "type": "object",
+  "required": ["section", "links"],
+  "properties": {
+    "section": { "type": "string", "const": "quick_links" },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "category"],
+        "properties": {
+          "title": { "type": "string", "description": "Document title (plans, specs, schedule name, etc.)." },
+          "category": {
+            "type": "string",
+            "enum": [
+              "project_info", "phasing", "architect", "engineer",
+              "finish_schedule", "door_schedule", "hvac_equipment_schedule",
+              "light_schedule", "electrical_gear_schedule",
+              "architectural_demo", "architectural_new_walls", "trade", "other"
+            ],
+            "description": "Which quick-reference bucket this link belongs to. 'trade' links are further keyed by masterformat_division + cost_code."
+          },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$", "description": "Required when category='trade'; the division to sort/group under." },
+          "trade_id": { "type": "string", "description": "trades.trades[].trade_id when category='trade'." },
+          "cost_code": { "type": "string", "description": "Sub-listing within a trade: demo | new_work | schedule | etc." },
+          "doc_id": { "type": "string", "description": "Source document id from the intake handoff." },
+          "page": { "type": ["integer", "null"], "description": "Page number in the document." },
+          "screenshot_url": { "type": "string", "description": "URL leading directly to the OCR4 screenshot/crop used for this reference." },
+          "pdf_url": { "type": "string", "description": "URL/anchor to the PDF page, when available." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

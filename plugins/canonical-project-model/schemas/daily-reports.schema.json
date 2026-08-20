@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "daily-reports.schema.json",
+  "title": "Section — Daily Reports",
+  "description": "Summaries of JobTread daily reports (one-way sync; last five days prioritized). Each report links to the full JobTread daily report and carries flags surfaced by meeting/workplace intelligence — rendered as highlight banners on the dashboard's date cards. Flag text stays factual and constructive.",
+  "type": "object",
+  "required": ["section", "reports"],
+  "properties": {
+    "section": { "type": "string", "const": "daily_reports" },
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date"],
+        "properties": {
+          "date": { "type": "string", "description": "ISO date." },
+          "url": { "type": "string", "description": "Link to the full JobTread daily report." },
+          "summary": { "type": "string" },
+          "crew_count": { "type": ["integer", "null"] },
+          "weather": { "type": "string" },
+          "photos": { "type": "array", "items": { "type": "string" }, "description": "Photo URLs / data URIs from the report." },
+          "flags": {
+            "type": "array",
+            "description": "Meeting / workplace-intelligence highlights shown as banners at the top of the card.",
+            "items": {
+              "type": "object",
+              "required": ["kind", "text"],
+              "properties": {
+                "kind": { "type": "string", "enum": ["meeting", "intel", "safety", "weather", "delivery", "inspection", "other"] },
+                "text": { "type": "string" }
+              }
+            }
+          },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

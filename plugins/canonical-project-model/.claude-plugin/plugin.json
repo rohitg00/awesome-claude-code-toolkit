@@ -1,0 +1,7 @@
+{
+  "name": "canonical-project-model",
+  "version": "1.0.0",
+  "description": "Normalization layer of the construction-doc-intelligence pipeline: turns the verbatim project-intake dossier (which Mistral OCR4 produced) into the Canonical Project Record - one reusable, CSI MasterFormat-organized, provenance-carrying source of truth, and renders it as an interlinked Excel workbook (dashboard + sub-pages for project bio, contacts, quick links, trades, Summary QTO as single source of truth, per-trade budget pages with ITB/QR, submittal register, schedule, critical path, bid log, and an editable budget rollup). MasterFormat division is the sole classification and universal sort key. Parallel agents normalize each section; deterministic scripts assemble canonical-model.json, build the workbook, and render a self-contained animated HTML dashboard (charcoal/blue/gold/red, 3D gradients). Built for downstream estimating/PM tools to pull from - it organizes, it never prices, levels, or decides.",
+  "commands": ["commands/structure.md"],
+  "agents": ["agents/model-orchestrator.md", "agents/section-normalizer.md", "agents/parsing-council.md"]
+}

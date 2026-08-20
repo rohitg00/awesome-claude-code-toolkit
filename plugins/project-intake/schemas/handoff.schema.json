@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "project-intake handoff contract",
+  "description": "Shape of projects/<slug>/handoff.json — the stable interface the project-intake plugin emits for the construction-doc-intelligence orchestrator to consume. Paths are relative to dossier_dir.",
+  "type": "object",
+  "required": ["schema_version", "status", "project", "dossier_dir", "documents", "extracts", "next_step"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "status": { "type": "string", "enum": ["pending", "partial", "ready_for_review", "error"] },
+    "project": {
+      "type": "object",
+      "required": ["title", "slug"],
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "number": { "type": "string" },
+        "owner": { "type": "string" },
+        "location": { "type": "string" },
+        "identity_source": {
+          "type": "object",
+          "properties": {
+            "doc": { "type": "string" },
+            "how": { "type": "string", "description": "explicit | extracted | fallback" }
+          }
+        }
+      }
+    },
+    "dossier_dir": { "type": "string" },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "doc_id": { "type": "string" },
+          "source": { "type": "string" },
+          "input_mode": { "type": "string", "enum": ["document_url", "image_url", "file_id"] },
+          "pages": { "type": "integer" },
+          "status": { "type": "string", "enum": ["ok", "low_confidence", "failed"] },
+          "raw": { "type": "string", "description": "path to the raw extraction envelope under _raw/" },
+          "error": { "type": "string" }
+        }
+      }
+    },
+    "extracts": {
+      "type": "object",
+      "description": "Relative paths to the harvested artifacts (omitted keys mean nothing of that type was found).",
+      "properties": {
+        "products": { "type": "string" },
+        "product_tables": { "type": "string" },
+        "schedules": { "type": "string" },
+        "contacts": { "type": "string" },
+        "scope_items": { "type": "string" },
+        "requirements": { "type": "string" }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "documents": { "type": "integer" },
+        "products": { "type": "integer" },
+        "tables": { "type": "integer" },
+        "schedules": { "type": "integer" },
+        "contacts": { "type": "integer" }
+      }
+    },
+    "needs_human_review": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Low-confidence regions / failed docs / conflicting project identity to flag before reasoning."
+    },
+    "next_step": { "type": "string", "description": "Default: construction-doc-pipeline:review" },
+    "created_at": { "type": "string" }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "mistral-ocr4",
+  "version": "1.0.0",
+  "description": "Lean, tool-agnostic access layer for Mistral OCR4 + Document AI: a custom MCP server (OCR, structured annotations, bounding boxes, Files, Batch, generic passthrough), an extraction skill, intent-divining hooks, and a handoff seam for downstream RFP/vendor/invoice/submittal/engineering pipelines. Extraction only - reasoning stays with the calling model.",
+  "commands": ["commands/ocr.md", "commands/handoff.md"],
+  "agents": ["agents/ocr-router.md"]
+}

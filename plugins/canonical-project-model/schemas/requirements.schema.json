@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "requirements.schema.json",
+  "title": "Section — Binding Requirements, Compliance & Addenda",
+  "description": "The verbatim register of binding requirements ('shall' statements), submission/eligibility requirements, evaluation criteria as written, and the addenda list. This is the compliance backbone the rfp-analysis skill reasons over and the basis a bid is checked against. Captured verbatim with provenance — never paraphrased, never judged for compliance here.",
+  "type": "object",
+  "required": ["section", "requirements"],
+  "properties": {
+    "section": { "type": "string", "const": "requirements" },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["requirement_id", "text"],
+        "properties": {
+          "requirement_id": { "type": "string", "description": "Stable id, e.g. 'REQ-031'." },
+          "text": { "type": "string", "description": "The binding requirement, quoted verbatim." },
+          "category": { "type": "string", "enum": ["submission", "eligibility", "technical", "commercial", "safety", "schedule", "evaluation_criteria", "general", "unknown"] },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "spec_drawing_ref": { "type": "string" },
+          "scope_item_id": { "type": "string" },
+          "mandatory": { "type": ["boolean", "null"], "description": "True for 'shall/must', false for 'should/may', as worded. Recorded, not interpreted." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "evaluation_criteria": {
+      "type": "array",
+      "description": "Award/evaluation criteria as written (e.g. 'lowest responsive bid', 'best value 60/40 technical/price').",
+      "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "weight": { "type": "string" }, "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" } } }
+    },
+    "addenda": {
+      "type": "array",
+      "description": "Issued addenda and what they changed (so a downstream tool can confirm all are acknowledged).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "string" },
+          "date": { "type": ["string", "null"] },
+          "summary": { "type": "string", "description": "What it changed, as stated." },
+          "acknowledged": { "type": ["boolean", "null"] },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Claude Code Toolkit
 
-**The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
+**The most comprehensive toolkit for Claude Code -- 135 agents, 42 curated skills (+400,000 via [SkillKit](https://agenstskills.com)), 42 commands, 176+ plugins, 20 hooks, 15 rules, 7 templates, 15 MCP configs, 26 companion apps, 53 ecosystem entries, and more.**
 
 <p align="center">
   <a href="https://trendshift.io/repositories/21839" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21839" alt="rohitg00%2Fawesome-claude-code-toolkit | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -50,6 +50,11 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Agents](#agents) (135)
 - [Skills](#skills) (35 curated + 28 community)
 - [Commands](#commands) (42)
+- [Hooks](#hooks) (24 scripts)
+- [Rules](#rules) (16)
+- [Templates](#templates) (7)
+- [MCP Configs](#mcp-configs) (7)
+- [Contexts](#contexts) (6)
 - [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
 - [Templates](#templates) (7)
@@ -217,6 +222,8 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [myclaude](https://github.com/stellarlinkco/myclaude) | Multi-agent orchestration routing tasks to Claude Code, Codex, Gemini, and OpenCode based on complexity. OmO skill for intelligent routing. 2,400+ stars |
 | [nimbalyst](https://nimbalyst.com) | Visual workspace for building with Codex and Claude Code. Session and task manager. Visual editing |
 | [n8n-workflow](plugins/n8n-workflow/) | Generate n8n automation workflows from natural language descriptions |
+| [ntxp-contacts](plugins/ntxp-contacts/) | NTXP master contacts database: one de-duplicated source of truth with idempotent imports, full-text search, and bi-directional CRM sync |
+| [tesla-connector](plugins/tesla-connector/) | Tesla vehicle control: find my Tesla / drop a pin / navigate-to-car, lock & unlock, climate, charging — 72 MCP tools, zero-touch first-run setup, themed dashboard GUI, Siri/ChatGPT bridge |
 | [nexus-agents](https://github.com/williamzujkowski/nexus-agents) | Intelligent orchestration platform routing tasks to Claude, Gemini, Codex, and OpenCode via Budget→TOPSIS→LinUCB composite router. 30 MCP tools (orchestrate, consensus voting, research pipelines), 12 expert agents, 17 skills, plugin-native `/agents` + hooks. Install: `/plugin marketplace add williamzujkowski/nexus-agents` |
 | [onboarding-guide](plugins/onboarding-guide/) | New developer onboarding documentation generator |
 | [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | Teams-first multi-agent orchestration. 19 specialized agents, 28 skills. Full autonomous execution, Socratic questioning, N coordinated agents. 9,900+ stars |
@@ -225,6 +232,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [opcode](https://github.com/winfunc/opcode) | Tauri 2 desktop GUI and toolkit for Claude Code. Manage sessions, create custom agents with visual editor, usage analytics, MCP integration. 21,000+ stars |
 | [openapi-expert](plugins/openapi-expert/) | OpenAPI spec generation, validation, and client code scaffolding |
 | [optimize](plugins/optimize/) | Code optimization for performance and bundle size reduction |
+| [paperclip-ai](plugins/paperclip-ai/) | Paperclip AI integration — orchestrate multi-agent teams, track costs, and suggest workflow improvements. Includes custom MCP server, connector toggle, and zero-config hooks |
 | [ORCH](https://github.com/oxgeneral/ORCH) | CLI runtime orchestrating Claude Code, Codex, and Cursor as typed agent teams with state machine (todo→review→done), auto-retry, inter-agent messaging, goals, and TUI dashboard |
 | [oss-autopilot](https://github.com/costajohnt/oss-autopilot) | Open source contribution manager — tracks PRs across repos, discovers issues, diagnoses CI failures, drafts maintainer responses. 7 agents, interactive commands, MCP server. Install: `/plugin marketplace add costajohnt/oss-autopilot` |
 | [paco-framework](https://github.com/PenguinAlleyApps/paco-framework) | 1+ | Markdown-first multi-agent OS for Claude Code. Coordinates 3-16 specialized AI agents (Engineering, QA, Growth, Finance) with file-based dispatch, institutional memory, CEO Gate approval, and 24/7 scheduling. No Python required. MIT |
@@ -232,6 +240,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [perf-profiler](plugins/perf-profiler/) | Performance analysis, profiling, and optimization recommendations |
 | [performance-monitor](plugins/performance-monitor/) | Profile API endpoints and run benchmarks to identify performance bottlenecks |
 | [plan](plugins/plan/) | Structured planning with risk assessment and time estimation |
+| [plugin-dev](plugins/plugin-dev/) | Plugin development toolkit with skills for creating agents, commands, hooks, MCP integrations, and comprehensive plugin structure guidance |
 | [preflight](https://github.com/preflight-dev/preflight) | 24-tool MCP server that catches vague prompts before they cost 2-3x in wrong→fix cycles. 12-category scorecards, correction pattern learning, cross-service contract awareness, session history search with LanceDB vectors, and cost estimation. `npx preflight-dev` |
 | [pr-reviewer](plugins/pr-reviewer/) | Review pull requests with structured analysis and approve with confidence |
 | [product-shipper](plugins/product-shipper/) | Ship features end-to-end with launch checklists and rollout plans |
@@ -541,7 +550,7 @@ Reference an agent in your `CLAUDE.md`:
 
 ## Skills
 
-Thirty-five curated skill modules included in this repo, with access to **400,000+ additional skills** via the [SkillKit marketplace](https://agenstskills.com). Each included skill teaches Claude Code domain-specific patterns with code examples, anti-patterns, and checklists.
+Forty-two curated skill modules included in this repo, with access to **400,000+ additional skills** via the [SkillKit marketplace](https://agenstskills.com). Each included skill teaches Claude Code domain-specific patterns with code examples, anti-patterns, and checklists.
 
 | Skill | Directory | What It Teaches |
 |-------|-----------|-----------------|
@@ -581,6 +590,13 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Mobile Development | `skills/mobile-development/` | React Native, Flutter, responsive layouts |
 | Data Engineering | `skills/data-engineering/` | ETL pipelines, Spark, star schema, data quality |
 | LLM Integration | `skills/llm-integration/` | Streaming, function calling, RAG, cost optimization |
+| Plugin Structure | `skills/plugin-structure/` | Plugin directory layout, manifest config, auto-discovery, `${CLAUDE_PLUGIN_ROOT}` |
+| Plugin Settings | `skills/plugin-settings/` | `.claude/plugin-name.local.md` pattern, YAML frontmatter parsing, per-project config |
+| Command Development | `skills/command-development/` | Slash command frontmatter, dynamic arguments, bash execution, interactive commands |
+| Agent Development | `skills/agent-development/` | Subagent frontmatter, system prompts, triggering conditions, AI-assisted generation |
+| Hook Development | `skills/hook-development/` | PreToolUse/PostToolUse/Stop hooks, prompt-based hooks API, event-driven automation |
+| MCP Integration | `skills/mcp-integration/` | Adding MCP servers to plugins, `.mcp.json`, SSE/stdio/HTTP transport types |
+| Skill Development | `skills/skill-development/` | Skill structure, progressive disclosure, strong triggering descriptions |
 
 ### Community Skills
 
@@ -588,6 +604,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 |-------|---------|------------------|
 | [deep-dive](https://github.com/kimsb2429/deep-dive-skill) | `git clone https://github.com/kimsb2429/deep-dive-skill && cp -r deep-dive-skill/deep-dive ~/.claude/skills/` | DAG-based deep research — breaks questions into a dependency graph, runs parallel subagents, identifies gaps, writes a sourced report. Single markdown file, no external APIs or MCP servers. |
 | [Reepl - LinkedIn Content Creation](https://github.com/reepl-io/skills) | `npx skillkit@latest install reepl-io/skills` | 18 tools for LinkedIn content management: drafts, publishing, scheduling, voice profiles, contacts, collections, templates, and AI image generation |
+| [Hindsight - Agent Memory Docs](https://github.com/vectorize-io/hindsight) | `npx skills add https://github.com/vectorize-io/hindsight --skill hindsight-docs` | Instant access to Hindsight agent memory system documentation: retain/recall/reflect operations, biomimetic memory architecture, multi-strategy retrieval, and LLM integration |
 | [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) | `git clone https://github.com/conorbronsdon/avoid-ai-writing ~/.claude/skills/avoid-ai-writing` | AI writing pattern detection and rewriting (21 categories, 43 replacements) |
 | [CCM](https://github.com/dr5hn/ccm) | `npx skills add dr5hn/ccm@ccm` | Multi-account management, session cleanup, health checks, environment snapshots, permissions audit for Claude Code |
 | [cc-inspect](https://github.com/howardpen9/cc-inspect) | `git clone https://github.com/howardpen9/cc-inspect ~/.claude/skills/cc-inspect` | Inspect all installed Claude Code skills, plugins, MCP servers, commands, and hooks in a browser dashboard. Scope-aware (user/project/local), zero dependencies (pure bash + python3), generates self-contained HTML |
@@ -686,7 +703,7 @@ npx skillkit@latest install claude-code-toolkit/tdd-mastery
 
 ### 15,000+ Skills via SkillKit Marketplace
 
-This toolkit includes 35 curated skills. For access to **400,000+ additional skills** across every domain, use [SkillKit](https://agenstskills.com):
+This toolkit includes 42 curated skills. For access to **400,000+ additional skills** across every domain, use [SkillKit](https://agenstskills.com):
 
 ```bash
 npx skillkit@latest                    # Launch interactive TUI
@@ -805,7 +822,7 @@ Then invoke in Claude Code:
 
 ## Hooks
 
-Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
+Twenty-four hook scripts covering all eight Claude Code lifecycle events. Place `hooks.json` in your `.claude/` directory.
 
 ### Hook Scripts
 
@@ -831,6 +848,11 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 | `stop-check.js` | Stop | Remind to run tests if code was modified |
 | `notification-log.js` | Notification | Log notifications for later review |
 | `prompt-check.js` | UserPromptSubmit | Detect vague prompts, suggest clarification |
+| `paperclip-auto-start.js` | SessionStart | Auto-start Paperclip server and load agent context silently |
+| `paperclip-activity-log.js` | PostToolUse (Bash/Write/Edit) | Log commits, pushes, tests, and file changes to Paperclip |
+| `paperclip-prompt-enhance.js` | UserPromptSubmit | Suggest Paperclip features when prompt matches orchestration patterns |
+| `paperclip-session-end.js` | SessionEnd | Flush pending activity to Paperclip and save session state |
+| `paperclip-mcp-server.js` | MCP Server | Custom MCP server exposing Paperclip tools (issues, agents, costs) natively to Claude |
 
 ### Related SDKs
 
@@ -871,7 +893,7 @@ See [GateGuard](https://github.com/zunoworks/gateguard) | [PyPI](https://pypi.or
 
 ## Rules
 
-Fifteen coding rules that enforce consistent patterns. Add to `.claude/rules/` or reference in `CLAUDE.md`.
+Sixteen coding rules that enforce consistent patterns. Add to `.claude/rules/` or reference in `CLAUDE.md`.
 
 | Rule | File | What It Enforces |
 |------|------|-----------------|
@@ -890,6 +912,7 @@ Fifteen coding rules that enforce consistent patterns. Add to `.claude/rules/` o
 | Code Review | [`code-review.md`](rules/code-review.md) | Review checklist, approval criteria |
 | Monitoring | [`monitoring.md`](rules/monitoring.md) | Logging standards, metrics, alerting |
 | Naming | [`naming.md`](rules/naming.md) | Naming conventions per language |
+| Paperclip Integration | [`paperclip-integration.md`](rules/paperclip-integration.md) | When and how to suggest Paperclip AI for multi-agent orchestration |
 
 ---
 
@@ -921,7 +944,8 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Sixteen curated Model Context Protocol server configurations.
+Seven curated Model Context Protocol server configurations.
+Seventeen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -932,6 +956,8 @@ Sixteen curated Model Context Protocol server configurations.
 | Frontend | [`frontend.json`](mcp-configs/frontend.json) | Puppeteer, Figma, Storybook |
 | Crypto / DeFi | [`crypto-defi.json`](mcp-configs/crypto-defi.json) | defi-mcp, Filesystem, Fetch, Memory |
 | DevOps | [`devops.json`](mcp-configs/devops.json) | AWS, Docker, GitHub, Terraform, Sentry |
+| NTXP Contacts | [`ntxp-contacts.json`](mcp-configs/ntxp-contacts.json) | NTXP master contacts database (search/get/upsert/export/sync) |
+| Paperclip AI | [`paperclip.json`](mcp-configs/paperclip.json) | Paperclip AI REST API for agent orchestration |
 | Research | [`research.json`](mcp-configs/research.json) | BGPT scientific papers, Brave Search, Fetch, Memory, Filesystem |
 | Observability | [`observability.json`](mcp-configs/observability.json) | Iris eval & observability for agent tracing, quality evaluation, and cost tracking |
 | Security | [`security.json`](mcp-configs/security.json) | Ghidra reverse engineering, Snyk vulnerability scanning |
@@ -941,12 +967,14 @@ Sixteen curated Model Context Protocol server configurations.
 | Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
 | LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
+| Tesla | [`tesla.json`](mcp-configs/tesla.json) | Tesla connector ([server](mcp-servers/tesla/)): find my Tesla / drop a pin / navigate-to-car, lock/unlock, climate, charging, sentry — 72 tools + themed dashboard + Siri/ChatGPT bridge |
+| Procurement | [`procurement.json`](mcp-configs/procurement.json) | DeepRFP, NTXP BidWatch (SAM.gov/HigherGov/BidBanana/OpenGov/ESBD/Bonfire/Jaggaer/Ionwave), Filesystem, Fetch |
 
 ---
 
 ## Contexts
 
-Five context modes that configure Claude Code's behavior for different tasks.
+Six context modes that configure Claude Code's behavior for different tasks.
 
 | Context | File | Focus |
 |---------|------|-------|
@@ -955,6 +983,7 @@ Five context modes that configure Claude Code's behavior for different tasks.
 | Research | [`research.md`](contexts/research.md) | Evaluate tools, compare alternatives, document findings |
 | Debug | [`debug.md`](contexts/debug.md) | Reproduce, hypothesize, fix root cause, regression test |
 | Deploy | [`deploy.md`](contexts/deploy.md) | Pre-deploy checklist, staging-first, rollback criteria |
+| Orchestration | [`orchestration.md`](contexts/orchestration.md) | Multi-agent coordination, delegation, cost tracking via Paperclip AI |
 
 ---
 

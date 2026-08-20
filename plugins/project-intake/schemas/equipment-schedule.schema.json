@@ -1,0 +1,31 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "equipment_schedule",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "type": "array",
+          "description": "One entry per equipment/fixture tag.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tag": { "type": "string" },
+              "description": { "type": "string" },
+              "manufacturer": { "type": "string" },
+              "model": { "type": "string" },
+              "capacity": { "type": "string" },
+              "electrical": { "type": "string" },
+              "mounting": { "type": "string" },
+              "remarks": { "type": "string" },
+              "sheet": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

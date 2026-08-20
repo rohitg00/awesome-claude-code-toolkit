@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "tesla": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/bootstrap.mjs"],
+      "env": {}
+    }
+  }
+}

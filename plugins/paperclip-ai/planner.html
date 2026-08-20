@@ -1,0 +1,354 @@
+<title>Paperclip Planner</title>
+<meta name="description" content="Planning board for the Awesome Claude Code Toolkit — track agent work, manage API keys, and configure MCP servers.">
+<style>
+  @font-face { font-family: 'Display'; src: local('Charter'), local('Georgia'), local('Iowan Old Style'); font-display: swap; }
+  :root {
+    --ground: #F5F3EF; --surface: #FFFFFF; --ink: #2A2623; --ink-secondary: #6B6560;
+    --ink-tertiary: #9E9890; --border: #E2DED8; --border-light: #EDEBE7;
+    --accent: #3A7CA5; --accent-soft: #E8F1F7; --green: #3D8B5F; --green-soft: #E6F3EC;
+    --amber: #C17E2A; --amber-soft: #FBF0DE; --red: #C0392B; --red-soft: #FBEAE8;
+    --purple: #7B5EA7; --purple-soft: #F0EBF5;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px;
+    color: var(--ink); background: var(--ground); font-variant-numeric: tabular-nums;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  .display { font-family: 'Display', Charter, Georgia, serif; }
+  .mono { font-family: 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace; font-size: 12px; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; position: sticky; top: 0; z-index: 10; }
+  .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+  .logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 7px; display: grid; place-items: center; }
+  .logo-mark svg { width: 16px; height: 16px; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px; }
+  .status-on { background: var(--green-soft); color: var(--green); }
+  .status-off { background: var(--red-soft); color: var(--red); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-on { background: var(--green); animation: pulse 2s ease-in-out infinite; }
+  .dot-off { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: var(--surface); padding: 0 32px; }
+  .tab-bar button { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--ink-tertiary); cursor: pointer; }
+  .tab-bar button:hover { color: var(--ink-secondary); }
+  .tab-bar button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .pane { display: none; } .pane.active { display: block; }
+  main { max-width: 1280px; margin: 0 auto; padding: 28px 32px 60px; }
+  .summary-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: 10px; padding: 16px 18px; }
+  .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-tertiary); margin-bottom: 6px; }
+  .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+  .stat-sub { font-size: 12px; color: var(--ink-secondary); margin-top: 4px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; margin-top: 8px; }
+  .sh h2 { font-size: 18px; font-weight: 600; } .sh .ct { font-size: 13px; color: var(--ink-tertiary); }
+  .board { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 40px; }
+  @media(max-width:800px){.board{grid-template-columns:1fr}.sg{grid-template-columns:1fr}}
+  .col { background: var(--ground); border: 1px solid var(--border-light); border-radius: 10px; min-height: 180px; }
+  .col-hd { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); }
+  .col-t { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-secondary); }
+  .col-n { font-size: 11px; font-weight: 600; background: var(--border-light); color: var(--ink-secondary); width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; }
+  .col-b { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .cd { background: var(--surface); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
+  .cd:hover { border-color: var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .cd-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .cd-id { font-size: 11px; font-weight: 600; color: var(--accent); }
+  .pri { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border-radius: 4px; }
+  .pri-h { background: var(--red-soft); color: var(--red); } .pri-m { background: var(--amber-soft); color: var(--amber); } .pri-l { background: var(--purple-soft); color: var(--purple); }
+  .cd-title { font-size: 13px; font-weight: 500; line-height: 1.4; }
+  .cd-bot { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 11px; color: var(--ink-tertiary); }
+  .empty { padding: 24px 14px; text-align: center; font-size: 12px; color: var(--ink-tertiary); }
+  .sg { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  @media(max-width:800px){.sg{grid-template-columns:1fr}}
+  .sp { background: var(--surface); border: 1px solid var(--border-light); border-radius: 10px; overflow: hidden; }
+  .sp-hd { padding: 14px 18px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+  .sp-hd h3 { font-size: 14px; font-weight: 600; }
+  .sp-bd { padding: 16px 18px; }
+  .fld { margin-bottom: 14px; } .fld:last-child { margin-bottom: 0; }
+  .fl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-tertiary); margin-bottom: 5px; display: block; }
+  .fr { display: flex; gap: 8px; }
+  input[type=text],input[type=password],input[type=url],select,textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 13px; font-family: inherit; background: var(--surface); color: var(--ink);
+  }
+  input:focus,select:focus,textarea:focus { outline: none; border-color: var(--accent); }
+  .mi { font-family: 'SF Mono', Menlo, monospace; font-size: 12px; }
+  .btn { padding: 7px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--ink); white-space: nowrap; }
+  .btn:hover { background: var(--ground); }
+  .btn-a { background: var(--accent); color: #fff; border-color: var(--accent); } .btn-a:hover { background: #327092; }
+  .btn-s { padding: 4px 10px; font-size: 11px; }
+  .btn-d { color: var(--red); border-color: var(--red-soft); } .btn-d:hover { background: var(--red-soft); }
+  .tgl-w { display: flex; align-items: center; gap: 10px; }
+  .tgl { width: 40px; height: 22px; border-radius: 11px; background: var(--border); position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
+  .tgl.on { background: var(--green); }
+  .tgl::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .tgl.on::after { transform: translateX(18px); }
+  .kr { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--ground); border-radius: 6px; font-size: 12px; margin-bottom: 6px; }
+  .kr:last-child { margin-bottom: 0; }
+  .kn { font-weight: 600; min-width: 70px; }
+  .kv { flex: 1; font-family: monospace; font-size: 11px; color: var(--ink-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ka { display: flex; gap: 4px; flex-shrink: 0; }
+  .mr { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--ground); border-radius: 6px; margin-bottom: 6px; }
+  .md { width: 8px; height: 8px; border-radius: 50%; }
+  .mi-n { min-width: 0; }
+  .mi-t { font-size: 13px; font-weight: 600; }
+  .mi-u { font-size: 11px; color: var(--ink-tertiary); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .jb { background: #1e1e1e; color: #d4d4d4; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 11px; line-height: 1.6; overflow-x: auto; white-space: pre; margin-top: 12px; position: relative; }
+  .jb .jc { position: absolute; top: 8px; right: 8px; background: #333; border: 1px solid #555; color: #ccc; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; font-family: system-ui; }
+  .jb .jc:hover { background: #444; }
+  .af { border: 1px dashed var(--border); border-radius: 8px; padding: 14px; margin-top: 10px; display: none; }
+  .af.open { display: block; }
+  .at { font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 500; }
+  .at:hover { text-decoration: underline; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transition: all .3s; z-index: 100; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .ac { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin-bottom: 40px; }
+  .ac-c { background: var(--surface); border: 1px solid var(--border-light); border-radius: 10px; padding: 18px; }
+  .ac-c h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .ac-c p { font-size: 12px; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 10px; }
+  .ac-cmd { font-family: monospace; font-size: 11px; background: var(--ground); border: 1px solid var(--border-light); border-radius: 6px; padding: 6px 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: var(--ink-secondary); }
+  .ac-cmd:hover { background: var(--border-light); }
+  footer { text-align: center; padding: 24px; font-size: 12px; color: var(--ink-tertiary); border-top: 1px solid var(--border-light); margin-top: 20px; }
+</style>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"><path d="M4 12V6a4 4 0 0 1 8 0v6"/><path d="M2 9h12"/><circle cx="8" cy="13" r="1.5" fill="#fff" stroke="none"/></svg></div>
+      <span>Paperclip Planner</span>
+    </div>
+    <div class="header-right">
+      <span id="badge" class="status-badge status-off"><span class="dot dot-off"></span> Checking</span>
+      <span id="ver" style="font-size:12px;color:var(--ink-tertiary);"></span>
+    </div>
+  </div>
+</header>
+<div class="tab-bar">
+  <button class="active" data-tab="board">Board</button>
+  <button data-tab="keys">Connections &amp; Keys</button>
+</div>
+
+<main>
+<div id="p-board" class="pane active">
+  <div style="margin-bottom:28px">
+    <h1 class="display" style="font-size:26px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px">Awesome Claude Code Toolkit</h1>
+    <p style="font-size:13px;color:var(--ink-secondary)" id="sub">Loading&hellip;</p>
+  </div>
+  <div class="summary-strip">
+    <div class="stat-card"><div class="stat-label">Open</div><div class="stat-value" id="s1">--</div><div class="stat-sub" id="s1s">&nbsp;</div></div>
+    <div class="stat-card"><div class="stat-label">Done</div><div class="stat-value" style="color:var(--green)" id="s2">--</div><div class="stat-sub" id="s2s">&nbsp;</div></div>
+    <div class="stat-card"><div class="stat-label">Agents</div><div class="stat-value" id="s3">--</div><div class="stat-sub" id="s3s">&nbsp;</div></div>
+    <div class="stat-card"><div class="stat-label">High Priority</div><div class="stat-value" style="color:var(--red)" id="s4">--</div><div class="stat-sub" id="s4s">&nbsp;</div></div>
+  </div>
+  <div class="sh"><h2>Work Board</h2><span class="ct" id="bp"></span></div>
+  <div class="board">
+    <div class="col"><div class="col-hd"><span class="col-t">Backlog</span><span class="col-n" id="cn1">0</span></div><div class="col-b" id="c1"><div class="empty">No items</div></div></div>
+    <div class="col"><div class="col-hd"><span class="col-t">In Progress</span><span class="col-n" id="cn2">0</span></div><div class="col-b" id="c2"><div class="empty">None active</div></div></div>
+    <div class="col"><div class="col-hd"><span class="col-t">Done</span><span class="col-n" id="cn3">0</span></div><div class="col-b" id="c3"><div class="empty">None yet</div></div></div>
+  </div>
+  <div class="sh"><h2>Quick Actions</h2><span class="ct">Copy any command</span></div>
+  <div class="ac">
+    <div class="ac-c"><h3>Create issue</h3><p>Add a task to the backlog.</p><div class="ac-cmd" onclick="cc(this)" data-v="npx paperclipai issue create"><span>npx paperclipai issue create</span><span style="font-size:10px;color:var(--ink-tertiary);font-family:system-ui">copy</span></div></div>
+    <div class="ac-c"><h3>Check costs</h3><p>View agent and project spend.</p><div class="ac-cmd" onclick="cc(this)" data-v="npx paperclipai cost"><span>npx paperclipai cost</span><span style="font-size:10px;color:var(--ink-tertiary);font-family:system-ui">copy</span></div></div>
+    <div class="ac-c"><h3>Toggle connector</h3><p>Enable or disable Paperclip.</p><div class="ac-cmd" onclick="cc(this)" data-v="/paperclip-ai:toggle"><span>/paperclip-ai:toggle</span><span style="font-size:10px;color:var(--ink-tertiary);font-family:system-ui">copy</span></div></div>
+  </div>
+</div>
+
+<div id="p-keys" class="pane">
+  <div style="margin-bottom:24px">
+    <h1 class="display" style="font-size:26px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px">Connections &amp; API Keys</h1>
+    <p style="font-size:13px;color:var(--ink-secondary)">Manage API keys, MCP server URLs, and connector settings. Keys are stored in your browser only.</p>
+  </div>
+
+  <div class="sg">
+    <div class="sp">
+      <div class="sp-hd"><h3>Connector Settings</h3></div>
+      <div class="sp-bd">
+        <div class="fld"><div class="tgl-w"><div id="tgl" class="tgl on" onclick="tglC()"></div><span id="tgl-l">Enabled</span></div></div>
+        <div class="fld"><label class="fl">Paperclip API URL</label><div class="fr"><input type="url" id="f-url" value="http://127.0.0.1:3100/api" class="mi"><button class="btn btn-s" onclick="testConn()">Test</button></div></div>
+        <div class="fld"><label class="fl">Company ID</label><input type="text" id="f-co" class="mi" placeholder="Auto-detected"></div>
+        <div class="fld"><label class="fl">Agent ID</label><input type="text" id="f-ag" class="mi" placeholder="Auto-detected"></div>
+        <div style="margin-top:12px"><button class="btn btn-a" onclick="savConn()">Save Settings</button></div>
+      </div>
+    </div>
+    <div class="sp">
+      <div class="sp-hd"><h3>Connection Status</h3></div>
+      <div class="sp-bd" id="cs"><div style="color:var(--ink-tertiary);font-size:13px">Click Test or wait for auto-check.</div></div>
+    </div>
+  </div>
+
+  <div class="sh"><h2>API Keys</h2><span class="ct">Stored in browser localStorage</span></div>
+  <div class="sp" style="margin-bottom:24px">
+    <div class="sp-hd"><h3>Saved Keys</h3><span class="at" onclick="tglF('akf')">+ Add key</span></div>
+    <div class="sp-bd">
+      <div id="kl"><div style="font-size:12px;color:var(--ink-tertiary)">No keys saved.</div></div>
+      <div class="af" id="akf">
+        <div class="fld"><label class="fl">Label</label><input type="text" id="nk-l" placeholder="e.g. Paperclip Agent, OpenAI, Anthropic"></div>
+        <div class="fld"><label class="fl">API Key</label><input type="password" id="nk-v" class="mi" placeholder="pcp_... or sk-ant-..."></div>
+        <div class="fld"><label class="fl">Service URL (optional)</label><input type="url" id="nk-u" class="mi" placeholder="http://127.0.0.1:3100/api"></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-a btn-s" onclick="addK()">Save Key</button><button class="btn btn-s" onclick="tglF('akf')">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><h2>MCP Servers</h2><span class="ct">Generate settings.json config</span></div>
+  <div class="sp" style="margin-bottom:24px">
+    <div class="sp-hd"><h3>Registered Servers</h3><span class="at" onclick="tglF('amf')">+ Add server</span></div>
+    <div class="sp-bd">
+      <div id="ml"></div>
+      <div class="af" id="amf">
+        <div class="fld"><label class="fl">Server Name</label><input type="text" id="nm-n" placeholder="e.g. paperclip, github, postgres"></div>
+        <div class="fld"><label class="fl">Command &amp; Args</label><div class="fr"><select id="nm-c" style="max-width:100px"><option>node</option><option>npx</option><option>uvx</option><option>python</option></select><input type="text" id="nm-a" placeholder="path/to/server.js or -y package" style="flex:1"></div></div>
+        <div class="fld"><label class="fl">Env vars (KEY=VALUE per line)</label><textarea id="nm-e" rows="2" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-family:monospace;font-size:11px;resize:vertical" placeholder="PAPERCLIP_BASE_URL=http://127.0.0.1:3100/api"></textarea></div>
+        <div class="fld"><label class="fl">Attach API Key</label><select id="nm-k" style="width:100%"><option value="">None</option></select></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-a btn-s" onclick="addM()">Add Server</button><button class="btn btn-s" onclick="tglF('amf')">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><h2>Generated Config</h2><span class="ct">Paste into ~/.claude/settings.json</span></div>
+  <div class="sp">
+    <div class="sp-hd"><h3>mcpServers snippet</h3></div>
+    <div class="sp-bd">
+      <p style="font-size:12px;color:var(--ink-secondary);margin-bottom:8px">Copy this JSON into your <code style="font-size:11px">settings.json</code> under <code style="font-size:11px">"mcpServers"</code>.</p>
+      <div class="jb" id="cfg"><button class="jc" onclick="cpCfg()">Copy</button><span style="color:#888">// Add servers above to generate config</span></div>
+    </div>
+  </div>
+</div>
+</main>
+
+<div class="toast" id="toast"></div>
+<footer>Paperclip Planner &middot; API keys stored in browser localStorage only &middot; Never transmitted externally</footer>
+
+<script>
+const SK='paperclip_keys', SM='paperclip_mcp', SC='paperclip_conn';
+function g(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
+function s(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function $(id){return document.getElementById(id)}
+function esc(t){if(!t)return'';const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+function cc(el){const v=el.getAttribute('data-v');if(v)navigator.clipboard.writeText(v).then(()=>toast('Copied!')).catch(()=>toast('Copy manually'))}
+function cpCfg(){const t=$('cfg').textContent.replace('Copy','').trim();navigator.clipboard.writeText(t).then(()=>toast('Config copied!')).catch(()=>{})}
+function mask(k){return k&&k.length>11?k.slice(0,6)+'...'+k.slice(-4):'****'}
+
+// Tabs
+document.querySelectorAll('.tab-bar button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-bar button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');$('p-'+b.dataset.tab).classList.add('active');
+  if(b.dataset.tab==='keys'){rK();rM();uKS()}
+}));
+
+function tglF(id){$(id).classList.toggle('open')}
+
+// Keys
+function gK(){return g(SK,[])}
+function sK(v){s(SK,v)}
+function rK(){
+  const keys=gK(), el=$('kl');
+  if(!keys.length){el.innerHTML='<div style="font-size:12px;color:var(--ink-tertiary)">No keys saved.</div>';return}
+  el.innerHTML=keys.map((k,i)=>`<div class="kr"><span class="kn">${esc(k.label)}</span><span class="kv" id="kv${i}">${mask(k.value)}${k.url?' &middot; '+esc(k.url):''}</span><div class="ka"><button class="btn btn-s" onclick="cpK(${i})">Copy</button><button class="btn btn-s" onclick="rvK(${i})">Reveal</button><button class="btn btn-s btn-d" onclick="dlK(${i})">Delete</button></div></div>`).join('');
+}
+function addK(){
+  const l=$('nk-l').value.trim(),v=$('nk-v').value.trim(),u=$('nk-u').value.trim();
+  if(!l||!v){toast('Label and key required');return}
+  const k=gK();k.push({label:l,value:v,url:u,at:new Date().toISOString()});sK(k);
+  $('nk-l').value='';$('nk-v').value='';$('nk-u').value='';$('akf').classList.remove('open');
+  rK();uKS();toast('Key saved')
+}
+function cpK(i){const k=gK()[i];if(k)navigator.clipboard.writeText(k.value).then(()=>toast('Key copied'))}
+function rvK(i){const el=$('kv'+i),k=gK()[i];if(!el||!k)return;el.textContent=el.dataset.r?mask(k.value)+(k.url?' · '+k.url:''):k.value;el.dataset.r=el.dataset.r?'':'1'}
+function dlK(i){const k=gK();k.splice(i,1);sK(k);rK();uKS();toast('Deleted')}
+function uKS(){const sel=$('nm-k'),k=gK();sel.innerHTML='<option value="">None</option>'+k.map((x,i)=>`<option value="${i}">${esc(x.label)}</option>`).join('')}
+
+// MCP
+function gM(){return g(SM,null)||[{name:'paperclip',command:'node',args:'hooks/scripts/paperclip-mcp-server.js',env:{PAPERCLIP_BASE_URL:'http://127.0.0.1:3100/api'},keyRef:null}]}
+function sM(v){s(SM,v)}
+function rM(){
+  const servers=gM(),el=$('ml');
+  if(!servers.length){el.innerHTML='<div style="font-size:12px;color:var(--ink-tertiary)">No servers.</div>';uCfg();return}
+  el.innerHTML=servers.map((sv,i)=>`<div class="mr"><div class="md" style="background:var(--border)"></div><div class="mi-n"><div class="mi-t">${esc(sv.name)}</div><div class="mi-u">${esc(sv.command)} ${esc(sv.args)}</div></div><button class="btn btn-s btn-d" onclick="dlM(${i})">Remove</button></div>`).join('');
+  uCfg()
+}
+function addM(){
+  const n=$('nm-n').value.trim(),c=$('nm-c').value,a=$('nm-a').value.trim(),et=$('nm-e').value.trim(),kr=$('nm-k').value;
+  if(!n||!a){toast('Name and args required');return}
+  const env={};et.split('\n').forEach(l=>{const eq=l.indexOf('=');if(eq>0)env[l.slice(0,eq).trim()]=l.slice(eq+1).trim()});
+  const m=gM();m.push({name:n,command:c,args:a,env,keyRef:kr?parseInt(kr):null});sM(m);
+  $('nm-n').value='';$('nm-a').value='';$('nm-e').value='';$('amf').classList.remove('open');
+  rM();toast('Server added')
+}
+function dlM(i){const m=gM();m.splice(i,1);sM(m);rM();toast('Removed')}
+function uCfg(){
+  const servers=gM(),keys=gK(),cfg={};
+  servers.forEach(sv=>{
+    const e={command:sv.command,args:[sv.args]},env={...(sv.env||{})};
+    if(sv.keyRef!==null&&keys[sv.keyRef]){const kn=sv.name.toUpperCase().replace(/[^A-Z0-9]/g,'_')+'_API_KEY';env[kn]=keys[sv.keyRef].value}
+    if(Object.keys(env).length)e.env=env;cfg[sv.name]=e
+  });
+  const j=JSON.stringify(cfg,null,2).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"([^"]+)"(\s*:)/g,'<span style="color:#9cdcfe">"$1"</span>$2').replace(/: "([^"]*)"/g,': <span style="color:#ce9178">"$1"</span>');
+  $('cfg').innerHTML='<button class="jc" onclick="cpCfg()">Copy</button>'+j
+}
+
+// Connector
+function gC(){return g(SC,{enabled:true,url:'http://127.0.0.1:3100/api',co:'',ag:''})}
+function savConn(){
+  const c={enabled:$('tgl').classList.contains('on'),url:$('f-url').value.trim(),co:$('f-co').value.trim(),ag:$('f-ag').value.trim()};
+  s(SC,c);toast('Settings saved')
+}
+function tglC(){$('tgl').classList.toggle('on');$('tgl-l').textContent=$('tgl').classList.contains('on')?'Enabled':'Disabled'}
+function ldConn(){const c=gC();if(c.enabled)$('tgl').classList.add('on');else $('tgl').classList.remove('on');$('tgl-l').textContent=c.enabled?'Enabled':'Disabled';if(c.url)$('f-url').value=c.url;if(c.co)$('f-co').value=c.co;if(c.ag)$('f-ag').value=c.ag}
+
+async function testConn(){
+  const url=$('f-url').value.trim().replace(/\/$/,''),el=$('cs');
+  el.innerHTML='<div style="color:var(--ink-tertiary);font-size:13px">Testing&hellip;</div>';
+  try{
+    const r=await fetch(url+'/health');const d=await r.json();
+    if(d.status==='ok'){
+      el.innerHTML=`<div style="color:var(--green);font-weight:500;margin-bottom:8px">Connected</div><div style="font-size:12px;color:var(--ink-secondary);line-height:1.6">Version: ${esc(d.version)}<br>Mode: ${esc(d.deploymentMode)}<br>Auth: ${d.authReady?'Ready':'Not ready'}</div>`;
+      uSt(true,d.version)
+    }else{el.innerHTML='<div style="color:var(--red)">Status not ok</div>';uSt(false)}
+  }catch{
+    el.innerHTML='<div style="color:var(--red);font-size:13px">Cannot connect</div><div style="font-size:12px;color:var(--ink-tertiary);margin-top:4px">Start: <code>npx paperclipai run</code></div>';
+    uSt(false)
+  }
+}
+function uSt(on,v){
+  const b=$('badge'),d=b.querySelector('.dot');
+  b.className='status-badge '+(on?'status-on':'status-off');
+  d.className='dot '+(on?'dot-on':'dot-off');
+  b.childNodes[b.childNodes.length-1].textContent=on?' Online':' Offline';
+  if(v)$('ver').textContent='v'+v
+}
+
+// Board live data
+async function ldBoard(){
+  const c=gC(),url=(c.url||'http://127.0.0.1:3100/api').replace(/\/$/,'');
+  const keys=gK(),ak=(keys.find(k=>k.label.toLowerCase().includes('paperclip'))||{}).value||'';
+  try{
+    const hr=await fetch(url+'/health');const h=await hr.json();
+    if(h.status!=='ok')throw 0;uSt(true,h.version);
+    if(c.co){
+      const hd=ak?{Authorization:'Bearer '+ak}:{};
+      const[ir,ar]=await Promise.all([fetch(url+'/companies/'+c.co+'/issues',{headers:hd}),fetch(url+'/companies/'+c.co+'/agents',{headers:hd})]);
+      const issues=await ir.json(),agents=await ar.json();
+      rBoard(Array.isArray(issues)?issues:[],Array.isArray(agents)?agents:[])
+    }
+  }catch{uSt(false);$('sub').textContent='Not connected — open Connections & Keys to configure'}
+}
+function rBoard(issues,agents){
+  const bl=issues.filter(i=>i.status==='backlog'),ip=issues.filter(i=>i.status==='in_progress'),dn=issues.filter(i=>i.status==='done'),hi=issues.filter(i=>i.priority==='high'&&i.status!=='done');
+  $('s1').textContent=bl.length+ip.length;$('s1s').textContent=issues.length?'across 1 project':'none';
+  $('s2').textContent=dn.length;$('s2s').textContent=dn.length?dn[0].identifier+' latest':'none';
+  $('s3').textContent=agents.length;$('s3s').textContent=agents.map(a=>a.name).join(', ')||'none';
+  $('s4').textContent=hi.length;$('s4s').textContent=hi.length?'need attention':'all clear';
+  $('cn1').textContent=bl.length;$('cn2').textContent=ip.length;$('cn3').textContent=dn.length;
+  $('sub').textContent='Tracking '+issues.length+' issues · '+agents.length+' agent'+(agents.length!==1?'s':'');
+  rCol('c1',bl);rCol('c2',ip);rCol('c3',dn,true)
+}
+function rCol(id,items,fade){
+  const el=$(id);if(!items.length){el.innerHTML='<div class="empty">No items</div>';return}
+  el.innerHTML=items.map(i=>{const p=i.priority==='high'?'h':i.priority==='low'?'l':'m';return`<div class="cd"${fade?' style="opacity:.7"':''}><div class="cd-top"><span class="cd-id">${esc(i.identifier)}</span><span class="pri pri-${p}">${esc(i.priority||'med')}</span></div><div class="cd-title">${esc(i.title)}</div><div class="cd-bot">${i.assigneeAgentId?'<span style="background:var(--accent-soft);padding:2px 8px;border-radius:100px">Assigned</span>':''}<span>${new Date(i.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></div></div>`}).join('')
+}
+
+// Init
+ldConn();rK();rM();ldBoard()
+</script>

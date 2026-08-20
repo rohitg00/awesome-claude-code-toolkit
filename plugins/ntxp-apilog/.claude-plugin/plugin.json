@@ -1,0 +1,6 @@
+{
+  "name": "ntxp-apilog",
+  "version": "0.1.0",
+  "description": "NTXP API Log: one shared registry of API endpoints, credentials, and cost with at-rest encryption, an NTXP-branded dashboard, a CLI, and an MCP server so Claude fills in APIs on demand",
+  "commands": ["commands/ntxp-apilog.md"]
+}
