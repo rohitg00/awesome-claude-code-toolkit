@@ -281,6 +281,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [VibeGuard](https://github.com/majiayu000/vibeguard) | Stop AI from hallucinating code. 88 rules + 13 hooks + 14 agents for real-time interception and static scanning across 5 languages |
 | [visual-regression](plugins/visual-regression/) | Visual regression testing with screenshot comparison |
 | [wshobson/agents](https://github.com/wshobson/agents) | 112 specialized agents, 16 multi-agent workflow orchestrators, 146 skills, 79 tools in 72 focused plugins. 31,300+ stars |
+| [WebMCP Kit](https://github.com/nekuda-ai/webmcp-kit) | Coding-agent plugin that maps a web app's user journeys in a visual Explorer, proposes WebMCP tools for approval, implements them through the app's own logic, and verifies each tool in a real browser. |
 | [web-dev](plugins/web-dev/) | Full-stack web development with app scaffolding and page generation |
 | [whatsapp-claude-plugin](https://github.com/Rich627/whatsapp-claude-plugin) | WhatsApp channel plugin for Claude Code -- connects as a linked device via Baileys v7 with bidirectional messaging, full media support, voice transcription, permission relay, and access control |
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
