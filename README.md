@@ -1067,6 +1067,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 
 | Name | Stars | Description |
 |------|-------|-------------|
+| [dotagents](https://github.com/yourconscience/dotagents) | 3 | One `~/.agents` repo syncing skills, MCP servers, hooks, agent roles, root instructions, and memory tooling natively into Claude Code, Codex, OMP/Pi, OpenCode, Droid, and Hermes. Commit-pinned, audited external skills; brew + npm. MIT. |
 | [claude-mem](https://github.com/thedotmack/claude-mem) | 35,900+ | Auto-captures everything Claude does, compresses with AI, injects context into future sessions. #1 trending GitHub Feb 2026 |
 | [wshobson/agents](https://github.com/wshobson/agents) | 31,300+ | 112 specialized agents, 16 orchestrators, 146 skills, 79 tools in 72 focused plugins |
 | [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | 9,900+ | Teams-first multi-agent orchestration with 19 specialized agents and 28 skills |
