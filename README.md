@@ -1067,6 +1067,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 
 | Name | Stars | Description |
 |------|-------|-------------|
+| [Concord MCP](https://github.com/Get-Concord-AI/concord-mcp) | 240+ | Cross-harness coordination for Claude Code, Codex, Cursor, Gemini CLI, and Grok Build. Agents claim work, detect edit overlap, exchange durable messages, transfer ownership, and hand off review evidence through five MCP workflow tools. MIT, npm: `@concord-ai/concord-mcp` |
 | [claude-mem](https://github.com/thedotmack/claude-mem) | 35,900+ | Auto-captures everything Claude does, compresses with AI, injects context into future sessions. #1 trending GitHub Feb 2026 |
 | [wshobson/agents](https://github.com/wshobson/agents) | 31,300+ | 112 specialized agents, 16 orchestrators, 146 skills, 79 tools in 72 focused plugins |
 | [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | 9,900+ | Teams-first multi-agent orchestration with 19 specialized agents and 28 skills |
