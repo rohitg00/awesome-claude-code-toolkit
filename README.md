@@ -1087,6 +1087,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [myclaude](https://github.com/stellarlinkco/myclaude) | 2,400+ | Multi-agent orchestration routing to Claude Code, Codex, Gemini, and OpenCode |
 | [claude-code-mcp](https://github.com/steipete/claude-code-mcp) | 1,100+ | Run Claude Code as a one-shot MCP server -- an agent in your agent |
 | [ccmanager](https://github.com/kbwo/ccmanager) | 940+ | Session manager supporting 8 coding agents with smart auto-approval |
+| [Concord MCP](https://github.com/Get-Concord-AI/concord-mcp) | 243 | Cross-harness messaging and shared task state for Claude Code, Codex, Cursor, Gemini CLI, and Grok Build via MCP. npm: `@concord-ai/concord-mcp`. MIT |
 | [cog](https://github.com/marciopuga/cog) | 240+ | Cognitive architecture for Claude Code -- persistent memory, self-reflection, and foresight via plain-text conventions. Zero dependencies, just CLAUDE.md + markdown files |
 | [claude-memory-bridge](https://github.com/LewenW/claude-memory-bridge) | -- | Cross-project memory sharing via namespaces. Adds a shared layer between global and project-scoped memory so projects selectively share knowledge. MCP server, no database |
 | [Cortex](https://github.com/SKULLFIRE07/cortex-memory) | -- | Persistent AI memory for coding assistants. Auto-captures decisions, patterns, and context across sessions. VSCode extension + CLI + MCP server. Free |
