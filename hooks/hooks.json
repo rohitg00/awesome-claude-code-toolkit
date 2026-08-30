@@ -103,6 +103,18 @@
       "command": "node hooks/scripts/suggest-compact.js"
     },
     {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Search the project for the tokens the edit just removed, to catch a value changed in one place but left live in others",
+      "command": "node hooks/scripts/leftover-check.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "MultiEdit",
+      "description": "Search the project for the tokens the edit just removed, to catch a value changed in one place but left live in others",
+      "command": "node hooks/scripts/leftover-check.js"
+    },
+    {
       "type": "SessionStart",
       "description": "Load previous context and detect package manager",
       "command": "node hooks/scripts/session-start.js"

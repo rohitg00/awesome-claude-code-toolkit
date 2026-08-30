@@ -824,6 +824,7 @@ Twenty hook scripts covering all eight Claude Code lifecycle events. Place `hook
 | `secret-scanner.js` | PreToolUse (Write/Edit) | Block files containing secrets |
 | `post-edit-check.js` | PostToolUse (Write/Edit) | Run linter after file edits |
 | `auto-test.js` | PostToolUse (Write/Edit) | Run related tests after edits |
+| [`leftover-check.js`](https://github.com/jkrepublic/silent-failure-gates) | PostToolUse (Edit/MultiEdit) | Search the project for tokens the edit just removed, catching a value changed in one place but left live in others |
 | `type-check.js` | PostToolUse (Write/Edit) | TypeScript type checking after edits |
 | `lint-fix.js` | PostToolUse (Write/Edit) | Auto-fix lint issues |
 | `bundle-check.js` | PostToolUse (Bash) | Check bundle size after builds |
