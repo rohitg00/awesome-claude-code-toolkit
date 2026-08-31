@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "stipple": {
+      "url": "https://www.stipple.sh/mcp",
+      "description": "Hosted document trust gate: forensic authenticity (tamper risk band + per-signal evidence on PDFs/images), grounded field extraction with abstention, AI-written-text detection, AFP 100-point identity checks, adverse media/PEP/sanctions screening, citation verification, and free AU/NZ tender search. 13 tools, free anonymous tier (no signup), content-hash caching. Remote at https://www.stipple.sh/mcp"
+    }
+  }
+}

@@ -557,6 +557,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Python Best Practices | `skills/python-best-practices/` | Type hints, dataclasses, async/await, packaging |
 | Go Idioms | `skills/golang-idioms/` | Error handling, interfaces, concurrency, project layout |
 | Django Patterns | `skills/django-patterns/` | DRF, ORM optimization, signals, middleware |
+| Document Verification | `skills/document-verification/` | Forensic document authenticity: tamper risk band + per-signal evidence via Stipple API (free tier) |
 | Spring Boot Patterns | `skills/springboot-patterns/` | JPA, REST controllers, layered architecture |
 | Next.js Mastery | `skills/nextjs-mastery/` | App Router, RSC, ISR, server actions, middleware |
 | GraphQL Design | `skills/graphql-design/` | Schema design, DataLoader, subscriptions, pagination |
@@ -921,7 +922,7 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Sixteen curated Model Context Protocol server configurations.
+Seventeen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -941,6 +942,7 @@ Sixteen curated Model Context Protocol server configurations.
 | Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
 | LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
+| Document Trust | [`document-trust.json`](mcp-configs/document-trust.json) | Stipple: forensic document authenticity, grounded extraction, AI-text detection, identity checks, adverse media screening, AU/NZ tender search — 13 tools, free tier |
 
 ---
 
