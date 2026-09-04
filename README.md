@@ -1162,6 +1162,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [voidly-mcp-server](https://github.com/voidly-ai/mcp-server) | new | 116 tools for Claude Code covering censorship intelligence (19.6M OONI measurements, 126 countries), E2E encrypted agent-to-agent messaging, and agent payments. Install: `claude mcp add voidly -- npx -y @voidly/mcp-server` |
 | [systemprompt-template](https://github.com/systempromptio/systemprompt-template) | -- | Governance infrastructure for Claude Code. Single compiled Rust binary that authenticates, authorises, rate-limits, logs, and attributes costs for every AI interaction before it reaches a tool or database. Self-hosted, air-gap capable, MCP + A2A compatible. BSL-1.1 |
 | [llm-prices](https://github.com/benbencodes/llm-prices) | new | CLI + Python library + MCP server to look up and compare LLM API costs across 167 models from 23 providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Groq, and more). Ask Claude "what's the cheapest model for 10k input + 2k output?" before making API calls. Zero deps, no API key. `pipx install git+https://github.com/benbencodes/llm-prices` |
+| [agents_control](https://github.com/saparjohnick/agents_control) | new | Relays Claude Code's stop/question/permission-request hooks to Telegram with reply buttons, plus remote terminal control (tabs, screens, running commands including interactive ones). iTerm2/tmux, macOS + Linux. `gem install agents_control` |
 
 ---
 
@@ -1215,7 +1216,6 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 [Apache-2.0](LICENSE)
 | [AutoSearch](https://github.com/0xmariowu/Autosearch) | new | Self-evolving deep research plugin for Claude Code -- 32 dedicated search channels (arXiv, GitHub, Reddit, HN, zhihu, bilibili, CSDN + 25 more), LLM-scored evaluation, cited reports in Markdown/HTML/Slides, cross-session learning. Zero API keys required |
-| [agents_control](https://github.com/saparjohnick/agents_control) | new | Relays Claude Code's stop/question/permission-request hooks to Telegram with reply buttons, plus remote terminal control (tabs, screens, running commands including interactive ones). iTerm2/tmux, macOS + Linux. `gem install agents_control` |
 
 
 ---
