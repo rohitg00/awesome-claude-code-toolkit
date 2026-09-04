@@ -1215,6 +1215,7 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 [Apache-2.0](LICENSE)
 | [AutoSearch](https://github.com/0xmariowu/Autosearch) | new | Self-evolving deep research plugin for Claude Code -- 32 dedicated search channels (arXiv, GitHub, Reddit, HN, zhihu, bilibili, CSDN + 25 more), LLM-scored evaluation, cited reports in Markdown/HTML/Slides, cross-session learning. Zero API keys required |
+| [agents_control](https://github.com/saparjohnick/agents_control) | new | Relays Claude Code's stop/question/permission-request hooks to Telegram with reply buttons, plus remote terminal control (tabs, screens, running commands including interactive ones). iTerm2/tmux, macOS + Linux. `gem install agents_control` |
 
 
 ---
