@@ -90,6 +90,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [claude-context](https://github.com/zilliztech/claude-context) | Semantic code search MCP server by Zilliz (Milvus creators). Hybrid BM25 + dense vector search. ~40% token reduction. 5,600+ stars |
 | [claude-cost-optimizer](https://github.com/Sagargupta16/claude-cost-optimizer) | Installable cost-mode skill (30-60% cost savings, up to 70% in strict mode) + 10 guides, 10 templates, budget hooks. Install: `npx skills add Sagargupta16/claude-cost-optimizer` |
 | [fractal](https://github.com/rmolines/fractal) | Recursive project management for Claude Code. Decomposes goals into predicates, works the riskiest piece first, and re-evaluates as it learns |
+| [chrome-bridge](https://github.com/siropkin/chrome-bridge) | Zero-dependency Node CLI + tiny Chrome extension that lets any AI agent drive your real, logged-in browser. Playwright-style accessibility-tree snapshots with element refs, click/fill by ref, a purple pill narrating what the agent is doing. |
 | [a11y-audit](plugins/a11y-audit/) | Full accessibility audit with WCAG compliance checking |
 | [accessibility-checker](plugins/accessibility-checker/) | Scan for accessibility issues and fix ARIA attributes in web applications |
 | [adr-writer](plugins/adr-writer/) | Architecture Decision Records authoring and management |
