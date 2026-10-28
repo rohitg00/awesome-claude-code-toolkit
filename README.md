@@ -53,7 +53,7 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Hooks](#hooks) (20 scripts)
 - [Rules](#rules) (15)
 - [Templates](#templates) (7)
-- [MCP Configs](#mcp-configs) (14)
+- [MCP Configs](#mcp-configs) (16)
 - [Contexts](#contexts) (5)
 - [Examples](#examples) (3)
 - [Companion Apps & GUIs](#companion-apps--guis)
@@ -925,7 +925,7 @@ Sixteen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
-| Recommended | [`recommended.json`](mcp-configs/recommended.json) | 14 essential servers for general development |
+| Recommended | [`recommended.json`](mcp-configs/recommended.json) | 15 essential servers for general development, incl. spec-driven workflow via mcp-probe-kit |
 | Full Stack | [`fullstack.json`](mcp-configs/fullstack.json) | Filesystem, GitHub, Postgres, Redis, Puppeteer |
 | Kubernetes | [`kubernetes.json`](mcp-configs/kubernetes.json) | kubectl-mcp-server, Docker, GitHub |
 | Data Science | [`data-science.json`](mcp-configs/data-science.json) | Jupyter, SQLite, PostgreSQL, Filesystem |

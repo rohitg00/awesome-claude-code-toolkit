@@ -1,5 +1,10 @@
 {
   "mcpServers": {
+    "mcp-probe-kit": {
+      "command": "npx",
+      "args": ["-y", "mcp-probe-kit@latest"],
+      "description": "Spec-driven dev workflow for coding agents: start_feature/start_bugfix orchestration, resumable plans, a converge gate requiring requirements/spec/implementation/test/review evidence, and cross-session history."
+    },
     "filesystem": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/project"],
