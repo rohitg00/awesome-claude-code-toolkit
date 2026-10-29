@@ -30,6 +30,53 @@ async function generateResponse(
 }
 ```
 
+## MiniMax Provider Configuration
+
+The same SDK can call MiniMax through its Anthropic-compatible API. Select the
+endpoint for the account region and keep the API key in the environment.
+`MiniMax-M3.1-Flash` is the default; set `MINIMAX_MODEL=MiniMax-M3` to select
+MiniMax-M3. Explicit model IDs are passed through unchanged.
+
+This example omits thinking and effort controls: Flash always thinks and defaults
+to maximum effort, while M3 defaults to thinking off on this API. Do not send
+`thinking: { type: "disabled" }` or `service_tier` for Flash. In later tool-use
+turns, preserve the complete `response.content`, including thinking blocks.
+
+See the official [global](https://platform.minimax.io/docs/api-reference/text-anthropic-api)
+and [China](https://platform.minimaxi.com/docs/api-reference/text-anthropic-api)
+SDK documentation for the current API contract.
+
+```typescript
+const MINIMAX_BASE_URLS = {
+  global: "https://api.minimax.io/anthropic",
+  china: "https://api.minimaxi.com/anthropic",
+} as const;
+
+type MiniMaxRegion = keyof typeof MINIMAX_BASE_URLS;
+
+function createMiniMaxClient(region: MiniMaxRegion = "global"): Anthropic {
+  const apiKey = process.env.MINIMAX_API_KEY;
+  if (!apiKey) throw new Error("MINIMAX_API_KEY is required");
+
+  return new Anthropic({
+    apiKey,
+    baseURL: MINIMAX_BASE_URLS[region],
+  });
+}
+
+const miniMaxRegion = process.env.MINIMAX_REGION ?? "global";
+if (miniMaxRegion !== "global" && miniMaxRegion !== "china") {
+  throw new Error("MINIMAX_REGION must be global or china");
+}
+const miniMaxClient = createMiniMaxClient(miniMaxRegion);
+
+const miniMaxResponse = await miniMaxClient.messages.create({
+  model: process.env.MINIMAX_MODEL ?? "MiniMax-M3.1-Flash",
+  max_tokens: 4096,
+  messages: [{ role: "user", content: "Design a resilient job queue" }],
+});
+```
+
 ## Streaming Responses
 
 ```typescript
