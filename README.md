@@ -1058,6 +1058,7 @@ claude-code-toolkit/               850+ files
 | [cctally](https://github.com/omrikais/cctally) | new | Track Claude Code subscription usage as a weekly $-per-1% trend. Local web dashboard, terminal UI, forecasts, threshold alerts. Apache-2.0, zero telemetry. |
 | [claude-code-notifier](https://github.com/saiso/claude-code-notifier) | new | Native macOS notifier for Claude Code. Swift + UserNotifications, custom Heroicons-derived icon (SF Symbols–free), click-through to your IDE (VS Code, Cursor, Windsurf, JetBrains, iTerm2, Terminal) via bundle ID swap, per-event sound labels, hardened inputs (allowlists, length caps, control-character stripping). Universal binary (arm64 + x86_64), macOS 12+, MIT |
 | [ToutKit](https://github.com/toutkit/toutkit) | new | Desktop notebook for AI CLIs (Claude Code, Codex, Gemini). Pairs a sidebar of notes with a built-in terminal and an in-app webview that renders whatever the AI writes — each note is a self-contained folder with its own SQLite, key/value store, attached files, and scripts, so a note can grow from a static page into a sortable table, dashboard, or research tool. Local-first, AGPL-3.0 |
+| [usage-float](https://github.com/akiiwa-games/usage-float) | new | Windows quota HUD and local JSON telemetry exporter for Claude Code, Codex, and Gemini. Real-time 5-hour/7-day rate-limit window tracking and quota cache for coding agent routing workflows |
 
 ---
 
@@ -1162,6 +1163,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [voidly-mcp-server](https://github.com/voidly-ai/mcp-server) | new | 116 tools for Claude Code covering censorship intelligence (19.6M OONI measurements, 126 countries), E2E encrypted agent-to-agent messaging, and agent payments. Install: `claude mcp add voidly -- npx -y @voidly/mcp-server` |
 | [systemprompt-template](https://github.com/systempromptio/systemprompt-template) | -- | Governance infrastructure for Claude Code. Single compiled Rust binary that authenticates, authorises, rate-limits, logs, and attributes costs for every AI interaction before it reaches a tool or database. Self-hosted, air-gap capable, MCP + A2A compatible. BSL-1.1 |
 | [llm-prices](https://github.com/benbencodes/llm-prices) | new | CLI + Python library + MCP server to look up and compare LLM API costs across 167 models from 23 providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Groq, and more). Ask Claude "what's the cheapest model for 10k input + 2k output?" before making API calls. Zero deps, no API key. `pipx install git+https://github.com/benbencodes/llm-prices` |
+| [AgentCompass](https://github.com/akiiwa-games/AgentCompass) | new | Deterministic multi-subscription coding agent task router and PreToolUse subagent gate for Claude Code, Codex, and Paseo. Quota scheduling, complexity-based tier selection, and anti-loop recursion prevention |
 
 ---
 
