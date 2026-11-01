@@ -255,6 +255,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [responsive-designer](plugins/responsive-designer/) | Responsive design implementation and testing |
 | [review-squad](https://github.com/2389-research/review-squad) | Multi-perspective code review via dispatched subagent panels: experts, normie users, pedantic nitpickers, and real-user task runners |
 | [schema-designer](plugins/schema-designer/) | Database schema design and ERD generation |
+| [seatbelt-lite](https://github.com/clemcube/seatbelt-lite) | Hooks that send Claude back when it says a CLI deploy is live with nothing checked afterwards, and refuse Supabase views in `public` without `security_invoker`, plus three destructive shell commands. Regex, MIT, no network calls. |
 | [screen-reader-tester](plugins/screen-reader-tester/) | Screen reader compatibility testing and ARIA fixes |
 | [security-guidance](plugins/security-guidance/) | Security best practices advisor with vulnerability detection and fixes |
 | [seed-generator](plugins/seed-generator/) | Database seeding script generation with realistic data |
