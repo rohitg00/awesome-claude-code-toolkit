@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "skybits": {
+      "type": "http",
+      "url": "https://skybits.ai/mcp",
+      "description": "Shared documents, spreadsheets and HTML canvases for people and agents. Edit one section at a time, answer comments, tag, export to PDF/Word/HTML/Markdown. OAuth sign-in, no API key."
+    }
+  }
+}
