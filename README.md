@@ -1058,6 +1058,7 @@ claude-code-toolkit/               850+ files
 | [cctally](https://github.com/omrikais/cctally) | new | Track Claude Code subscription usage as a weekly $-per-1% trend. Local web dashboard, terminal UI, forecasts, threshold alerts. Apache-2.0, zero telemetry. |
 | [claude-code-notifier](https://github.com/saiso/claude-code-notifier) | new | Native macOS notifier for Claude Code. Swift + UserNotifications, custom Heroicons-derived icon (SF Symbols–free), click-through to your IDE (VS Code, Cursor, Windsurf, JetBrains, iTerm2, Terminal) via bundle ID swap, per-event sound labels, hardened inputs (allowlists, length caps, control-character stripping). Universal binary (arm64 + x86_64), macOS 12+, MIT |
 | [ToutKit](https://github.com/toutkit/toutkit) | new | Desktop notebook for AI CLIs (Claude Code, Codex, Gemini). Pairs a sidebar of notes with a built-in terminal and an in-app webview that renders whatever the AI writes — each note is a self-contained folder with its own SQLite, key/value store, attached files, and scripts, so a note can grow from a static page into a sortable table, dashboard, or research tool. Local-first, AGPL-3.0 |
+| [Orchia](https://github.com/MPoulhazan/orchia) | new | Local web dashboard for running several Claude Code sessions at once, grouped by project. Shows which sessions are working, waiting on you or done, answers permission requests from the grid, splits a plan into lots queued one after another, and runs a session in its own git worktree to merge later. `npx orchia`. MIT, binds to 127.0.0.1, no telemetry |
 
 ---
 
