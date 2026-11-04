@@ -1,0 +1,22 @@
+{
+  "name": "worktable",
+  "displayName": "Worktable",
+  "version": "0.1.7",
+  "description": "Build shared Docs, live HTML workspaces, structured Records, annotations, and durable agent threads in Worktable.",
+  "author": {
+    "name": "Reva Labs",
+    "email": "support@worktable.dev"
+  },
+  "homepage": "https://docs.worktable.dev/start/connect-your-agent",
+  "repository": "https://github.com/worktable/worktable-dev",
+  "license": "MIT",
+  "logo": "assets/logo.png",
+  "keywords": [
+    "worktable",
+    "workspace",
+    "records",
+    "company knowledge",
+    "agent collaboration"
+  ],
+  "mcpServers": "./.mcp.json"
+}

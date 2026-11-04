@@ -1,0 +1,4 @@
+interface:
+  display_name: "Edit documents"
+  short_description: "Create and revise Worktable documents"
+  default_prompt: "Use $worktable-create-or-update-docs for this Worktable task."

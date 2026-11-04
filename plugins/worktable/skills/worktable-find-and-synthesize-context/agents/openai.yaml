@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find context"
+  short_description: "Find and reconcile workspace information"
+  default_prompt: "Use $worktable-find-and-synthesize-context for this Worktable task."

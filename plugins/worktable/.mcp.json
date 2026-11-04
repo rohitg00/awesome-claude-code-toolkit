@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "worktable": {
+      "type": "http",
+      "url": "https://app.worktable.cloud/api/mcp"
+    }
+  }
+}

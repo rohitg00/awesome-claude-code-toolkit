@@ -1,0 +1,100 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "worktable",
+  "version": "0.1.7",
+  "description": "Build shared Docs, live HTML workspaces, structured Records, annotations, and durable agent threads in Worktable.",
+  "author": {
+    "name": "Reva Labs",
+    "email": "support@worktable.dev",
+    "url": "https://www.worktable.cloud"
+  },
+  "homepage": "https://docs.worktable.dev/start/connect-your-agent",
+  "repository": "https://github.com/worktable/worktable-dev",
+  "license": "MIT",
+  "keywords": [
+    "worktable",
+    "workspace",
+    "records",
+    "company knowledge",
+    "agent collaboration"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Worktable",
+        "shortDescription": "Your shared agent workspace",
+        "longDescription": "Worktable gives ChatGPT and your other agents one durable workspace for private Docs, interactive HTML Docs, structured Records, drawings, annotations, and threaded handoffs. Search your workspace for context with citations, turn conversations into artifacts you can reopen and keep improving, and exchange messages with the people and agents connected to your workspace.",
+        "developerName": "Reva Labs",
+        "category": "Productivity",
+        "capabilities": ["Interactive", "Read", "Write"],
+        "websiteURL": "https://www.worktable.cloud",
+        "supportURL": "https://www.worktable.cloud/support",
+        "privacyPolicyURL": "https://www.worktable.cloud/privacy",
+        "termsOfServiceURL": "https://www.worktable.cloud/terms",
+        "defaultPrompt": [
+          "Turn this into a polished interactive Worktable HTML Doc.",
+          "Organize this research as reusable Worktable records.",
+          "Check my Worktable messages and respond."
+        ],
+        "brandColor": "#0058E8",
+        "composerIcon": "./assets/composer-icon.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Answer from workspace knowledge with citations",
+              "prompt": "What do our Worktable notes and records say about the Atlas launch date, owner, readiness bar, and milestones? Cite the relevant Worktable items.",
+              "tools_triggered": "search, fetch",
+              "expected_behavior": "Searches Worktable, fetches the Atlas launch brief and the launch milestone Records, and answers that Maya Chen owns the October 15, 2026 launch, the readiness bar is 99.95% uptime and 25 active beta customers, and the milestones are Security review (Done), Billing rehearsal (In progress), and Public launch (Planned). Each fact cites an openable Worktable link. No content is created or changed."
+            },
+            {
+              "description": "Build a live dashboard from existing workspace content",
+              "prompt": "Turn the Atlas launch brief and milestones into a polished live Worktable dashboard with the launch date, readiness bar, owners, milestone status, and links back to the source items.",
+              "tools_triggered": "worktable_state, worktable_search, worktable_docs_read, worktable_records_query, worktable_guidance, worktable_html_write",
+              "expected_behavior": "Reads the Atlas launch brief and milestone Records, then creates one interactive HTML Doc in the Atlas Launch Space that shows the launch date, readiness bar, owners, and milestone status with links to the source items. Replies with the new HTML Doc's Worktable link instead of pasting raw HTML."
+            },
+            {
+              "description": "Organize information as structured Records",
+              "prompt": "Create a reusable Vendor Research collection in the Atlas Launch space from these candidates: Northstar, evaluation, Maya, SSO and audit logs; Acme, contacted, Omar, strong API but no SCIM; Juniper, shortlisted, Priya, best security review. Use fields for stage, owner, and notes, then verify the saved records.",
+              "tools_triggered": "worktable_state, worktable_search, worktable_records_query, worktable_records_upsert_collection, worktable_records_create",
+              "expected_behavior": "Creates or reuses a Vendor Research collection with stage, owner, and notes fields, saves exactly three Records that keep every supplied detail, reads the collection back to verify them, and reports the three saved vendors."
+            },
+            {
+              "description": "Leave a review instruction without editing the document",
+              "prompt": "Add a Worktable instruction to the Atlas launch brief asking the team to verify the pricing assumptions. Do not edit the brief itself.",
+              "tools_triggered": "worktable_docs_read, worktable_annotations_read, worktable_annotations_write",
+              "expected_behavior": "Reads the Atlas launch brief, checks its open annotations to avoid duplicating feedback, and adds one open instruction annotation on the brief asking the team to verify the pricing assumptions. The brief's text is unchanged. Confirms that the instruction was added."
+            },
+            {
+              "description": "Make a precise edit to an existing Doc",
+              "prompt": "In the Atlas launch brief, add a Risks section that says the billing rehearsal is still in progress and could delay the October 15 launch. Keep everything else in the brief unchanged.",
+              "tools_triggered": "worktable_state, worktable_search, worktable_docs_read, worktable_annotations_read, worktable_docs_write",
+              "expected_behavior": "Reads the Atlas launch brief and checks its open annotations, then adds a Risks section describing the in-progress billing rehearsal and its possible effect on the October 15 launch. All existing content is preserved. Confirms the update."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated public information. Worktable stores the user's own workspace content and has no weather data, so ChatGPT should answer from a general source or ask for missing details without calling any Worktable tool.",
+              "prompt": "What is the weather in Paris tomorrow?"
+            },
+            {
+              "description": "Self-contained calculation with nothing to save. The user asked only for an answer, so ChatGPT should reply 391 directly and not create a Worktable artifact or call any Worktable tool.",
+              "prompt": "What is 17 times 23?"
+            },
+            {
+              "description": "Summary that the user did not ask to save. ChatGPT should return a one-sentence summary in the conversation without reading, creating, changing, or sending anything in Worktable, because the user did not ask to persist or share it.",
+              "prompt": "Summarize this paragraph in one sentence: Atlas is a fictional product launch used only to test a plugin review flow."
+            }
+          ]
+        },
+        "commerce": false
+      },
+      "publication": {
+        "release_notes": "Updates skills for Worktable's smaller set of tools, each of which does one thing with plain arguments."
+      }
+    }
+  }
+}

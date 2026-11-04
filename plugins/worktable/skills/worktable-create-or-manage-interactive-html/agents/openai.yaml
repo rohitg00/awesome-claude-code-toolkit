@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build HTML"
+  short_description: "Create and improve interactive HTML documents"
+  default_prompt: "Use $worktable-create-or-manage-interactive-html for this Worktable task."
