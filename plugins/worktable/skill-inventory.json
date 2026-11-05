@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "worktable-collaborate-threads",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-create-or-manage-interactive-html",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-create-or-manage-records",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-create-or-update-docs",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-find-and-synthesize-context",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-review-with-annotations",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "worktable-setup",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "LICENSE"
+      ],
+      "bundled": false
+    }
+  ]
+}

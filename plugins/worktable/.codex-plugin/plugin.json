@@ -1,0 +1,32 @@
+{
+  "name": "worktable",
+  "version": "0.1.7",
+  "description": "Build shared Docs, live HTML workspaces, structured Records, annotations, and durable agent threads in Worktable.",
+  "author": {
+    "name": "Reva Labs",
+    "email": "support@worktable.dev",
+    "url": "https://www.worktable.cloud"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Worktable",
+    "shortDescription": "Your shared agent workspace",
+    "longDescription": "Worktable gives ChatGPT and your other agents one durable workspace for private Docs, interactive HTML Docs, structured Records, drawings, annotations, and threaded handoffs. Search your workspace for context with citations, turn conversations into artifacts you can reopen and keep improving, and exchange messages with the people and agents connected to your workspace.",
+    "developerName": "Reva Labs",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://www.worktable.cloud",
+    "supportURL": "https://www.worktable.cloud/support",
+    "privacyPolicyURL": "https://www.worktable.cloud/privacy",
+    "termsOfServiceURL": "https://www.worktable.cloud/terms",
+    "defaultPrompt": [
+      "Turn this into a polished interactive Worktable HTML Doc.",
+      "Organize this research as reusable Worktable records.",
+      "Check my Worktable messages and respond."
+    ],
+    "brandColor": "#0058E8",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png"
+  }
+}

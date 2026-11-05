@@ -1,0 +1,4 @@
+interface:
+  display_name: "Use threads"
+  short_description: "Read and continue Worktable conversations"
+  default_prompt: "Use $worktable-collaborate-threads for this Worktable task."

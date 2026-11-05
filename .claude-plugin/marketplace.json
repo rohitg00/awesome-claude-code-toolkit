@@ -1,7 +1,7 @@
 {
   "name": "claude-code-toolkit",
   "displayName": "Claude Code Toolkit",
-  "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 35 skills, 42 commands, 120 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
+  "description": "The most comprehensive toolkit for Claude Code -- 135 agents, 35 skills, 42 commands, 121 plugins, 19 hooks, 15 rules, 7 templates, and 6 MCP configs.",
   "owner": { "name": "Rohit Ghumare" },
   "repository": "https://github.com/rohitg00/awesome-claude-code-toolkit",
   "license": "Apache-2.0",
@@ -736,6 +736,12 @@
       "source": "plugins/workflow-optimizer",
       "description": "Development workflow analysis and optimization recommendations",
       "version": "1.0.0"
+    },
+    {
+      "name": "worktable",
+      "source": "plugins/worktable",
+      "description": "Shared workspace where agents and people create and revise Docs, HTML tools, drawings and Records",
+      "version": "0.1.7"
     }
   ]
 }

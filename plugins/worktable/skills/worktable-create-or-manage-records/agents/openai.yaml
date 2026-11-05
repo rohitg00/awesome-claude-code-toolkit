@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage records"
+  short_description: "Model and update structured Worktable records"
+  default_prompt: "Use $worktable-create-or-manage-records for this Worktable task."

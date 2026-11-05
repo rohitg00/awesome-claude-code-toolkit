@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review annotations"
+  short_description: "Review and address feedback on Worktable content"
+  default_prompt: "Use $worktable-review-with-annotations for this Worktable task."
