@@ -108,6 +108,6 @@ This package uses the included [MIT License](LICENSE).
 
 ## About this repository
 
-This repository is generated from [`plugins/worktable`](https://github.com/worktable/worktable-dev/tree/main/plugins/worktable)
-in worktable-dev and updated on every change there. Report issues and propose
-changes in [worktable-dev](https://github.com/worktable/worktable-dev/issues).
+This folder is a snapshot of [`plugins/worktable`](https://github.com/worktable/worktable-dev/tree/main/plugins/worktable)
+in worktable-dev. It doesn't update automatically, so it may be behind. Report
+issues and propose changes in [worktable-dev](https://github.com/worktable/worktable-dev/issues).
