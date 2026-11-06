@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "dchub": {
+      "type": "http",
+      "url": "https://dchub.cloud/mcp",
+      "description": "DC Hub live data layer for data-center site selection. Data Center Power Index (DCPI) daily grid-power scores across 300+ markets, plus interconnection queues, facilities, fiber, gas, and capacity to buy or lease. 94 tools. Free to start — no key required for previews."
+    }
+  }
+}

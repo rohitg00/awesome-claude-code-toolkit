@@ -51,9 +51,9 @@ curl -fsSL https://raw.githubusercontent.com/rohitg00/awesome-claude-code-toolki
 - [Skills](#skills) (35 curated + 28 community)
 - [Commands](#commands) (42)
 - [Hooks](#hooks) (20 scripts)
-- [Rules](#rules) (15)
+- [Rules](#rules) (16)
 - [Templates](#templates) (7)
-- [MCP Configs](#mcp-configs) (14)
+- [MCP Configs](#mcp-configs) (15)
 - [Contexts](#contexts) (5)
 - [Examples](#examples) (3)
 - [Companion Apps & GUIs](#companion-apps--guis)
@@ -298,6 +298,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [Clarvia MCP](https://github.com/clarvia-project/scanner) | MCP quality scanner — scans any MCP server, returns AEO (Agent Engine Optimization) score. Indexes 27,843+ tools for instant lookup. 24 MCP tools (search, scan, compare, leaderboard, trending). `npx -y clarvia-mcp-server` |
 | [OraClaw](https://github.com/Whatsonyourmind/oraclaw) | Decision intelligence MCP server — 12 tools with 19 ML algorithms (multi-armed bandits, constraint solvers, forecasters, risk models, Q-learning, A*, simulated annealing). Sub-25ms responses, deterministic, 945 tests. `npx @oraclaw/mcp-server` |
 | [US Business Data MCP](https://github.com/avabuildsdata/mcp-us-business-data) | MCP server for US business data — search entities across 17 state Secretary of State databases, YellowPages leads, building permits from 47 cities, 20+ federal APIs (SEC, FDA, FEMA). Built in Go, on MCP Registry |
+| [DC Hub](https://github.com/azmartone67/dchub-mcp-server) | Live data-center & energy MCP — Data Center Power Index (DCPI) across 300+ markets, 94 tools, remote `https://dchub.cloud/mcp`, free to start |
 | [craft-statusline](https://github.com/derjochenmeyer/claude-code-craft-statusline) | Bash statusline plugin for Claude Code with state-aware git branch (ahead / behind / stashed / conflict / combined signals), context window with absolute-token traffic light (yellow at 400k tokens, red at 85%), 5h/7d rate limits, and optional cost. Bash 3.2 compatible, jq is the only dependency. Install: `/plugin marketplace add derjochenmeyer/claude-code-craft-statusline` |
 | [mobile-spine](https://github.com/bentleypark/claude-code-mobile-spine) | Scaffold for mobile teams whose Android, iOS, and Backend live in separate repos. Coordinates 4 specialized subagents (api / pm / android / ios) with hard repo boundaries via `settings.json` deny rules. `/mobile-spine:init` runs a 6-question interview and writes the full workspace; `/feat` drives a 4-question interview → 4-case classification (existing endpoint / new endpoint / new domain / backend not built). 4-class codebase inventory contract surfaced in every PR (`Inventory: reuse X / extend Y / new Z / remove W`). MIT. |
 | [debian-packaging-agent-skill](https://github.com/cosgroveb/debian-packaging-agent-skill) | Debian packaging skill covering debhelper, debian/rules, package metadata, lintian, and multi-binary packages for Ruby (gem2deb), Python (pybuild), Rust (debcargo), and Go (dh-golang). Loads language-specific reference docs on demand. Apache 2.0 |
@@ -921,7 +922,7 @@ cp templates/claude-md/standard.md CLAUDE.md
 
 ## MCP Configs
 
-Sixteen curated Model Context Protocol server configurations.
+Seventeen curated Model Context Protocol server configurations.
 
 | Config | File | Servers Included |
 |--------|------|-----------------|
@@ -941,6 +942,7 @@ Sixteen curated Model Context Protocol server configurations.
 | Finance | [`finance.json`](mcp-configs/finance.json) | Helium news/markets/options, Chart Library pattern intelligence, Fetch, Memory |
 | E-Commerce | [`ecommerce.json`](mcp-configs/ecommerce.json) | BuyWhere product search, price comparison, deal discovery across 1M+ products |
 | LLM Cost | [`llm-cost.json`](mcp-configs/llm-cost.json) | llm-prices: look up and compare API costs across 167 models from 23 providers before making calls |
+| Data Center / Energy | [`data-center-energy.json`](mcp-configs/data-center-energy.json) | DC Hub: Data Center Power Index (DCPI), grid/queue/fiber/capacity — remote `https://dchub.cloud/mcp` |
 
 ---
 
