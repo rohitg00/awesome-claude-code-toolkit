@@ -4,6 +4,19 @@ All dates ISO. See `docs/BLUEPRINT.md` for the live status board and resume flag
 
 ## [Unreleased]
 
+### Changed — front end rebuilt in React + Tailwind (branch `claude/contacts-react-tailwind`)
+- **`web-app/`** (Vite, React 18, Tailwind v4): the live page ported component-by-component with the same DOM contract,
+  so the existing e2e (28) and UI audit run unchanged. Served at `/` + `/app/*`; legacy single-file page remains the fallback.
+- **Document Engine format** re-applied via CSS tokens exposed to Tailwind (`@theme inline`): palettes + dark mode still switch live.
+- **Correct logo**: the engine's own reversed logo (1.55in zone, 0.82in tall, byte-identical check); a missing asset no longer
+  shows a made-up “NTXP” wordmark — text alternative only. Favicon = engine `icon_small.png`.
+- **Button system** (`Button`/`IconButton`/`Seg`/`Switch`) with hover, pressed, focus, disabled, loading, pressed-toggle states.
+  Audit found and fixed: no hover/pressed styles on any button, link-buttons with no hover, segmented controls with no
+  pressed state, non-sortable column headers rendered as *disabled buttons*, 26px “add label” target.
+- **Fixed**: editing a one-word name saved it as both first and last name (legacy bug, now last name only).
+- **UI audit**: 52 → 144 checks (button states per screen, logo, clip-aware overlap, robust colour parsing for Tailwind's `color-mix`).
+- **Build**: Docker multi-stage Node build; CI runs `npm test` + `npm run build`; `/app/*` static route is whitelisted, no traversal.
+
 ### Added — interlinks + deploy retarget (branch `claude/contacts-peers`)
 - **Interlinks** (`peers/*`, `docs/INTEGRATIONS.md`): NTXP Schedules, Master Contracts, Form Fill.
   Signed (HMAC-SHA256, replay-windowed) **outbound webhooks** `contact.upserted|removed` from a durable leased outbox (retry/backoff/dead-letter),
