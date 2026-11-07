@@ -80,6 +80,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 
 | Plugin | Description |
 |--------|-------------|
+| [memory-eternal](https://github.com/EternalNight996/memory-eternal) | Local-first long-term memory for Claude Code: conversations distill into knowledge cards, agents propose and humans approve, only approved cards are ever recalled. Recall runs on SQLite FTS5/BM25 with zero model calls (measured p50 2.3 ms over 2,321 cards), every status change lands in an immutable audit log; ships an MCP server, hooks and a skill, one vault shared with Codex and Cursor. |
 | [agento-patronum](https://github.com/emaarco/agento-patronum) | Protects sensitive files, credentials, and shell commands from unintended AI access via Claude Code hooks. Unlike settings.json deny rules, hooks are an enforcement layer you own and can verify. Ships with defaults for .env files, SSH keys, AWS credentials, and kubeconfig. |
 | [skills-janitor](https://github.com/khendzel/skills-janitor) | Audit, deduplicate, check, fix, and track usage of your Claude Code skills. 9 slash commands, zero dependencies |
 | [great_cto](https://github.com/avelikiy/great_cto) | Full SDLC pipeline plugin with 7 agents (tech-lead, senior-dev, qa-engineer, security-officer, devops, l3-support, project-auditor), 12-angle code review, 10 project archetypes, 13 compliance frameworks (SOC2/HIPAA/PCI-DSS/GDPR/ISO 27001), two-gate approval flow. Opus 4.7 advisor escalation, file-based, MIT |
