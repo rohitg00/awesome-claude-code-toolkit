@@ -933,7 +933,7 @@ Seventeen curated Model Context Protocol server configurations.
 | Crypto / DeFi | [`crypto-defi.json`](mcp-configs/crypto-defi.json) | defi-mcp, Filesystem, Fetch, Memory |
 | DevOps | [`devops.json`](mcp-configs/devops.json) | AWS, Docker, GitHub, Terraform, Sentry |
 | Research | [`research.json`](mcp-configs/research.json) | BGPT scientific papers, Brave Search, Fetch, Memory, Filesystem |
-| YouTube Research | [`youtube-research.json`](mcp-configs/youtube-research.json) | [Arcmira](https://arcmira.com): indexed YouTube transcript search with source timestamps; account sign-in required. [API docs](https://arcmira.com/docs) |
+| YouTube Research | [`youtube-research.json`](mcp-configs/youtube-research.json) | [Arcmira](https://arcmira.com): YouTube transcript search and monitoring for your AI: exact quotes, full transcripts and speakers. [API docs](https://arcmira.com/docs) |
 | Observability | [`observability.json`](mcp-configs/observability.json) | Iris eval & observability for agent tracing, quality evaluation, and cost tracking |
 | Security | [`security.json`](mcp-configs/security.json) | Ghidra reverse engineering, Snyk vulnerability scanning |
 | Design | [`design.json`](mcp-configs/design.json) | Figma design context, Blender 3D automation |
