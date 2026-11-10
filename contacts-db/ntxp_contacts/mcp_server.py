@@ -22,22 +22,35 @@ def build_server(db_override: str | None = None, stateless_http: bool = False):
 
     mcp = FastMCP("ntxp-contacts", stateless_http=stateless_http)
 
+    migrated = []
+
     def _conn():
         c = connect(db_override)
-        migrate(c)
+        if not migrated:                     # schema is process-constant: don't re-run migrations per tool call
+            migrate(c)
+            migrated.append(1)
         return c
+
+    def _visible(conn, cid) -> bool:
+        """Held-back / deleted contacts are hidden on every surface (REST, CardDAV, peers) — MCP too."""
+        from .remote.vcard import is_exposed
+        return cid is not None and is_exposed(conn, int(cid))
 
     @mcp.tool()
     def search_contacts(query: str, limit: int = 25) -> str:
         """Full-text search contacts/organizations by name, org, or email."""
-        repo = Repository(_conn())
-        return json.dumps(repo.search(query, limit=limit), default=str)
+        conn = _conn()
+        found = Repository(conn).search(query, limit=max(1, min(int(limit), 200)))
+        return json.dumps([r for r in found
+                           if r.get("entity") == "org" or _visible(conn, r.get("contact_id"))], default=str)
 
     @mcp.tool()
     def get_contact(contact_id: int) -> str:
         """Fetch a single contact with emails, phones, addresses, and tags."""
-        repo = Repository(_conn())
-        return json.dumps(repo.get_contact(contact_id), default=str)
+        conn = _conn()
+        if not _visible(conn, contact_id):
+            return json.dumps(None)
+        return json.dumps(Repository(conn).get_contact(contact_id), default=str)
 
     @mcp.tool()
     def get_org(org_id: int) -> str:
@@ -83,7 +96,10 @@ def build_server(db_override: str | None = None, stateless_http: bool = False):
         from .db.repository import iter_contacts
         conn = _conn()
         out = []
+        limit = max(1, min(int(limit), 5000))
         for c in iter_contacts(conn):
+            if not _visible(conn, c.get("contact_id") or c.get("id")):
+                continue
             out.append(c)
             if len(out) >= limit:
                 break
@@ -195,7 +211,8 @@ def build_server(db_override: str | None = None, stateless_http: bool = False):
         with blue-link HTML ready to inject into any tool's output."""
         from .context import HotlinkIndex
         conn = _conn()
-        res = Repository(conn).search(query, 1)
+        res = [r for r in Repository(conn).search(query, 5)
+               if r.get("contact_id") is None or _visible(conn, r.get("contact_id"))][:1]
         if not res:
             return json.dumps({})
         idx = HotlinkIndex(conn)

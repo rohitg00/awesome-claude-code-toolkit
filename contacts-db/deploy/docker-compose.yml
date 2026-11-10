@@ -8,6 +8,10 @@ services:
   contacts:
     image: ghcr.io/ntxptrevor/ntxp-contacts:latest
     restart: unless-stopped
+    init: true                # reap Chromium/Playwright children, forward SIGTERM
+    stop_grace_period: 30s    # let in-flight requests and the peers loop finish
+    mem_limit: 1536m          # a runaway report render must not take the shared VPS down
+    pids_limit: 512
     environment:
       NTXP_DB_URL: ${NTXP_DB_URL:-}               # empty = embedded SQLite in the /data volume; a postgres:// URL = Supabase
       NTXP_DB_PATH: /data/contacts.db

@@ -36,7 +36,7 @@
 }
 
 @layer base {
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5.5rem; scroll-padding-bottom: 6.5rem; }   /* focused cells never hide under the sticky toolbar / export bar */
   body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.45 var(--font-sans); min-height: 100vh; }
   a { color: var(--link); }
   button { font: inherit; cursor: pointer; }

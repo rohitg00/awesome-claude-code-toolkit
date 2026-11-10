@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Button } from "./ui/Button";
 import { Logo } from "./ui/Chrome";
 import { longDate } from "../lib/format";
@@ -43,13 +44,15 @@ export function DocPreview({ spec, landscape }) {
 }
 
 export function ReportView({ report, landscape, onBack, onSave, busy }) {
+  const title = useRef(null);
+  useEffect(() => { title.current?.focus(); }, []);   // land on the heading, not on "Save as PDF" (a stray Enter would download)
   return (
     <div id="reportView">
       <div className="rv-bar flex gap-2.5 items-center justify-center flex-wrap mb-3">
         <Button id="rvBack" onClick={onBack}>← Back to contacts</Button>
-        <strong id="rvTitle">{report.spec.doc_title} · {report.spec.project_title || ""}</strong>
+        <strong id="rvTitle" ref={title} tabIndex={-1}>{report.spec.doc_title} · {report.spec.project_title || ""}</strong>
         <Button id="rvWord" loading={busy === "docx"} disabled={!!busy} onClick={() => onSave("docx")}>Word (.docx)</Button>
-        <Button id="rvDone" variant="primary" size="lg" className="done" autoFocus loading={busy === "pdf"} disabled={!!busy} onClick={() => onSave("pdf")}>Done · Save as PDF</Button>
+        <Button id="rvDone" variant="primary" size="lg" className="done" loading={busy === "pdf"} disabled={!!busy} onClick={() => onSave("pdf")}>Done · Save as PDF</Button>
       </div>
       <div className="docscroll overflow-auto pt-1 pb-6"><DocPreview spec={report.spec} landscape={landscape} /></div>
     </div>

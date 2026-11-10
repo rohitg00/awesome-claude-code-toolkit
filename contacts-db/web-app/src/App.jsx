@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useInert } from "./lib/hooks";
 import { CFG } from "./lib/config";
 import { api, apiJson, currentUser, driveToken, onGate, signIn, signOut } from "./lib/auth";
 import { buildQuery, emptyFilters } from "./lib/model";
@@ -34,6 +35,8 @@ export default function App() {
   const [toastMsg, setToast] = useState(null);
   const [live, setLive] = useState("");
   const [tick, setTick] = useState(0);
+  const [exporting, setExporting] = useState("");
+  const bgRef = useRef(null);
   const [templates, setTemplates] = useState(() => store.get("ntxp.tpls", []));
   const [dark, setDarkState] = useState(document.documentElement.dataset.theme === "dark");
   const [palette, setPaletteState] = useState(document.documentElement.dataset.palette || "ntxp");
@@ -41,7 +44,9 @@ export default function App() {
 
   const state = { f, q, near, miles, sort, dir };
   const query = buildQuery(state, { limit: SIZE, offset: page * SIZE });
-  const toast = useCallback((msg, bad) => { setToast({ msg, bad }); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), bad ? 5000 : 2600); }, []);
+  const toast = useCallback((msg, bad) => { setToast({ msg, bad }); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), bad ? 9000 : 3500); }, []);
+  const pauseToast = () => clearTimeout(toastT.current);                       // WCAG 2.2.1: hovering/focusing keeps it up
+  const resumeToast = () => { clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 4000); };
 
   useEffect(() => { document.body.dataset.view = view; document.documentElement.style.setProperty("--lines", view); store.set("ntxp.view", view); }, [view]);
   useEffect(() => onGate((m) => setGate(m || "")), []);
@@ -56,7 +61,7 @@ export default function App() {
         const d = await apiJson("/api/contacts?" + query);
         if (my !== seq.current) return;
         setRows(d.rows); setTotal(d.total); setError(""); setLive(d.total + " contacts");
-      } catch (e) { if (e.message !== "auth") setError(e.message); }
+      } catch (e) { if (my === seq.current && e.message !== "auth") setError(e.message); }
     }, delay.current);
     delay.current = 120;
     return () => clearTimeout(t);
@@ -87,25 +92,32 @@ export default function App() {
   const onQ = (v) => { delay.current = 220; setQ(v); resetPage(); };
   const activeCount = Object.values(f).reduce((a, v) => a + v.length, 0) + (near && miles ? 1 : 0);
 
-  const onSaved = (id, contact) => { setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...contact } : r))); setLive("Saved"); };
+  const onSaved = (id, contact) => { setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...contact } : r))); setLive(""); setTimeout(() => setLive("Saved"), 30); };
   const reload = () => { delay.current = 0; setTick((t) => t + 1); };
   const onLabels = async (id, body) => {
-    if (body) { try { await apiJson("/api/contacts/" + id + "/labels", { method: "POST", body }); } catch (e) { toast(e.message, true); } }
+    if (!body) return;
+    try { await apiJson("/api/contacts/" + id + "/labels", { method: "POST", body }); } catch (e) { toast(e.message, true); }
     reload();
   };
 
   const setDark = (on) => { document.documentElement.dataset.theme = on ? "dark" : "light"; try { localStorage.setItem("ntxp.theme", on ? "dark" : "light"); } catch { /* ignore */ } setDarkState(on); };
   const setPalette = (p) => { document.documentElement.dataset.palette = p; try { localStorage.setItem("ntxp.palette", p); } catch { /* ignore */ } setPaletteState(p); };
 
-  const closeDrawer = () => { setDrawer(false); setPanel(false); };
+  const closeDrawer = (focusTo = "ham") => { setDrawer(false); setPanel(false); if (focusTo) setTimeout(() => document.getElementById(focusTo)?.focus(), 0); };
+  const closePanel = () => { setPanel(false); setTimeout(() => document.getElementById("gear")?.focus(), 0); };
   useEffect(() => {
-    const k = (e) => { if (e.key === "Escape" && (panel || drawer)) { closeDrawer(); document.getElementById('ham')?.focus(); } };
+    const k = (e) => {
+      if (e.key !== "Escape") return;
+      if (panel) { e.preventDefault(); closePanel(); }                  // top layer first
+      else if (drawer) { e.preventDefault(); closeDrawer(); }
+    };
     document.addEventListener("keydown", k); return () => document.removeEventListener("keydown", k);
   }, [panel, drawer]);
+  useInert(bgRef, gate !== null || drawer || panel);                     // nothing behind a dialog is reachable
   useEffect(() => { if (drawer) setTimeout(() => document.querySelector("#drawer .rb")?.focus(), 30); }, [drawer]);
 
   const openReport = async (type, tpl) => {
-    closeDrawer();
+    closeDrawer(null);
     try {
       const spec = tpl ? await specFromTemplate(tpl) : (await apiJson("/api/report?" + buildQuery(state, { type, orientation: orient }))).spec;
       setReport({ type, spec, custom: !!tpl, tpl: tpl ? { doc_title: tpl.doc_title, columns: tpl.columns, widths: tpl.widths } : null }); scrollTo(0, 0);
@@ -124,13 +136,17 @@ export default function App() {
     } catch (e) { if (e.message !== "auth") toast(e.message, true); } finally { setBusy(""); }
   };
   const exportCsv = async () => {
+    if (exporting) return;
+    setExporting("csv");
     try { const r = await api("/api/export.csv?" + buildQuery(state)); if (!r.ok) throw new Error(r.statusText); download(await r.blob(), "NTXP_contacts_" + stamp() + ".csv"); toast("CSV exported"); }
-    catch (e) { if (e.message !== "auth") toast(e.message, true); }
+    catch (e) { if (e.message !== "auth") toast(e.message, true); } finally { setExporting(""); }
   };
   const saveToDrive = async () => {
+    if (exporting) return;
     if (f.project.length !== 1) return toast("Pick exactly one Project in the filters first — that's the folder it saves to.", true);
     if (CFG.dev || !CFG.clientId) return toast("Google Drive needs real sign-in (not available in dev mode).", true);
     const proj = f.project[0];
+    setExporting("drive");
     try {
       toast("Rendering PDF…");
       const r = await api("/api/report/render?" + buildQuery(state, { type: "directory", orientation: orient }) + "&format=pdf");
@@ -146,7 +162,7 @@ export default function App() {
       fd.append("metadata", new Blob([JSON.stringify({ name: "NTXP_Project_Directory_" + stamp() + ".pdf", parents: [dest.id] })], { type: "application/json" })); fd.append("file", pdf);
       const up = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", { method: "POST", headers: { Authorization: "Bearer " + tk }, body: fd });
       if (!up.ok) throw new Error("Drive upload failed (" + up.status + ")"); toast("Saved to !Active Projects / " + dest.name);
-    } catch (e) { if (e.message !== "auth") toast(e.message, true); }
+    } catch (e) { if (e.message !== "auth") toast(e.message, true); } finally { setExporting(""); }
   };
   const onUpload = async (e) => {
     const file = e.target.files[0]; if (!file) return;
@@ -154,24 +170,21 @@ export default function App() {
     catch (x) { toast("Couldn't read that template: " + x.message + " (upload a .json doc-engine spec; PDF/Word templates aren't supported yet)", true); }
     e.target.value = "";
   };
-  const doSignIn = async (prompt) => { if (await signIn(prompt)) { setGate(null); setStarted(true); return true; } return false; };
+  const doSignIn = async (prompt) => { if (await signIn(prompt)) { setGate(null); setStarted(true); reload(); return true; } return false; };
 
   return (
     <>
       <div className="sr-only" id="live" role="status" aria-live="polite">{live}</div>
       {gate !== null && <Gate message={gate} onSignIn={() => doSignIn("select_account")} />}
+      <div id="app-bg" ref={bgRef}>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[130] focus:bg-paper focus:text-ink focus:px-3 focus:py-2 focus:rounded focus:border focus:border-link">Skip to contacts</a>
       <Header total={started ? total : null} user={currentUser()} menuOpen={drawer} onMenu={() => (drawer ? closeDrawer() : setDrawer(true))} />
-      {drawer && <div className="scrim fixed inset-0 bg-[rgba(15,22,38,.45)] z-[60]" id="scrim" onClick={closeDrawer} />}
-      <ReportsDrawer open={drawer} orient={orient} onOrient={setOrient} templates={templates} onReport={(k) => openReport(k)} onTemplate={(t) => openReport("custom", t)}
-        gearOpen={panel} onGear={() => setPanel(!panel)} />
-      <SettingsPanel open={panel} dark={dark} onDark={setDark} palette={palette} onPalette={setPalette} templates={templates} onUpload={onUpload}
-        onReauth={async () => { if (await signIn("consent")) toast("Re-authenticated"); }} onSignOut={() => { closeDrawer(); setStarted(false); signOut(); }} />
       <div className="shell grid grid-cols-[292px_minmax(0,1fr)] max-[900px]:grid-cols-[minmax(0,1fr)] gap-4 pt-4 pb-24 pl-(--gutter) pr-[calc(max(12px,env(safe-area-inset-right,0px))+164px)] max-[900px]:pr-(--gutter) items-start" id="shell">
         <FilterRail f={f} near={near} miles={miles} activeCount={activeCount} open={railOpen} onToggle={() => setRailOpen(!railOpen)}
           onAdd={addFilter} onRemove={removeFilter} onNear={(v) => { delay.current = 400; setNear(v); }} onMiles={(v) => { delay.current = 400; setMiles(v); }} onClear={clearAll} />
-        <main id="main" className="min-w-0">
+        <main id="main" tabIndex={-1} className="min-w-0 outline-none">
           {report ? (
-            <ReportView report={report} landscape={orient === "landscape"} busy={busy} onBack={() => setReport(null)} onSave={saveReport} />
+            <ReportView report={report} landscape={orient === "landscape"} busy={busy} onBack={() => { setReport(null); setTimeout(() => document.getElementById("main")?.focus(), 0); }} onSave={saveReport} />
           ) : (
             <div id="tableView">
               <Toolbar view={view} onView={setView} q={q} onQ={onQ} f={f} near={near} miles={miles} onRemove={removeFilter}
@@ -182,8 +195,15 @@ export default function App() {
           )}
         </main>
       </div>
-      {!report && <ExportRail onCsv={exportCsv} onPdf={() => openReport("full")} onDrive={saveToDrive} />}
-      <Toast toast={toastMsg} />
+      {!report && <ExportRail busy={exporting} onCsv={exportCsv} onPdf={() => openReport("full")} onDrive={saveToDrive} />}
+      </div>
+      {drawer && <div className="scrim fixed inset-0 bg-[rgba(15,22,38,.45)] z-[60]" id="scrim" onClick={closeDrawer} />}
+      <ReportsDrawer open={drawer} orient={orient} onOrient={setOrient} templates={templates} onReport={(k) => openReport(k)} onTemplate={(t) => openReport("custom", t)}
+        gearOpen={panel} panelOpen={panel} onGear={() => setPanel(!panel)} />
+      <SettingsPanel open={panel} dark={dark} onDark={setDark} palette={palette} onPalette={setPalette} templates={templates} onUpload={onUpload}
+        onReauth={async () => { if (await signIn("consent")) { toast("Re-authenticated"); reload(); } }} onSignOut={() => { closeDrawer(null); setStarted(false); setRows([]); setTotal(0); setReport(null); setPanel(false); signOut(); }}
+        onClose={closePanel} />
+      <Toast toast={toastMsg} onPause={pauseToast} onResume={resumeToast} />
     </>
   );
 }

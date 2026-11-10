@@ -11,7 +11,8 @@ function Hot({ field, val, onHot }) {
   const go = () => onHot(field, val);
   return (
     <a className={"hot cursor-pointer underline underline-offset-2 text-link " + A11Y_LINK} role="button" tabIndex={0} data-hot={field} data-val={val}
-      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); go(); } }}>
+      onClick={(e) => { if (e.defaultPrevented) return; e.stopPropagation(); go(); }}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); go(); } }}>
       {val}
     </a>
   );
@@ -80,11 +81,15 @@ function DataCell({ c, r, onHot, onLabels, onSaved, toast }) {
   const td = useRef(null);
   const link = useRef(null);
   const refocus = useRef(false);
-  useEffect(() => { if (!editing && refocus.current) { refocus.current = false; td.current?.focus(); } }, [editing]);
+  const ending = useRef(false);        // guards against Enter/Escape + the blur that follows unmounting the input
+  // Only take focus back when it would otherwise be lost: not while the user has moved on to something else.
+  const mine = () => { const a = document.activeElement; return !a || a === document.body || td.current?.contains(a); };
+  useEffect(() => { if (!editing && refocus.current) { refocus.current = false; if (mine()) td.current?.focus(); } }, [editing]);
 
-  const begin = () => { if (c.edit && !editing) setEditing(true); };
+  const begin = () => { if (c.edit && !editing) { ending.current = false; setEditing(true); } };
   const end = async (commit, val, keepFocus) => {
-    if (!editing) return;
+    if (!editing || ending.current) return;
+    ending.current = true;
     refocus.current = keepFocus;
     setEditing(false);
     val = val.trim();
@@ -93,8 +98,8 @@ function DataCell({ c, r, onHot, onLabels, onSaved, toast }) {
       const d = await apiJson("/api/contacts/" + r.id, { method: "PATCH", body: editBody(c, val) });
       onSaved(r.id, d.contact || {});
       setSaved(true); setTimeout(() => setSaved(false), 1000);
-      refocus.current = true; td.current?.focus();
-    } catch (e) { if (e.message !== "auth") toast(c.t + ": " + e.message, true); td.current?.focus(); }
+      if (keepFocus && mine()) td.current?.focus();
+    } catch (e) { if (e.message !== "auth") toast(c.t + ": " + e.message, true); if (keepFocus && mine()) td.current?.focus(); }
   };
   const follow = (a) => {
     if (a.dataset.hot) return onHot(a.dataset.hot, a.dataset.val);
@@ -107,6 +112,8 @@ function DataCell({ c, r, onHot, onLabels, onSaved, toast }) {
     onKeyDown: (e) => { if (e.target === td.current && !editing && (e.key === "Enter" || e.key === "F2")) { e.preventDefault(); begin(); } },
     onClick: (e) => {
       const a = e.target.closest("a"); if (!a || editing || !td.current.contains(a)) return;
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      if (a.dataset.hot) return;                     // filter links act immediately (handled by Hot)
       e.preventDefault(); clearTimeout(link.current); link.current = setTimeout(() => follow(a), 260);   // a double-click edits instead
     },
   } : {};

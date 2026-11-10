@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 
-from .auth import verify_token
+from .auth import verify_token, verify_token_async
 
 _OPEN_PATHS = ("/health", "/healthz", "/.well-known/")
 
@@ -35,10 +35,10 @@ class AuthMiddleware:
         path = scope.get("path", "")
         if any(path.startswith(p) or path.rstrip("/").endswith("/health") for p in _OPEN_PATHS):
             return await _send_json(send, 200, {"ok": True, "service": "ntxp-contacts-mcp"})
-        headers = {k.decode().lower(): v.decode() for k, v in scope.get("headers") or []}
+        headers = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope.get("headers") or []}
         auth = headers.get("authorization", "")
         token = auth[7:].strip() if auth[:7].lower() == "bearer " else ""
-        if verify_token(token) is None:
+        if await verify_token_async(token) is None:
             return await _send_json(send, 401, {
                 "error": "unauthorized",
                 "detail": "Bearer Google Workspace (ntxpllc.com) OAuth token required.",
@@ -142,26 +142,29 @@ class ApiApp:
     def __init__(self, db_override=None):
         self.db_override = db_override
         self._ready = False
+        self._lock = __import__("threading").Lock()
 
     def _conn(self):
         from ..db import connect, migrate
         c = connect(self.db_override)
         if not self._ready:
-            migrate(c)
-            self._ready = True
+            with self._lock:                      # concurrent first requests must not both run the migrations
+                if not self._ready:
+                    migrate(c)
+                    self._ready = True
         return c
 
     async def __call__(self, scope, receive, send):
         import asyncio
         from .api import handle, parse_query
-        headers = {k.decode().lower(): v.decode() for k, v in scope.get("headers") or []}
+        headers = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope.get("headers") or []}
         auth = headers.get("authorization", "")
         token = auth[7:].strip() if auth[:7].lower() == "bearer " else ""
         path = scope["path"]
         inbound = path.startswith("/api/v1/hooks/in/")          # peers authenticate by HMAC signature
         is_v1 = path.startswith("/api/v1/")
         # A peer service token is honoured on /api/v1 only; the human /api never accepts it.
-        user = None if inbound else verify_token(token, allow_service=is_v1)
+        user = None if inbound else await verify_token_async(token, allow_service=is_v1)
         if user is None and not inbound:
             return await _send_bytes(send, 401, "application/json",
                                      b'{"error":"unauthorized","detail":"Sign in with your ntxpllc.com Google account."}')

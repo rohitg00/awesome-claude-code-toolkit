@@ -2,3 +2,16 @@ web-app/node_modules
 web-app/dist
 **/__pycache__
 .pytest_cache
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.sqlite*
+**/.env
+**/.env.*
+!**/.env.example
+data/
+deploy/engine
+deploy/assets
+.git
+**/fast
+*.egg-info

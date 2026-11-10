@@ -28,7 +28,7 @@ def verify(secret: str, body: bytes, header: str | None, now: float | None = Non
     if abs((time.time() if now is None else now) - ts) > TOLERANCE_S:
         return False
     want = hmac.new(secret.encode(), f"{ts}.".encode() + body, hashlib.sha256).hexdigest()
-    return hmac.compare_digest(want, given)
+    return hmac.compare_digest(want.encode(), given.encode("utf-8", "replace"))
 
 
 def verify_service_token(token: str | None, peers: dict) -> dict | None:
@@ -41,6 +41,6 @@ def verify_service_token(token: str | None, peers: dict) -> dict | None:
     except ValueError:
         return None
     peer = peers.get(name)
-    if peer is None or not hmac.compare_digest(peer.secret, secret):
+    if peer is None or not hmac.compare_digest(peer.secret.encode(), secret.encode("utf-8", "replace")):
         return None
     return {"email": f"{name}@service.invalid", "domain": "service", "service": name}

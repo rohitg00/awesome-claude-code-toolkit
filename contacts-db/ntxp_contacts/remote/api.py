@@ -19,6 +19,9 @@ email so it fans out through the normal sync pipeline.
 from __future__ import annotations
 
 import csv
+import os
+import logging
+import threading
 import io
 import json
 import re
@@ -26,6 +29,8 @@ from urllib.parse import parse_qs
 
 from .. import normalize as N
 from ..geo import miles_between, parse_place, coords
+
+log = logging.getLogger(__name__)
 
 TAG_LABEL_KINDS = ("label", "member", "cjp", "event", "certification", "domain", "project")
 SORTS = {
@@ -256,12 +261,20 @@ def _clean(field: str, value) -> str | None:
     return v or None
 
 
+def _need_dict(body):
+    if not isinstance(body, dict):
+        raise ApiError(400, "JSON object body required")
+    return body
+
+
 def _edit(conn, user: str, cid: int, body: dict) -> dict:
+    body = _need_dict(body)
     from ..db.repository import Repository
     from ..model import Address, CanonicalRecord, Email, Phone, Tag
     from ..resolve import Resolver
 
-    if not conn.execute("SELECT 1 FROM contacts WHERE contact_id=? AND is_deleted=0", (cid,)).fetchone():
+    if not conn.execute("""SELECT 1 FROM contacts c LEFT JOIN contact_grade g ON g.contact_id=c.contact_id
+        WHERE c.contact_id=? AND c.is_deleted=0 AND (g.is_exposed IS NULL OR g.is_exposed=1)""", (cid,)).fetchone():
         raise ApiError(404, "no such contact")
     bad = [k for k in body if k not in EDITABLE]
     if bad:
@@ -326,13 +339,15 @@ def _edit(conn, user: str, cid: int, body: dict) -> dict:
 
 
 def _labels(conn, user: str, cid: int, body: dict) -> dict:
+    body = _need_dict(body)
     from ..db.repository import Repository
     from ..model import Tag
-    if not conn.execute("SELECT 1 FROM contacts WHERE contact_id=? AND is_deleted=0", (cid,)).fetchone():
+    if not conn.execute("""SELECT 1 FROM contacts c LEFT JOIN contact_grade g ON g.contact_id=c.contact_id
+        WHERE c.contact_id=? AND c.is_deleted=0 AND (g.is_exposed IS NULL OR g.is_exposed=1)""", (cid,)).fetchone():
         raise ApiError(404, "no such contact")
     repo = Repository(conn)
-    for v in body.get("add") or []:
-        v = str(v).strip()[:80]
+    for v in (body.get("add") or [])[:50]:
+        v = str(v).replace("|", " ").strip()[:80]       # '|' is the label delimiter in the list view
         if v:
             repo.add_tag(Tag("label", v), "contact", cid)
     for v in body.get("remove") or []:
@@ -487,6 +502,9 @@ def _custom_spec(conn, query: dict, tpl: dict) -> dict:
             "sections": [_summary_section(total, rows), sec]}
 
 
+_RENDER_SLOTS = threading.BoundedSemaphore(int(os.environ.get("NTXP_RENDER_SLOTS", "2")))
+
+
 def _render(spec: dict, fmt: str):
     """Render a doc-engine spec to PDF/DOCX with the NTXP Branded Document engine
     (set NTXP_DOC_ENGINE to its scripts/render.py). 501 if not installed."""
@@ -505,18 +523,32 @@ def _render(spec: dict, fmt: str):
         with open(sp, "w") as fh:
             json.dump(spec, fh)
         py = os.environ.get("NTXP_DOC_PYTHON", sys.executable)
+        if not _RENDER_SLOTS.acquire(timeout=20):               # a few renders must not starve every other API call
+            return _json(503, {"error": "report renderer busy, try again shortly"})
         try:
             pr = subprocess.run([py, engine, sp, out], capture_output=True, text=True, timeout=150)
         except subprocess.TimeoutExpired:
             return _json(504, {"error": "report render timed out"})
+        finally:
+            _RENDER_SLOTS.release()
         path = out if fmt == "pdf" else out[:-4] + ".docx"
         if pr.returncode != 0 or not os.path.exists(path):
-            return _json(422, {"error": "doc engine audit failed", "detail": (pr.stdout + pr.stderr)[-1500:]})
+            log.warning("doc engine failed (exit %s): %s", pr.returncode, (pr.stdout + pr.stderr)[-1500:])
+            return _json(422, {"error": "doc engine audit failed (details are in the server log)"})
         with open(path, "rb") as fh:
             data = fh.read()
     ctype = "application/pdf" if fmt == "pdf" else \
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     return 200, ctype, data
+
+
+def _csv_cell(v):
+    """Contact fields are untrusted (Gmail/CRM/Form Fill): neutralise spreadsheet formulas."""
+    if isinstance(v, str) and v.lstrip(" \t\r\n")[:1] in ("=", "+", "-", "@"):
+        return "'" + v
+    if isinstance(v, str) and v[:1] in ("\t", "\r"):
+        return "'" + v
+    return v
 
 
 def _csv(conn, query: dict) -> str:
@@ -526,9 +558,10 @@ def _csv(conn, query: dict) -> str:
     w.writerow(["ID", "First", "Last", "Company", "Title", "Role", "Trade", "City", "State",
                 "Phone", "Email", "Labels", "Project", "LinkedIn", "Grade"])
     for r in rows:
-        w.writerow([r["id"], r["first_name"], r["last_name"], r["company"], r["title"], r["role"],
-                    r["trade"], r["city"], r["state"], r["phone"], r["email"],
-                    "; ".join(r["labels"]), r["project"], r["linkedin_url"], r["grade"]])
+        w.writerow([_csv_cell(v) for v in (
+            r["id"], r["first_name"], r["last_name"], r["company"], r["title"], r["role"],
+            r["trade"], r["city"], r["state"], r["phone"], r["email"],
+            "; ".join(r["labels"]), r["project"], r["linkedin_url"], r["grade"])])
     return buf.getvalue()
 
 
@@ -542,7 +575,7 @@ def handle(conn, user: str, method: str, path: str, query: dict, body: dict):
         if p == "/api/me" and m == "GET":
             return _json(200, {"email": user})
         if p == "/api/contacts" and m == "GET":
-            limit = min(int(_q1(query, "limit", "100") or 100), 5000)
+            limit = max(1, min(int(_q1(query, "limit", "100") or 100), 5000))
             offset = max(int(_q1(query, "offset", "0") or 0), 0)
             total, rows = _rows(conn, query, limit, offset)
             return _json(200, {"total": total, "offset": offset, "limit": limit, "rows": rows})

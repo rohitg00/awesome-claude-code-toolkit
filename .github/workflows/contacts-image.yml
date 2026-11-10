@@ -1,29 +1,48 @@
-# Builds the NTXP Contacts image and pushes it to GHCR so the Hostinger Docker Manager can pull it
-# (that manager cannot build). Runs on changes under contacts-db/. The proprietary NTXP engine and
-# logo are never in the build context — they are mounted at runtime.
+# Contacts: tests on every PR and push; the image is built and published ONLY from main, after the tests pass.
+# The Hostinger Docker Manager cannot build, so main publishes to GHCR. The proprietary NTXP engine and
+# logo are never in the build context - they are mounted at runtime.
 name: contacts-image
 on:
+  pull_request:
+    paths: ["contacts-db/**", "contracts-db/**", ".github/workflows/contacts-image.yml"]
   push:
     branches: [main]
-    paths: ["contacts-db/**", ".github/workflows/contacts-image.yml"]
+    paths: ["contacts-db/**", "contracts-db/**", ".github/workflows/contacts-image.yml"]
   workflow_dispatch:
+concurrency:
+  group: contacts-image-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
-  packages: write
 jobs:
-  image:
+  test:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: contacts-db } }
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: "3.12" }
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: "contacts-db/pyproject.toml" }
       - uses: actions/setup-node@v4
         with: { node-version: "22", cache: npm, cache-dependency-path: contacts-db/web-app/package-lock.json }
       - name: "Front end (React + Tailwind) - unit tests and build"
-        run: cd web-app && npm ci && npm test && npm run build
-      - name: Tests (SQLite)
+        working-directory: contacts-db/web-app
+        run: npm ci && npm test && npm run build
+      - name: "Contacts tests (SQLite)"
+        working-directory: contacts-db
         run: pip install -e ".[mcp,remote,postgres,dev]" && pytest -q
+      - name: "Contracts tests"
+        working-directory: contracts-db
+        run: pip install -e ".[dev]" && pytest -q
+  publish:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
@@ -32,6 +51,8 @@ jobs:
           context: contacts-db
           file: contacts-db/deploy/Dockerfile
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ghcr.io/${{ github.repository_owner }}/ntxp-contacts:latest
             ghcr.io/${{ github.repository_owner }}/ntxp-contacts:${{ github.sha }}

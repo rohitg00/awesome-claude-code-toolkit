@@ -19,6 +19,15 @@ from datetime import datetime, timezone
 from . import context as ctx
 from .signing import SIG_HEADER, sign
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Peers talk to fixed https hosts; a redirect would carry the bearer/secret elsewhere (or inward)."""
+    def redirect_request(self, *a, **k):
+        return None
+
+
+_OPENER = urllib.request.build_opener(_NoRedirect)
+
+
 MAX_ATTEMPTS = 8
 LEASE_S = 120
 BACKOFF_BASE_S = 30
@@ -136,7 +145,7 @@ def backfill(conn, peer) -> int:
 def _post(url: str, body: bytes, headers: dict, timeout: float = 8.0) -> tuple[int, str]:
     req = urllib.request.Request(url, data=body, headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with _OPENER.open(req, timeout=timeout) as resp:
             return resp.status, ""
     except urllib.error.HTTPError as e:
         return e.code, f"HTTP {e.code}"

@@ -14,7 +14,7 @@ function loadGsi() {
     const s = document.createElement("script");
     s.src = "https://accounts.google.com/gsi/client";
     s.onload = res;
-    s.onerror = () => rej(new Error("Could not load Google sign-in"));
+    s.onerror = () => { gsiReady = null; s.remove(); rej(new Error("Could not load Google sign-in")); };   // allow a retry
     document.head.appendChild(s);
   });
   return gsiReady;
@@ -32,7 +32,14 @@ async function getToken(prompt) {
   });
 }
 
-export async function signIn(prompt) {
+let inflight = null;
+export function signIn(prompt) {
+  // parallel callers (table, facets, report after a token expiry) share ONE popup
+  if (!inflight) inflight = doSignIn(prompt).finally(() => { inflight = null; });
+  return inflight;
+}
+
+async function doSignIn(prompt) {
   if (CFG.dev) { me = { email: "dev@" + CFG.domain }; return true; }
   if (!CFG.clientId) { emit("This server has no Google OAuth client configured (NTXP_GOOGLE_CLIENT_ID)."); return false; }
   try {

@@ -124,6 +124,7 @@ class Grader:
 
     def run(self, apply: bool = True) -> dict:
         agg = self._collect()
+        before = {r[0]: r[1] for r in self.conn.execute("SELECT contact_id, is_exposed FROM contact_grade")}
         st = GradeStats(bands={"A": 0, "B": 0, "C": 0, "D": 0})
         for cid, a in agg.items():
             sources = a["sources"]
@@ -143,8 +144,14 @@ class Grader:
             st.exposed += 1 if exposed else 0
             st.held += 0 if exposed else 1
             if apply:
+                prev = before.get(cid)
+                flipped = (prev is not None and bool(prev) != bool(exposed)) or (prev is None and not exposed)
                 self._upsert(cid, g, b, len(sources), min_distance, a["freshest"],
                              age, int(exposed), reason)
+                if flipped:     # outbox/CardDAV key off change_log + updated_at: announce contact.removed / re-expose
+                    self.conn.execute("INSERT INTO change_log(entity_type, entity_id, field, op, origin) "
+                                      "VALUES ('contact', ?, 'exposure', 'update', 'grader')", (cid,))
+                    self.conn.execute("UPDATE contacts SET updated_at=datetime('now') WHERE contact_id=?", (cid,))
         if apply:
             self.conn.commit()
         return st.as_dict()

@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 ca-c
 RUN pip install ".[mcp,remote,postgres]" \
  && pip install playwright python-docx lxml pikepdf reportlab pypdfium2 Pillow \
  && playwright install --with-deps chromium && chmod -R a+rX /ms-playwright
-RUN useradd -m ntxp && mkdir -p /data && chown -R ntxp /app /data
+# /app stays root-owned (code is not writable by the service); only the data volume belongs to the app user.
+RUN useradd -m -u 10001 ntxp && mkdir -p /data && chown ntxp /data
 USER ntxp
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \

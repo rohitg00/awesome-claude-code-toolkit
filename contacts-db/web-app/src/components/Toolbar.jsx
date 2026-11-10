@@ -14,11 +14,11 @@ export function Toolbar({ view, onView, q, onQ, f, near, miles, onRemove, onClea
         {chips.map((c) => (
           <span key={c.key} className="chip inline-flex items-center gap-1 bg-warm border border-warm-edge rounded-full py-0.5 pl-2.5 pr-1 text-xs">
             {c.text}
-            <IconButton size="sm" label={c.label} data-unf={c.k} data-val={c.v} data-unprox={c.prox ? "" : undefined} onClick={c.off}>×</IconButton>
+            <IconButton size="sm" label={c.label} data-unf={c.k} data-val={c.v} data-unprox={c.prox ? "" : undefined} onClick={() => { c.off(); document.getElementById("q")?.focus(); }}>×</IconButton>
           </span>
         ))}
       </div>
-      <span className="count text-xs text-ink-soft ml-auto whitespace-nowrap" id="count" aria-live="polite">{count == null ? "" : count.toLocaleString() + " contacts"}</span>
+      <span className="count text-xs text-ink-soft ml-auto whitespace-nowrap" id="count">{count == null ? "" : count.toLocaleString() + " contacts"}</span>
     </div>
   );
 }

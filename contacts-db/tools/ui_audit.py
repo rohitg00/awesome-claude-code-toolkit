@@ -85,14 +85,14 @@ JS_BTN_MEASURE = """(el) => {
    outline:cs.outlineStyle+cs.outlineWidth,ratio:(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05),opacity:cs.opacity,cursor:cs.cursor,
    radius:cs.borderTopLeftRadius,weight:cs.fontWeight,w:r.width,h:r.height}}"""
 
-JS_BTN_LIST = """() => [...document.querySelectorAll('button,[role=button],[role=switch],input[type=button],input[type=submit]')]
+JS_BTN_LIST = """() => {document.querySelectorAll('[data-aud]').forEach(e=>e.removeAttribute('data-aud'));return [...document.querySelectorAll('button,[role=button],[role=switch],input[type=button],input[type=submit]')]
   .filter(e=>e.offsetParent||getComputedStyle(e).position==='fixed').filter(e=>!e.closest('[hidden],[inert],.sr,.sr-only')&&getComputedStyle(e).visibility!=='hidden')
   .map((e,i)=>{e.setAttribute('data-aud',i);const r=e.getBoundingClientRect(),role=e.getAttribute('role');
    const name=(e.getAttribute('aria-label')||(e.labels&&e.labels[0]&&e.labels[0].textContent)||e.textContent||e.getAttribute('title')||'').trim();
    return {i,tag:e.tagName.toLowerCase(),role,type:e.getAttribute('type'),variant:e.dataset.variant||(role==='button'?'link-button':'?'),name,
      vis:(()=>{const cx=r.left+r.width/2,cy=r.top+r.height/2;if(cx<0||cy<0||cx>innerWidth||cy>innerHeight)return null;const t=document.elementFromPoint(cx,cy);return !!t&&(t===e||e.contains(t)||t.contains(e))})(),
      w:r.width,h:r.height,l:r.left,t:r.top,disabled:e.disabled||e.getAttribute('aria-disabled')==='true',pressed:e.getAttribute('aria-pressed'),
-     tabindex:e.getAttribute('tabindex'),icon:!/[A-Za-z0-9]{2,}/.test(e.textContent||'')}})"""
+     tabindex:e.getAttribute('tabindex'),icon:!/[A-Za-z0-9]{2,}/.test(e.textContent||'')}})}"""
 
 
 def button_audit(pg, label):
@@ -297,7 +297,7 @@ with sync_playwright() as p:
     button_audit(pg, "table")
     pg.click("#ham"); pg.wait_for_timeout(400); button_audit(pg, "reports drawer")
     pg.click("#gear"); pg.wait_for_selector("#panel:not([hidden])"); button_audit(pg, "settings panel")
-    pg.keyboard.press("Escape"); pg.wait_for_timeout(300)
+    pg.keyboard.press("Escape"); pg.keyboard.press("Escape"); pg.wait_for_timeout(350)   # settings closes first, then the drawer
     pg.click("#ham"); pg.wait_for_timeout(400); pg.click('[data-rep="directory"]'); pg.wait_for_selector("#doc .d-card"); pg.wait_for_timeout(300)
     button_audit(pg, "report view"); pg.click("#rvBack"); pg.wait_for_selector("#tb tr[data-id]")
 
@@ -306,7 +306,7 @@ with sync_playwright() as p:
     set_theme(pg, "dark", "ntxp"); axe_run(pg, "table (desktop, dark)"); set_theme(pg, "light", "ntxp")
     pg.click("#ham"); pg.wait_for_timeout(400); axe_run(pg, "reports drawer open")
     pg.click("#gear"); pg.wait_for_selector("#panel:not([hidden])"); axe_run(pg, "settings panel open")
-    pg.screenshot(path=f"{OUT}/settings.png"); pg.keyboard.press("Escape"); pg.wait_for_timeout(300)
+    pg.screenshot(path=f"{OUT}/settings.png"); pg.keyboard.press("Escape"); pg.keyboard.press("Escape"); pg.wait_for_timeout(350)   # settings closes first, then the drawer
     pg.click("#ham"); pg.wait_for_timeout(400); pg.click('[data-rep="directory"]'); pg.wait_for_selector("#doc .d-card"); pg.wait_for_timeout(300)
     axe_run(pg, "report view"); pg.screenshot(path=f"{OUT}/report.png"); pg.click("#rvBack")
 

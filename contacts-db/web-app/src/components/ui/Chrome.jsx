@@ -60,13 +60,18 @@ export function Bar({ children, count, as: Tag = "div", className = "", ...rest 
   );
 }
 
-export function Toast({ toast }) {
-  if (!toast) return <div id="toast" role="alert" hidden className="toast" />;
+/** Always mounted so assistive tech registers the live region before text appears.
+ *  Errors are assertive (role=alert); confirmations are polite (role=status). */
+export function Toast({ toast, onPause, onResume }) {
+  const bad = !!toast?.bad;
   return (
-    <div id="toast" role="alert"
-      className={"toast fixed left-1/2 -translate-x-1/2 bottom-[max(18px,env(safe-area-inset-bottom,0px))] px-4 py-2.5 rounded z-[120] max-w-[calc(100vw-32px)] shadow-[0_6px_20px_rgba(0,0,0,.35)] " +
-        (toast.bad ? "bad bg-signal-ink text-white dark:bg-[#FF8A90] dark:text-[#1b0b0d]" : "bg-navy text-white")}>
-      {toast.msg}
+    <div id="toast" role={bad ? "alert" : "status"} aria-live={bad ? "assertive" : "polite"}
+      onMouseEnter={onPause} onMouseLeave={onResume} onFocus={onPause} onBlur={onResume}
+      className={toast
+        ? "toast fixed left-1/2 -translate-x-1/2 bottom-[max(18px,env(safe-area-inset-bottom,0px))] max-[900px]:bottom-[84px] px-4 py-2.5 rounded z-[120] max-w-[calc(100vw-32px)] shadow-[0_6px_20px_rgba(0,0,0,.35)] " +
+          (bad ? "bad bg-signal-ink text-white dark:bg-[#FF8A90] dark:text-[#1b0b0d]" : "bg-navy text-white")
+        : "toast sr-only"}>
+      {toast?.msg}
     </div>
   );
 }

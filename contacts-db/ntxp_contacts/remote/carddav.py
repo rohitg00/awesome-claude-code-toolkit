@@ -11,11 +11,14 @@ tested for well-formed multistatus XML and vCard payloads.
 """
 from __future__ import annotations
 
+import asyncio
+import threading
+
 import xml.sax.saxutils as sx
 
 import hashlib
 
-from .auth import verify_token
+from .auth import verify_token_async
 from .vcard import exposed_rows, is_exposed, render_one, uid
 
 BASE = "/carddav"
@@ -140,19 +143,37 @@ def _hrefs_in(body: str) -> list[str]:
     return re.findall(r"<[a-zA-Z0-9]*:?href>\s*([^<]+?)\s*</[a-zA-Z0-9]*:?href>", body or "")
 
 
+_MAX_BODY = 1_000_000
+
+
 class CardDAVApp:
     """ASGI app for the read-only CardDAV collection (token-gated)."""
 
     def __init__(self, db_override=None):
         self.db_override = db_override
+        self._ready = False
+        self._lock = threading.Lock()
+
+    def _handle(self, method, path, body: bytes, depth):
+        from ..db import connect, migrate
+        conn = connect(self.db_override)
+        try:
+            if not self._ready:
+                with self._lock:                      # concurrent first requests must not both migrate
+                    if not self._ready:
+                        migrate(conn)
+                        self._ready = True
+            return handle(conn, method, path, body.decode("utf-8", "replace"), depth)
+        finally:
+            conn.close()
 
     async def __call__(self, scope, receive, send):
         if scope.get("type") != "http":
             return
-        headers = {k.decode().lower(): v.decode() for k, v in scope.get("headers") or []}
+        headers = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope.get("headers") or []}
         auth = headers.get("authorization", "")
         token = auth[7:].strip() if auth[:7].lower() == "bearer " else ""
-        if verify_token(token) is None:
+        if await verify_token_async(token) is None:
             return await _respond(send, 401, [(b"www-authenticate", b"Bearer")],
                                   b'{"error":"unauthorized"}')
         body = b""
@@ -160,13 +181,11 @@ class CardDAVApp:
         while more:
             msg = await receive()
             body += msg.get("body", b"")
+            if len(body) > _MAX_BODY:
+                return await _respond(send, 413, [], b"request body too large")
             more = msg.get("more_body", False)
-        from ..db import connect, migrate
-        conn = connect(self.db_override)
-        migrate(conn)
-        status, extra, payload = handle(conn, scope["method"], scope["path"],
-                                        body.decode("utf-8", "replace"),
-                                        headers.get("depth", "0"))
+        status, extra, payload = await asyncio.to_thread(self._handle, scope["method"], scope["path"], body,
+                                                         headers.get("depth", "0"))
         await _respond(send, status, extra, payload)
 
 
