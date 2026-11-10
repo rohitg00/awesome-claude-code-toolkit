@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-palette="ntxp" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NTXP Contacts</title>
+<meta name="description" content="NTXP canonical contacts directory — live view.">
+<link rel="icon" href="/assets/icon_small.png">
+<script>
+/* Theme before first paint (no flash): stored choice, else the OS preference. */
+(function(){try{var t=localStorage.getItem("ntxp.theme"),p=localStorage.getItem("ntxp.palette");
+document.documentElement.setAttribute("data-theme",t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+if(p)document.documentElement.setAttribute("data-palette",p)}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+</head>
+<body data-view="1">
+<div id="root"></div>
+<script src="/config.js"></script>
+<script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

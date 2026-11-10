@@ -18,6 +18,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: contacts-db/web-app/package-lock.json }
+      - name: Front end (React + Tailwind): unit tests + build
+        run: cd web-app && npm ci && npm test && npm run build
       - name: Tests (SQLite)
         run: pip install -e ".[mcp,remote,postgres,dev]" && pytest -q
       - uses: docker/setup-buildx-action@v3

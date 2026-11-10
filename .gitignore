@@ -51,3 +51,6 @@ contacts-db/deploy/engine/*
 contacts-db/deploy/assets/*
 !contacts-db/deploy/engine/.gitkeep
 !contacts-db/deploy/assets/.gitkeep
+
+# the contacts front end pins its dependency tree (Docker/CI use `npm ci`)
+!contacts-db/web-app/package-lock.json

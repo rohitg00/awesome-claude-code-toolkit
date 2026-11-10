@@ -34,7 +34,7 @@ Needs ssh/scp (the Docker Manager can't upload files):
 ```bash
 ssh root@72.61.144.53 'mkdir -p /docker/ntxp-contacts/engine /docker/ntxp-contacts/assets'
 scp -r <skill>/ntxp-branded-document-2/{scripts,templates,types,assets,reference} root@72.61.144.53:/docker/ntxp-contacts/engine/
-scp <skill>/ntxp-branded-document-2/assets/ntxp_logo_reversed.png root@72.61.144.53:/docker/ntxp-contacts/assets/
+scp <skill>/ntxp-branded-document-2/assets/{ntxp_logo_reversed.png,icon_small.png} root@72.61.144.53:/docker/ntxp-contacts/assets/   # the engine's own logo + favicon, unmodified
 ```
 Skip this and the app still works — reports fall back to the browser's Save-as-PDF.
 

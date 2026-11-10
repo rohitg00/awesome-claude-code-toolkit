@@ -60,8 +60,36 @@ SECURITY_HEADERS = [
 
 
 def _page_path():
+    """The React build (web/dist/index.html, made by `npm run build` in web-app/) when present,
+    else the dependency-free legacy page so a source checkout still works."""
     from importlib import resources
-    return resources.files("ntxp_contacts").joinpath("web/index.html")
+    web = resources.files("ntxp_contacts").joinpath("web")
+    built = web.joinpath("dist/index.html")
+    return built if built.is_file() else web.joinpath("index.html")
+
+
+_APP_TYPES = {".js": "application/javascript", ".css": "text/css", ".map": "application/json",
+              ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon"}
+
+
+async def _app_file(send, rel: str):
+    """Serve a built front-end file from web/dist (hashed names → immutable cache). Whitelisted
+    filenames only; no traversal. Brand assets are NOT here — they come from /assets (mounted)."""
+    import re
+    from importlib import resources
+    parts = [p for p in rel.split("/") if p]
+    ext = "." + parts[-1].rsplit(".", 1)[-1].lower() if parts and "." in parts[-1] else ""
+    if (not parts or len(parts) > 3 or ext not in _APP_TYPES
+            or not all(re.fullmatch(r"[A-Za-z0-9_.-]+", p) and p not in (".", "..") for p in parts)):
+        return await _send_bytes(send, 404, "text/plain", b"not found")
+    f = resources.files("ntxp_contacts").joinpath("web/dist", *parts)
+    if not f.is_file():
+        return await _send_bytes(send, 404, "text/plain", b"not found")
+    data = f.read_bytes()
+    await send({"type": "http.response.start", "status": 200,
+                "headers": [(b"content-type", _APP_TYPES[ext].encode()), (b"content-length", str(len(data)).encode()),
+                            (b"cache-control", b"public, max-age=31536000, immutable")] + list(SECURITY_HEADERS)})
+    await send({"type": "http.response.body", "body": data})
 
 
 _ASSET_TYPES = {".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon",
@@ -208,6 +236,8 @@ def build_http_app(db_override=None):
         if path in ("/", "/index.html"):
             return await _send_bytes(send, 200, "text/html; charset=utf-8",
                                      _page_path().read_bytes())
+        if path.startswith("/app/"):
+            return await _app_file(send, path[len("/app/"):])
         if path.startswith("/assets/"):
             return await _asset(send, path[len("/assets/"):])
         if path == "/config.js":

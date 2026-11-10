@@ -6,6 +6,15 @@
 #   /engine   the proprietary NTXP Branded Document engine (license: NTXP only, no redistribution)
 #   /assets   the NTXP logo
 # The renderer's *public* dependencies (Chromium, Playwright, python-docx, ...) are installed here.
+# --- stage 1: build the React + Tailwind front end (web-app/) into ntxp_contacts/web/dist ---
+FROM node:22-slim AS web
+WORKDIR /src/web-app
+COPY web-app/package.json web-app/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY web-app/ ./
+RUN npm run build        # vite outDir = ../ntxp_contacts/web/dist
+
+# --- stage 2: the app ---
 FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1 \
     PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
@@ -13,6 +22,7 @@ ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1 \
 WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY ntxp_contacts ./ntxp_contacts
+COPY --from=web /src/ntxp_contacts/web/dist ./ntxp_contacts/web/dist
 RUN pip install ".[mcp,remote,postgres]" \
  && pip install playwright python-docx lxml pikepdf reportlab pypdfium2 Pillow \
  && playwright install --with-deps chromium && chmod -R a+rX /ms-playwright

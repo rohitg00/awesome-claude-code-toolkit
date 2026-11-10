@@ -1,0 +1,4 @@
+web-app/node_modules
+web-app/dist
+**/__pycache__
+.pytest_cache
