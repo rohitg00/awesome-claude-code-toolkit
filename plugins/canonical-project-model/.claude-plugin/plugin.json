@@ -1,6 +1,6 @@
 {
   "name": "canonical-project-model",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Normalization layer of the construction-doc-intelligence pipeline: turns the OCR4 project-intake dossier into the Canonical Project Record - one CSI MasterFormat-organized, provenance-carrying source of truth - rendered as an interlinked Excel workbook, an animated HTML command dashboard, and the NTXP Plans Atlas, an offline hyperlinked drawing-set viewer navigable by trade, spec, phase, or area. The atlas auto-deploys to Construction Documents when a bid or project is confirmed and rebuilds when drawings change. Model-agnostic: AGENTS.md contract plus Claude, ChatGPT (Custom GPT/Codex/API) and Grok (Projects/xAI API) adapters, function-tool schemas, and a platform packer. It organizes - it never prices, levels, or decides.",
   "commands": [
     "commands/structure.md"

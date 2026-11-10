@@ -13,8 +13,11 @@ writes two files:
                       to its sheet. Kinds: sheet (with phases, areas, trades, spec
                       sections, scale, OCR and review flags), sheet_text (the words
                       printed on each sheet), division, spec, trade, area, phase,
-                      ignition (blueprint and processed status) and atlas_status
-                      (sheet counts, search coverage, review items)
+                      ignition (blueprint and processed status), atlas_status
+                      (sheet counts, search coverage, review items), and the scope
+                      index: project_index, detail, sheet_note, clarification, room,
+                      schedule, schedule_row, millwork_elevation, door_mark, size_tag
+                      and scope_index (one per CSI division)
 
 Join keys, strongest first (each link records `via` and `confidence`):
   sheet_number   normalized sheet number equal                         0.95
@@ -155,7 +158,101 @@ def ignition_record(ignition_dir):
     return rec
 
 
-def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="", ignition_dir=None, words=None):
+def scope_records(scope, viewer_rel):
+    """Knowledge-base records for the scope index: one per fact, each pointing at its sheet and box."""
+    if not scope:
+        return []
+    recs = []
+
+    def link(sheet_id, box=None):
+        b = ("&box=" + ",".join(str(v) for v in box)) if box else ""
+        return f"{viewer_rel}#sheet={quote(str(sheet_id), safe='')}{b}"
+
+    def base(kind, src, **extra):
+        return {"_kind": kind, "sheet_id": src.get("sheet_id"), "sheet_no": src.get("sheet_no"),
+                "sheet_title": src.get("sheet_title"), "doc": src.get("doc"),
+                "page_index": str(max(int(src.get("page") or 1) - 1, 0)),
+                "viewer": link(src.get("sheet_id"), src.get("box")), **extra}
+
+    pi = scope.get("project_index") or {}
+    addr = pi.get("address") or {}
+    party = lambda p: (p or {}).get("name") if isinstance(p, dict) else p        # noqa: E731
+    facts = [("Project Title", pi.get("title")), ("Project Number", pi.get("number")),
+             ("Project Address", ", ".join(x for x in (addr.get("street"), addr.get("city_state_zip")) if x)),
+             ("Project Owner", party(pi.get("owner"))), ("Project Architect", party(pi.get("architect"))),
+             ("Project MEP Engineer", party(pi.get("mep_engineer")))]
+    facts += [(f"Project Engineer ({e.get('role', '')})", e.get("name")) for e in pi.get("engineers_other") or []]
+    recs.append({"_kind": "project_index", "facts": {k: v for k, v in facts if v}, "viewer": viewer_rel,
+                 "trades": pi.get("trades") or [], "stats": scope.get("stats") or {},
+                 "text": "Project index: " + "; ".join(f"{k}: {v}" for k, v in facts if v)})
+    for p in pi.get("pages") or []:
+        for d in p.get("details") or []:
+            recs.append(base("detail", {**p, "box": d.get("box")}, label=d.get("label"), title=d.get("title"),
+                             scale=d.get("scale"), text=f"Detail {d.get('label') or ''} {d.get('title')} on {p.get('sheet_no')}"))
+    for b in pi.get("notes") or []:
+        for it in b.get("items") or []:
+            recs.append(base("sheet_note", {**b, "box": it.get("box")}, heading=b.get("heading"), note_kind=b.get("kind"),
+                             no=it.get("no"), divisions=b.get("divisions") or [],
+                             csi_division=(b.get("divisions") or [None])[0],
+                             text=f"{b.get('sheet_no')} {b.get('heading')} {it.get('no') or ''}: {it.get('text')}"))
+    labels = scope.get("clarification_labels") or {}
+    for cat, rows in (scope.get("clarifications") or {}).items():
+        for c in rows:
+            recs.append(base("clarification", c, category=cat, category_label=labels.get(cat, cat),
+                             divisions=c.get("divisions") or [], csi_division=(c.get("divisions") or [None])[0],
+                             source=c.get("source"), confidence=c.get("confidence"),
+                             text=f"{labels.get(cat, cat)} ({c.get('sheet_no')}): {c.get('text')}"))
+    for r in pi.get("rooms") or []:
+        recs.append(base("room", r, number=r.get("number"), name=r.get("name"), sf=r.get("sf"),
+                         perimeter_lf=r.get("perimeter_lf"),
+                         text=f"Room {r.get('number')} {r.get('name')}"
+                              + (f" {r['sf']:,.0f} SF" if r.get("sf") is not None else " (SF not printed)")))
+    for sch in scope.get("schedules") or []:
+        recs.append(base("schedule", sch, schedule_id=sch.get("id"), title=sch.get("title"), schedule_type=sch.get("type"),
+                         csi_division=sch.get("division"), columns=sch.get("columns"), row_count=sch.get("row_count"),
+                         crop=sch.get("crop"), spec_sections=sch.get("spec_sections") or [], method=sch.get("method"),
+                         confidence=sch.get("confidence"),
+                         text=f"{sch.get('title')} on {sch.get('sheet_no')}: {sch.get('row_count')} rows; columns "
+                              + ", ".join(sch.get("columns") or [])))
+        for i, row in enumerate(sch.get("rows") or []):
+            fields = {k: v for k, v in zip(sch.get("columns") or [], row) if v}
+            recs.append(base("schedule_row", sch, schedule_id=sch.get("id"), schedule_type=sch.get("type"),
+                             csi_division=sch.get("division"), row=i + 1, tag=row[0] if row else "", fields=fields,
+                             text=f"{sch.get('title')} row {row[0] if row else i + 1}: "
+                                  + "; ".join(f"{k} {v}" for k, v in fields.items())))
+    for m in scope.get("millwork") or []:
+        recs.append(base("millwork_elevation", m, elevation_id=m.get("id"), label=m.get("label"), title=m.get("title"),
+                         csi_division="06", room_number=m.get("room_number"), cabinet_codes=m.get("cabinet_codes"),
+                         finish_codes=m.get("finish_codes"), dimensions_printed=m.get("dimensions_printed"),
+                         cabinet_count=None, linear_feet=None, crop=m.get("crop"),
+                         text=f"Millwork elevation {m.get('label') or ''} {m.get('title')} on {m.get('sheet_no')}: cabinet codes "
+                              + (", ".join(m.get("cabinet_codes") or []) or "none printed") + "; finishes "
+                              + (", ".join(m.get("finish_codes") or []) or "none printed") + "; counts and lengths not measured"))
+    for d, v in (scope.get("scope") or {}).items():
+        for mk in v.get("door_marks") or []:
+            ref = (mk.get("plan_refs") or [{}])[0]
+            recs.append({"_kind": "door_mark", "mark": mk.get("mark"), "schedule_id": mk.get("schedule_id"),
+                         "fields": mk.get("row") or {}, "csi_division": "08", "sheet_id": ref.get("sheet_id"),
+                         "sheet_no": ref.get("sheet_no"),
+                         "viewer": link(ref["sheet_id"], ref.get("box")) if ref.get("sheet_id") else viewer_rel,
+                         "text": f"Door {mk.get('mark')}: " + "; ".join(f"{k} {x}" for k, x in (mk.get("row") or {}).items() if x)
+                                 + (f"; on plan {ref.get('sheet_no')}" if ref.get("sheet_no") else "; not found on a plan")})
+        for t in v.get("size_tags") or []:
+            recs.append({"_kind": "size_tag", "csi_division": d, "tag_type": t.get("type"), "label": t.get("label"),
+                         "size": t.get("size"), "tag_count": t.get("tag_count"), "measured_quantity": None,
+                         "sheets": [x.get("sheet_no") for x in t.get("sheets") or []], "viewer": viewer_rel,
+                         "text": f"{t.get('label')} {t.get('size')}: tagged {t.get('tag_count')} time(s) on "
+                                 + ", ".join(x.get("sheet_no") or "" for x in (t.get("sheets") or [])[:8])
+                                 + "; a tag count, not a measured length"})
+        recs.append({"_kind": "scope_index", "csi_division": d, "division": d, "label": v.get("label"),
+                     "schedules": v.get("schedules") or [], "sheets": v.get("sheets") or [],
+                     "takeoff": v.get("takeoff") or [], "takeoff_status": v.get("takeoff_status"), "viewer": viewer_rel,
+                     "text": f"Scope index Division {d} {v.get('label')}: {len(v.get('schedules') or [])} schedule(s), "
+                             f"{len(v.get('sheets') or [])} sheet(s); takeoff: {v.get('takeoff_status')}"})
+    return recs
+
+
+def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="", ignition_dir=None, words=None, scope=None):
     kb_dir = Path(kb_dir)
     kb = load_json(kb_dir / "kb.json", {}) or {}
     slug = (kb.get("project") or {}).get("slug") or kb_dir.name
@@ -385,6 +482,7 @@ def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="
             sids = list(c.get("sheet_ids") or [])
             recs.append({"_kind": kind, "name": concept_name(c), "atlas_sheets": sids, "viewer": viewer_rel,
                          "text": f"{kind.capitalize()} {concept_name(c)}: " + ", ".join(sids)})
+    recs.extend(scope_records(scope, viewer_rel))
     ig = ignition_record(ignition_dir)
     if ig:
         recs.append(ig)
@@ -420,7 +518,8 @@ def run(kb_dir, atlas_path, out_dir, viewer_rel, request_id="", ignition_dir=Non
     model_dir = Path(atlas_path).resolve().parent.parent          # model/sections/plans_atlas.json -> model/
     words = load_json(model_dir / "atlas-words.json", {}) or {}
     ignition_dir = ignition_dir or (model_dir / "ignition")
-    inter, recs = build(kb_dir, atlas, viewer_rel, request_id, ignition_dir, words)
+    scope = load_json(model_dir / "sections" / "scope_index.json")
+    inter, recs = build(kb_dir, atlas, viewer_rel, request_id, ignition_dir, words, scope)
     inter["built_at"] = None      # keep the file byte-stable between identical runs
     changed = write_if_changed(Path(out_dir) / "interlinks.json", inter)
     changed |= write_if_changed(Path(out_dir) / "atlas-chunks.json", recs)
@@ -465,6 +564,27 @@ def selftest():
     assert {"sheet", "sheet_text", "division", "spec", "trade", "atlas_status"} <= {r["_kind"] for r in recs}
     sh = next(r for r in recs if r["_kind"] == "sheet" and r["sheet_id"] == "A-101")
     assert sh["trades"] == ["Finishes"] and sh["spec_sections"] == ["09 51 13"], sh
+    scope = {"project_index": {"title": "Demo", "owner": {"name": "Test ISD"}, "pages": [], "notes": [
+                 {"sheet_id": "A-101", "sheet_no": "A-101", "page": 1, "heading": "GENERAL NOTES", "kind": "general",
+                  "items": [{"no": "1", "text": "Signage by owner.", "box": [0.1, 0.1, 0.2, 0.12]}], "divisions": ["09"]}],
+                 "rooms": [{"sheet_id": "A-101", "sheet_no": "A-101", "page": 1, "number": "101", "name": "LOBBY", "sf": None,
+                            "perimeter_lf": None, "box": [0.4, 0.4, 0.5, 0.45]}]},
+             "clarifications": {"exclusions": [{"sheet_id": "A-101", "sheet_no": "A-101", "page": 1, "text": "Signage by owner.",
+                                                "divisions": ["10"], "box": [0.1, 0.1, 0.2, 0.12]}]},
+             "clarification_labels": {"exclusions": "Exclusions"},
+             "schedules": [{"id": "A-101-S1", "sheet_id": "A-101", "sheet_no": "A-101", "page": 1, "title": "DOOR SCHEDULE",
+                            "type": "door", "division": "08", "columns": ["MARK", "TYPE"], "rows": [["101A", "A"]],
+                            "row_count": 1, "box": [0.5, 0.5, 0.7, 0.6]}],
+             "scope": {"23": {"label": "HVAC", "size_tags": [{"type": "duct_rect", "label": "Rectangular duct", "size": "12x8",
+                                                             "tag_count": 2, "sheets": [{"sheet_no": "M-101"}]}],
+                              "takeoff_status": "no takeoff yet"}}}
+    kinds = {}
+    for r in scope_records(scope, "v.html"):
+        kinds.setdefault(r["_kind"], []).append(r)
+    assert {"project_index", "sheet_note", "clarification", "room", "schedule", "schedule_row", "size_tag", "scope_index"} <= set(kinds)
+    assert kinds["schedule"][0]["viewer"] == "v.html#sheet=A-101&box=0.5,0.5,0.7,0.6", kinds["schedule"][0]["viewer"]
+    assert "SF not printed" in kinds["room"][0]["text"] and kinds["size_tag"][0]["measured_quantity"] is None
+    assert kinds["schedule_row"][0]["fields"] == {"MARK": "101A", "TYPE": "A"}
     st = next(r for r in recs if r["_kind"] == "sheet_text")
     assert st["text"] == "FIRST CEILING", st
     (tmp / "atlas.json").write_text(json.dumps(atlas))

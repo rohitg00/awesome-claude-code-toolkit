@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scope-index.schema.json",
+  "title": "Plans Atlas scope index",
+  "description": "Deterministic index of a drawing set written by scripts/scope_index.py. Values not printed on the sheets are null; size tags are counts, never measured lengths.",
+  "type": "object",
+  "required": [
+    "section",
+    "schema",
+    "project_index",
+    "clarifications",
+    "schedules",
+    "scope"
+  ],
+  "properties": {
+    "section": {
+      "const": "scope_index"
+    },
+    "schema": {
+      "const": "ntxp.scope-index/1"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "source_set": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "project_index": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "address": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "owner": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "architect": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "mep_engineer": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "engineers_other": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "sheet_id": {
+                    "type": "string"
+                  },
+                  "sheet_no": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sheet_title": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "1-based page in the source PDF."
+                  },
+                  "doc": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "details": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "scale": {
+                          "type": "string"
+                        },
+                        "box": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "minItems": 4,
+                          "maxItems": 4,
+                          "description": "[x0, y0, x1, y1] as fractions of the displayed page."
+                        },
+                        "confidence": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "sheet_id": {
+                    "type": "string"
+                  },
+                  "sheet_no": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sheet_title": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "1-based page in the source PDF."
+                  },
+                  "doc": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "heading": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "enum": [
+                      "general",
+                      "sheet",
+                      "keyed"
+                    ]
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "no": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "box": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "minItems": 4,
+                          "maxItems": 4,
+                          "description": "[x0, y0, x1, y1] as fractions of the displayed page."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "sheet_id": {
+                    "type": "string"
+                  },
+                  "sheet_no": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sheet_title": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "1-based page in the source PDF."
+                  },
+                  "doc": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "sf": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "description": "Only when printed on the plan."
+                  },
+                  "perimeter_lf": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "description": "Never printed on drawings; null until the takeoff supplies it."
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "millwork_elevations": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "trades": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "clarifications": {
+      "type": "object",
+      "description": "Notes sorted by keyword. Keys: scheduling, exclusions, owner_vendors, owner_allowance, pricing_alternates, phasing.",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sheet_id": {
+                  "type": "string"
+                },
+                "sheet_no": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "sheet_title": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "page": {
+                  "type": "integer",
+                  "description": "1-based page in the source PDF."
+                },
+                "doc": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "divisions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "source": {
+                  "enum": [
+                    "note",
+                    "text_line"
+                  ]
+                },
+                "confidence": {
+                  "type": "number"
+                },
+                "box": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "description": "[x0, y0, x1, y1] as fractions of the displayed page."
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "clarification_labels": {
+      "type": "object"
+    },
+    "schedules": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "sheet_id": {
+                "type": "string"
+              },
+              "sheet_no": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sheet_title": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "page": {
+                "type": "integer",
+                "description": "1-based page in the source PDF."
+              },
+              "doc": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          {
+            "required": [
+              "id",
+              "title",
+              "type",
+              "columns",
+              "rows"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "division": {
+                "type": "string"
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "row_count": {
+                "type": "integer"
+              },
+              "method": {
+                "enum": [
+                  "ruled_table",
+                  "text_columns"
+                ]
+              },
+              "confidence": {
+                "type": "number"
+              },
+              "crop": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Cropped image of the schedule as drawn, relative to model/."
+              },
+              "spec_sections": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "finishes": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "box": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 4,
+                "maxItems": 4,
+                "description": "[x0, y0, x1, y1] as fractions of the displayed page."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "millwork": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cabinet_count": {
+            "type": "null"
+          },
+          "linear_feet": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "description": "One index per CSI division, keyed by two-digit division.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "division": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "size_tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tag_count": {
+                  "type": "integer"
+                },
+                "measured_quantity": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          "takeoff": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "takeoff_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stats": {
+      "type": "object"
+    },
+    "needs_review": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

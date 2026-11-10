@@ -8,7 +8,7 @@ adds Grok-specific mechanics and tuning.
 
 1. Create a Project named after the job (for example "Lincoln Clinic — NTXP").
 2. Build the upload set with
-   `python scripts/platform_pack.py pack --target grok --out dist/grok` (19 flat
+   `python scripts/platform_pack.py pack --target grok --out dist/grok` (20 flat
    files; every schema is in `schemas.bundle.json`) and add them all as
    project files. With code execution, restore the layout first:
    `python platform_pack.py setup --src <files dir> --to <work dir>`.

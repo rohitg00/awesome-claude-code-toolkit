@@ -43,6 +43,17 @@ TOOLS = {
     "phase1_receive_atlas_request": (
         "phase1_receiver.py", {"request": "--request"}, {"force": "--force", "no_chain": "--no-chain"}, "receive",
     ),
+    "build_scope_index": (
+        "scope_index.py", {"model": "--model", "pdf_dir": "--pdf-dir"}, {}, "build",
+    ),
+    "build_linked_drawing_set": (
+        "build_atlas_pdf.py",
+        {"pdf": "--pdf", "model": "--model", "out": "--out", "project": "--project",
+         "legend_out": "--legend-out", "legend_md": "--legend-md"}, {},
+    ),
+    "export_sheet_with_markups": (
+        "atlas_live.py", {"project": "--project", "sheet": "--sheet", "layers": "--layers", "out": "--out"}, {}, "export",
+    ),
     "project_ignition_itb": (
         "ignition.py", {"project": "--project", "today": "--today"}, {"pdf": "--pdf"}, "itb",
     ),

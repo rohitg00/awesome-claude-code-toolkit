@@ -45,6 +45,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PLUGIN_DIR = HERE.parent
+sys.path.insert(0, str(HERE))
+import atlas_shell  # noqa: E402  (NTXP Document Engine shell: header, page strip, drawers, overlays)
 DIVISIONS_FILE = PLUGIN_DIR / "resources" / "masterformat-divisions.json"
 
 DEFAULT_COMPANY = "NTXP"
@@ -1176,35 +1178,26 @@ def build_body(model, model_dir, company, titles):
 
     out = []
 
-    # ---------- top bar ----------
-    title_txt = esc(proj.get("title", "Untitled Project"))
-    chip_bits = []
-    if proj.get("number"):
-        chip_bits.append(f'No. <b style="color:var(--ink)">{esc(proj["number"])}</b>')
-    if proj.get("location"):
-        chip_bits.append(f'<b style="color:var(--ink)">{esc(proj["location"])}</b>')
-    proj_chip = f'<span class="chip">{" · ".join(chip_bits)}</span>' if chip_bits else ""
-    out.append(f'''<nav class="atl-nav">
-      <div class="brand"><span class="dot"></span>{esc(company)} · Plans Atlas — {title_txt}</div>
-      {proj_chip}
-      <a class="pill" href="./dashboard.html">Command Dashboard ↗</a>
-      <div class="atl-search">
-        <input id="atl-search" type="text" placeholder="Search sheets, trades, specs… (punctuation ignored)" autocomplete="off">
-        <div class="sr-panel" id="atl-search-results"></div>
-      </div>
-    </nav>''')
+    # ---------- header band + page strip (NTXP Document Engine) ----------
+    scope_path = model_dir / "sections" / "scope_index.json"
+    scope = (load_json(scope_path) or None) if scope_path.is_file() else None
+    sub_bits = [str(x) for x in (proj.get("number"), proj.get("location") if isinstance(proj.get("location"), str) else None) if x]
+    proj_sub = f' <span style="opacity:.8">| {esc(" | ".join(sub_bits))}</span>' if sub_bits else ""
+    title_txt = ((scope or {}).get("project_index") or {}).get("title") or proj.get("title", "Untitled Project")
+    out.append(atlas_shell.header_html(company, title_txt, proj_sub))
+    out.append(atlas_shell.strip_html(sheets))
 
     # ---------- rail: left ----------
     trades = concepts.get("trades") or []
     specs = concepts.get("specs") or []
     phases = concepts.get("phases") or []
     areas = concepts.get("areas") or []
-    left_rail = f'''<aside class="rail-left">
+    left_rail = f'''<aside class="rail-left" id="de-left" aria-label="Trades, spec numbers, areas and phases">
       <div class="rail-tabs">
         <button type="button" class="rail-tab" data-tab="trades" aria-selected="true">Trades</button>
-        <button type="button" class="rail-tab" data-tab="specs" aria-selected="false">Specs</button>
-        <button type="button" class="rail-tab" data-tab="phases" aria-selected="false">Phases</button>
+        <button type="button" class="rail-tab" data-tab="specs" aria-selected="false">Spec #</button>
         <button type="button" class="rail-tab" data-tab="areas" aria-selected="false">Areas</button>
+        <button type="button" class="rail-tab" data-tab="phases" aria-selected="false">Phases</button>
       </div>
       <div class="rail-panel active" data-tab="trades">{trades_tab_html(trades, colors, titles, len(sheets))}</div>
       <div class="rail-panel" data-tab="specs">{specs_tab_html(specs, colors)}</div>
@@ -1232,6 +1225,7 @@ def build_body(model, model_dir, company, titles):
           </div>
           <button type="button" class="btn" id="v-close">Close ✕</button>
         </div>
+        {atlas_shell.layer_bar_html()}
         <div class="viewer-canvas" id="viewer-canvas">
           <div id="viewer-panels">{viewer_panels}</div>
         </div>
@@ -1240,12 +1234,29 @@ def build_body(model, model_dir, company, titles):
 
     # ---------- right rail ----------
     rr_panels = "".join(rail_right_panel_html(s, colors, links_by_from, renders_by_sheet) for s in sheets)
-    right_rail = f'''<aside id="rail-right">
-      {rr_panels}
-      <div class="stage-queue"><h4>Staged Requests</h4><div id="stage-queue-list"></div></div>
+    def crop_src(rel):
+        """Schedule and elevation crops: inlined while the page stays inside its size budget, else a relative path."""
+        p = model_dir / rel
+        try:
+            size = p.stat().st_size
+        except OSError:
+            return rel
+        if size <= MAX_INLINE_BYTES and _inlined[0] + size <= TOTAL_INLINE_BYTES:
+            _inlined[0] += size
+            return "data:image/jpeg;base64," + base64.b64encode(p.read_bytes()).decode("ascii")
+        return rel
+
+    detail = atlas_shell.detail_panels_html(atlas, scope, crop_src)
+    right_rail = f'''<aside id="de-right" aria-label="Details for the selected item">
+      <p class="dd-empty" id="dd-empty">Pick a trade, spec number, area or phase on the left to see its details here.</p>
+      {detail}
+      <div id="rail-right">
+        {rr_panels}
+        <div class="stage-queue"><h4>Staged Requests</h4><div id="stage-queue-list"></div></div>
+      </div>
     </aside>'''
 
-    out.append(f'<div class="atl-wrap" id="atl-wrap">{left_rail}{center}{right_rail}</div>')
+    out.append(f'<div class="atl-wrap" id="atl-wrap">{left_rail}{center}{right_rail}</div><div class="de-scrim"></div>')
 
     # ---------- footer + focus areas ----------
     if needs_review:
@@ -1262,6 +1273,10 @@ def build_body(model, model_dir, company, titles):
     out.append('<div id="tip"></div><div class="toast" id="toast"></div>')
     search_payload = build_search_payload(sheets, concepts, words_by_sheet)
     out.append(f'<script id="atlas-search-data" type="application/json">{json.dumps(search_payload)}</script>')
+    marks, problems = atlas_shell.markup_overlays(model_dir, sheets)
+    overlays = atlas_shell.merge_overlays(marks, atlas_shell.index_overlays(scope))
+    live = atlas_shell.payload(overlays, problems).replace("</", "<\\/")
+    out.append(f'<script id="atlas-live-data" type="application/json">{live}</script>')
 
     return "".join(out)
 
@@ -1296,17 +1311,17 @@ def build(args):
     noscript = '<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>'
 
     if args.fragment:
-        doc = (f'<style>{STYLE}</style>{noscript}\n'
+        doc = (f'<style>{STYLE}{atlas_shell.STYLE}</style>{noscript}\n'
                f'<div class="atl-root"><div class="atl-shell">{bg}{body}</div></div>\n'
-               f'<script>{SCRIPT}</script>')
+               f'<script>{SCRIPT}</script><script>{atlas_shell.SCRIPT}</script>')
     else:
         title = esc(model.get("project", {}).get("title", "Plans Atlas"))
         doc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
                f'<meta name="viewport" content="width=device-width,initial-scale=1">'
                f'<title>{title} · {esc(args.company)} Plans Atlas</title>'
-               f'<style>{STYLE}</style>{noscript}</head>'
+               f'<style>{STYLE}{atlas_shell.STYLE}</style>{noscript}</head>'
                f'<body class="atl-root"><div class="atl-shell">{bg}{body}</div>'
-               f'<script>{SCRIPT}</script></body></html>')
+               f'<script>{SCRIPT}</script><script>{atlas_shell.SCRIPT}</script></body></html>')
 
     default_name = f'{model.get("project", {}).get("slug", "project")}-plans-atlas.html'
     out = Path(args.out) if args.out else model_dir / default_name

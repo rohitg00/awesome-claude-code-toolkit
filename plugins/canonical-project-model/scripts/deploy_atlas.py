@@ -322,7 +322,18 @@ def main():
     if pack_qa == "blocked":
         log("WARNING: pack_qa is 'blocked' - review the drawing pack inventory; continuing so the state is visible.")
 
-    other_sections = [p for p in (model_dir / "sections").glob("*.json") if p.name != "plans_atlas.json"]
+    # scope index: project index, notes, clarifications, schedules and a scope index per trade.
+    # Best effort: the viewer and the legend still build without it, and say that it is missing.
+    scope_status = "skipped"
+    if classified:
+        proc = run_step("step 1b/4 scope index", [py, SCRIPTS_DIR / "scope_index.py", "build", "--model", model_dir,
+                                                  "--pdf-dir", pdf_dir])
+        scope_status = "built" if proc.returncode == 0 else "failed"
+        if proc.returncode != 0:
+            log("WARNING: scope_index.py failed; the atlas continues without the scope index.")
+
+    other_sections = [p for p in (model_dir / "sections").glob("*.json")
+                      if p.name not in ("plans_atlas.json", "scope_index.json")]
     if model_json.exists() or other_sections:
         proc = run_step("step 2/4 assemble model", [py, SCRIPTS_DIR / "assemble_model.py",
                         "--dossier", dossier, "--generated-at", now_iso()])
@@ -346,7 +357,11 @@ def main():
         sys.exit(proc.returncode or 1)
 
     outputs = [atlas_path]
-    if "atlas/img/" in atlas_path.read_text(errors="replace"):
+    html_text = atlas_path.read_text(errors="replace")
+    if "atlas/crops/" in html_text and (model_dir / "atlas" / "crops").is_dir():
+        import shutil
+        shutil.copytree(model_dir / "atlas" / "crops", out_dir / "atlas" / "crops", dirs_exist_ok=True)
+    if "atlas/img/" in html_text:
         import shutil
         words = model_dir / "atlas-words.json"
         if words.exists():
@@ -356,6 +371,25 @@ def main():
         if img.is_dir():
             shutil.copytree(img, out_dir / "atlas" / "img", dirs_exist_ok=True)
             log("copied atlas/img and atlas-words.json beside the html (relative references found)")
+
+    # Drawing set with the Index Legend in front and named-destination links, plus the legend on its own.
+    legend_outputs = []
+    if classified:
+        for i, pdf in enumerate(pdfs):
+            stem = Path(pdf).stem
+            out_pdf = out_dir / f"{stem} - Plans Atlas.pdf"
+            cmd = [py, SCRIPTS_DIR / "build_atlas_pdf.py", "--pdf", pdf, "--model", model_dir, "--out", out_pdf]
+            if i == 0:
+                cmd += ["--legend-out", out_dir / "Index Legend.pdf", "--legend-md", out_dir / "INDEX-LEGEND.md"]
+            proc = run_step(f"step 3b/4 index legend + linked set ({Path(pdf).name})", cmd)
+            if proc.returncode == 0 and out_pdf.exists():
+                outputs.append(out_pdf)
+                legend_outputs.append(out_pdf)
+            else:
+                log(f"WARNING: build_atlas_pdf.py failed for {Path(pdf).name}; the viewer is still deployed.")
+        for extra in (out_dir / "Index Legend.pdf", out_dir / "INDEX-LEGEND.md"):
+            if extra.exists():
+                outputs.append(extra)
 
     readme = out_dir / "README.txt"
     readme.write_text(README_TEXT)
@@ -372,7 +406,9 @@ def main():
                             "pdf_manifest": manifest, "outputs": rel_outputs, "atlas_version": version})
     log(f"Plans Atlas built: {atlas_path} ({n} sheets, version {version})")
     result = {"status": "built", "atlas": str(atlas_path), "sheets": n,
-              "event": args.event, "atlas_version": version}
+              "event": args.event, "atlas_version": version, "scope_index": scope_status,
+              "index_legend": str(out_dir / "Index Legend.pdf") if (out_dir / "Index Legend.pdf").exists() else None,
+              "linked_sets": [str(p) for p in legend_outputs]}
     if pdfs and not classified:
         # PyMuPDF is missing in this interpreter: the viewer has one placeholder per PDF, no sheet images,
         # no sheet numbers, no text search and no links. Say so in the result, not just in the log.

@@ -109,6 +109,31 @@ the atlas with `--ignite`, interlinks the KB and the drawings with `scripts/inte
 confidence; sheets in the KB index but missing from the drawings, and title conflicts, are reported
 with both values and never resolved. Detail: `reference/phase1-receiver.md`.
 
+## 3d. Scope index, Index Legend and the live viewer
+
+`deploy_atlas.py` also runs `scripts/scope_index.py` and `scripts/build_atlas_pdf.py`. Detail:
+`reference/scope-index-and-viewer.md`.
+
+- **Scope index** (`sections/scope_index.json`): project index (title, address, owner, architect,
+  engineers, page index with detail labels, notes per page, rooms, millwork elevations, trades);
+  clarifications and exclusions (scheduling, exclusions, owner-required vendors, owner allowances,
+  pricing and alternates, phasing); every schedule as a cropped image plus a recreated table; and a
+  scope index per CSI division.
+- **Never invent, again.** A value not printed on the sheets is `null` with its reason. Size tags
+  (duct, pipe, conduit, wire) are **counted, never measured**; a measured quantity comes only from
+  the takeoff. Millwork cabinet counts and lengths are not measured. Say so when you report them.
+- **Index Legend** goes **in front of the first drawing** in every linked set, and a copy
+  (`Index Legend.pdf`, `INDEX-LEGEND.md`, `scope_index.json`) goes to the knowledge base's `atlas/`
+  folder. Every link in the PDF targets a **named destination** (`sheet:A-101`, `schedule:<id>`,
+  `index:<section>`), never a bare page number.
+- **Viewer:** NTXP Document Engine shell (persistent navy header, swipeable page strip, left drawer
+  for trades, spec numbers, areas and phases, right drawer for the selection's details). Drawings and
+  pop-up cards stay exactly as drawn.
+- **Overlays, export, print** follow the NTXP PDF markup standard (trade hue; demolition dotted,
+  new work solid; measurements red). Markup manifests (schema 3.0) go in `model/atlas/markups/`.
+  `scripts/atlas_live.py serve` adds PDF export. A viewer export is a working copy; a markup that
+  leaves the building is published by `ntxp-pdf-markups-and-redlines`.
+
 ## 4. If you cannot execute code
 
 Some deployments (a chat with no code tool, a locked-down API) cannot run
@@ -143,7 +168,11 @@ Some deployments (a chat with no code tool, a locked-down API) cannot run
 | `scripts/build_dashboard_html.py` | animated command dashboard (stdlib) |
 | `scripts/build_atlas_data.py` | deterministic drawing extraction (PyMuPDF optional) |
 | `scripts/build_atlas_html.py` | offline Plans Atlas viewer (stdlib) |
-| `scripts/build_atlas_pdf.py` | embeds atlas links and index pages into the drawing PDF (PyMuPDF) |
+| `scripts/build_atlas_pdf.py` | drawing set with the Index Legend in front, named-destination links, outline and sheet-number page labels (PyMuPDF) |
+| `scripts/scope_index.py` | scope index: project index, notes, clarifications, schedules (image + table), scope index per trade (PyMuPDF) |
+| `scripts/atlas_shell.py` | NTXP Document Engine shell for the viewer: header, page strip, drawers, overlays, export, print (stdlib) |
+| `scripts/atlas_live.py` | local live viewer server and sheet-with-markups PDF export (stdlib + PyMuPDF) |
+| `scripts/compress_pdf.py` | shrinks a drawing-set PDF while keeping every link, bookmark and named destination (PyMuPDF) |
 | `scripts/atlas_ocr.py` | OCR fallback for sheets with no text layer: RapidOCR (offline, `pip install rapidocr-onnxruntime`) or Mistral OCR title-block strips (`MISTRAL_API_KEY`); `NTXP_OCR=none` disables. OCR-read sheets are flagged for verification |
 | `scripts/phase1_receiver.py` | receiver for the Estimating Phase 1 drawing handoff: seed CPR from the KB, deploy, interlink, respond (stdlib + PyMuPDF) |
 | `scripts/interlink.py` | joins the Phase 1 KB with the atlas by sheet, spec, division (stdlib) |

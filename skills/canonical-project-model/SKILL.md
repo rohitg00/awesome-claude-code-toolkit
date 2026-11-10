@@ -203,6 +203,36 @@ python scripts/phase1_receiver.py status  --request <kb>/handoffs/atlas-request.
 
 Viewer deep links: `plans-atlas.html#sheet=<sheet_id>` opens that sheet.
 
+## Scope index, Index Legend and the live viewer
+
+Every deploy also indexes the set and links it. Detail: `reference/scope-index-and-viewer.md`.
+
+- **Scope index** (`scripts/scope_index.py` → `sections/scope_index.json`): the **Project Index**
+  (title, address, owner, architect, MEP and other engineers, page index with detail labels and
+  titles, general and sheet notes per page, rooms with SF where printed, millwork elevations, trades);
+  **Clarifications and Exclusions** (scheduling, exclusions, owner-required vendors, owner allowances,
+  pricing and alternates, phasing, each with its page and related trades); every **schedule** as a
+  cropped image plus a recreated table; and a **scope index per CSI division** (door, HVAC,
+  electrical, plumbing, millwork and the rest).
+- **Honest by construction:** nothing is invented. Values not printed are `null`; duct, pipe, conduit
+  and wire sizes are tag counts, not measured lengths; measured quantities come only from the takeoff.
+- **Index Legend** (`scripts/build_atlas_pdf.py`): placed **in front of the first drawing** of every
+  linked set, in NTXP Document Engine style, and copied to the knowledge base (`<kb>/atlas/`) and the
+  Drive Knowledge Base folder. Links target **named destinations**, so they survive re-issue and can
+  be opened as `set.pdf#nameddest=sheet:A-101`.
+- **Viewer** (`scripts/atlas_shell.py`): persistent navy header, swipeable page strip, a left drawer
+  (trades, spec numbers, areas, phases) and a right drawer with the selection's bottom level (trade
+  scope summary, takeoffs, schedules, spec chapter). Drawings and pop-up cards are shown as drawn.
+- **Overlays, export, print:** NTXP PDF markup colours and schema 3.0 manifests
+  (`model/atlas/markups/*.json`); animated layers for markups, schedules, notes, rooms and door
+  marks; export PNG, JSON or PDF (`scripts/atlas_live.py serve`); print the open sheet.
+
+```bash
+python scripts/scope_index.py build --model <project>/model
+python scripts/build_atlas_pdf.py --pdf set.pdf --model <project>/model --out "set - Plans Atlas.pdf"
+python scripts/atlas_live.py serve --project <project>        # live viewer with PDF export
+```
+
 ## Project Ignition — Jev platform (blueprint, magic, processing)
 
 When a bid is confirmed and the atlas has deployed, run **Project Ignition**

@@ -24,7 +24,7 @@ Paste the section **"GPT Instructions"** below into a Custom GPT's *Instructions
 field (it fits the 8,000-character limit) or into a ChatGPT Project's
 instructions. Build the Knowledge upload set with
 `python scripts/platform_pack.py pack --target chatgpt --out dist/chatgpt`. It
-produces 19 flat files, within the 20-file Knowledge limit, with every schema in
+produces 20 flat files, within the 20-file Knowledge limit, with every schema in
 one `schemas.bundle.json`. Upload all of them as **Knowledge**. Enable **Code
 Interpreter & Data Analysis**. Leave **Web Search** off for project work, so
 project facts can never be filled in from the web.

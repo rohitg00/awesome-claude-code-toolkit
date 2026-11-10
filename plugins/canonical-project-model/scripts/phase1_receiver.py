@@ -327,12 +327,28 @@ def receive(request_path, force=False, chain=True):
                                         ignition_dir=(model_dir / "ignition") if (model_dir / "ignition").exists() else None)
     review += il_review + [str(x) for x in (atlas.get("needs_review") or [])][:20]
     shutil.copy2(section, out_dir / "plans_atlas.json")
+    # Index Legend and scope index: a copy in the knowledge base, so every later step (and the Drive export) has them.
+    legend = {}
+    viewer_dir = Path(viewer).parent if viewer else None
+    for key, src, name in (("scope_index", model_dir / "sections" / "scope_index.json", "scope_index.json"),
+                           ("index_legend_pdf", viewer_dir / "Index Legend.pdf" if viewer_dir else None, "Index Legend.pdf"),
+                           ("index_legend_md", viewer_dir / "INDEX-LEGEND.md" if viewer_dir else None, "INDEX-LEGEND.md")):
+        if src and Path(src).is_file():
+            shutil.copy2(src, out_dir / name)
+            legend[key] = name
+    crops = model_dir / "atlas" / "crops"
+    if crops.is_dir():
+        shutil.copytree(crops, out_dir / "crops", dirs_exist_ok=True)
+        legend["crops"] = "crops/"
+    if not legend.get("index_legend_pdf"):
+        review.append("the Index Legend was not built for this set (needs PyMuPDF); the knowledge base has no legend copy")
     ign = deploy.get("ignition") or {}
     resp = {**base, "status": "ok", "deploy_status": deploy.get("status"),
             "atlas": {"sheets": len(atlas.get("sheets") or []), "links": len(atlas.get("links") or []),
                       "atlas_version": deploy.get("atlas_version"), "viewer_path": viewer, "viewer_rel": viewer_rel},
             "outputs": {"plans_atlas": "plans_atlas.json", "interlinks": "interlinks.json",
-                        "chunks": "atlas-chunks.json", "viewer": viewer,
+                        "chunks": "atlas-chunks.json", "viewer": viewer, **legend,
+                        "linked_sets": deploy.get("linked_sets") or [],
                         "blueprint": str(model_dir / "ignition" / "blueprint.json") if ign else None,
                         "work_orders": str(model_dir / "ignition" / "work-orders") if ign else None},
             "interlink": {"stats": stats}, "ignition": {k: ign.get(k) for k in ("status", "divisions", "tasks", "price_lines", "gaps")} if ign else None,
@@ -423,8 +439,10 @@ def selftest():
     resp = receive(req_path, chain=False)
     assert resp["status"] == "ok" and resp["atlas"]["sheets"] == 2, resp
     kb = Path(fx["kb"])
-    for f in ("plans_atlas.json", "interlinks.json", "atlas-chunks.json", "atlas-response.json"):
+    for f in ("plans_atlas.json", "interlinks.json", "atlas-chunks.json", "atlas-response.json",
+              "scope_index.json", "Index Legend.pdf", "INDEX-LEGEND.md"):
         assert (kb / "atlas" / f).is_file(), f
+    assert resp["outputs"]["index_legend_pdf"] == "Index Legend.pdf" and resp["outputs"]["linked_sets"], resp["outputs"]
     il = load_json(kb / "atlas" / "interlinks.json")
     s = il["sheets"]["A-101"]
     assert s["kb_sheet"]["chunk"] is not None or il["stats"]["kb_index_missing"], il["stats"]

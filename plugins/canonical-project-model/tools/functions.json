@@ -208,6 +208,102 @@
           ]
         }
       }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "build_scope_index",
+        "description": "Build the Plans Atlas scope index from the drawing set: project index (title, address, owner, architect, engineers, page index with detail labels, notes per page, rooms, millwork elevations, trades), clarifications and exclusions (scheduling, exclusions, owner-required vendors, owner allowances, pricing and alternates, phasing), every schedule as a cropped image plus a recreated table, and a scope index per CSI division. Deterministic; never invents: values not printed on the sheets are null, and size tags are counted, not measured. Writes sections/scope_index.json and atlas/crops/. Runs automatically inside deploy_plans_atlas. Returns JSON: status, stats, needs_review.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string",
+              "description": "Project model/ directory."
+            },
+            "pdf_dir": {
+              "type": "string",
+              "description": "Folder holding the drawing PDFs (default: searched under the project)."
+            }
+          },
+          "required": [
+            "model"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "build_linked_drawing_set",
+        "description": "Write the drawing set with the Index Legend in front of the first sheet and live links throughout. Every link targets a named destination (sheet:A-101, schedule:<id>, index:<section>), the outline lists the legend sections and every sheet, and page labels show sheet numbers. Drawing pages are untouched. Optionally also saves the legend alone as PDF and Markdown for the knowledge base. Runs automatically inside deploy_plans_atlas. Returns JSON: status, pages, links, named_destinations.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "pdf": {
+              "type": "string",
+              "description": "Source drawing-set PDF."
+            },
+            "model": {
+              "type": "string",
+              "description": "Project model/ directory."
+            },
+            "out": {
+              "type": "string",
+              "description": "Output PDF path."
+            },
+            "project": {
+              "type": "string",
+              "description": "Project name for the legend header."
+            },
+            "legend_out": {
+              "type": "string",
+              "description": "Also save the Index Legend alone as a PDF."
+            },
+            "legend_md": {
+              "type": "string",
+              "description": "Also save the Index Legend as Markdown."
+            }
+          },
+          "required": [
+            "pdf",
+            "model",
+            "out"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "export_sheet_with_markups",
+        "description": "Export one sheet as a PDF with its overlays drawn on top in the NTXP markup colours (trade hue; demolition dotted with 25% fill, new work solid with 40% fill; measurements red), a legend and the red version footer. Layers: markup (manifests in model/atlas/markups, schema 3.0), schedules, notes, rooms, doors. A working export; published markups still go through ntxp-pdf-markups-and-redlines. Returns JSON: status, out, overlays.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "sheet": {
+              "type": "string",
+              "description": "Sheet id or sheet number."
+            },
+            "layers": {
+              "type": "string",
+              "description": "Comma list of layers (default markup)."
+            },
+            "out": {
+              "type": "string",
+              "description": "Output PDF path."
+            }
+          },
+          "required": [
+            "project",
+            "sheet"
+          ]
+        }
+      }
     }
   ]
 }
