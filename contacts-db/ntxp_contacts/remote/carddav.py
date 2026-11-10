@@ -13,8 +13,10 @@ from __future__ import annotations
 
 import xml.sax.saxutils as sx
 
+import hashlib
+
 from .auth import verify_token
-from .vcard import exposed_contact_ids, render_one, uid
+from .vcard import exposed_rows, is_exposed, render_one, uid
 
 BASE = "/carddav"
 PRINCIPAL = f"{BASE}/principal/"
@@ -34,18 +36,24 @@ def _ok(href: str, prop: str) -> str:
             f"</d:propstat></d:response>")
 
 
-def _ctag(conn) -> str:
-    r = conn.execute("SELECT COUNT(*) n, COALESCE(MAX(contact_id),0) m "
-                     "FROM contacts WHERE is_deleted=0").fetchone()
-    return f"{r['n']}-{r['m']}"
+def _exposed_map(conn) -> dict[int, str]:
+    """{contact_id: revision} for exposed contacts (the only ones served)."""
+    return dict(exposed_rows(conn))
+
+
+def _ctag_from(emap: dict[int, str]) -> str:
+    """Collection tag that advances on any add/remove/edit/exposure change —
+    derived from the exposed set's size and newest revision, not just max id."""
+    newest = max(emap.values(), default="0")
+    return hashlib.md5(f"{len(emap)}:{newest}".encode()).hexdigest()[:16]
 
 
 def _item_href(cid: int) -> str:
     return f"{COLLECTION}{uid(cid)}.vcf"
 
 
-def _etag(cid: int, ctag: str) -> str:
-    return f'"{cid}-{ctag}"'
+def _etag(cid: int, rev: str) -> str:
+    return '"' + hashlib.md5(f"{cid}:{rev}".encode()).hexdigest()[:16] + '"'
 
 
 def handle(conn, method: str, path: str, body: str, depth: str) -> tuple[int, list, bytes]:
@@ -57,7 +65,10 @@ def handle(conn, method: str, path: str, body: str, depth: str) -> tuple[int, li
 
     if method == "GET":
         cid = _cid_from_path(path)
-        if cid is not None:
+        # Gate direct item reads on the exposure/tombstone state, not just the
+        # collection listing — a guessed ntxp-<id>.vcf must not leak a held-back
+        # or deleted contact.
+        if cid is not None and is_exposed(conn, cid):
             vc = render_one(conn, cid)
             if vc:
                 return 200, [(b"content-type", b"text/vcard; charset=utf-8")], vc.encode()
@@ -73,35 +84,41 @@ def handle(conn, method: str, path: str, body: str, depth: str) -> tuple[int, li
                 f"<card:addressbook-home-set><d:href>{HOME}</d:href></card:addressbook-home-set>"
                 f"<d:current-user-principal><d:href>{PRINCIPAL}</d:href></d:current-user-principal>"))
         if p in (HOME, COLLECTION):
-            ctag = _ctag(conn)
+            emap = _exposed_map(conn)
+            ctag = _ctag_from(emap)
             coll_prop = ("<d:resourcetype><d:collection/><card:addressbook/></d:resourcetype>"
                          "<d:displayname>NTXP Contacts</d:displayname>"
                          f"<cs:getctag xmlns:cs=\"http://calendarserver.org/ns/\">{ctag}</cs:getctag>")
             responses = _ok(COLLECTION, coll_prop)
             if depth and depth != "0":
-                for cid in exposed_contact_ids(conn):
+                for cid, rev in emap.items():
                     responses += _ok(_item_href(cid),
-                                     f"<d:getetag>{_etag(cid, ctag)}</d:getetag>"
+                                     f"<d:getetag>{_etag(cid, rev)}</d:getetag>"
                                      "<d:getcontenttype>text/vcard</d:getcontenttype>")
             return 207, [], _ms(responses)
         cid = _cid_from_path(path)
         if cid is not None:
+            emap = _exposed_map(conn)
+            if cid not in emap:
+                return 404, [], b"not found"
             return 207, [], _ms(_ok(_item_href(cid),
-                f"<d:getetag>{_etag(cid, _ctag(conn))}</d:getetag>"))
+                f"<d:getetag>{_etag(cid, emap[cid])}</d:getetag>"))
         return 404, [], b"not found"
 
     if method == "REPORT":
-        ctag = _ctag(conn)
+        emap = _exposed_map(conn)
         want = _hrefs_in(body)
-        cids = [c for c in (_cid_from_path(h) for h in want) if c is not None] \
-            if want else exposed_contact_ids(conn)
+        # Multiget hrefs are client-supplied — intersect with the exposed set so
+        # an explicit href cannot pull a held-back/deleted contact.
+        cids = [c for c in (_cid_from_path(h) for h in want) if c in emap] \
+            if want else list(emap)
         responses = ""
         for cid in cids:
             vc = render_one(conn, cid)
             if not vc:
                 continue
             responses += _ok(_item_href(cid),
-                             f"<d:getetag>{_etag(cid, ctag)}</d:getetag>"
+                             f"<d:getetag>{_etag(cid, emap[cid])}</d:getetag>"
                              f"<card:address-data>{sx.escape(vc)}</card:address-data>")
         return 207, [], _ms(responses)
 

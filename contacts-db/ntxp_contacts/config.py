@@ -25,8 +25,12 @@ def db_url(override: str | os.PathLike | None = None) -> str | None:
     A non-URL override (a path) means "use SQLite" and returns None so the
     caller falls through to :func:`db_path`.
     """
-    if override and isinstance(override, str) and _looks_like_url(override):
-        return override
+    if override:
+        # An explicit override wins outright: a postgres:// URL selects Postgres;
+        # any other explicit value is a filesystem path and forces SQLite (return
+        # None) — it must never fall through to NTXP_DB_URL, or `ntxp --db
+        # /tmp/x.db` could mutate the cloud database.
+        return override if (isinstance(override, str) and _looks_like_url(override)) else None
     env = os.environ.get("NTXP_DB_URL")
     if env and _looks_like_url(env):
         return env

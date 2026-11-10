@@ -62,14 +62,36 @@ def contact_vcard(rec: dict, photo_url: str | None = None,
     return "\r\n".join(lines)
 
 
-def exposed_contact_ids(conn, exposed_only: bool = True) -> list[int]:
-    sql = ("SELECT c.contact_id FROM contacts c "
-           "LEFT JOIN contact_grade g ON g.contact_id=c.contact_id "
+def _exposed_sql(exposed_only: bool) -> str:
+    sql = ("FROM contacts c LEFT JOIN contact_grade g ON g.contact_id=c.contact_id "
            "WHERE c.is_deleted=0")
     if exposed_only:
         sql += " AND (g.is_exposed IS NULL OR g.is_exposed=1)"
-    sql += " ORDER BY c.contact_id"
-    return [r["contact_id"] for r in conn.execute(sql).fetchall()]
+    return sql
+
+
+def exposed_contact_ids(conn, exposed_only: bool = True) -> list[int]:
+    rows = conn.execute("SELECT c.contact_id " + _exposed_sql(exposed_only)
+                        + " ORDER BY c.contact_id").fetchall()
+    return [r["contact_id"] for r in rows]
+
+
+def is_exposed(conn, contact_id: int, exposed_only: bool = True) -> bool:
+    """Whether a single contact may be served (live + exposed) — gates direct
+    CardDAV item GETs and multiget, not just the collection listing."""
+    row = conn.execute(
+        "SELECT c.contact_id " + _exposed_sql(exposed_only) + " AND c.contact_id=?",
+        (contact_id,)).fetchone()
+    return row is not None
+
+
+def exposed_rows(conn, exposed_only: bool = True) -> list[tuple[int, str]]:
+    """(contact_id, revision) for exposed contacts; revision = updated_at, which
+    advances on any representation or exposure change — drives CardDAV validators."""
+    rows = conn.execute(
+        "SELECT c.contact_id AS cid, c.updated_at AS rev, g.computed_at AS grev "
+        + _exposed_sql(exposed_only) + " ORDER BY c.contact_id").fetchall()
+    return [(r["cid"], f"{r['rev']}|{r['grev'] or ''}") for r in rows]
 
 
 def render_one(conn, contact_id: int) -> str | None:

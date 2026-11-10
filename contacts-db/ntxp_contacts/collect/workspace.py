@@ -241,7 +241,9 @@ def ingest(conn, records: list[CanonicalRecord], origin: str | None = None) -> d
         rhash = _row_hash(rec)
         existing = repo.find_source_record(rec.source, rec.source_pk, rhash)
         if existing is not None:
-            repo.touch_source_record(existing["source_record_id"])
+            # Preserve the data point's own date; don't re-freshen to now.
+            repo.touch_source_record(existing["source_record_id"],
+                                     observed_at=rec.contact_attrs.get("_observed_at"))
             counts["skipped"] += 1
             continue
         prior = repo.find_source_by_pk(rec.source, rec.source_pk)

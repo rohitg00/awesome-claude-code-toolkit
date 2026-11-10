@@ -159,28 +159,37 @@ class Repository:
         self._reindex_contact(contact_id)
 
     # -- comms / tags -------------------------------------------------------
+    def _bump_contact(self, cur, contact_id: int | None) -> None:
+        """Advance a contact's updated_at only when a row was actually inserted,
+        so CardDAV validators change on real edits but not on no-op re-imports."""
+        if contact_id and getattr(cur, "rowcount", 0):
+            self._now_touch("contacts", "contact_id", contact_id)
+
     def add_email(self, e: Email, contact_id: int | None, org_id: int | None) -> None:
-        self.conn.execute(
+        cur = self.conn.execute(
             "INSERT INTO emails(contact_id, org_id, email, email_norm, is_invalid, is_primary) "
             "VALUES (?,?,?,?,?,?) ON CONFLICT DO NOTHING",
             (contact_id, org_id, e.email, e.email_norm, int(e.is_invalid), int(e.is_primary)),
         )
+        self._bump_contact(cur, contact_id)
 
     def add_phone(self, p: Phone, contact_id: int | None, org_id: int | None) -> None:
-        self.conn.execute(
+        cur = self.conn.execute(
             "INSERT INTO phones(contact_id, org_id, phone_raw, phone_e164, kind) "
             "VALUES (?,?,?,?,?) ON CONFLICT DO NOTHING",
             (contact_id, org_id, p.phone_raw, p.phone_e164, p.kind),
         )
+        self._bump_contact(cur, contact_id)
 
     def add_address(self, a: Address, contact_id: int | None, org_id: int | None) -> None:
         if not a.addr_norm:
             return
-        self.conn.execute(
+        cur = self.conn.execute(
             "INSERT INTO addresses(contact_id, org_id, line1, city, state, zip, addr_norm, kind) "
             "VALUES (?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING",
             (contact_id, org_id, a.line1, a.city, a.state, a.zip, a.addr_norm, a.kind),
         )
+        self._bump_contact(cur, contact_id)
 
     def add_tag(self, t: Tag, entity_type: str, entity_id: int) -> None:
         cur = self.conn.execute(
@@ -213,11 +222,15 @@ class Repository:
             (source, source_pk),
         ).fetchone()
 
-    def touch_source_record(self, source_record_id: int) -> None:
+    def touch_source_record(self, source_record_id: int,
+                            observed_at: str | None = None) -> None:
+        """Mark a source record seen again. `observed_at` (the data point's own
+        date) is preserved when given, so re-seeing an old sweep record does not
+        bump its recency to now; ordinary imports pass nothing and use now."""
         self.conn.execute(
-            "UPDATE source_records SET last_seen_at = datetime('now') "
+            "UPDATE source_records SET last_seen_at = COALESCE(?, datetime('now')) "
             "WHERE source_record_id = ?",
-            (source_record_id,),
+            (observed_at, source_record_id),
         )
 
     def record_source(self, source: str, source_pk: str | None, row_hash: str,

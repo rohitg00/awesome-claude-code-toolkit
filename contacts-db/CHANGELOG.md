@@ -4,6 +4,22 @@ All dates ISO. See `docs/BLUEPRINT.md` for the live status board and resume flag
 
 ## [Unreleased]
 
+### Fixed (post-merge, from Codex review of #59)
+- **Sweep recency**: re-seeing an old Gmail/Calendar/Drive record no longer bumps
+  `last_seen_at` to now (`touch_source_record` preserves the data point's own
+  date), so an old event stays correctly aged-out.
+- **CardDAV exposure gate**: direct item `GET` and multiget `REPORT` now enforce
+  `is_exposed`/`is_deleted`, not just the collection listing — a guessed/explicit
+  `.vcf` can't leak a held-back or tombstoned contact.
+- **CardDAV validators**: ctag/etag derive from the exposed set's size + newest
+  revision (contact `updated_at`, bumped on real comms/field edits), so clients
+  refetch after edits and visibility changes instead of caching stale vCards.
+- **Reconcile churn**: `apply()` now skips an already-linked record whose
+  `remote_hash` is unchanged — no redundant `change_log` write or fan-out.
+- **DB override safety**: an explicit filesystem path to `--db`/the API forces
+  SQLite and never falls through to `NTXP_DB_URL`, so a local command can't
+  mutate the cloud database.
+
 ### Added
 - **F2c — whitelisted connector middle-layer** (`connectors/*`, `docs/CONNECTORS.md`):
   service allowlist + alias mapper ingesting any connected account's contacts

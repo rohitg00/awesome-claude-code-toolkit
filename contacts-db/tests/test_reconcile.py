@@ -92,6 +92,19 @@ def test_conflict_flagged(conn):
     assert "title" in plan["ops"][0]["conflicts"]
 
 
+def test_apply_unchanged_linked_record_is_skipped(conn):
+    rr = [_rr("JT1", firstName="Eric", lastName="Vaden",
+              company="Vaden Drywall", email="eric@vaden.com")]
+    jt = Reconciler(conn, "jobtread")
+    jt.apply(rr)
+    seq1 = conn.execute("SELECT COUNT(*) FROM change_log").fetchone()[0]
+    out = jt.apply(rr)   # identical payload, already linked
+    seq2 = conn.execute("SELECT COUNT(*) FROM change_log").fetchone()[0]
+    assert out["unchanged"] == 1
+    assert out["updated"] == 0
+    assert seq2 == seq1   # no redundant change_log / fan-out churn
+
+
 def test_no_echo_but_fans_out(conn):
     # Pull from JobTread and apply into canonical.
     jt = Reconciler(conn, "jobtread")

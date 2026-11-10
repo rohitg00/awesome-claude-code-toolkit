@@ -142,7 +142,11 @@ class Reconciler:
             rec = self.adapter.to_canonical(r)
             if not (rec.has_contact or rec.has_org):
                 continue
-            had_link = self._linked(r.external_id) is not None
+            link = self._linked(r.external_id)
+            if link is not None and link["remote_hash"] == payload_hash(r.payload):
+                st.unchanged += 1   # already current — don't re-resolve or re-log
+                continue
+            had_link = link is not None
             org_id = self.resolver.resolve_org(rec, origin)
             decision = self.resolver.resolve_contact(rec, org_id, origin)
             _attach_comms(self.repo, rec, decision.contact_id, org_id)
