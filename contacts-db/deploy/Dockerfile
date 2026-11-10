@@ -23,6 +23,9 @@ WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY ntxp_contacts ./ntxp_contacts
 COPY --from=web /src/ntxp_contacts/web/dist ./ntxp_contacts/web/dist
+# Playwright's bundled node needs libatomic before `playwright install --with-deps` can even run (python:slim lacks it).
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 RUN pip install ".[mcp,remote,postgres]" \
  && pip install playwright python-docx lxml pikepdf reportlab pypdfium2 Pillow \
  && playwright install --with-deps chromium && chmod -R a+rX /ms-playwright
