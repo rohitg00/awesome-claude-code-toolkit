@@ -20,7 +20,7 @@ jobs:
         with: { python-version: "3.12" }
       - uses: actions/setup-node@v4
         with: { node-version: "22", cache: npm, cache-dependency-path: contacts-db/web-app/package-lock.json }
-      - name: Front end (React + Tailwind): unit tests + build
+      - name: "Front end (React + Tailwind) - unit tests and build"
         run: cd web-app && npm ci && npm test && npm run build
       - name: Tests (SQLite)
         run: pip install -e ".[mcp,remote,postgres,dev]" && pytest -q
