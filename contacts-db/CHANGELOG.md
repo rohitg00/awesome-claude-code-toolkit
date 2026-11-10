@@ -4,6 +4,23 @@ All dates ISO. See `docs/BLUEPRINT.md` for the live status board and resume flag
 
 ## [Unreleased]
 
+### Added — interlinks + deploy retarget (branch `claude/contacts-peers`)
+- **Interlinks** (`peers/*`, `docs/INTEGRATIONS.md`): NTXP Schedules, Master Contracts, Form Fill.
+  Signed (HMAC-SHA256, replay-windowed) **outbound webhooks** `contact.upserted|removed` from a durable leased outbox (retry/backoff/dead-letter),
+  exposure-gated and echo-guarded; **inbound hooks** (`assignment.*`, `people.seen`) applied once per event id; **`/api/v1`** (`people/resolve`,
+  `people/<id>` autofill bag, `context`) behind per-peer service tokens that work on `/api/v1` only; a **Master Contracts watcher** that polls its real
+  API, links owner entities to organizations, adds `Contract <no>` labels and injects contract facts (coef, fee, expiry, flags) into cards and the prompt hook.
+  `ntxp peers keygen|status|run|backfill|retry`; `peers_status` MCP tool; runs as a background thread in `serve-http` or via cron.
+- **Deploy retarget → `contacts.ntxpllc.cloud`**: image built by CI to GHCR (the Hostinger Docker Manager can't build), compose joins the VPS's existing proxy
+  (no second Caddy), proprietary NTXP engine/logo mounted not baked, `deploy/RUNBOOK.md` with the Hostinger tool calls and confirmation gates.
+- **Shared-Supabase safety**: `NTXP_PG_SCHEMA` + `deploy/supabase_setup.sql` (dedicated role/schema); `SET LOCAL search_path` per transaction (works behind the
+  transaction pooler); the RLS lockdown is now scoped to the app's own schema.
+
+### Fixed
+- **RLS lockdown could have altered other apps' tables** in a shared Supabase project (it iterated every table in `public`). Now scoped to `current_schema()`.
+- **Project filter only matched a contact's first project** — wrong once a person can be on several (Schedules). Filter and facets now match any project.
+- `handle_v1` returns errors as JSON like the rest of the API instead of raising.
+
 ### Added — live view (this branch)
 - **Live app** (`web/index.html`, served at `/`): real Google Workspace sign-in (token client, `hd=ntxpllc.com`), NTXP-DOC-STANDARD 2.1
   look (navy band 1.00in, red accent fade, warm two-tone rows, centred cells / left paragraph columns), VIEW 1/3/5, click-to-reveal

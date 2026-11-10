@@ -1,7 +1,7 @@
 /**
  * NTXP Contacts — live, READ-ONLY Google Sheet mirror.
  *
- * The hosted app (contacts.ntxpllc.com) is the product; this Sheet mirrors its data for
+ * The hosted app (contacts.ntxpllc.cloud) is the product; this Sheet mirrors its data for
  * people who want a spreadsheet. It pulls /api/contacts with the signed-in user's own
  * Google OAuth token. The server accepts only Google Workspace tokens whose hosted
  * domain is ntxpllc.com, and this script refuses to run for anyone else — so domain
@@ -12,7 +12,7 @@
  */
 var CFG = {
   DOMAIN: 'ntxpllc.com',
-  DEFAULT_API: 'https://contacts.ntxpllc.com',
+  DEFAULT_API: 'https://contacts.ntxpllc.cloud',
   PAGE: 1000,                 // rows per API call (server cap is 5000)
   SHEET: 'Contacts',
   TITLE_ROW: 1, META_ROW: 2, HEADER_ROW: 3,
@@ -150,7 +150,7 @@ function writeSheet_(rows, total, filters) {
   sh.setRowHeight(CFG.TITLE_ROW, 34);
   var fdesc = describeFilters_(filters);
   sh.getRange(CFG.META_ROW, 1, 1, ncol).merge()
-    .setValue(total + ' contacts' + (fdesc ? ' · filters: ' + fdesc : '') + ' · synced ' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'MMM d, yyyy h:mm a') + ' · edit in the app (contacts.ntxpllc.com)')
+    .setValue(total + ' contacts' + (fdesc ? ' · filters: ' + fdesc : '') + ' · synced ' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'MMM d, yyyy h:mm a') + ' · edit in the app (contacts.ntxpllc.cloud)')
     .setFontColor('#5A6880').setFontSize(9).setHorizontalAlignment('center');
   // Header row — navy-mid, bold, centred
   sh.getRange(CFG.HEADER_ROW, 1, 1, ncol).setValues([COLUMNS.map(function (c) { return c[0]; })])

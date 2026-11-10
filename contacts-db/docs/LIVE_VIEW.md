@@ -1,7 +1,7 @@
 # Live view — architecture
 
 ```
- Google Workspace users ──OAuth (hd=ntxpllc.com)──► contacts.ntxpllc.com  (the APP: single source of interaction)
+ Google Workspace users ──OAuth (hd=ntxpllc.com)──► contacts.ntxpllc.cloud  (the APP: single source of interaction)
                                                       │  /            live page, NTXP-DOC-STANDARD 2.1
                                                       │  /api/*       filters · proximity · inline edit · labels · reports · CSV
                                                       │  /mcp        stateless MCP        /carddav  one-way iOS

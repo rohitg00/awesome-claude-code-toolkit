@@ -464,6 +464,87 @@ def hotlink_cmd(ctx, textfile):
     click.echo(json.dumps(annotate(conn, Path(textfile).read_text()), indent=2, default=str))
 
 
+@main.group("peers")
+def peers_grp():
+    """Interlink with NTXP Schedules, Master Contracts and Form Fill."""
+
+
+@peers_grp.command("keygen")
+@click.argument("name")
+def peers_keygen(name):
+    """Print a new shared secret for peer NAME (it is NOT stored — put it in NTXP_PEERS and in the peer)."""
+    import secrets
+    sec = secrets.token_urlsafe(32)
+    click.echo(json.dumps({"peer": name, "secret": sec,
+                           "service_token": f"svc.{name}.{sec}",
+                           "note": "Add to NTXP_PEERS and give the same secret to the peer app. Shown once."}, indent=2))
+
+
+@peers_grp.command("status")
+@click.pass_context
+def peers_status_cmd(ctx):
+    """Peer config health, outbox counts and watch cursors (never prints secrets)."""
+    from .peers import load_peers
+    from .peers.events import outbox_stats
+    conn = _conn(ctx)
+    migrate(conn)
+    peers, errors = load_peers()
+    cursors = [dict(r) for r in conn.execute("SELECT peer, stream, cursor FROM peer_cursor").fetchall()]
+    dead = [dict(r) for r in conn.execute(
+        "SELECT outbox_id, peer, event_type, attempts, last_error FROM peer_outbox WHERE status='dead' "
+        "ORDER BY outbox_id DESC LIMIT 10").fetchall()]
+    click.echo(json.dumps({
+        "peers": {n: {"url": p.url, "hook": p.hook_url, "events": list(p.events),
+                      "receives_events": p.receives_events, "pulls": p.pulls} for n, p in peers.items()},
+        "config_errors": errors, "outbox": outbox_stats(conn), "cursors": cursors, "dead_letters": dead}, indent=2, default=str))
+
+
+@peers_grp.command("run")
+@click.option("--watch", is_flag=True, help="Loop forever (use when NTXP_PEERS_AUTORUN=0).")
+@click.option("--interval", type=float, default=30.0)
+@click.pass_context
+def peers_run_cmd(ctx, watch, interval):
+    """One watch cycle: pull Master Contracts, queue contact events, deliver webhooks."""
+    import time
+    from .peers.runner import run_cycle
+    while True:
+        conn = _conn(ctx)
+        migrate(conn)
+        click.echo(json.dumps(run_cycle(conn), default=str))
+        conn.close()
+        if not watch:
+            return
+        time.sleep(interval)
+
+
+@peers_grp.command("backfill")
+@click.argument("name")
+@click.pass_context
+def peers_backfill_cmd(ctx, name):
+    """Queue every exposed contact once for peer NAME (do this when first connecting it)."""
+    from .peers import load_peers
+    from .peers.events import backfill
+    peers, _ = load_peers()
+    if name not in peers:
+        raise click.ClickException(f"peer '{name}' is not configured")
+    conn = _conn(ctx)
+    migrate(conn)
+    click.echo(json.dumps({"queued": backfill(conn, peers[name])}))
+
+
+@peers_grp.command("retry")
+@click.argument("outbox_id", type=int)
+@click.pass_context
+def peers_retry_cmd(ctx, outbox_id):
+    """Re-queue a dead-lettered event."""
+    from .peers.context import now_ts
+    conn = _conn(ctx)
+    n = conn.execute("UPDATE peer_outbox SET status='pending', attempts=0, next_attempt_at=? "
+                     "WHERE outbox_id=? AND status='dead'", (now_ts(conn), outbox_id)).rowcount
+    conn.commit()
+    click.echo(json.dumps({"requeued": n}))
+
+
 @main.group("enrich")
 def enrich_grp():
     """Backfill missing fields, photos, and LinkedIn via graded candidates."""

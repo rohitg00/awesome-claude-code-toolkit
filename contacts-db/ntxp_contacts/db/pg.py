@@ -20,6 +20,7 @@ needs no row-access changes.
 """
 from __future__ import annotations
 
+import os
 import re
 from collections.abc import Mapping
 from typing import Any, Iterable, Sequence
@@ -84,35 +85,67 @@ def _row_factory(cursor):
     return make
 
 
+_SCHEMA_RE = re.compile(r"^[a-z_][a-z0-9_]{0,40}$")
+
+
+def pg_schema() -> str | None:
+    """Dedicated schema for this app (NTXP_PG_SCHEMA), validated. None = the
+    server/role default (public). Use a dedicated schema whenever the Supabase
+    project is shared with other apps, so nothing here can touch their tables."""
+    s = os.environ.get("NTXP_PG_SCHEMA", "").strip().lower()
+    if not s:
+        return None
+    if not _SCHEMA_RE.match(s):
+        raise ValueError("NTXP_PG_SCHEMA must match [a-z_][a-z0-9_]{0,40}")
+    return s
+
+
 class PgConnection:
-    """A minimal sqlite3.Connection-compatible facade over psycopg."""
+    """A minimal sqlite3.Connection-compatible facade over psycopg.
+
+    With a dedicated schema configured, every transaction is primed with
+    ``SET LOCAL search_path`` so it also works behind a transaction-mode pooler
+    (Supavisor port 6543 / PgBouncer), where session-level SET does not survive
+    between transactions."""
 
     backend = "postgres"
 
-    def __init__(self, raw: "psycopg.Connection"):
+    def __init__(self, raw: "psycopg.Connection", schema: str | None = None):
         self._raw = raw
+        self.schema = schema
+        self._fresh = True          # next statement starts a new transaction
+
+    def _prime(self) -> None:
+        if self.schema and self._fresh:
+            self._raw.execute(f'SET LOCAL search_path TO "{self.schema}", pg_catalog')
+        self._fresh = False
 
     # Mirrors sqlite3.Connection.execute: runs SQL, returns a cursor that is
     # iterable and exposes fetchone()/fetchall().
     def execute(self, sql: str, params: Sequence[Any] | None = None):
+        self._prime()
         cur = self._raw.cursor(row_factory=_row_factory)
         cur.execute(translate(sql), tuple(params) if params else None)
         return cur
 
     def executemany(self, sql: str, seq: Iterable[Sequence[Any]]):
+        self._prime()
         cur = self._raw.cursor(row_factory=_row_factory)
         cur.executemany(translate(sql), [tuple(p) for p in seq])
         return cur
 
     def executescript(self, sql: str) -> None:
         # psycopg runs a multi-statement, parameter-free string in one call.
+        self._prime()
         self._raw.execute(sql)
 
     def commit(self) -> None:
         self._raw.commit()
+        self._fresh = True
 
     def rollback(self) -> None:
         self._raw.rollback()
+        self._fresh = True
 
     def close(self) -> None:
         self._raw.close()
@@ -122,9 +155,9 @@ class PgConnection:
 
     def __exit__(self, exc_type, exc, tb):
         if exc_type:
-            self._raw.rollback()
+            self.rollback()
         else:
-            self._raw.commit()
+            self.commit()
         return False
 
 
@@ -141,7 +174,14 @@ def connect_pg(dsn: str) -> PgConnection:
         # server-side prepared statements ("prepared statement ... does not exist").
         kwargs["prepare_threshold"] = None
     raw = psycopg.connect(dsn, **kwargs)
-    return PgConnection(raw)
+    schema = pg_schema()
+    if schema:
+        # Create the schema only if missing (an existing one needs no privilege).
+        exists = raw.execute("SELECT 1 FROM pg_namespace WHERE nspname = %s", (schema,)).fetchone()
+        if not exists:
+            raw.execute(f'CREATE SCHEMA "{schema}"')
+        raw.commit()
+    return PgConnection(raw, schema)
 
 
 def _needs_no_prepare(dsn: str) -> bool:

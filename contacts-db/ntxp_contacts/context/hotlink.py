@@ -95,7 +95,14 @@ class HotlinkIndex:
                                    "source": r["source"], "grade": r["grade"]})
         except Exception:
             pass
+        peer_facts = {"contracts": [], "assignments": []}
+        try:     # peers' facts (Master Contracts / Schedules); absent on a DB without migration 0005
+            from ..peers.context import for_contact
+            peer_facts = for_contact(self.conn, contact_id, c.get("org_id"))
+        except Exception:
+            pass
         return {
+            "contracts": peer_facts["contracts"], "assignments": peer_facts["assignments"],
             "contact_id": contact_id,
             "name": c.get("full_name"),
             "title": c.get("title"),

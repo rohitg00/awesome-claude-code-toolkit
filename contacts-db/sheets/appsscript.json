@@ -11,5 +11,5 @@
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile"
   ],
-  "urlFetchWhitelist": ["https://contacts.ntxpllc.com/"]
+  "urlFetchWhitelist": ["https://contacts.ntxpllc.cloud/"]
 }

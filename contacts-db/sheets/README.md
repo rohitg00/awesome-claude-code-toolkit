@@ -1,7 +1,7 @@
 # NTXP Contacts — Google Sheet live mirror
 
 A **read-only**, auto-refreshing Sheet mirror of the canonical contacts. The hosted app
-(`https://contacts.ntxpllc.com`) is the product — the Sheet is for people who want a spreadsheet.
+(`https://contacts.ntxpllc.cloud`) is the product — the Sheet is for people who want a spreadsheet.
 
 ## What you get
 - **Live data**: pulls `/api/contacts` (exposed contacts only) every 5 min (opt-in trigger) or on demand.
@@ -23,7 +23,7 @@ A **read-only**, auto-refreshing Sheet mirror of the canonical contacts. The hos
 2. **Extensions › Apps Script**; show `appsscript.json` (Project Settings › *Show manifest file*).
 3. Paste `Code.gs`, `Sidebar.html` (File › + › HTML, name it `Sidebar`) and `appsscript.json`.
    *(Or with `clasp`: `clasp create --type sheets --parentId <sheetId> && clasp push` from this folder.)*
-4. Optional: Project Settings › Script properties › `NTXP_API` = your server URL (default `https://contacts.ntxpllc.com`;
+4. Optional: Project Settings › Script properties › `NTXP_API` = your server URL (default `https://contacts.ntxpllc.cloud`;
    also update `urlFetchWhitelist` in the manifest if you change it).
 5. Reload the Sheet → **NTXP Contacts › Refresh now** → authorize once → **Turn on live auto-refresh**.
 

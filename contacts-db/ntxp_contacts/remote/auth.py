@@ -20,8 +20,17 @@ ALLOWED_DOMAIN = os.environ.get("NTXP_MCP_ALLOWED_DOMAIN", "ntxpllc.com")
 USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 
 
-def verify_token(token: str | None) -> dict | None:
-    """Return {'email','domain'} for a valid token, else None."""
+def verify_token(token: str | None, allow_service: bool = False) -> dict | None:
+    """Return {'email','domain'} for a valid token, else None.
+
+    Peer service tokens (``svc.<peer>.<secret>``) are accepted only when the caller opts in
+    (``allow_service=True``, used for /api/v1 alone): a peer key must never open /mcp,
+    /carddav or the human /api surface."""
+    if token and token.startswith("svc."):
+        if not allow_service:
+            return None
+        from ..peers import load_peers, verify_service_token
+        return verify_service_token(token, load_peers()[0])
     mode = os.environ.get("NTXP_MCP_AUTH", "google").lower()
     if mode == "none":
         return {"email": "anonymous@" + ALLOWED_DOMAIN, "domain": ALLOWED_DOMAIN}

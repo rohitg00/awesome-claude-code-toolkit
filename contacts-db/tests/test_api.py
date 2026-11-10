@@ -211,3 +211,16 @@ def test_asgi_auth_and_static(tmp_path, monkeypatch):
     assert s == 200 and b"abc.apps.googleusercontent.com" in b
     s, h, b = _asgi(app, "GET", "/")
     assert s == 200 and b"content-security-policy" in h and b"NTXP" in b
+
+
+def test_project_filter_matches_any_of_a_contacts_projects(conn):
+    from ntxp_contacts.db.repository import Repository
+    from ntxp_contacts.model import Tag
+    cid = call(conn, "GET", "/api/contacts", {"q": "vaden"})[1]["rows"][0]["id"]   # already on "Spruce HS"
+    Repository(conn).add_tag(Tag("project", "Natatorium"), "contact", cid)
+    conn.commit()
+    for proj in ("Spruce HS", "Natatorium"):                                        # both work, not just the first
+        assert [r["id"] for r in call(conn, "GET", "/api/contacts", {"project": proj})[1]["rows"] if r["id"] == cid] == [cid]
+    vals = [v["value"] for v in call(conn, "GET", "/api/facets", {"field": "project"})[1]["values"]]
+    assert "Natatorium" in vals and "Spruce HS" in vals
+    assert "Natatorium" in call(conn, "GET", "/api/facets")[1]["project"]

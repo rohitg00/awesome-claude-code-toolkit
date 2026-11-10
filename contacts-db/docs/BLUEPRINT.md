@@ -33,11 +33,14 @@ JEV grades, enrichment backfills, and a user-facing page + MCP + hooks expose it
 | **F2b** | **Mini model council (JEV + cheap LLMs)** | DONE | `council/*`, `docs/COUNCIL.md` |
 | **F2c** | **Whitelisted connector middle-layer (Zapier-style)** | DONE | `connectors/*`, `docs/CONNECTORS.md` |
 | M | Mirror to NTXP Forge repo `ntxp-contacts` | BLOCKED(repo access) | scratchpad bundle ready |
-| **L1** | **Live app at contacts.ntxpllc.com** (real Google OAuth, NTXP-DOC-STANDARD 2.1 tokens, full UI spec, live `/api`) | DONE (code) · BLOCKED(deploy) | `web/index.html`, `remote/api.py`, `remote/http_server.py` |
+| **L1** | **Live app at contacts.ntxpllc.cloud** (real Google OAuth, NTXP-DOC-STANDARD 2.1 tokens, full UI spec, live `/api`) | DONE (code) · BLOCKED(deploy) | `web/index.html`, `remote/api.py`, `remote/http_server.py` |
 | **L2** | **Supabase as canonical DB + persisted council answers** (pooler-safe, RLS deny-all) | DONE (code) · BLOCKED(Supabase project) | `db/pg.py`, `db/migrations/runner.py`, `0004_council*.sql`, `council/router.py` |
 | **L3** | **Google Sheet live mirror** (Apps Script, domain-OAuth ×2, menu/sidebar/reports) | DONE (logic tested) · UNVERIFIED in Google runtime | `sheets/*` |
 | **L4** | **Hostinger deploy kit** (Docker + Caddy + deploy.sh) | WRITTEN · image NOT built (no Docker daemon here) | `deploy/*` |
 | **L5** | **Front-end design audit** (standard + WCAG + axe, 52 checks) | DONE — 52/52 | `tools/ui_audit.py` |
+| **P1** | **Interlinks: NTXP Schedules / Master Contracts / Form Fill** (signed outbound webhooks, inbound hooks, `/api/v1` autofill + context, Master Contracts watcher) | DONE (code) · Master Contracts integration tested against its REAL server · Schedules/Form Fill UNVERIFIED against the real apps | `peers/*`, `remote/peer_api.py`, `docs/INTEGRATIONS.md` |
+| **P2** | **Shared-Supabase safety** (dedicated role+schema, scoped RLS lockdown, `SET LOCAL search_path` per txn) | DONE — verified on real PG incl. a neighbour-app canary | `db/pg.py`, `deploy/supabase_setup.sql` |
+| **P3** | **Retarget to contacts.ntxpllc.cloud** (image from CI, existing proxy, mounted engine, runbook) | WRITTEN · NOT DEPLOYED (no Hostinger/Supabase/Docker access in session) | `deploy/*`, `.github/workflows/contacts-image.yml` |
 
 ---
 
@@ -216,3 +219,21 @@ above.
 **Design decisions worth knowing:** brand assets/engine are proprietary → served from `NTXP_ASSETS_DIR`/`NTXP_DOC_ENGINE`, never committed;
 reports default to portrait 8.5×11 (org rule) and drop the Title column there so emails never wrap (the engine audit fails otherwise);
 the 4 palettes are an owner-directed UI feature — only the default (`ntxp`) equals the standard exactly.
+
+
+## Interlinks + deploy retarget (P1–P3) — resume notes
+**State:** code complete; 154 Python tests (152 on SQLite + PostgreSQL 16 + real doc engine, 2 more in the mcp venv), 11 Node tests, 28 browser e2e, 52 UI-audit checks.
+**Not deployed.** The session had no Hostinger connector, Supabase project, Docker daemon or Google OAuth client. `contacts.ntxpllc.cloud` had no DNS record
+on 2026-10-30. Follow `deploy/RUNBOOK.md` (it names the exact Hostinger tool calls and the confirmation gates).
+
+**Facts that shaped the design (from the hostinger-ntxp-skill):** the VPS Docker Manager only *pulls* images (CI builds → GHCR); an existing proxy owns 80/443
+(so no second Caddy; compose joins its network — RUNBOOK step 1 must confirm Traefik vs other); the proprietary NTXP engine/logo can't be in a registry
+image (license) → bind-mounted from `/docker/ntxp-contacts/{engine,assets}`.
+
+**Open items / next model start here:**
+1. Real Schedules and Form Fill apps: implement the contract in `docs/INTEGRATIONS.md` (their code wasn't available) and run the first end-to-end test;
+   if their auth/shape differs, adapt `peers/inbound.py` / `peer_api.py` (each is small). Get their real hostnames for `NTXP_PEERS`.
+2. Master Contracts auth: we send `Bearer svc.contacts.<secret>`; its dev server has no auth — confirm what protects it on `.cloud` (`peers/contracts.py::_get`).
+3. First real deploy: Supabase (`deploy/supabase_setup.sql`), Google OAuth client (Internal), DNS A record, GHCR package public, engine copy (RUNBOOK §3).
+4. UI: contract/assignment facts surface via labels + cards; no dedicated panel in the page yet.
+5. Still unbuilt from before: JobTread job lookup for the Drive save; PDF/Word template upload.

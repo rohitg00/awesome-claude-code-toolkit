@@ -1,22 +1,37 @@
-# docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+# Standalone compose for the Hostinger Docker Manager (paste as `content` to VPS_createNewProjectV1).
+# It does NOT publish ports and does NOT run its own proxy: the VPS already has one holding 80/443
+# (the Hostinger MCP gateway container is "exposed, not published"), so this joins that proxy's network.
+#
+# The labels below are for Traefik (the Hostinger n8n template's proxy). RUNBOOK step 1 reads the
+# existing hostinger-mcp compose to confirm the proxy + network + cert resolver names before you deploy.
 services:
-  app:
-    build:
-      context: ..
-      dockerfile: deploy/Dockerfile
-      args: { WITH_ENGINE: "${WITH_ENGINE:-1}" }
+  contacts:
+    image: ghcr.io/ntxptrevor/ntxp-contacts:latest
     restart: unless-stopped
-    env_file: .env
     environment:
-      NTXP_MCP_AUTH: google                  # never "none" in production
-    expose: ["8080"]
-  caddy:                                     # automatic HTTPS for contacts.ntxpllc.com
-    image: caddy:2
-    restart: unless-stopped
-    ports: ["80:80", "443:443"]
+      NTXP_DB_URL: ${NTXP_DB_URL}
+      NTXP_PG_SCHEMA: ${NTXP_PG_SCHEMA:-ntxp_contacts}
+      NTXP_GOOGLE_CLIENT_ID: ${NTXP_GOOGLE_CLIENT_ID}
+      NTXP_MCP_AUTH: google                       # never "none" in production
+      NTXP_MCP_ALLOWED_DOMAIN: ntxpllc.com        # the Google Workspace sign-in domain (not the app host)
+      NTXP_CONTACTS_URL: https://contacts.ntxpllc.cloud
+      NTXP_PEERS: ${NTXP_PEERS:-}                 # Schedules / Master Contracts / Form Fill — see docs/INTEGRATIONS.md
+      NTXP_PEER_HOST_SUFFIX: .ntxpllc.cloud
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      XAI_API_KEY: ${XAI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-    depends_on: [app]
-volumes:
-  caddy_data:
+      - /docker/ntxp-contacts/engine:/engine:ro   # NTXP Branded Document engine (proprietary) — copied once, see RUNBOOK
+      - /docker/ntxp-contacts/assets:/assets:ro   # NTXP logo
+    networks: [proxy]
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.ntxp-contacts.rule=Host(`contacts.ntxpllc.cloud`)
+      - traefik.http.routers.ntxp-contacts.entrypoints=websecure
+      - traefik.http.routers.ntxp-contacts.tls.certresolver=${TRAEFIK_CERTRESOLVER:-mytlschallenge}
+      - traefik.http.services.ntxp-contacts.loadbalancer.server.port=8080
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-proxy}
+    external: true

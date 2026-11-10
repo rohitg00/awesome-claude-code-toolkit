@@ -45,7 +45,7 @@ def backend(override: str | os.PathLike | None = None) -> str:
 def contacts_url() -> str:
     """Base URL of the user-facing contacts page. Hotlinks point here with a
     focus/filter query so clicking a contact opens the page filtered to it."""
-    return os.environ.get("NTXP_CONTACTS_URL", "https://contacts.ntxpllc.com").rstrip("/")
+    return os.environ.get("NTXP_CONTACTS_URL", "https://contacts.ntxpllc.cloud").rstrip("/")
 
 
 def db_path(override: str | os.PathLike | None = None) -> Path:
@@ -107,6 +107,9 @@ SYSTEM_PRECEDENCE = {
     "gmail_to": 25,
     "calendar_attendee": 25,
     "drive_author": 22,
+    # people typed into a form by themselves / scheduling records
+    "connector:formfill": 35,
+    "connector:schedules": 30,
     # bundled spreadsheet/import sources rank below live CRMs
     "approved_subs": 30,
     "buildingconnectd": 28,

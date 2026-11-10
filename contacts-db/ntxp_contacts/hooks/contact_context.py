@@ -16,7 +16,10 @@ import json
 import sys
 
 
-def _card_line(idx, card: dict) -> str:
+def card_text(card: dict) -> str:
+    """One contact as injected context: identity, reach, location link, grade, alternates, plus
+    the contracts their organization holds with NTXP (Master Contracts) and any current
+    scheduled work (Schedules)."""
     bits = [f"**{card.get('name') or 'contact'}**"]
     meta = " · ".join(x for x in (card.get("title"), card.get("org")) if x)
     if meta:
@@ -36,7 +39,20 @@ def _card_line(idx, card: dict) -> str:
     if alts:
         line += "\n    ↳ possible: " + "; ".join(
             f"{a['field']}={a['value']} ({a['source']} {a['grade']})" for a in alts)
+    for c in (card.get("contracts") or [])[:3]:
+        flags = f" [{', '.join(c['flags'])}]" if c.get("flags") else ""
+        bits = [x for x in (c.get("number"), c.get("title")) if x]
+        extra = ", ".join(x for x in (f"coef {c['coefficient']}" if c.get("coefficient") else "",
+                                      f"fee {c['cooperative_fee']}" if c.get("cooperative_fee") else "",
+                                      f"expires {c['expires']}" if c.get("expires") else "") if x)
+        line += f"\n    📄 contract: {' — '.join(bits)}{(' (' + extra + ')') if extra else ''}{flags}"
+    for a in (card.get("assignments") or [])[:3]:
+        when = " → ".join(x for x in (a.get("start"), a.get("end")) if x)
+        line += f"\n    🗓 {a.get('status', 'scheduled')}: {a.get('project') or 'project'}" + (f" ({when})" if when else "")
     return line
+
+
+_card_line = lambda idx, card: card_text(card)   # noqa: E731  (kept for older callers)
 
 
 def main() -> int:

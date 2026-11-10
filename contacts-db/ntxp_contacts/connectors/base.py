@@ -23,6 +23,7 @@ _DEFAULT_ALLOW = {
     "apple", "icloud", "hubspot", "salesforce", "pipedrive", "mailchimp",
     "constant_contact", "quickbooks", "jobtread", "buildingconnected",
     "lightfield", "zapier", "linkedin", "slack", "zoho", "airtable", "notion",
+    "formfill", "schedules",
 }
 
 

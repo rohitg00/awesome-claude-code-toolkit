@@ -34,6 +34,7 @@ DISTANCE = {
     "gcontacts": 0, "gmail_signature": 0, "people_api": 1, "gmail_from": 1,
     "calendar_organizer": 1, "gmail_to": 2, "calendar_attendee": 2,
     "drive_author": 2,
+    "connector:formfill": 1, "connector:schedules": 1,
 }
 _DEFAULT_DISTANCE = 2
 

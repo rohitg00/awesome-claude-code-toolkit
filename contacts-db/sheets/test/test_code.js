@@ -78,7 +78,7 @@ t('refresh_ pages through the API with the user OAuth token and writes everythin
   assert.strictEqual(out.total, 2300); assert.strictEqual(out.written, 2300);
   assert.strictEqual(calls.fetch.length, 3);
   assert.deepStrictEqual(calls.fetch.map(c => +c.url.match(/offset=(\d+)/)[1]), [0, 1000, 2000]);
-  assert(calls.fetch.every(c => c.auth === 'Bearer TOKEN123' && c.url.startsWith('https://contacts.ntxpllc.com/api/contacts?') && c.url.includes('project=Spruce%20HS')));
+  assert(calls.fetch.every(c => c.auth === 'Bearer TOKEN123' && c.url.startsWith('https://contacts.ntxpllc.cloud/api/contacts?') && c.url.includes('project=Spruce%20HS')));
   assert.strictEqual(calls.written.reduce((a, v) => a + v.length, 0) >= 2300, true);
 });
 t('401/403 give a sign-in message; server errors surface', () => {

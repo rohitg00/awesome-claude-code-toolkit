@@ -129,8 +129,12 @@ class ApiApp:
         headers = {k.decode().lower(): v.decode() for k, v in scope.get("headers") or []}
         auth = headers.get("authorization", "")
         token = auth[7:].strip() if auth[:7].lower() == "bearer " else ""
-        user = verify_token(token)
-        if user is None:
+        path = scope["path"]
+        inbound = path.startswith("/api/v1/hooks/in/")          # peers authenticate by HMAC signature
+        is_v1 = path.startswith("/api/v1/")
+        # A peer service token is honoured on /api/v1 only; the human /api never accepts it.
+        user = None if inbound else verify_token(token, allow_service=is_v1)
+        if user is None and not inbound:
             return await _send_bytes(send, 401, "application/json",
                                      b'{"error":"unauthorized","detail":"Sign in with your ntxpllc.com Google account."}')
         body = b""
@@ -141,16 +145,39 @@ class ApiApp:
             more = msg.get("more_body", False)
             if len(body) > 1_000_000:
                 return await _send_bytes(send, 413, "application/json", b'{"error":"too large"}')
+        query = parse_query((scope.get("query_string") or b"").decode())
+
+        if inbound:
+            if scope["method"] != "POST":
+                return await _send_bytes(send, 405, "application/json", b'{"error":"POST only"}')
+
+            def run_in():
+                from ..peers import inbound as _in, load_peers
+                conn = self._conn()
+                try:
+                    st, obj = _in.handle(conn, load_peers()[0], path.rsplit("/", 1)[1], body, headers)
+                    return st, "application/json", json.dumps(obj).encode()
+                finally:
+                    conn.close()
+            status, ctype, data = await asyncio.to_thread(run_in)
+            return await _send_bytes(send, status, ctype, data)
+
         try:
             payload = json.loads(body) if body else {}
         except ValueError:
             return await _send_bytes(send, 400, "application/json", b'{"error":"bad json"}')
-        query = parse_query((scope.get("query_string") or b"").decode())
 
         def run():
             conn = self._conn()
             try:
-                return handle(conn, user["email"], scope["method"], scope["path"], query, payload)
+                if is_v1:
+                    from .api import ApiError, _json
+                    from .peer_api import handle_v1
+                    try:
+                        return handle_v1(conn, user, scope["method"], path, query)
+                    except ApiError as e:
+                        return _json(e.status, {"error": e.msg})
+                return handle(conn, user["email"], scope["method"], path, query, payload)
             finally:
                 conn.close()
 
@@ -171,6 +198,8 @@ def build_http_app(db_override=None):
     mcp_app = AuthMiddleware(build_server(db_override, stateless_http=True).streamable_http_app())
     carddav = CardDAVApp(db_override)
     api = ApiApp(db_override)
+    from ..peers.runner import start_background
+    start_background(db_override)      # contracts watch + outbound webhook delivery, when peers are configured
 
     async def dispatch(scope, receive, send):
         if scope.get("type") != "http":

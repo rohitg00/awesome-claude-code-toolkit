@@ -45,6 +45,10 @@ _TAGSUB = (
     "(SELECT t.value FROM entity_tags et JOIN tags t ON t.tag_id=et.tag_id "
     "WHERE t.kind='{kind}' AND ((et.entity_type='contact' AND et.entity_id=c.contact_id) "
     "OR (et.entity_type='org' AND et.entity_id=c.org_id)) ORDER BY t.tag_id LIMIT 1)")
+_MULTI = (
+    "(SELECT GROUP_CONCAT(t.value, '|') FROM entity_tags et JOIN tags t ON t.tag_id=et.tag_id "
+    "WHERE t.kind='{kind}' AND ((et.entity_type='contact' AND et.entity_id=c.contact_id) "
+    "OR (et.entity_type='org' AND et.entity_id=c.org_id)))")
 _LABELS = (
     "(SELECT GROUP_CONCAT(t.value, '|') FROM entity_tags et JOIN tags t ON t.tag_id=et.tag_id "
     "WHERE t.kind IN ({kinds}) AND ((et.entity_type='contact' AND et.entity_id=c.contact_id) "
@@ -70,6 +74,7 @@ BASE = (
     + _TAGSUB.format(kind="role") + " AS role, "
     + _TAGSUB.format(kind="trade") + " AS trade, "
     + _TAGSUB.format(kind="project") + " AS project, "
+    + _MULTI.format(kind="project") + " AS projects, "
     + _LABELS.format(kinds=",".join("'%s'" % k for k in TAG_LABEL_KINDS)) + " AS labels, "
     "g.grade AS grade, g.grade_band AS grade_band "
     "FROM contacts c LEFT JOIN organizations o ON o.org_id=c.org_id "
@@ -104,7 +109,12 @@ def _filters(query: dict):
     where, params = [], []
     for f in EXACT:
         vals = [v.lower() for v in _qall(query, f)]
-        if vals:
+        if not vals:
+            continue
+        if f == "project":     # a contact can be on several projects: match ANY of them
+            where.append("(" + " OR ".join("LOWER('|'||COALESCE(projects,'')||'|') LIKE ?" for _ in vals) + ")")
+            params += [f"%|{v}|%" for v in vals]
+        else:
             where.append(f"LOWER(COALESCE({f},'')) IN ({','.join('?' * len(vals))})")
             params += vals
     labels = [v.lower() for v in _qall(query, "label")]
@@ -196,6 +206,14 @@ def _facets(conn, query: dict) -> dict:
             raise ApiError(400, "unknown facet field")
         q = _q1(query, "q").lower()
         lim = min(int(_q1(query, "limit", "25") or 25), 200)
+        if field == "project":
+            seen: dict[str, int] = {}
+            for r in conn.execute(f"SELECT projects FROM ({BASE}) x WHERE projects IS NOT NULL").fetchall():
+                for v in set((r["projects"] or "").split("|")):
+                    if v and (not q or q in v.lower()):
+                        seen[v] = seen.get(v, 0) + 1
+            top = sorted(seen.items(), key=lambda kv: (-kv[1], kv[0]))[:lim]
+            return {"field": field, "values": [{"value": k, "count": n} for k, n in top]}
         sql = (f"SELECT {field} AS v, COUNT(*) AS n FROM ({BASE}) x WHERE {field} IS NOT NULL "
                f"AND {field} <> ''" + (f" AND LOWER({field}) LIKE ?" if q else "")
                + f" GROUP BY {field} ORDER BY n DESC, v LIMIT ?")
@@ -203,7 +221,8 @@ def _facets(conn, query: dict) -> dict:
         return {"field": field, "values": [{"value": r["v"], "count": r["n"]}
                                            for r in conn.execute(sql, params).fetchall()]}
     out = {}
-    for f in ("role", "trade", "state", "project"):
+    out["project"] = [x["value"] for x in _facets(conn, {"field": "project", "limit": "500"})["values"]]
+    for f in ("role", "trade", "state"):
         out[f] = [r["v"] for r in conn.execute(
             f"SELECT DISTINCT {f} AS v FROM ({BASE}) x WHERE {f} IS NOT NULL AND {f} <> '' "
             f"ORDER BY v LIMIT 500").fetchall()]

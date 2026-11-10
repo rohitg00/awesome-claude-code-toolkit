@@ -180,6 +180,16 @@ def build_server(db_override: str | None = None, stateless_http: bool = False):
                            "recent": list_answers(conn, 10)}, default=str)
 
     @mcp.tool()
+    def peers_status() -> str:
+        """Health of the interlinks with NTXP Schedules / Master Contracts / Form Fill: configured
+        peers, outbound-webhook queue counts, dead letters, watch cursors. Never returns secrets."""
+        from .peers import load_peers
+        from .peers.events import outbox_stats
+        conn = _conn()
+        peers, errors = load_peers()
+        return json.dumps({"peers": sorted(peers), "config_errors": errors, "outbox": outbox_stats(conn)}, default=str)
+
+    @mcp.tool()
     def contact_context(query: str) -> str:
         """Context card for the best contact match of QUERY (name/email/company),
         with blue-link HTML ready to inject into any tool's output."""

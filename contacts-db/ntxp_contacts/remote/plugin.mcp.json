@@ -2,7 +2,7 @@
   "mcpServers": {
     "ntxp-contacts-cloud": {
       "type": "http",
-      "url": "${NTXP_MCP_URL:-https://contacts-mcp.ntxpllc.com/mcp}",
+      "url": "${NTXP_MCP_URL:-https://contacts.ntxpllc.cloud/mcp}",
       "headers": { "Authorization": "Bearer ${NTXP_MCP_TOKEN}" },
       "description": "Live NTXP company contacts — stateless cloud MCP (OAuth-gated, ntxpllc.com). Tools: search_contacts, get_contact, contact_context, hotlink_text, locate_address, reconcile_plan, enrich_candidates, qualify_contacts, and more. Set NTXP_MCP_URL to your deployment and NTXP_MCP_TOKEN to a Google Workspace OAuth token."
     }
