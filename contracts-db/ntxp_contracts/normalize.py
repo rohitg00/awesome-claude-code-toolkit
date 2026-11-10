@@ -49,12 +49,19 @@ def normalize_website(value) -> str | None:
     return s
 
 
+import math
+
+
+def _finite(x):
+    return x if x is not None and math.isfinite(x) else None
+
+
 def normalize_money(value) -> float | None:
     """'$1,250,000.00' / '1.25M' / 1250000 -> float, or None."""
     if value is None:
         return None
     if isinstance(value, (int, float)):
-        return float(value)
+        return _finite(float(value))
     s = _clean(value).replace(",", "").replace("$", "").strip()
     if not s:
         return None
@@ -64,7 +71,7 @@ def normalize_money(value) -> float | None:
     elif s[-1:].lower() == "m":
         mult, s = 1_000_000.0, s[:-1]
     try:
-        return float(s) * mult
+        return _finite(float(s) * mult)
     except ValueError:
         return None
 
@@ -73,10 +80,10 @@ def normalize_float(value) -> float | None:
     if value is None or value == "":
         return None
     if isinstance(value, (int, float)):
-        return float(value)
+        return _finite(float(value))
     s = _clean(value).replace(",", "")
     try:
-        return float(s)
+        return _finite(float(s))
     except ValueError:
         return None
 

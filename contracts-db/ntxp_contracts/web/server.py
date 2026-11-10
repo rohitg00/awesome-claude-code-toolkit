@@ -29,6 +29,8 @@ import json
 import os
 import re
 import sqlite3
+import hmac
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -39,6 +41,18 @@ from ..db import connect, migrate
 from ..db.repository import ConflictError, Repository
 
 STATIC = Path(__file__).parent / "static"
+MAX_BODY = 1_048_576
+_LOOPBACK = {"127.0.0.1", "localhost", "::1", "[::1]"}
+
+
+def _allowed_hosts() -> set[str]:
+    """Host names this server answers to. Anything else (DNS rebinding) is refused."""
+    extra = {h.strip().lower() for h in os.environ.get("NTXP_CONTRACTS_ALLOWED_HOSTS", "").split(",") if h.strip()}
+    return {h.lower() for h in _LOOPBACK} | extra
+
+
+def _api_token() -> str:
+    return os.environ.get("NTXP_CONTRACTS_TOKEN", "")
 _ASSET_TYPES = {".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"}
 
 
@@ -63,13 +77,18 @@ def _repo(db_override):
     return Repository(conn), conn
 
 
+class _Bad(Exception):
+    def __init__(self, code: int, msg: str):
+        self.code, self.msg = code, msg
+
+
 def make_handler(db_override):
     class Handler(BaseHTTPRequestHandler):
         server_version = "NTXPContracts/0.1"
 
         # -- helpers --------------------------------------------------------
         def _json(self, obj, status=200):
-            body = json.dumps(obj, default=str).encode("utf-8")
+            body = json.dumps(obj, default=str, allow_nan=False).encode("utf-8")
             self.send_response(status)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -95,13 +114,23 @@ def make_handler(db_override):
             self._send_bytes(text.encode("utf-8"), ctype, download)
 
         def _body_json(self) -> dict:
-            n = int(self.headers.get("Content-Length") or 0)
+            try:
+                n = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                raise _Bad(400, "bad Content-Length")
+            if n < 0:
+                raise _Bad(400, "bad Content-Length")
+            if n > MAX_BODY:
+                raise _Bad(413, "request body too large")
             if not n:
                 return {}
             try:
-                return json.loads(self.rfile.read(n) or b"{}")
+                body = json.loads(self.rfile.read(n) or b"{}")
             except Exception:
-                return {}
+                raise _Bad(400, "invalid JSON")
+            if not isinstance(body, dict):
+                raise _Bad(400, "JSON object required")
+            return body
 
         def log_message(self, *a):  # quiet
             pass
@@ -109,15 +138,49 @@ def make_handler(db_override):
         # Every request is migrated-once then run inside a guard so a missing
         # asset, branding I/O error, or unexpected exception returns a clean
         # 500 instead of tearing down the connection with a stack trace.
+        def _refuse(self):
+            """CSRF / DNS-rebinding / token gate. Returns True (after replying) when the request must stop."""
+            host = (self.headers.get("Host") or "").rsplit(":", 1)[0].lower() if not (self.headers.get("Host") or "").startswith("[") \
+                else (self.headers.get("Host") or "").split("]")[0] + "]"
+            if host not in _allowed_hosts():
+                self._json({"error": "host not allowed"}, 421)
+                return True
+            writes = self.command in ("POST", "PATCH", "DELETE")
+            if writes:
+                origin = self.headers.get("Origin")
+                if origin and origin.split("://", 1)[-1].lower() != (self.headers.get("Host") or "").lower():
+                    self._json({"error": "cross-origin write refused"}, 403)
+                    return True
+                if self.command in ("POST", "PATCH") and \
+                        (self.headers.get("Content-Type") or "").split(";")[0].strip().lower() != "application/json":
+                    self._json({"error": "Content-Type: application/json required"}, 415)
+                    return True
+            tok = _api_token()
+            if tok and urlparse(self.path).path.startswith("/api/"):
+                got = (self.headers.get("Authorization") or "")[7:].strip()
+                if not hmac.compare_digest(got.encode(), tok.encode()):
+                    self._json({"error": "unauthorized"}, 401)
+                    return True
+            return False
+
         def _guard(self, fn):
             try:
+                if self._refuse():
+                    return
                 _ensure_migrated(db_override)
                 fn()
             except BrokenPipeError:
                 pass
-            except Exception as e:  # noqa: BLE001 — last-resort request guard
+            except _Bad as e:
                 try:
-                    self._json({"error": "server error", "detail": str(e)}, 500)
+                    self._json({"error": e.msg}, e.code)
+                except Exception:
+                    pass
+            except Exception:  # noqa: BLE001 — last-resort request guard
+                import logging
+                logging.getLogger(__name__).exception("request failed")
+                try:
+                    self._json({"error": "server error"}, 500)
                 except Exception:
                     pass
 
@@ -181,7 +244,10 @@ def make_handler(db_override):
                 finally:
                     conn.close()
             if path == "/api/changes":
-                since = int((qs.get("since") or ["0"])[0])
+                try:
+                    since = int((qs.get("since") or ["0"])[0])
+                except ValueError:
+                    return self._json({"error": "since must be an integer"}, 400)
                 repo, conn = _repo(db_override)
                 try:
                     return self._json(repo.changes_since(since))
@@ -195,6 +261,8 @@ def make_handler(db_override):
                 try:
                     if sub == "vcard":
                         prof = repo.get_profile(cid)
+                        if not prof:
+                            return self._json({"error": "not found"}, 404)
                         owner = (prof or {}).get("owner") or {
                             "name": (prof or {}).get("contract", {}).get("owner_entity")}
                         return self._raw(contactfile.vcard(owner),
@@ -283,6 +351,10 @@ def serve(db_override: str | None = None, host: str | None = None,
           port: int | None = None) -> None:
     host = host or WEB_HOST
     port = port or WEB_PORT
+    if host not in _LOOPBACK and not _api_token():
+        raise SystemExit("Refusing to bind a writable, unauthenticated contracts API to a non-loopback address. "
+                         "Set NTXP_CONTRACTS_TOKEN (Bearer token required on /api) or bind 127.0.0.1 behind an "
+                         "authenticating proxy, and list the public host in NTXP_CONTRACTS_ALLOWED_HOSTS.")
     # Apply migrations once, before the first request.
     _ensure_migrated(db_override)
     httpd = ThreadingHTTPServer((host, port), make_handler(db_override))

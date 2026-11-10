@@ -251,7 +251,7 @@ function renderRows() {
     del.onclick = async () => {
       if (!armed) { armed = true; del.textContent = 'Sure?'; del.title = 'Click again to remove';
         setTimeout(() => { armed = false; del.textContent = '✕'; }, 2500); return; }
-      await fetch('/api/contracts/' + c.contract_id, { method: 'DELETE' });
+      await fetch('/api/contracts/' + c.contract_id, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
       CONTRACTS = CONTRACTS.filter(x => x.contract_id !== c.contract_id);
       renderRows(); flash('removed');
     };
@@ -269,10 +269,14 @@ function renderRows() {
 
 // --- data load + live polling -------------------------------------------
 async function loadAll() {
-  META = await (await fetch('/api/meta')).json();
-  const data = await (await fetch('/api/contracts')).json();
-  CONTRACTS = data.contracts; latestSeq = data.latest_seq;
-  renderRows();
+  try {
+    META = await (await fetch('/api/meta')).json();
+    const data = await (await fetch('/api/contracts')).json();
+    CONTRACTS = data.contracts; latestSeq = data.latest_seq;
+    renderRows();
+  } catch (e) {
+    flash('Could not load contracts', 'var(--red-ink)');   // never leave a blank page with polling dead
+  }
 }
 
 async function poll() {
@@ -298,9 +302,11 @@ $('#add').addEventListener('click', async () => {
     body: JSON.stringify({ actor: actor() })
   });
   const { contract } = await res.json();
+  $('#search').value = '';                                   // a filter would hide the new row
+  const at = CONTRACTS.findIndex(x => x.contract_id === contract.contract_id);
+  if (at >= 0) CONTRACTS.splice(at, 1);                      // never show one contract twice
   CONTRACTS.unshift(contract); renderRows(); flash('added');
-  // focus the title of the new row
-  const firstTitle = rowsEl.querySelector('tr td:nth-child(2) input');
+  const firstTitle = rowsEl.querySelector('tr td:nth-child(2) input');   // the new row is first
   if (firstTitle) firstTitle.focus();
 });
 $('#printBtn').addEventListener('click', () => window.print());

@@ -13,6 +13,7 @@ import sqlite3
 from typing import Any
 
 from .. import normalize as N
+from ..config import DEFAULT_RECIPIENT
 from ..model import Contract, Job, OwnerEntity
 
 # Columns an editor may change inline from the dashboard. Anything not here is
@@ -186,8 +187,10 @@ class Repository:
         optional ``expected_rev`` enables optimistic locking — a stale write
         raises ConflictError instead of silently overwriting fresher data.
         Without expected_rev it is last-write-wins (fine for a small team)."""
-        if field not in EDITABLE_FIELDS:
-            raise ValueError(f"field not editable: {field}")
+        if not isinstance(field, str) or field not in EDITABLE_FIELDS:
+            raise ValueError(f"field not editable: {field!s}"[:80])
+        if not (value is None or isinstance(value, (str, int, float, bool))):
+            raise ValueError("value must be a string, number, boolean or null")
         row = self.conn.execute(
             f"SELECT {field} AS cur, rev FROM contracts WHERE contract_id = ? AND is_deleted = 0",
             (contract_id,),
@@ -210,12 +213,19 @@ class Repository:
         if field == "contract_no":
             sets.append(("contract_no_norm", N.contract_no_norm(coerced) if coerced else None))
 
+        if field == "owner_entity" and not coerced:
+            sets.append(("owner_id", None))           # cleared owner must not keep showing the old owner's contact data
         set_sql = ", ".join(f"{col} = ?" for col, _ in sets)
-        self.conn.execute(
+        # The rev check is part of the UPDATE itself: two writers holding the same rev cannot both win.
+        cur = self.conn.execute(
             f"UPDATE contracts SET {set_sql}, rev = rev + 1, "
-            "updated_at = datetime('now') WHERE contract_id = ?",
-            [v for _, v in sets] + [contract_id],
+            "updated_at = datetime('now') WHERE contract_id = ? AND is_deleted = 0"
+            + (" AND rev = ?" if expected_rev is not None else ""),
+            [v for _, v in sets] + [contract_id] + ([int(expected_rev)] if expected_rev is not None else []),
         )
+        if cur.rowcount == 0:
+            self.conn.rollback()
+            raise ConflictError(self.get_contract(contract_id))
         self.conn.execute(
             "INSERT INTO change_log(contract_id, field, old_value, new_value, op, actor) "
             "VALUES (?,?,?,?, 'update', ?)",
@@ -227,7 +237,16 @@ class Repository:
         return self.get_contract(contract_id)
 
     def create_contract(self, title: str = "Untitled Contract", actor: str = "web") -> dict:
-        cid, _ = self.upsert_contract(Contract(contract_title=title), actor)
+        """Always a NEW row. (Going through upsert_contract matched an existing blank "Untitled Contract" by
+        title and handed the same row back, so two editors clicking "+ Add" shared one contract.)"""
+        cur = self.conn.execute(
+            "INSERT INTO contracts(contract_title, recipient) VALUES (?, ?)",
+            (title, DEFAULT_RECIPIENT))
+        cid = cur.lastrowid
+        self.conn.execute(
+            "INSERT INTO change_log(contract_id, field, old_value, new_value, op, actor) VALUES (?,?,?,?, 'insert', ?)",
+            (cid, None, None, title, actor))
+        self._reindex(cid)
         self.conn.commit()
         return self.get_contract(cid)
 

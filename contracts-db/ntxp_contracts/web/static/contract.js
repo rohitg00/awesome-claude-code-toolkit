@@ -3,7 +3,8 @@
 // accounting lines with click-to-call/text and a downloadable contact file),
 // and rolls up the jobs done under it with total sales.
 
-const id = new URLSearchParams(location.search).get('id');
+// The id is interpolated into markup and URLs: accept digits only (a crafted ?id=1"><img onerror=…> used to inject).
+const id = ((new URLSearchParams(location.search).get('id') || '').match(/^\d{1,12}$/) || [null])[0];
 const contentEl = document.getElementById('content');
 
 // esc / safeUrl / money / daysUntil come from util.js (loaded first).

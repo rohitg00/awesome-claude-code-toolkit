@@ -4,8 +4,8 @@
 // screen and be forgotten in the other.
 
 // HTML-escape for interpolation into innerHTML.
-const esc = s => (s ?? '').toString().replace(/[&<>"]/g, c =>
-  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const esc = s => (s ?? '').toString().replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 // Only allow safe link schemes — blocks javascript:/data: URLs in stored fields.
 const safeUrl = u => /^(https?:|mailto:|tel:|sms:)/i.test((u || '').trim()) ? u : '';
