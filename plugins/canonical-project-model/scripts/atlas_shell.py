@@ -89,6 +89,7 @@ def _norm_points(points, mode, w_pt, h_pt):
             x, y = x * 72.0, y * 72.0
         if mode != "normalized":
             x, y = (x / w_pt if w_pt else 0), (y / h_pt if h_pt else 0)
+        x, y = float(x), float(y)
         out.append([round(max(0.0, min(1.0, x)), 4), round(max(0.0, min(1.0, y)), 4)])
     return out
 
@@ -111,9 +112,12 @@ def markup_overlays(model_dir, sheets):
         for i, m in enumerate(man["markups"]):
             if not isinstance(m, dict):
                 continue
-            src = m.get("source") or {}
-            sheet = by_no.get(str(src.get("sheet") or m.get("sheet") or "").upper()) \
-                or by_page.get((None, int(src.get("page") or m.get("page") or 0)))
+            src = m.get("source") if isinstance(m.get("source"), dict) else {}
+            try:
+                page_no = int(src.get("page") or m.get("page") or 0)
+            except (TypeError, ValueError):
+                page_no = 0
+            sheet = by_no.get(str(src.get("sheet") or m.get("sheet") or "").upper()) or by_page.get((None, page_no))
             kind = m.get("kind") or m.get("type") or ""
             shape = KIND_SHAPE.get(kind)
             if sheet is None or shape is None:
@@ -124,17 +128,21 @@ def markup_overlays(model_dir, sheets):
             mode = m.get("coordinate_mode") or root_mode
             w_pt, h_pt = (sheet.get("width_in") or 0) * 72.0, (sheet.get("height_in") or 0) * 72.0
             pts = None
-            if g.get("rect"):
-                x0, y0, x1, y1 = g["rect"]
-                pts = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
-            elif g.get("points"):
-                pts = g["points"]
-            elif g.get("start") and g.get("end"):
-                pts = [g["start"], g["end"]]
-            elif g.get("point") or g.get("target"):
-                pts = [g.get("point") or g.get("target")]
+            try:
+                if g.get("rect"):
+                    x0, y0, x1, y1 = g["rect"]
+                    pts = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
+                elif g.get("points"):
+                    pts = g["points"]
+                elif g.get("start") and g.get("end"):
+                    pts = [g["start"], g["end"]]
+                elif g.get("point") or g.get("target"):
+                    pts = [g.get("point") or g.get("target")]
+                pts = _norm_points(pts, mode, w_pt, h_pt) if pts else None
+            except (TypeError, ValueError):               # wrong count or non-numbers: report it, keep building
+                pts = None
             if not pts:
-                problems.append(f"{path.name} #{i + 1}: no geometry")
+                problems.append(f"{path.name} #{i + 1}: no usable geometry")
                 continue
             style = m.get("style") or m.get("trade") or ("dimension" if kind in MEASURE_KINDS else
                                                          "revision" if shape == "cloud" else "callout" if shape == "note" else "general")
@@ -145,7 +153,7 @@ def markup_overlays(model_dir, sheets):
             status = str(m.get("work_status") or ("demo" if style == "demo" else "new")).lower()
             out.setdefault(sheet["sheet_id"], []).append({
                 "layer": "markup", "shape": shape, "style": style, "demo": status in DEMO_STATUS,
-                "pts": _norm_points(pts, mode, w_pt, h_pt),
+                "pts": pts,
                 "label": str(m.get("label") or m.get("text") or m.get("subject") or "")[:60],
                 "id": str(m.get("id") or f"{path.stem}-{i + 1}"), "kind": kind, "source": path.name})
     return out, problems
@@ -239,7 +247,10 @@ def _table(columns, rows, max_rows=40):
 
 
 def _jump(sheet_id, label, box=None, cls="chip sheetchip"):
-    b = f' data-jump-box="{",".join(str(v) for v in box)}"' if box else ""
+    try:
+        b = f' data-jump-box="{",".join(str(round(float(v), 5)) for v in box)}"' if box else ""
+    except (TypeError, ValueError):                      # a malformed box is dropped, the jump still opens the sheet
+        b = ""
     return f'<button type="button" class="{cls}" data-jump-sheet="{esc(sheet_id)}"{b}>{esc(label)}</button>'
 
 
@@ -252,7 +263,7 @@ def _kv(pairs):
 def _section(title, body, count=None, open_=False):
     if not body:
         return ""
-    c = f'<span class="c">{count}</span>' if count is not None else ""
+    c = f'<span class="c">{esc(count)}</span>' if count is not None else ""
     return (f'<details class="dd-sec"{" open" if open_ else ""}><summary><span>{esc(title)}</span>{c}</summary>'
             f'<div class="dd-body">{body}</div></details>')
 
@@ -806,8 +817,10 @@ SCRIPT = r"""
     });
     stage.appendChild(svg);
     var lg=document.createElement('div'); lg.className='ov-legend';
-    lg.innerHTML='<div class="h">Markup Legend</div>'+Object.keys(used).map(function(k){ var u=used[k];
-      return '<div class="r" style="color:'+u.col+'"><i class="'+(u.demo?'d':'')+'"></i><span style="color:#1F2A3D">'+u.label+'</span></div>'; }).join('');
+    var lh=document.createElement('div'); lh.className='h'; lh.textContent='Markup Legend'; lg.appendChild(lh);
+    Object.keys(used).forEach(function(k){ var u=used[k], r=document.createElement('div'), i=document.createElement('i'), t=document.createElement('span');
+      r.className='r'; r.style.color=u.col; if(u.demo) i.className='d'; t.style.color='#1F2A3D'; t.textContent=u.label;
+      r.appendChild(i); r.appendChild(t); lg.appendChild(r); });
     var canvas=$('#viewer-canvas'); if(canvas) canvas.appendChild(lg);
   }
   function countLayers(){
@@ -860,7 +873,7 @@ SCRIPT = r"""
           source:{sheet:sheetNo(id),layer:o.layer,from:o.source},geometry:g}; })};
   }
   function exportPng(id){
-    var stage=document.getElementById('stage-'+id), m=/url\(["']?(.*?)["']?\)/.exec(stage.style.backgroundImage||'');
+    var stage=document.getElementById('stage-'+id), m=stage?/url\(["']?(.*?)["']?\)/.exec(stage.style.backgroundImage||''):null;
     if(!m){ toast('This sheet has no image to export.'); return; }
     var img=new Image();
     img.onload=function(){
@@ -882,7 +895,8 @@ SCRIPT = r"""
           var tw=g.measureText(o.label).width; g.globalAlpha=.82; g.fillStyle='#fff'; g.fillRect(tx-tw/2-lw*2,ty-lw*6,tw+lw*4,lw*7);
           g.globalAlpha=1; g.fillStyle=col; g.fillText(o.label,tx,ty); }
       });
-      try{ c.toBlob(function(b){ save(b,sheetNo(id)+' - Atlas View.png'); },'image/png'); }
+      try{ c.toBlob(function(b){ if(!b){ toast('The browser blocked the image export for this sheet.'); return; }
+        save(b,sheetNo(id)+' - Atlas View.png'); },'image/png'); }
       catch(err){ toast('The browser blocked the image export for this sheet.'); }
     };
     img.onerror=function(){ toast('The sheet image could not be read for export.'); };

@@ -376,24 +376,31 @@ def write_named_destinations(doc, dests):
     """dests: name -> (page index, x, y in displayed page points). Written as a /Names /Dests name tree.
 
     Explicit numbers only: a null in the /XYZ view breaks pdf.js and older PyMuPDF outline parsing."""
-    items = []
-    for name in sorted(dests):
+    entries = {}
+    # Keep the named destinations the source set already carries: its own links may point at them.
+    # resolve_names() reports the raw PDF point, so it is written back unchanged.
+    try:
+        carried = doc.resolve_names() or {}
+    except Exception:                                    # noqa: BLE001  (older PyMuPDF: nothing to carry)
+        carried = {}
+    for name, d in carried.items():
+        pno = d.get("page", -1)
+        if name in dests or not isinstance(pno, int) or not 0 <= pno < doc.page_count:
+            continue
+        x, y = (list(d.get("to") or (0, 0)) + [0, 0])[:2]
+        entries[name] = f"[{doc[pno].xref} 0 R/XYZ {round(x, 2)} {round(y, 2)} {round(d.get('zoom') or 0, 2)}]"
+    for name in dests:
         pno, x, y = dests[name]
         page = doc[pno]
         pt = fitz.Point(x, y) * page.derotation_matrix * ~page.transformation_matrix
-        items.append(f"{pdf_string(name)}[{page.xref} 0 R/XYZ {round(pt.x, 2)} {round(pt.y, 2)} 0]")
+        entries[name] = f"[{page.xref} 0 R/XYZ {round(pt.x, 2)} {round(pt.y, 2)} 0]"
+    # A name tree's keys must be in byte order.
+    items = [pdf_string(n) + entries[n] for n in sorted(entries, key=lambda n: n.encode("latin-1", "replace"))]
     tree = doc.get_new_xref()
     doc.update_object(tree, "<</Names[" + "".join(items) + "]>>")
-    cat = doc.pdf_catalog()
-    kind, existing = doc.xref_get_key(cat, "Names")
-    if kind == "xref":                                  # keep any other name trees the source carries
-        doc.xref_set_key(int(existing.split()[0]), "Dests", f"{tree} 0 R")
-    elif kind == "dict":
-        inner = re.sub(r"/Dests\s+\d+\s+\d+\s+R", "", existing.strip()[2:-2])
-        doc.xref_set_key(cat, "Names", f"<<{inner}/Dests {tree} 0 R>>")
-    else:
-        doc.xref_set_key(cat, "Names", f"<</Dests {tree} 0 R>>")
-    return len(items)
+    # Path form: sets /Dests whether /Names is absent, inline or indirect, and leaves the other name trees alone.
+    doc.xref_set_key(doc.pdf_catalog(), "Names/Dests", f"{tree} 0 R")
+    return len(dests)
 
 
 def add_named_link(doc, page, rect, name, target_page):
@@ -403,8 +410,12 @@ def add_named_link(doc, page, rect, name, target_page):
     new = [x[0] for x in page.annot_xrefs() if x[0] not in before]
     if not new:
         return False
-    doc.xref_set_key(new[0], "Dest", "null")
     doc.xref_set_key(new[0], "A", f"<</S/GoTo/D{pdf_string(name)}>>")
+    # Drop /Dest outright: a leftover "/Dest null" beside /A is read differently by different viewers.
+    obj = doc.xref_object(new[0], compressed=True)
+    cleaned = re.sub(r"/Dest\s*(null|\[[^\]]*\])", "", obj)
+    if cleaned != obj:
+        doc.update_object(new[0], cleaned)
     return True
 
 
@@ -656,7 +667,8 @@ def main():
     for anchor, (pno, y) in L.anchors.items():
         dests[anchor] = (pno, 0, max(y - 6, 0))
     for sch in (scope or {}).get("schedules") or []:
-        if sch["sheet_id"] in mine:
+        box_ok = isinstance(sch.get("box"), (list, tuple)) and len(sch["box"]) >= 2
+        if sch.get("sheet_id") in mine and sch.get("id") and box_ok:
             pg = doc[page_of[sch["sheet_id"]]]
             dests[dest_name("schedule", sch["id"])] = (page_of[sch["sheet_id"]], sch["box"][0] * pg.rect.width,
                                                        sch["box"][1] * pg.rect.height)
@@ -680,13 +692,16 @@ def main():
             continue
         page = doc[src]
         W, H = page.rect.width, page.rect.height
-        r = fitz.Rect(box[0] * W - 2, box[1] * H - 2, box[2] * W + 2, box[3] * H + 2) * page.derotation_matrix
-        r.normalize()
-        if any(r.intersects(e) for e in existing[src]):
+        shown = fitz.Rect(box[0] * W - 2, box[1] * H - 2, box[2] * W + 2, box[3] * H + 2)
+        # get_links() reports rectangles as displayed, so the overlap test is made in displayed space;
+        # the link itself is inserted in the page's unrotated space.
+        if any(shown.intersects(e) for e in existing[src]):
             why["overlaps_original"] += 1                 # never shadow an original link
             continue
+        r = shown * page.derotation_matrix
+        r.normalize()
         if add_named_link(doc, page, r, sheet_dest[to], dst):
-            existing[src].append(r)
+            existing[src].append(shown)
             added += 1
     log(f"callout links added {added}, skipped {sum(why.values())} {why}")
 

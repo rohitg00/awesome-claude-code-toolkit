@@ -24,6 +24,7 @@ Stdlib and PyMuPDF only. Nothing is sent anywhere.
 import argparse
 import datetime as dt
 import json
+import re
 import sys
 import tempfile
 import urllib.parse
@@ -54,6 +55,12 @@ def rgb(h):
     return tuple(int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
 
 
+def safe_name(text, fallback="sheet"):
+    """A file name with no path parts, quotes or control characters (also safe in a header)."""
+    out = re.sub(r"[^A-Za-z0-9 ._()-]+", "-", str(text or "")).strip(" .-")
+    return out or fallback
+
+
 def find_atlas_dir(project):
     project = Path(project)
     hits = sorted(project.glob(f"**/{OUT_SUBDIR}/plans-atlas.html"), key=lambda p: len(p.parts))
@@ -82,6 +89,8 @@ def cloud_points(x0, y0, x1, y1, step=26.0):
     corners = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
     for (ax, ay), (bx, by) in zip(corners, corners[1:]):
         length = math.hypot(bx - ax, by - ay)
+        if length <= 0:                                  # a zero-width or zero-height box has no edge here
+            continue
         n = max(2, round(length / step))
         nx, ny = (by - ay) / length, -(bx - ax) / length          # outward normal for a clockwise rectangle
         for k in range(n):
@@ -97,9 +106,17 @@ def draw_overlays(page, items):
     W, H = page.rect.width, page.rect.height
     lw = max(1.6, W / 700.0)
     used = {}
+    drawn = 0
     for o in items:
         col = rgb(atlas_shell.STYLE_COLORS.get(o["style"], "#30343B"))
-        pts = [fitz.Point(x * W, y * H) for x, y in o["pts"]]
+        try:
+            pts = [fitz.Point(float(x) * W, float(y) * H) for x, y in o["pts"]]
+        except (TypeError, ValueError):
+            pts = []
+        if not pts:                                      # one bad markup must not stop the sheet
+            log(f"overlay skipped, no usable points: {o.get('id')}")
+            continue
+        drawn += 1
         used[(o["style"], o["demo"])] = col
         thin = o["shape"] == "cloud" or o.get("kind") == "dimension"
         width = lw * (0.5 if thin else 1.0)
@@ -169,7 +186,7 @@ def draw_overlays(page, items):
             ln.finish(color=col, width=lw, dashes=f"[{lw:.1f} {lw * 2.2:.1f}] 0" if demo else None)
             ln.commit()
             page.insert_text((x0 + size * 3.8, y), text, fontname="helv", fontsize=size, color=rgb("#1F2A3D"))
-    return len(items)
+    return drawn
 
 
 def export_sheet_pdf(project, sheet_key, layers=None, out=None, today=None):
@@ -190,23 +207,28 @@ def export_sheet_pdf(project, sheet_key, layers=None, out=None, today=None):
     items = [o for o in overlays.get(sheet["sheet_id"], []) if o["layer"] in layers]
     doc = fitz.open()
     with fitz.open(str(src)) as source:
-        pno = int(sheet.get("page") or 1) - 1
+        try:
+            pno = int(sheet.get("page") or 1) - 1
+        except (TypeError, ValueError):
+            pno = -1
+        if not 0 <= pno < source.page_count:
+            raise SystemExit(f"sheet {sheet_key}: page {sheet.get('page')} is not in {src.name}")
         doc.insert_pdf(source, from_page=pno, to_page=pno, links=False)
     page = doc[0]
     if page.rotation:
         page.remove_rotation()
-    draw_overlays(page, items)
+    drawn = draw_overlays(page, items)
     W, H = page.rect.width, page.rect.height
     size = max(7.0, W / 200)
     stamp = f"{(today or dt.date.today()).isoformat()}  v01  Atlas view export, not a published markup"
     page.insert_text((size * 2, H - size * 2), stamp, fontname="hebo", fontsize=size, color=(1, 0, 0), fill_opacity=0.5)
-    name = f"{sheet.get('sheet_no') or sheet['sheet_id']} - Atlas View.pdf"
+    name = f"{safe_name(sheet.get('sheet_no') or sheet['sheet_id'])} - Atlas View.pdf"
     out = Path(out) if out else Path(tempfile.mkdtemp(prefix="atlas-export-")) / name
     out.parent.mkdir(parents=True, exist_ok=True)
     doc.set_metadata({"title": name, "subject": "NTXP Plans Atlas view export: " + ", ".join(layers)})
     doc.save(str(out), garbage=3, deflate=True)
     doc.close()
-    return out, len(items)
+    return out, drawn
 
 
 def make_handler(project, atlas_dir):
@@ -224,7 +246,7 @@ def make_handler(project, atlas_dir):
             self.send_response(200)
             self.send_header("Content-Type", "application/pdf")
             self.send_header("Content-Length", str(len(data)))
-            self.send_header("Content-Disposition", f'inline; filename="{name}"')
+            self.send_header("Content-Disposition", f'inline; filename="{safe_name(name, "export.pdf")}"')
             self.send_header("Cache-Control", "no-store")
             self.end_headers()
             self.wfile.write(data)
@@ -251,7 +273,10 @@ def make_handler(project, atlas_dir):
                     self.end_headers()
                     return self.wfile.write(body)
             except SystemExit as e:
-                return self.send_error(404, str(e))
+                return self.send_error(404, safe_name(e, "not found"))
+            except Exception as e:                       # noqa: BLE001  (a bad record must not kill the request)
+                log(f"export failed: {type(e).__name__}: {e}")
+                return self.send_error(500, "Export failed; see the server log")
             if url.path in ("", "/"):
                 self.path = "/plans-atlas.html"
             return super().do_GET()
