@@ -9,6 +9,8 @@ Routes
   GET   /                       dashboard (inline-editable contract log)
   GET   /contract?id=<id>       single-contract profile screen
   GET   /static/<file>          css / js
+  GET   /assets/<file>          NTXP logo / favicon from NTXP_ASSETS_DIR (the Document Engine's own files;
+                                proprietary, mounted at deploy time, never in git)
   GET   /api/branding           resolved brand (scanned from Claude settings)
   GET   /api/meta               types, scope vocab, poll interval, latest_seq
   GET   /api/contracts          list all contracts
@@ -24,6 +26,7 @@ Routes
 from __future__ import annotations
 
 import json
+import os
 import re
 import sqlite3
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -36,6 +39,7 @@ from ..db import connect, migrate
 from ..db.repository import ConflictError, Repository
 
 STATIC = Path(__file__).parent / "static"
+_ASSET_TYPES = {".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"}
 
 
 # Migrations are applied once per process (at serve() startup); the schema does
@@ -77,6 +81,7 @@ def make_handler(db_override):
             self.send_response(200)
             self.send_header("Content-Type", ctype)
             self.send_header("Content-Length", str(len(data)))
+            self.send_header("X-Content-Type-Options", "nosniff")
             if download:
                 self.send_header("Content-Disposition",
                                  f'attachment; filename="{download}"')
@@ -136,6 +141,15 @@ def make_handler(db_override):
                 return self._file(STATIC / "dashboard.html", "text/html; charset=utf-8")
             if path == "/contract":
                 return self._file(STATIC / "contract.html", "text/html; charset=utf-8")
+            if path.startswith("/assets/"):
+                name = path[len("/assets/"):]
+                base = os.environ.get("NTXP_ASSETS_DIR")
+                ext = os.path.splitext(name)[1].lower()
+                f = Path(base) / name if base else None
+                if (not f or not re.fullmatch(r"[A-Za-z0-9_.-]+", name) or ext not in _ASSET_TYPES
+                        or not f.is_file()):
+                    return self._json({"error": "not found"}, 404)
+                return self._file(f, _ASSET_TYPES[ext])
             if path.startswith("/static/"):
                 f = STATIC / path[len("/static/"):]
                 if f.is_file() and STATIC in f.resolve().parents:

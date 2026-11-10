@@ -1,51 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <script>try{var t=localStorage.getItem("ntxp.theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>NTXP — Master Contracts</title>
+  <meta name="description" content="NTXP Master Contracts log — live, inline-editable reference data.">
+  <link rel="icon" href="/assets/icon_small.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="topbar">
-    <img data-brand-logo class="logo" style="display:none" alt="">
-    <span class="title"><span data-brand-name>NTXP</span> <span class="sub">Master Contracts</span></span>
-    <span class="spacer"></span>
-    <span class="who">editing as
-      <input id="actor" placeholder="your name" title="Shown in the change log so edits are attributed">
-    </span>
-  </div>
+  <header id="top">
+    <div class="band">
+      <div class="logo" id="logo"></div>
+      <div class="lockup"><h1>NTXP Master Contracts</h1><p>Contract log · reference data for NTXP tools</p></div>
+      <div class="acct"><label for="actor">Editing as</label>
+        <input id="actor" placeholder="your name" autocomplete="name"></div>
+    </div>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="tag">
+      <span><b>CONTRACTS</b><span id="tagN">—</span></span>
+      <span><b>EXPIRING ≤ 90 DAYS</b><span id="tagS">—</span></span>
+      <span><b>UNEXECUTED</b><span id="tagU">—</span></span>
+      <span><b>DATE</b><span id="tagD"></span></span>
+    </div>
+  </header>
+  <div class="sr" id="live" role="status" aria-live="polite"></div>
 
-  <div class="toolbar no-print">
-    <input id="search" class="search" placeholder="Search title, number, owner, location, scope…">
-    <button class="btn primary" id="add">+ Add contract</button>
-    <button class="btn" id="printBtn" title="Print the log on Letter (8.5×11)">🖨 Print</button>
-    <button class="btn" id="pdfBtn" title="Save the log as PDF on Letter (8.5×11)">⬇ Download PDF</button>
+  <main>
+  <div class="toolbar no-print" role="search">
+    <input id="search" class="search" type="search" aria-label="Search contracts" placeholder="Search title, number, owner, location, scope…">
+    <button class="btn primary" id="add" type="button">+ Add contract</button>
+    <button class="btn" id="printBtn" type="button" title="Print the log on Letter (8.5×11)">Print</button>
+    <button class="btn" id="pdfBtn" type="button" title="Save the log as PDF on Letter (8.5×11)">Download PDF</button>
     <span class="spacer"></span>
-    <span class="saveflash" id="flash">saved ✓</span>
+    <span class="saveflash" id="flash" role="status">saved ✓</span>
   </div>
 
   <div class="wrap">
-    <div class="printhead">
-      <h1><span data-brand-name>NTXP</span> — Master Contracts Log</h1>
-      <div class="meta" id="printmeta"></div>
-    </div>
-
     <div class="tablecard">
+      <div class="bar">Contract log<span class="n" id="barN"></span></div>
       <table id="grid">
+        <caption class="sr">Master contracts. Click any cell to edit; changes save instantly.</caption>
         <thead>
           <tr>
-            <th>Contract #</th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Owner entity</th>
-            <th>Coefficient</th>
-            <th>Co-op fee</th>
-            <th>Expiration</th>
-            <th>Scope</th>
-            <th>Signed</th>
-            <th>Status</th>
-            <th class="no-print"></th>
+            <th scope="col">Contract #</th>
+            <th scope="col">Title</th>
+            <th scope="col">Type</th>
+            <th scope="col">Owner entity</th>
+            <th scope="col">Coefficient</th>
+            <th scope="col">Co-op fee</th>
+            <th scope="col">Expiration</th>
+            <th scope="col">Scope</th>
+            <th scope="col">Signed</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="no-print"><span class="sr">Actions</span></th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -55,11 +68,12 @@
 
     <div class="legend no-print">
       <span><b>Click any cell</b> to edit — saves instantly.</span>
-      <span><span class="exp-soon" style="color:var(--warning)">●</span> expires within 90 days</span>
-      <span><span style="color:var(--danger)">●</span> expired / unexecuted</span>
+      <span><span class="key" style="background:var(--navy-mid)"></span>expires within 90 days (bold date)</span>
+      <span><span class="key" style="background:var(--red)"></span>expired or unexecuted</span>
       <span>Click a <b>contract #</b> to open its profile.</span>
     </div>
   </div>
+  </main>
 
   <script src="/static/util.js"></script>
   <script src="/static/brand.js"></script>

@@ -156,3 +156,16 @@ polling.
 ```bash
 pytest contracts-db/tests
 ```
+
+
+## Front end — NTXP Document Engine format
+The dashboard and profile screens follow NTXP-DOC-STANDARD 2.1 (stdlib server, zero-dependency static files):
+navy band 1.00in with the engine's own reversed logo (1.55in zone, 0.82in tall), accent fade, centred ALL-CAPS title,
+tag line, navy section bars, navy-mid header row, two-tone rows, centred cells / left paragraph columns, Open Sans,
+Letter-portrait print stylesheet. **Dark is the default** (deep-navy band and bars, medium-charcoal 3D gradient page
+background, slightly translucent panels); the band's toggle switches to the light engine look and print is always light.
+
+* Logo/favicon are served from `NTXP_ASSETS_DIR` (`ntxp_logo_reversed.png`, `icon_small.png` from the Document Engine
+  skill). They are proprietary and not in git. If missing, **no substitute mark is drawn** (text alternative only).
+* `tools/ui_audit.py` (`NTXP_LOGO_REF=<engine>/assets/ntxp_logo_reversed.png python tools/ui_audit.py http://127.0.0.1:8787 out`)
+  checks geometry, logo, palette, alignment, contrast (dark + light), buttons in every state, axe-core, responsiveness.

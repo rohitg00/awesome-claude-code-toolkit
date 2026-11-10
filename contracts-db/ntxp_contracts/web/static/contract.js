@@ -24,8 +24,8 @@ function contactRow(label, phone) {
   return `<div class="contact-row">
     <span><strong>${esc(label)}</strong><br><span class="muted">${esc(prettyTel(phone))}</span></span>
     <span class="contact-actions">
-      <a class="chip call" href="tel:${esc(tel)}">📞 Call</a>
-      <a class="chip text" href="sms:${esc(tel)}">💬 Text</a>
+      <a class="btn sm" href="tel:${esc(tel)}">Call</a>
+      <a class="btn sm" href="sms:${esc(tel)}">Text</a>
     </span></div>`;
 }
 
@@ -41,11 +41,14 @@ async function load() {
   if (!id) { contentEl.innerHTML = '<p class="muted">No contract id.</p>'; return; }
   let p;
   try { p = await (await fetch('/api/contracts/' + id)).json(); }
-  catch (e) { contentEl.innerHTML = '<p class="muted">Could not load.</p>'; return; }
-  if (p.error) { contentEl.innerHTML = '<p class="muted">Contract not found.</p>'; return; }
+  catch (e) { contentEl.innerHTML = '<p class="err">Could not load this contract.</p>'; return; }
+  if (p.error) { contentEl.innerHTML = '<p class="err">Contract not found.</p>'; return; }
 
   const c = p.contract, o = p.owner || {}, t = p.totals || {};
   document.title = `NTXP — ${c.contract_title || 'Contract'}`;
+  document.getElementById('subtitle').textContent = c.contract_title || 'Untitled';
+  document.getElementById('tagNo').textContent = c.contract_no || '—';
+  document.getElementById('tagOwner').textContent = (p.owner && p.owner.name) || c.owner_entity || '—';
 
   const ownerName = o.name || c.owner_entity;
   const website = o.website;
@@ -54,13 +57,11 @@ async function load() {
       <td>${esc(j.name)}</td>
       <td>${esc(j.customer || '')}</td>
       <td>${esc(j.status || '')}</td>
-      <td style="text-align:right">${money(j.contract_value)}</td>
-      <td style="text-align:right">${money(j.sales_amount)}</td>
+      <td class="r">${money(j.contract_value)}</td>
+      <td class="r">${money(j.sales_amount)}</td>
     </tr>`).join('');
 
   contentEl.innerHTML = `
-    <div class="crumbs no-print"><a href="/">← Master Contracts</a></div>
-
     <div class="hero">
       <div class="eyebrow">${esc(c.contract_type || 'Contract')}</div>
       <h1>${esc(c.contract_title || 'Untitled')}</h1>
@@ -68,16 +69,16 @@ async function load() {
         &nbsp;·&nbsp; Recipient: <strong>${esc(c.recipient || 'NTXP LLC')}</strong></div>
       <div class="badges">
         <span class="badge ${c.is_executed ? 'ok' : 'bad'}">
-          ${c.is_executed ? '✓ Executed' : '⚠ Unexecuted'}</span>
+          ${c.is_executed ? '✓ Executed' : '! Unexecuted'}</span>
         ${daysBadge(c.expiration_date)}
-        ${safeUrl(c.pdf_url) ? `<a class="badge" href="${esc(safeUrl(c.pdf_url))}" target="_blank" rel="noopener">📄 Signed copy</a>` : ''}
-        <a class="badge no-print" href="/api/contracts/${id}/ics">📅 Add expiration to calendar</a>
+        ${safeUrl(c.pdf_url) ? `<a class="badge" href="${esc(safeUrl(c.pdf_url))}" target="_blank" rel="noopener">Signed copy</a>` : ''}
+        <a class="badge no-print" href="/api/contracts/${id}/ics">Add expiration to calendar</a>
       </div>
     </div>
 
     <div class="grid">
       <div class="card">
-        <h3>Contract terms</h3>
+        <h2>Contract terms</h2>
         ${kv('Type', esc(c.contract_type || '—'))}
         ${kv('Owner entity', esc(ownerName || '—'))}
         ${kv('Location', esc(c.location || '—'))}
@@ -87,7 +88,7 @@ async function load() {
         ${kv('Allowable scope', esc(c.allowable_scope || '—'))}
       </div>
       <div class="card">
-        <h3>Lifecycle</h3>
+        <h2>Lifecycle</h2>
         ${kv('Award date', fmtDate(c.award_date))}
         ${kv('Duration', esc(c.duration || '—'))}
         ${kv('Expiration date', fmtDate(c.expiration_date))}
@@ -95,17 +96,17 @@ async function load() {
         ${c.notes ? `<div style="margin-top:10px"><span class="k muted">Notes</span><br>${esc(c.notes)}</div>` : ''}
       </div>
       <div class="card">
-        <h3>Performance under this contract</h3>
-        <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
-          <div><div class="stat accent">${money(t.total_sales)}</div><div class="muted">total sales</div></div>
-          <div><div class="stat">${t.job_count || 0}</div><div class="muted">jobs</div></div>
+        <h2>Performance under this contract</h2>
+        <div class="tiles">
+          <div class="tile"><b>${money(t.total_sales)}</b><span>Total sales</span></div>
+          <div class="tile"><b>${t.job_count || 0}</b><span>Jobs</span></div>
         </div>
         ${kv('Total contract value (jobs)', money(t.total_contract_value))}
       </div>
     </div>
 
     <div class="card" style="margin-bottom:18px">
-      <h3>Owner entity — ${esc(ownerName || 'contact')}</h3>
+      <h2>Owner entity — ${esc(ownerName || 'contact')}</h2>
       ${safeUrl(website) ? `<div class="kv"><span class="k">Website</span>
         <span class="v"><a href="${esc(safeUrl(website))}" target="_blank" rel="noopener">${esc(website.replace(/^https?:\/\//, ''))}</a></span></div>` : ''}
       ${o.email ? `<div class="kv"><span class="k">Email</span>
@@ -118,20 +119,20 @@ async function load() {
       </div>
       ${(o.main_phone || o.customer_service_phone || o.accounting_phone || o.email)
       ? `<div style="margin-top:14px" class="no-print">
-            <a class="chip" href="/api/contracts/${id}/vcard">⬇ Download contact file (.vcf)</a>
+            <a class="btn sm" href="/api/contracts/${id}/vcard">Download contact file (.vcf)</a>
          </div>`
       : '<p class="muted">No owner-entity contact info on file yet. Add a website and phone lines so this profile can offer click-to-call, text, and a downloadable contact card.</p>'}
     </div>
 
     <div class="card">
-      <h3>Jobs done under this contract</h3>
+      <h2>Jobs done under this contract</h2>
       ${(p.jobs || []).length ? `<table class="jobs-table">
         <thead><tr><th>Job</th><th>Customer</th><th>Status</th>
-          <th style="text-align:right">Contract value</th><th style="text-align:right">Sales</th></tr></thead>
+          <th class="r">Contract value</th><th class="r">Sales</th></tr></thead>
         <tbody>${jobsRows}</tbody>
         <tfoot><tr><td colspan="3">Total</td>
-          <td style="text-align:right">${money(t.total_contract_value)}</td>
-          <td style="text-align:right">${money(t.total_sales)}</td></tr></tfoot>
+          <td class="r">${money(t.total_contract_value)}</td>
+          <td class="r">${money(t.total_sales)}</td></tr></tfoot>
       </table>`
       : '<p class="muted">No jobs synced yet. Jobs flow in from JobTread via the jobs sync (see the README) and roll up here automatically.</p>'}
     </div>`;

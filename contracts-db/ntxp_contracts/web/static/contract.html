@@ -1,24 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <script>try{var t=localStorage.getItem("ntxp.theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>NTXP — Contract Profile</title>
+  <link rel="icon" href="/assets/icon_small.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="topbar">
-    <img data-brand-logo class="logo" style="display:none" alt="">
-    <span class="title"><span data-brand-name>NTXP</span> <span class="sub">Contract Profile</span></span>
-    <span class="spacer"></span>
-    <button class="btn ghost no-print" id="printBtn" style="color:#fff;border-color:rgba(255,255,255,.3)">🖨 Print</button>
-    <button class="btn ghost no-print" id="pdfBtn" style="color:#fff;border-color:rgba(255,255,255,.3)">⬇ PDF</button>
-  </div>
+  <header id="top">
+    <div class="band">
+      <div class="logo" id="logo"></div>
+      <div class="lockup"><h1>Contract Profile</h1><p id="subtitle">NTXP Master Contracts</p></div>
+      <div class="acct no-print">
+        <button class="btn sm" id="printBtn" type="button">Print</button>
+        <button class="btn sm" id="pdfBtn" type="button">Download PDF</button>
+      </div>
+    </div>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="tag">
+      <span><b>CONTRACT #</b><span id="tagNo">—</span></span>
+      <span><b>OWNER</b><span id="tagOwner">—</span></span>
+      <span><b>DATE</b><span id="tagD"></span></span>
+    </div>
+  </header>
 
-  <div class="profile" id="root">
+  <main class="profile" id="root">
     <div class="crumbs no-print"><a href="/">← Master Contracts</a></div>
     <div id="content"><p class="muted">Loading…</p></div>
-  </div>
+  </main>
 
   <script src="/static/util.js"></script>
   <script src="/static/brand.js"></script>

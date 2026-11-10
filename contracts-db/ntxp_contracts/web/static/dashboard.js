@@ -21,7 +21,7 @@ const actor = () => actorInput.value.trim() || 'web';
 
 function flash(msg, color) {
   flashEl.textContent = msg || 'saved ✓';
-  flashEl.style.color = color || 'var(--success)';
+  flashEl.style.color = color || 'var(--navy)';
   flashEl.classList.add('show');
   clearTimeout(flash._t);
   flash._t = setTimeout(() => flashEl.classList.remove('show'), 1400);
@@ -39,14 +39,14 @@ async function save(c, field, value, cellEl) {
     if (res.status === 409) {
       // someone saved this row first — adopt the fresh row, reflect this cell
       mergeContract(data.contract);
-      flash('refreshed (teammate edited)', 'var(--warning)');
+      flash('refreshed (teammate edited)', 'var(--navy)');
       return data.contract;
     }
-    if (!res.ok) { flash(data.error || 'error', 'var(--danger)'); return null; }
+    if (!res.ok) { flash(data.error || 'error', 'var(--red-ink)'); return null; }
     mergeContract(data.contract);
     flash();
     return data.contract;
-  } catch (e) { flash('offline', 'var(--danger)'); return null; }
+  } catch (e) { flash('offline', 'var(--red-ink)'); return null; }
 }
 
 function mergeContract(updated) {
@@ -62,6 +62,7 @@ function textCell(c, field, opts = {}) {
   const inp = document.createElement('input');
   inp.className = 'cell';
   inp.value = c[field] ?? '';
+  inp.setAttribute('aria-label', (opts.label || opts.placeholder || field) + ' — ' + (c.contract_no || c.contract_title || 'contract'));
   if (opts.placeholder) inp.placeholder = opts.placeholder;
   inp.addEventListener('focus', () => editingId = c.contract_id);
   inp.addEventListener('blur', async () => {
@@ -84,6 +85,7 @@ function numCell(c, field, opts = {}) {
 function dateCell(c, field) {
   const inp = document.createElement('input');
   inp.type = 'date'; inp.className = 'cell'; inp.style.maxWidth = '150px';
+  inp.setAttribute('aria-label', 'Expiration date — ' + (c.contract_no || c.contract_title || 'contract'));
   inp.value = c[field] || '';
   inp.addEventListener('focus', () => editingId = c.contract_id);
   inp.addEventListener('change', async () => {
@@ -96,6 +98,7 @@ function dateCell(c, field) {
 function selectCell(c, field, options, opts = {}) {
   const sel = document.createElement('select');
   sel.className = 'cell';
+  sel.setAttribute('aria-label', (opts.blank || field) + ' — ' + (c.contract_no || c.contract_title || 'contract'));
   const blank = document.createElement('option');
   blank.value = ''; blank.textContent = opts.blank || '—'; sel.appendChild(blank);
   options.forEach(o => {
@@ -111,8 +114,10 @@ function selectCell(c, field, options, opts = {}) {
 }
 
 function flagCell(c) {
-  const span = document.createElement('span');
+  const span = document.createElement('button');
+  span.type = 'button';
   const set = () => {
+    span.setAttribute('aria-pressed', String(!!c.is_executed));
     span.className = 'flag ' + (c.is_executed ? 'exec' : 'unexec');
     span.innerHTML = `<span class="dot"></span>${c.is_executed ? 'Executed' : 'Unexecuted'}`;
     span.title = c.is_executed ? 'Click to flag as unexecuted'
@@ -134,15 +139,18 @@ function pdfCell(c) {
     if (href) {
       const a = document.createElement('a');
       a.href = href; a.target = '_blank'; a.rel = 'noopener'; a.className = 'pdf-yes';
-      a.textContent = '📄 view';
+      a.textContent = 'View';
       wrap.appendChild(a);
     }
-    const pencil = document.createElement('span');
-    pencil.className = 'pencil'; pencil.textContent = c.pdf_url ? ' ✎' : '＋ link';
+    const pencil = document.createElement('button');
+    pencil.type = 'button';
+    pencil.className = 'mini'; pencil.textContent = c.pdf_url ? '✎' : '+ link';
     pencil.title = 'Paste the live link to the signed PDF';
+    pencil.setAttribute('aria-label', c.pdf_url ? 'Edit signed PDF link' : 'Add signed PDF link');
     pencil.onclick = () => {
       const inp = document.createElement('input');
       inp.className = 'cell'; inp.value = c.pdf_url || '';
+      inp.setAttribute('aria-label', 'Signed PDF link');
       inp.placeholder = 'https://…/signed.pdf'; inp.style.minWidth = '160px';
       wrap.innerHTML = ''; wrap.appendChild(inp); inp.focus();
       editingId = c.contract_id;
@@ -170,15 +178,17 @@ function conoCell(c) {
   a.textContent = c.contract_no || '(no #)';
   a.title = 'Open contract profile';
   wrap.appendChild(a);
-  const pencil = document.createElement('span');
-  pencil.className = 'pencil'; pencil.textContent = '✎';
-  pencil.title = 'Edit number';
+  const pencil = document.createElement('button');
+  pencil.type = 'button';
+  pencil.className = 'mini'; pencil.textContent = '✎';
+  pencil.title = 'Edit number'; pencil.setAttribute('aria-label', 'Edit contract number');
   pencil.onclick = () => {
     // Dedicated input (not textCell) so there is a single blur handler that
     // saves and only then re-renders — avoids racing a second listener that
     // would rebuild the row while the save was still in flight.
     const inp = document.createElement('input');
     inp.className = 'cell'; inp.style.maxWidth = '130px';
+    inp.setAttribute('aria-label', 'Contract number');
     inp.value = c.contract_no || ''; inp.placeholder = 'contract / RFP #';
     wrap.innerHTML = ''; wrap.appendChild(inp); inp.focus();
     editingId = c.contract_id;
@@ -216,29 +226,31 @@ function renderRows() {
     else if (d != null && d <= 90) tr.className = 'soon';
 
     tr.appendChild(td(conoCell(c), 'num'));
-    tr.appendChild(td(textCell(c, 'contract_title', { placeholder: 'Contract title' })));
+    tr.appendChild(td(textCell(c, 'contract_title', { placeholder: 'Contract title', label: 'Title' }), 'para'));
     tr.appendChild(td(selectCell(c, 'contract_type', META.contract_types, { blank: 'Type' })));
-    tr.appendChild(td(textCell(c, 'owner_entity', { placeholder: 'Owner entity' })));
-    tr.appendChild(td(numCell(c, 'coefficient_multiplier', { placeholder: '1.00', width: '90px' }), 'num'));
-    tr.appendChild(td(numCell(c, 'cooperative_fee', { placeholder: '0%', width: '90px' }), 'num'));
+    tr.appendChild(td(textCell(c, 'owner_entity', { placeholder: 'Owner entity', label: 'Owner entity' }), 'para'));
+    tr.appendChild(td(numCell(c, 'coefficient_multiplier', { placeholder: '1.00', width: '90px', label: 'Coefficient' }), 'num'));
+    tr.appendChild(td(numCell(c, 'cooperative_fee', { placeholder: '0%', width: '90px', label: 'Co-op fee' }), 'num'));
 
     const expWrap = document.createElement('span');
     expWrap.className = 'exp ' + (d != null && d < 0 ? 'exp-expired' : d != null && d <= 90 ? 'exp-soon' : '');
     expWrap.appendChild(dateCell(c, 'expiration_date'));
     tr.appendChild(td(expWrap, 'num'));
 
-    tr.appendChild(td(textCell(c, 'allowable_scope', { placeholder: 'electrical, GC…' })));
+    tr.appendChild(td(textCell(c, 'allowable_scope', { placeholder: 'electrical, GC…', label: 'Scope' }), 'para'));
     tr.appendChild(td(pdfCell(c)));
     tr.appendChild(td(flagCell(c)));
 
     const tools = document.createElement('div');
     tools.className = 'rowtools';
     const del = document.createElement('button');
-    del.className = 'iconbtn'; del.textContent = '🗑'; del.title = 'Remove';
+    del.type = 'button';
+    del.className = 'iconbtn'; del.textContent = '✕'; del.title = 'Remove';
+    del.setAttribute('aria-label', 'Remove contract ' + (c.contract_no || c.contract_title || ''));
     let armed = false;
     del.onclick = async () => {
-      if (!armed) { armed = true; del.textContent = '✓?'; del.title = 'Click again to remove';
-        setTimeout(() => { armed = false; del.textContent = '🗑'; }, 2500); return; }
+      if (!armed) { armed = true; del.textContent = 'Sure?'; del.title = 'Click again to remove';
+        setTimeout(() => { armed = false; del.textContent = '✕'; }, 2500); return; }
       await fetch('/api/contracts/' + c.contract_id, { method: 'DELETE' });
       CONTRACTS = CONTRACTS.filter(x => x.contract_id !== c.contract_id);
       renderRows(); flash('removed');
@@ -247,8 +259,12 @@ function renderRows() {
     tr.appendChild(td(tools, 'no-print'));
     rowsEl.appendChild(tr);
   }
-  $('#printmeta').textContent =
-    `${list.length} contracts · generated ${new Date().toLocaleDateString()}`;
+  const soon = CONTRACTS.filter(x => { const d = daysUntil(x.expiration_date); return d != null && d >= 0 && d <= 90; }).length;
+  $('#barN').textContent = list.length;
+  $('#tagN').textContent = CONTRACTS.length;
+  $('#tagS').textContent = soon;
+  $('#tagU').textContent = CONTRACTS.filter(x => !x.is_executed).length;
+  $('#live').textContent = `${list.length} contracts`;
 }
 
 // --- data load + live polling -------------------------------------------
