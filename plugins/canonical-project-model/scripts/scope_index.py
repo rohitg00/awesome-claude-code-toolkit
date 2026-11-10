@@ -242,7 +242,7 @@ def find_details(lines, pw, ph):
             continue
         seen.add(key)
         box = (min(title.x0, s.x0, label.x0 if label else title.x0), min(title.y0, s.y0),
-               max(title.x1, s.x1), max(title.y1, s.y1))
+               max(title.x1, s.x1, label.x1 if label else title.x1), max(title.y1, s.y1))
         found.append({"label": label.text if label else None, "title": title.text,
                       "scale": SCALE_RE.search(s.text).group(1), "box": norm_box(box, pw, ph),
                       "_title_box": title.box, "confidence": 0.7 if label else 0.55})
@@ -325,7 +325,9 @@ def clean_rows(rows):
     out = [r + [""] * (width - len(r)) for r in out]
     keep = [i for i in range(width) if any(r[i] for r in out)]
     out = [[r[i] for i in keep] for r in out]
-    header_i = next((i for i, r in enumerate(out) if sum(1 for c in r if c) >= max(2, len(r) // 2)), 0)
+    header_i = next((i for i, r in enumerate(out) if sum(1 for c in r if c) >= max(2, len(r) // 2)), None)
+    if header_i is None:                                 # no row reads as a header: do not promote a data row
+        return [], out
     return out[header_i], out[header_i + 1:]
 
 
@@ -389,13 +391,14 @@ def find_schedules(page, lines, pw, ph, sheet_division):
             if t.bbox[1] - head.y1 > 0.06 * ph:
                 break
             # find_tables can return one table for two schedules sharing a row: keep this region's cells
-            kept = [[c for c in r.cells if c and clip.x0 <= (c[0] + c[2]) / 2 <= clip.x1] for r in t.rows]
-            kept = [r for r in kept if r]
-            if not kept:
+            # Cells outside the region become blanks in place, so the cells that stay keep their columns;
+            # clean_rows then drops the columns and rows that are blank throughout.
+            mine = [[c if c and clip.x0 <= (c[0] + c[2]) / 2 <= clip.x1 else None for c in r.cells] for r in t.rows]
+            flat = [c for r in mine for c in r if c]
+            if not flat:
                 continue
-            tb = (min(c[0] for r in kept for c in r), min(c[1] for r in kept for c in r),
-                  max(c[2] for r in kept for c in r), max(c[3] for r in kept for c in r))
-            grid = [[cell_text(c) for c in r] for r in kept]
+            tb = (min(c[0] for c in flat), min(c[1] for c in flat), max(c[2] for c in flat), max(c[3] for c in flat))
+            grid = [[cell_text(c) if c else "" for c in r] for r in mine]
             header, body = clean_rows(grid)
             if header and SCHEDULE_HEAD_RE.search(" ".join(header).upper()) and body:
                 header, body = body[0], body[1:]            # the title was the table's first row
@@ -431,13 +434,14 @@ def find_rooms(lines, pw, ph):
         if not above:
             continue
         name = max(above, key=lambda l: l.y1)
-        sf = None
+        sf, best = None, None
         for l in lines:
-            if abs(l.cx - n.cx) < 6 * n.h and -1 < l.y0 - n.y1 < 2.6 * n.h or (l is n):
+            if (abs(l.cx - n.cx) < 6 * n.h and -1 < l.y0 - n.y1 < 2.6 * n.h) or (l is n):
                 m = SF_RE.search(l.text.upper())
                 if m:
-                    sf = float(m.group(1).replace(",", ""))
-                    break
+                    dist = 0 if l is n else (l.y0 - n.y1) + abs(l.cx - n.cx)
+                    if best is None or dist < best:      # the nearest printed area belongs to this tag
+                        best, sf = dist, float(m.group(1).replace(",", ""))
         box = (min(name.x0, n.x0), name.y0, max(name.x1, n.x1), n.y1)
         rooms.append({"number": n.text, "name": name.text, "sf": sf, "box": norm_box(box, pw, ph)})
     return rooms
@@ -487,8 +491,17 @@ def find_parties(lines):
                 continue
             below = [m for m in lines if 0 <= m.y0 - l.y1 < 3.2 * l.h and abs(m.x0 - l.x0) < 6 * l.h and m is not l]
             below.sort(key=lambda m: m.y0)
-            name = next((m.text.strip() for m in below if re.search(r"[A-Za-z]{3,}", m.text)
-                         and not re.match(r"^\d", m.text) and not re.search(r"ENGINEERS?$|^P:", m.text.upper())), None)
+            def is_label(t):
+                u = t.upper().strip(" :")
+                return len(u) <= 46 and any(re.search(p, u) for _, p in PARTY_LABELS)
+            name = None
+            for m in below:
+                if is_label(m.text):                     # the next role starts here: this role has no firm printed
+                    break
+                if (re.search(r"[A-Za-z]{3,}", m.text) and not re.match(r"^\d", m.text)
+                        and not re.search(r"ENGINEERS?$|^P:", m.text.upper())):
+                    name = m.text.strip()
+                    break
             if name:
                 parties[role] = {"name": name, "label": l.text.strip(" :"), "confidence": 0.7}
             break
@@ -542,7 +555,8 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
             spec_by_sheet.setdefault(sid, []).append(sp.get("section"))
 
     search_dirs = [Path(pdf_dir)] if pdf_dir else []
-    search_dirs += [model_dir.parent, *[p for p in model_dir.parent.rglob("*") if p.is_dir() and "model" not in p.parts[-1:]][:400]]
+    search_dirs += [model_dir.parent, *sorted((p for p in model_dir.parent.rglob("*") if p.is_dir()
+                                               and "model" not in p.parts[-1:]), key=lambda p: (len(p.parts), str(p)))[:400]]
     def locate(name):
         for d in search_dirs:
             p = d / name
@@ -554,7 +568,12 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
     tags, clar = {}, {k: [] for k in CLARIFICATION_RULES}
     parties, addr, docs = {}, None, {}
     crop_dir = model_dir / "atlas" / "crops"
-    sheets = sorted(atlas["sheets"], key=lambda s: (str(s.get("source_doc")), int(s.get("page") or 0)))
+    def page_int(s):
+        try:
+            return int(s.get("page") or 0)
+        except (TypeError, ValueError):                   # a bad page value skips the sheet, not the build
+            return 0
+    sheets = sorted(atlas["sheets"], key=lambda s: (str(s.get("source_doc")), page_int(s)))
     for s in sheets:
         name = s.get("source_doc")
         if name not in docs:
@@ -563,8 +582,10 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
             if not path:
                 review.append(f"drawing file not found, so its sheets were not indexed: {name}")
         doc = docs[name]
-        pno = int(s.get("page") or 0)
+        pno = page_int(s)
         if doc is None or not (1 <= pno <= doc.page_count):
+            if doc is not None:
+                review.append(f"sheet skipped, page {s.get('page')!r} is not in {name}: {s.get('sheet_no') or s.get('sheet_id')}")
             continue
         page = doc[pno - 1]
         pw, ph = page.rect.width, page.rect.height
@@ -636,10 +657,18 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
             for role, p in find_parties(lines).items():
                 parties.setdefault(role, {**p, **ref})
             if addr is None:
-                blob = " \n ".join(l.text for l in lines)
-                a, c = ADDRESS_RE.search(blob), CITY_RE.search(blob)
-                if a:
+                for l in sorted(lines, key=lambda l: (l.y0, l.x0)):
+                    a = ADDRESS_RE.search(l.text)
+                    if not a:
+                        continue
+                    # City, state and ZIP count only when printed with the street: same line or the lines just under it.
+                    c = CITY_RE.search(l.text[a.end():])
+                    if not c:
+                        under = sorted((m for m in lines if 0 <= m.y0 - l.y1 < 2.6 * l.h and abs(m.x0 - l.x0) < 8 * l.h),
+                                       key=lambda m: m.y0)
+                        c = next((x for x in (CITY_RE.search(m.text) for m in under) if x), None)
                     addr = {"street": a.group(0).strip(), "city_state_zip": c.group(0).strip() if c else None, **ref}
+                    break
 
         # strong-keyword lines outside a notes block still belong in the clarifications
         noted = {it["text"] for b in notes if b["sheet_id"] == sid for it in b["items"]}
@@ -708,7 +737,7 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
     for d in divisions:
         d_tags = sorted((t for t in tags.values() if t["division"] == d), key=lambda t: (t["type"], -t["tag_count"]))
         for t in d_tags:
-            t["measured_quantity"], t["uom"] = None, "LF"
+            t["measured_quantity"], t["uom"] = None, None    # no quantity, so no unit either
             t["status"] = "tag count only: a measured length comes from the takeoff"
         scope[d] = {
             "division": d, "label": trade_labels.get(d) or labels.get(d) or f"Division {d}",
@@ -764,7 +793,7 @@ def build(model_dir, pdf_dir=None, now=None, crops=True):
                      + (f" {loc['zip']}" if loc.get("zip") else ""), "source": "project record"} if loc.get("address") else addr),
         "owner": ({"name": ident["owner"], "source": "project record"} if ident.get("owner") else parties.get("owner")),
         "architect": parties.get("architect"),
-        "mep_engineer": parties.get("mep_engineer") or parties.get("plumbing_engineer"),
+        "mep_engineer": parties.get("mep_engineer"),
         "engineers_other": [{"role": k.replace("_", " "), **v} for k, v in parties.items()
                             if k not in ("owner", "architect", "mep_engineer")],
         "pages": pages, "notes": notes, "rooms": room_list,

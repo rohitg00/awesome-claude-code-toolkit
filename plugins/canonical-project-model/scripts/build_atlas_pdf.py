@@ -104,6 +104,7 @@ def tbox(page, rect, text, fontname="helv", fontsize=8, color=INK, align=0):
         if w <= rect.width:
             text += "..."
             break
+    w = fitz.get_text_length(text, fontname=fontname, fontsize=fontsize)   # the width of what is actually drawn
     x = rect.x0 if align == 0 else rect.x0 + (rect.width - w) / 2 if align == 1 else rect.x1 - w
     page.insert_text((x, rect.y0 + fontsize * 0.92), text, fontname=fontname, fontsize=fontsize, color=color)
 
@@ -177,7 +178,7 @@ class Legend:
         self.md.append(f"\n{'#' * (level + 1)} {text}\n")
 
     def heading(self, text, sub=None, dest=None):
-        self.ensure(22)
+        self.ensure(30 if sub else 22)
         p = self.page
         t = latin(text).upper()
         tbox(p, fitz.Rect(MARGIN, self.y, PW - MARGIN, self.y + 12), t, fontname="hebo", fontsize=8,
@@ -234,7 +235,10 @@ class Legend:
             if x + w > PW - MARGIN:
                 x = MARGIN + 6
                 self.y += line_h
+            at = self.pno
             self.ensure(line_h + 2)
+            if self.pno != at:                           # a new page starts its row at the left margin
+                x = MARGIN + 6
             r = fitz.Rect(x, self.y, x + w, self.y + 10.5)
             self.page.draw_rect(r, color=WARM_EDGE, fill=WHITE if dest else WARM, width=0.5, radius=0.25)
             self.page.insert_text((x + 4.5, self.y + 7.8), text, fontname="hebo", fontsize=7,
@@ -267,7 +271,10 @@ class Legend:
             if x + w > PW - MARGIN:
                 x = MARGIN + 6
                 self.y += 12
+            at = self.pno
             self.ensure(12)
+            if self.pno != at:
+                x = MARGIN + 6
             self.page.draw_rect(fitz.Rect(x, self.y + 1.5, x + 9, self.y + 8.5), color=None, fill=_rgb(hexv))
             self.page.insert_text((x + 12, self.y + 8), name, fontname="helv", fontsize=6.8, color=INK)
             x += w + 6
@@ -307,6 +314,9 @@ class Legend:
         self.md.append("\n| " + " | ".join(latin(c) for c in columns) + " |\n|" + "---|" * ncol)
         for ri, r in enumerate(shown):
             cells = [wrap(r[c] if c < len(r) else "", "helv", size, widths[c] - 6) for c in range(ncol)]
+            cap = max(3, int((BODY_BOTTOM - BODY_TOP - 60) / (size + 2)))
+            # A cell taller than a page is cut with a visible mark; the full text stays in the knowledge base.
+            cells = [x if len(x) <= cap else x[:cap - 1] + ["... (continues in the knowledge base)"] for x in cells]
             h = max(len(x) for x in cells) * (size + 2) + 4
             if self.y + h > BODY_BOTTOM:
                 self.new_page()
@@ -363,8 +373,23 @@ class Legend:
             self.y += 11
 
 
+def name_bytes(s):
+    """The bytes a PDF string holds for this text: ASCII as is, else PDFDocEncoding, else UTF-16BE with its mark."""
+    try:
+        return s.encode("ascii")
+    except UnicodeEncodeError:
+        pass
+    try:
+        return s.encode("latin-1")
+    except UnicodeEncodeError:
+        return b"\xfe\xff" + s.encode("utf-16-be")
+
+
 def pdf_string(s):
-    return "(" + s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)") + ")"
+    """A PDF string object. Plain printable ASCII is written literally; anything else as hex, byte for byte."""
+    if all(32 <= ord(c) < 127 for c in s):
+        return "(" + s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)") + ")"
+    return "<" + name_bytes(s).hex().upper() + ">"
 
 
 def dest_name(kind, key):
@@ -380,22 +405,35 @@ def write_named_destinations(doc, dests):
     # Keep the named destinations the source set already carries: its own links may point at them.
     # resolve_names() reports the raw PDF point, so it is written back unchanged.
     try:
+        if hasattr(doc, "_resolved_names"):              # PyMuPDF caches this; pages have moved since
+            del doc._resolved_names
         carried = doc.resolve_names() or {}
     except Exception:                                    # noqa: BLE001  (older PyMuPDF: nothing to carry)
         carried = {}
+    dropped = 0
     for name, d in carried.items():
-        pno = d.get("page", -1)
-        if name in dests or not isinstance(pno, int) or not 0 <= pno < doc.page_count:
+        if name in dests:
             continue
-        x, y = (list(d.get("to") or (0, 0)) + [0, 0])[:2]
-        entries[name] = f"[{doc[pno].xref} 0 R/XYZ {round(x, 2)} {round(y, 2)} {round(d.get('zoom') or 0, 2)}]"
+        pno = d.get("page", -1)
+        if not isinstance(pno, int) or not 0 <= pno < doc.page_count:
+            dropped += 1                                 # no page in this file (a remote or malformed target)
+            continue
+        if d.get("to") is not None:
+            x, y = (list(d["to"]) + [0, 0])[:2]
+            entries[name] = f"[{doc[pno].xref} 0 R/XYZ {round(x, 2)} {round(y, 2)} {round(d.get('zoom') or 0, 2)}]"
+        elif str(d.get("dest") or "").startswith("/"):   # /Fit, /FitH ... : the view is copied as written
+            entries[name] = f"[{doc[pno].xref} 0 R{d['dest']}]"
+        else:
+            dropped += 1
+    if dropped:
+        log(f"{dropped} named destination(s) in the source had no page in this file and were not carried over")
     for name in dests:
         pno, x, y = dests[name]
         page = doc[pno]
         pt = fitz.Point(x, y) * page.derotation_matrix * ~page.transformation_matrix
         entries[name] = f"[{page.xref} 0 R/XYZ {round(pt.x, 2)} {round(pt.y, 2)} 0]"
     # A name tree's keys must be in byte order.
-    items = [pdf_string(n) + entries[n] for n in sorted(entries, key=lambda n: n.encode("latin-1", "replace"))]
+    items = [pdf_string(n) + entries[n] for n in sorted(entries, key=name_bytes)]
     tree = doc.get_new_xref()
     doc.update_object(tree, "<</Names[" + "".join(items) + "]>>")
     # Path form: sets /Dests whether /Names is absent, inline or indirect, and leaves the other name trees alone.
