@@ -168,7 +168,16 @@ def build_server(db_override: str | None = None, stateless_http: bool = False):
         options:[{id,value,grade?,evidence?}]}. Returns choice + confidence +
         provenance."""
         from .council import decide
-        return json.dumps(decide(dict(task)), default=str)
+        return json.dumps(decide(dict(task), conn=_conn()), default=str)
+
+    @mcp.tool()
+    def council_report() -> str:
+        """Consensus-of-effectiveness summary (decisions, % resolved free by JEV,
+        total cost, avg confidence by mode) over persisted council answers."""
+        from .council import effectiveness, list_answers
+        conn = _conn()
+        return json.dumps({"effectiveness": effectiveness(conn),
+                           "recent": list_answers(conn, 10)}, default=str)
 
     @mcp.tool()
     def contact_context(query: str) -> str:

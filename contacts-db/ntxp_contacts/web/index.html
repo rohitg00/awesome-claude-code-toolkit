@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en" data-palette="ntxp" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NTXP Contacts</title>
+<meta name="description" content="NTXP canonical contacts directory — live view.">
+<script>
+/* Theme before first paint (no flash): stored choice, else the OS preference. */
+(function(){try{var t=localStorage.getItem("ntxp.theme"),p=localStorage.getItem("ntxp.palette");
+document.documentElement.setAttribute("data-theme",t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+if(p)document.documentElement.setAttribute("data-palette",p)}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+<style>
+/* ===== NTXP-DOC-STANDARD 2.1 tokens (the default "ntxp" palette matches the engine exactly) ===== */
+:root{
+  --navy:#1B2A4E; --band:#182746; --navy-deep:#16224A; --navy-mid:#46567D; --navy-rule:#35446B;
+  --accent:#C8102E;            /* the ONE accent: the header band, nothing else */
+  --red:#D0353C; --red-ink:#B92A32;   /* semantic only: errors / "to confirm" */
+  --warm:#F6F3EF; --warm-line:#E2DAD0; --warm-edge:#CDC0B2;
+  --link:#2F529B; --ink:#1F2A3D; --ink-soft:#5A6880;
+  --paper:#FFFFFF; --float:#FFFFFF; --on-navy:#FFFFFF;
+  --baby:#BFE0F5; --baby-ink:#10304A; /* REPORTS drawer — owner-directed baby blue (UI chrome only) */
+  --shadow:0 1px 3px rgba(27,42,78,.14);
+  --sans:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --lines:1;
+}
+/* Palettes (owner-directed UI feature). Default = the standard. Structure never changes. */
+[data-palette="field"]{--warm:#E4DCD0;--warm-line:#D3C8B8;--ink-soft:#526079;--shadow:none}                      /* copier-safe heavier row */
+[data-palette="slate"]{--navy:#2B3A55;--band:#243149;--navy-mid:#55657F;--navy-rule:#43526D;--link:#2A5DA8;--warm:#EEF1F6;--warm-line:#D9DFE8;--warm-edge:#C2CAD8;--baby:#C9DCF2}
+[data-palette="graphite"]{--navy:#2A2F36;--band:#23272D;--navy-mid:#555C66;--navy-rule:#444A53;--accent:#8C939E;--warm:#F2F2F0;--warm-line:#DDDDD9;--warm-edge:#C9C9C4;--baby:#D5DCE3}
+[data-theme="dark"]{
+  --paper:#0F1626; --float:#182036; --ink:#E6EAF2; --ink-soft:#A9B4CA; --link:#93B4F2;
+  --warm:#182036; --warm-line:#2A3552; --warm-edge:#3A4770; --baby:#24455C; --baby-ink:#E6F2FB;
+  --red-ink:#FF8A90; --shadow:0 1px 3px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.45 var(--sans);min-height:100vh}
+a{color:var(--link)}
+a.hot{cursor:pointer;text-decoration:underline;text-underline-offset:2px;display:inline-block;min-height:24px;min-width:24px;text-align:center;line-height:24px}
+td:not(.para) .cell a{display:inline-block;min-height:24px;min-width:24px;line-height:24px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--link);outline-offset:2px;border-radius:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+
+/* ===== header block: navy band 1.00in, logo zone, centred caps lockup, accent fade, tag line ===== */
+.band{background:var(--band);color:var(--on-navy);height:96px;display:grid;grid-template-columns:56px 148px 1fr auto;align-items:center;
+  padding:env(safe-area-inset-top,0px) var(--gutter) 0;position:relative}
+.ham{width:44px;height:44px;border:1px solid rgba(255,255,255,.35);border-radius:4px;background:transparent;display:grid;place-items:center;transition:transform .3s ease}
+.ham[aria-expanded="true"]{transform:rotate(90deg)}
+.ham i,.ham i::before,.ham i::after{display:block;width:20px;height:2px;background:#fff;position:relative;content:""}
+.ham i::before{position:absolute;top:-6px}.ham i::after{position:absolute;top:6px}
+.logo{height:78px;display:flex;align-items:center}
+.logo img{max-height:78px;max-width:140px;object-fit:contain}
+.wordmark{font-weight:700;letter-spacing:.14em;font-size:20px;color:#fff}
+.lockup{text-align:center;min-width:0;padding:0 8px}
+.lockup h1{margin:0;font-size:37px;line-height:1.05;font-weight:700;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lockup p{margin:4px 0 0;font-size:19px;line-height:1.1;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acct{display:flex;align-items:center;gap:8px;font-size:12px;color:#fff;max-width:230px}
+.acct .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av{width:30px;height:30px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.accent{height:8px;background:linear-gradient(90deg,rgba(200,16,46,.10) 0%,var(--accent) 100%),var(--band)}
+.tag{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:7px var(--gutter);font-size:11px;color:var(--ink-soft);border-bottom:1px solid var(--warm-line)}
+.tag b{color:var(--navy);letter-spacing:.06em;margin-right:4px}
+[data-theme="dark"] .tag b{color:var(--ink)}
+
+/* ===== shell: left control panel + persistent right main panel ===== */
+.shell{display:grid;grid-template-columns:292px minmax(0,1fr);gap:16px;padding:16px calc(max(12px,env(safe-area-inset-right,0px)) + 164px) 96px var(--gutter);align-items:start}
+.card{background:var(--paper);border:1px solid var(--warm-edge);border-radius:4px;box-shadow:var(--shadow);border-bottom-width:2px;overflow:hidden}
+.bar{background:var(--navy);color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px;text-align:center;padding:10px 12px;position:relative}
+.bar .n{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;letter-spacing:.04em}
+main{min-width:0}
+.rail{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.barbtn{display:block;width:100%;border:0;font-family:inherit;cursor:pointer;min-height:44px}
+.barbtn::after{content:"▾";position:absolute;left:14px;top:50%;transform:translateY(-50%);transition:transform .2s}
+.barbtn[aria-expanded="false"]::after{transform:translateY(-50%) rotate(-90deg)}
+.rail.closed .rail-body{display:none}
+.rail-body{padding:8px}
+.acc{border-bottom:1px solid var(--warm-line)}
+.acc:last-of-type{border-bottom:0}
+.acc-h{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 8px;background:none;border:0;text-align:left;font-weight:600;min-height:44px}
+.acc-h .cnt{background:var(--navy);color:#fff;border-radius:999px;font-size:11px;padding:1px 8px;min-width:22px;text-align:center}
+.acc-h .chev{transition:transform .2s}
+.acc-h[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.acc-p{padding:0 8px 10px}
+.fld{width:100%;padding:9px 10px;border:1px solid var(--warm-edge);border-radius:4px;background:var(--paper);color:var(--ink);font:inherit;min-height:40px}
+.chk{list-style:none;margin:6px 0 0;padding:0;max-height:210px;overflow:auto}
+.chk li{display:flex;align-items:center;gap:8px;padding:4px 2px;min-height:32px}
+.chk label{flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0}
+.chk label span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chk .ct{color:var(--ink-soft);font-size:11px}
+.chk input{width:18px;height:18px;accent-color:var(--navy)}
+.prox{display:grid;grid-template-columns:1fr 84px;gap:8px;padding:8px}
+.prox label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:3px}
+.presets{display:flex;gap:6px;padding:0 8px 8px;flex-wrap:wrap}
+.btn{border:1px solid var(--warm-edge);background:var(--paper);border-radius:4px;padding:8px 12px;min-height:40px;font-weight:600}
+.btn.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.sm{padding:4px 10px;min-height:32px;font-size:12px}
+.btn[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* floating white filter row */
+.ctl{position:sticky;top:8px;z-index:20;background:var(--float);border:1px solid var(--warm-edge);border-radius:4px;box-shadow:0 4px 14px rgba(27,42,78,.16);
+  padding:8px 12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.seg{display:inline-flex;border:1px solid var(--warm-edge);border-radius:4px;overflow:hidden}
+.seg b{padding:0 10px;display:grid;place-items:center;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);background:var(--warm)}
+.seg button{border:0;background:var(--paper);min-width:44px;min-height:40px;font-weight:700;border-left:1px solid var(--warm-edge)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.ctl .search{flex:1;min-width:180px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--warm);border:1px solid var(--warm-edge);border-radius:999px;padding:2px 4px 2px 10px;font-size:12px}
+.chip button{border:0;background:none;width:26px;height:26px;font-weight:700;border-radius:50%}
+.count{font-size:12px;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
+
+/* ===== table: navy section bar, navy-mid header row, two-tone rows, centred cells, paragraphs left ===== */
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:1320px}
+th{background:var(--navy-mid);color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0;border-right:1px solid var(--navy-rule);position:sticky;top:0}
+th button{width:100%;background:none;border:0;color:#fff;font:inherit;text-transform:inherit;letter-spacing:inherit;padding:12px 8px;display:flex;justify-content:center;align-items:center;gap:6px;min-height:44px}
+th .ar{font-size:10px;opacity:.55}
+th[aria-sort="ascending"] .ar::after{content:"▲";opacity:1}
+th[aria-sort="descending"] .ar::after{content:"▼";opacity:1}
+th[aria-sort="none"] .ar::after{content:"↕"}
+td{padding:7px 8px;vertical-align:top;text-align:center;border-top:1px solid var(--warm-line);border-right:1px solid var(--warm-line);font-size:13px;word-break:normal;overflow-wrap:normal}
+td:not(.para) .cell{white-space:nowrap}          /* emails, phones, roles, cities never break mid-string */
+td.para{overflow-wrap:anywhere}
+td[data-col="company"]{min-width:170px}
+td[data-col="labels"],td.para:has(.lbls){min-width:210px}
+.lbl{white-space:nowrap}
+tbody tr:nth-child(even) td{background:var(--warm)}
+td.para{text-align:left}
+td .cell{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines);overflow:hidden}
+td .sub{display:block;color:var(--ink-soft);font-size:11px}
+body[data-view="1"] td .cell{white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis;max-width:240px;margin:0 auto}
+body[data-view="1"] td.para .cell{margin:0}
+body[data-view="1"] .sub, body[data-view="3"] .sub{display:none}
+td[tabindex]:focus-visible{outline-offset:-3px}
+td.editing{outline:3px solid var(--link);outline-offset:-3px;background:var(--paper)!important;text-align:left}
+td.editing .cell{display:block;-webkit-line-clamp:unset;white-space:normal}
+td.saved{animation:saved 1s ease}
+@keyframes saved{0%{box-shadow:inset 0 0 0 3px var(--link)}100%{box-shadow:inset 0 0 0 3px transparent}}
+.nm{display:flex;align-items:flex-start;gap:8px;justify-content:center;text-align:left}
+.nm .cell{line-height:24px}.nm .cell .sub{line-height:1.3}   /* shares a first baseline with the 24px link boxes */
+.ph{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none;object-fit:cover;overflow:hidden}
+.lbls{display:flex;flex-wrap:wrap;gap:4px}
+.lbl{background:var(--paper);border:1px solid var(--warm-edge);border-radius:999px;padding:0 8px;font-size:11px;min-height:22px;display:inline-flex;align-items:center;gap:2px}
+.lbl button{border:0;background:none;padding:0 4px;font-weight:700;line-height:1;min-width:24px;min-height:24px}
+body[data-view="1"] .lbls{flex-wrap:nowrap;overflow:hidden}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid var(--warm-line);flex-wrap:wrap}
+.pg{font-weight:700;font-style:italic;color:var(--navy)}
+[data-theme="dark"] .pg{color:var(--ink)}
+.empty{padding:36px 12px;text-align:center;color:var(--ink-soft)}
+.err{color:var(--red-ink);font-weight:600}
+
+/* ===== REPORTS drawer (baby blue) + settings panel ===== */
+.scrim{position:fixed;inset:0;background:rgba(15,22,38,.45);z-index:60}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(320px,88vw);background:var(--baby);color:var(--baby-ink);z-index:70;padding:max(16px,env(safe-area-inset-top,0px)) 16px 16px;
+  transform:translateX(-102%);transition:transform .28s ease;display:flex;flex-direction:column;gap:8px;box-shadow:4px 0 22px rgba(0,0,0,.25);overflow:auto;visibility:hidden}
+.drawer.open{transform:none;visibility:visible}
+.drawer h2{margin:6px 0 4px;font-size:15px;letter-spacing:.18em;text-align:center;text-transform:uppercase}
+.rb{display:block;width:100%;text-align:left;background:rgba(255,255,255,.65);border:1px solid rgba(16,48,74,.25);border-radius:4px;padding:11px 12px;font-weight:600;color:var(--baby-ink);min-height:44px}
+.rb:hover{background:#fff;color:#10304A}
+.drawer .sub2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-top:8px}
+.drawer .seg button{background:rgba(255,255,255,.65);color:var(--baby-ink)}
+.drawer .seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.gear{margin-top:auto;align-self:flex-start;width:48px;height:48px;border-radius:50%;border:1px solid rgba(16,48,74,.35);background:rgba(255,255,255,.7);font-size:22px;color:var(--baby-ink)}
+.panel{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:76px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 110px);overflow:auto;z-index:80;background:var(--paper);
+  border:1px solid var(--warm-edge);border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.panel section{padding:12px 14px;border-bottom:1px solid var(--warm-line)}
+.panel h3{margin:0 0 8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.row2{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{display:flex;align-items:center;gap:6px;border:1px solid var(--warm-edge);background:var(--paper);border-radius:4px;padding:4px 8px;min-height:36px;font-size:12px}
+.sw button[aria-pressed="true"]{border-color:var(--link);box-shadow:inset 0 0 0 2px var(--link)}
+.sw i{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2)}
+.tog{width:48px;height:28px;border-radius:999px;border:0;background:var(--warm-edge);position:relative}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s}
+.tog[aria-checked="true"]{background:var(--navy)}
+.tog[aria-checked="true"]::after{left:23px}
+.mini{font-size:12px;color:var(--ink-soft)}
+
+/* ===== right-side floating export buttons ===== */
+.exports{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:30}
+.exports .btn{box-shadow:0 4px 14px rgba(27,42,78,.2);background:var(--float);width:148px;text-align:center;white-space:normal;line-height:1.25}
+.exports .btn.pri{background:var(--navy)}
+
+/* ===== report view: the live, full-size document ===== */
+.rv-bar{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:0 0 12px}
+.done{background:var(--navy);color:#fff;border:0;border-radius:4px;font-weight:700;font-size:17px;letter-spacing:.08em;padding:14px 38px;min-height:52px;text-transform:uppercase}
+.docscroll{overflow:auto;padding:4px 0 24px}
+.doc{background:#fff;color:#1F2A3D;margin:0 auto;box-shadow:0 2px 18px rgba(0,0,0,.3);width:816px;min-height:1056px;padding-bottom:28px;font-family:var(--sans)}
+.doc.land{width:1056px;min-height:816px}
+.d-band{background:#182746;height:96px;display:grid;grid-template-columns:148px 1fr 148px;align-items:center;color:#fff;padding:0 16px}
+.d-band h2{margin:0;font-size:36px;letter-spacing:.09em;text-transform:uppercase;text-align:center;line-height:1.05}
+.d-band p{margin:3px 0 0;text-align:center;font-size:18px}
+.d-acc{height:8px;background:linear-gradient(90deg,rgba(200,16,46,.10),#C8102E),#182746}
+.d-tag{display:flex;gap:16px;justify-content:center;font-size:10px;color:#5A6880;padding:6px;border-bottom:1px solid #E2DAD0;margin-bottom:14px}
+.d-card{margin:0 28px 14px;border:1px solid #CDC0B2;border-radius:4px;box-shadow:0 1px 3px rgba(27,42,78,.14);overflow:hidden}
+.d-bar{background:#1B2A4E;color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:11px;text-align:center;padding:8px;position:relative}
+.d-bar span{position:absolute;right:10px}
+.d-card table{min-width:0;font-size:10px;width:100%;border-collapse:collapse}
+.d-card th{background:#46567D;position:static;padding:7px 4px;font-size:9px;border-right:1px solid #35446B;color:#fff;text-transform:uppercase;letter-spacing:.08em}
+.d-card td{padding:5px 4px;border-top:1px solid #E2DAD0;border-right:0;text-align:center;font-size:10px;color:#1F2A3D;background:transparent}
+.d-card tr:nth-child(even) td{background:#F6F3EF}
+.d-card td a{color:#2F529B}
+.d-tiles{display:flex;gap:10px;justify-content:center;padding:12px}
+.d-tile{background:#1B2A4E;color:#fff;border-radius:4px;text-align:center;padding:12px 16px;min-width:118px}
+.d-tile b{display:block;font-size:26px}.d-tile span{font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.d-foot{display:flex;justify-content:space-between;margin:8px 28px 0;font-size:9px;color:#5A6880}
+.d-foot b{font-style:italic;color:#1B2A4E}
+
+/* ===== gate + toast ===== */
+.gate{position:fixed;inset:0;z-index:100;background:var(--band);display:grid;place-items:center;padding:16px}
+.gate .box{background:var(--paper);color:var(--ink);border-radius:6px;padding:28px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.gate h2{margin:0 0 6px;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
+[data-theme="dark"] .gate h2{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;z-index:120;max-width:calc(100vw - 32px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.toast.bad{background:var(--red-ink);color:#fff}
+[data-theme="dark"] .toast.bad{color:#1b0b0d;background:#FF8A90}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr);padding-right:var(--gutter)}
+  .rail{position:static;max-height:none}
+  .exports{top:auto;bottom:0;left:0;right:0;transform:none;flex-direction:row;justify-content:center;padding:8px;background:var(--float);border-top:1px solid var(--warm-edge)}
+  .exports .btn{width:auto;flex:1}
+  .shell{padding-bottom:84px}
+}
+@media (max-width:640px){
+  .tag{gap:4px 14px;padding:6px var(--gutter)}.tag>span:nth-child(2){display:none}
+  .band{height:76px;grid-template-columns:52px 1fr auto}
+  .logo{display:none}
+  .lockup h1{font-size:22px}.lockup p{display:none}
+  .acct .who{display:none}
+}
+@media print{
+  .band,.accent,.tag,.rail,.exports,#tableView,.rv-bar,.drawer,.scrim,.panel,.toast,.gate{display:none!important}
+  .shell{display:block;padding:0}
+  .docscroll{overflow:visible;padding:0}.doc{box-shadow:none;margin:0}
+  @page{margin:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body data-view="1">
+<div class="sr" id="live" role="status" aria-live="polite"></div>
+
+<div class="gate" id="gate" hidden>
+  <div class="box" role="dialog" aria-labelledby="gt">
+    <h2 id="gt">NTXP Contacts</h2>
+    <p class="mini" id="gmsg">Sign in with your NTXP Google Workspace account to view the company contacts.</p>
+    <button class="btn pri" id="signin" style="width:100%;margin-top:12px">Sign in with Google · ntxpllc.com</button>
+  </div>
+</div>
+
+<header id="top"><div class="band">
+  <button class="ham" id="ham" aria-label="Reports menu" aria-expanded="false" aria-controls="drawer"><i></i></button>
+  <div class="logo" id="logo"></div>
+  <div class="lockup"><h1>NTXP Contacts</h1><p>Canonical directory · Lightfield is the source of truth</p></div>
+  <div class="acct"><span class="who" id="who"></span><span class="av" id="av" aria-hidden="true"></span></div>
+</div>
+<div class="accent" aria-hidden="true"></div>
+<div class="tag"><span><b>CONTACTS</b><span id="tagN">—</span></span><span><b>SOURCE</b>NTXP canonical (Lightfield, reconciled nightly)</span><span><b>DATE</b><span id="tagD"></span></span></div>
+</header>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Reports" inert>
+  <h2>Reports</h2>
+  <div id="reportBtns"></div>
+  <div class="sub2">Page orientation</div>
+  <div class="seg" role="group" aria-label="Report orientation"><button id="oP" aria-pressed="true">Portrait</button><button id="oL" aria-pressed="false">Landscape</button></div>
+  <div class="mini" style="color:var(--baby-ink)">Reports use the current filters, live.</div>
+  <button class="gear" id="gear" aria-label="Settings" aria-expanded="false" aria-controls="panel">⚙</button>
+</aside>
+
+<div class="panel" id="panel" role="dialog" aria-label="Settings" hidden>
+  <section><h3>Account</h3>
+    <div class="row2"><span id="acctEmail" class="mini"></span></div>
+    <div class="row2" style="margin-top:8px"><button class="btn sm" id="reauth">Re-authenticate</button><button class="btn sm" id="signout">Sign out</button></div>
+    <div class="mini" style="margin-top:6px">Access is limited to the ntxpllc.com Google Workspace domain.</div></section>
+  <section><h3>Appearance</h3>
+    <div class="row2"><label for="dark">Dark mode</label><button class="tog" id="dark" role="switch" aria-checked="false"></button></div>
+    <div class="sw" id="palettes" role="group" aria-label="Colour palette" style="margin-top:10px"></div></section>
+  <section><h3>Report templates</h3>
+    <label class="mini" for="tplFile">Upload an example report (NTXP doc-engine <b>.json</b> spec). Its contact data is wiped on upload; only the layout is kept.</label>
+    <input type="file" id="tplFile" accept=".json,application/json" style="margin-top:6px;width:100%">
+    <div class="mini" id="tplList"></div></section>
+  <section><h3>Model council · consensus of effectiveness</h3><div class="mini" id="council">Loading…</div></section>
+</div>
+
+<div class="shell" id="shell">
+  <aside class="rail card" aria-label="Filters">
+    <button class="bar barbtn" id="railToggle" aria-expanded="true" aria-controls="rail">Filters <span class="n" id="railN" aria-hidden="true"></span></button>
+    <div class="rail-body" id="rail"></div>
+  </aside>
+  <main id="main">
+    <div id="tableView">
+      <div class="ctl" role="search">
+        <div class="seg" role="group" aria-label="View: lines per row"><b>VIEW</b><button data-v="1" aria-pressed="true">1</button><button data-v="3" aria-pressed="false">3</button><button data-v="5" aria-pressed="false">5</button></div>
+        <input class="fld search" id="q" type="search" placeholder="Search name, company, email, project…" aria-label="Search contacts">
+        <div class="chips" id="chips" role="group" aria-label="Active filters"></div>
+        <span class="count" id="count" aria-live="polite"></span>
+      </div>
+      <div class="card">
+        <div class="bar">Contacts<span class="n" id="barN"></span></div>
+        <div class="tbl-wrap"><table id="tbl"><caption class="sr">Company contacts. Double-click or press Enter on a cell to edit it.</caption>
+          <thead><tr id="thr"></tr></thead><tbody id="tb"></tbody></table></div>
+        <div class="foot"><span class="mini" id="hint">Double-click a cell (or press Enter) to edit · changes save instantly</span>
+          <span><button class="btn sm" id="prev">Previous</button> <button class="btn sm" id="next">Next</button> <span class="pg" id="pg"></span></span></div>
+      </div>
+    </div>
+    <div id="reportView" hidden>
+      <div class="rv-bar"><button class="btn" id="rvBack">← Back to contacts</button><strong id="rvTitle"></strong>
+        <button class="btn" id="rvWord">Word (.docx)</button><button class="done" id="rvDone">Done · Save as PDF</button></div>
+      <div class="docscroll"><div class="doc" id="doc"></div></div>
+    </div>
+  </main>
+</div>
+
+<div class="exports" id="exports">
+  <button class="btn" id="xCsv">Export CSV</button>
+  <button class="btn" id="xPdf">Export PDF</button>
+  <button class="btn pri" id="xDrive" title="Saves the PDF into the project folder under !Active Projects in Google Drive">Save to project folder</button>
+</div>
+<div class="toast" id="toast" role="alert" hidden></div>
+
+<script src="/config.js"></script>
+<script>
+"use strict";
+const CFG = window.NTXP_CONFIG || {};
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+
+/* ---------------- auth: real Google Workspace sign-in (token client) ---------------- */
+let token = null, tokenExp = 0, me = null, tokenClient = null, gsiReady = null;
+function loadGsi() {
+  if (gsiReady) return gsiReady;
+  gsiReady = new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://accounts.google.com/gsi/client";
+    s.onload = res; s.onerror = () => rej(new Error("Could not load Google sign-in")); document.head.appendChild(s); });
+  return gsiReady;
+}
+async function getToken(prompt) {
+  await loadGsi();
+  return new Promise((resolve, reject) => {
+    const tc = google.accounts.oauth2.initTokenClient({ client_id: CFG.clientId, scope: "openid email profile", hd: CFG.domain,
+      callback: r => r.error ? reject(new Error(r.error)) : resolve(r), error_callback: e => reject(new Error(e.type || "auth")) });
+    tc.requestAccessToken({ prompt: prompt || "" });
+  });
+}
+async function signIn(prompt) {
+  if (CFG.dev) { me = { email: "dev@" + CFG.domain }; return true; }
+  if (!CFG.clientId) { showGate("This server has no Google OAuth client configured (NTXP_GOOGLE_CLIENT_ID)."); return false; }
+  try {
+    const r = await getToken(prompt);
+    token = r.access_token; tokenExp = Date.now() + (r.expires_in - 60) * 1000;
+    const res = await fetch("/api/me", { headers: { Authorization: "Bearer " + token } });
+    if (!res.ok) { token = null; showGate("That account isn't allowed. Sign in with your @" + CFG.domain + " Google account."); return false; }
+    me = await res.json(); return true;
+  } catch (e) { showGate("Sign-in was cancelled or failed. " + e.message); return false; }
+}
+function showGate(msg) { $("#gmsg").textContent = msg || "Sign in with your NTXP Google Workspace account to view the company contacts."; $("#gate").hidden = false; }
+async function api(path, opts) {
+  opts = opts || {};
+  if (!CFG.dev && (!token || Date.now() > tokenExp)) { if (!(await signIn(""))) throw new Error("auth"); }
+  const h = Object.assign({}, opts.headers || {}); if (token) h.Authorization = "Bearer " + token;
+  if (opts.body && typeof opts.body !== "string") { opts.body = JSON.stringify(opts.body); h["Content-Type"] = "application/json"; }
+  const r = await fetch(path, Object.assign({}, opts, { headers: h }));
+  if (r.status === 401) { token = null; showGate("Your session expired. Sign in again."); throw new Error("auth"); }
+  return r;
+}
+async function apiJson(path, opts) { const r = await api(path, opts); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || r.statusText); return j; }
+
+/* ---------------- state ---------------- */
+const FIELDS = [["company", "Company / Entity"], ["role", "Project Role"], ["trade", "Trade / Industry"], ["city", "City"], ["state", "State"], ["project", "Project"], ["label", "Labels"]];
+const S = { f: { company: [], role: [], trade: [], city: [], state: [], project: [], label: [] }, q: "", near: "", miles: "",
+            sort: "name", dir: "asc", page: 0, size: 100, rows: [], total: 0, orient: "portrait" };
+const COLS = [
+  { k: "name", t: "Name", sort: "name", edit: "name" }, { k: "company", t: "Company / Entity", sort: "company", para: 1, edit: "company" },
+  { k: "role", t: "Role", sort: "role", edit: "role" }, { k: "trade", t: "Trade", sort: "trade", edit: "trade" },
+  { k: "city", t: "City", sort: "city", edit: "city" }, { k: "state", t: "State", sort: "state", edit: "state" },
+  { k: "phone", t: "Phone #", sort: "phone", edit: "phone" }, { k: "email", t: "Email", sort: "email", edit: "email" },
+  { k: "labels", t: "Labels", para: 1 }, { k: "linkedin", t: "LinkedIn", edit: "linkedin_url" }, { k: "project", t: "Project", sort: "project", edit: "project" }];
+
+function qs(extra) {
+  const p = new URLSearchParams();
+  for (const [k] of FIELDS) S.f[k].forEach(v => p.append(k, v));
+  if (S.q) p.set("q", S.q);
+  if (S.near && S.miles) { p.set("near", S.near); p.set("miles", S.miles); }
+  p.set("sort", S.sort); p.set("dir", S.dir);
+  for (const k in (extra || {})) p.set(k, extra[k]);
+  return p.toString();
+}
+let loadSeq = 0, tmr = null;
+function schedule(ms) { clearTimeout(tmr); tmr = setTimeout(load, ms == null ? 120 : ms); }
+async function load() {
+  const my = ++loadSeq;
+  try {
+    const d = await apiJson("/api/contacts?" + qs({ limit: S.size, offset: S.page * S.size }));
+    if (my !== loadSeq) return;
+    S.rows = d.rows; S.total = d.total; renderTable(); renderChips(); announce(d.total + " contacts");
+    if (currentReport) refreshReport();   /* the open report follows the filters, live */
+  } catch (e) { if (e.message !== "auth") { $("#tb").innerHTML = '<tr><td colspan="11" class="empty err">' + esc(e.message) + "</td></tr>"; } }
+}
+function announce(t) { $("#live").textContent = t; }
+function toast(msg, bad) { const t = $("#toast"); t.textContent = msg; t.className = "toast" + (bad ? " bad" : ""); t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, bad ? 5000 : 2600); }
+
+/* ---------------- table ---------------- */
+function initials(r) { return ((r.first_name || "")[0] || "") + ((r.last_name || "")[0] || ""); }
+const mapUrl = (c, s) => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([c, s].filter(Boolean).join(", "));
+const hot = (field, val, txt) => '<a class="hot" role="button" tabindex="0" data-hot="' + field + '" data-val="' + esc(val) + '">' + esc(txt == null ? val : txt) + "</a>";
+function fmtPhone(p) { const d = String(p || "").replace(/\D/g, "").replace(/^1(\d{10})$/, "$1"); return d.length === 10 ? d.slice(0, 3) + "-" + d.slice(3, 6) + "-" + d.slice(6) : (p || ""); }
+function cellHtml(c, r) {
+  switch (c.k) {
+    case "name": return '<div class="nm">' + (r.photo_url && /^https?:/i.test(r.photo_url) ? '<img class="ph" alt="" loading="lazy" src="' + esc(r.photo_url) + '">' : '<span class="ph" aria-hidden="true">' + esc(initials(r)) + "</span>") +
+      '<div class="cell">' + esc(r.full_name || "") + '<span class="sub">' + esc(r.title || "") + "</span></div></div>";
+    case "company": return r.company ? '<div class="cell">' + hot("company", r.company) + '<span class="sub">' + esc(r.title || "") + "</span></div>" : "";
+    case "role": case "trade": case "project": return r[c.k] ? '<div class="cell">' + hot(c.k, r[c.k]) + "</div>" : "";
+    case "city": return r.city ? '<div class="cell">' + hot("city", r.city) + ' <a href="' + mapUrl(r.city, r.state) + '" target="_blank" rel="noopener" aria-label="Map of ' + esc(r.city) + '" title="Open in Maps">↗</a></div>' : "";
+    case "state": return r.state ? '<div class="cell">' + hot("state", r.state) + "</div>" : "";
+    case "phone": return r.phone ? '<div class="cell"><a href="tel:' + esc(String(r.phone).replace(/[^+\d]/g, "")) + '">' + esc(fmtPhone(r.phone)) + "</a></div>" : "";
+    case "email": return r.email ? '<div class="cell"><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + "</a></div>" : "";
+    case "labels": return '<div class="lbls">' + (r.labels || []).map(l => '<span class="lbl">' + hot("label", l) + '<button aria-label="Remove label ' + esc(l) + '" data-rm="' + esc(l) + '">×</button></span>').join("") +
+      '<button class="lbl" data-addlbl aria-label="Add label">+</button></div>';
+    case "linkedin": return r.linkedin_url && /^https?:\/\//i.test(r.linkedin_url) ? '<div class="cell"><a href="' + esc(r.linkedin_url) + '" target="_blank" rel="noopener">LinkedIn</a></div>' : '<div class="cell mini">—</div>';
+  }
+  return "";
+}
+function renderHead() {
+  $("#thr").innerHTML = COLS.map(c => { const sorted = S.sort === c.sort; const aria = c.sort ? (sorted ? (S.dir === "asc" ? "ascending" : "descending") : "none") : null;
+    return "<th scope=\"col\"" + (aria ? ' aria-sort="' + aria + '"' : "") + ">" + (c.sort ? '<button data-sort="' + c.sort + '">' + esc(c.t) + ' <span class="ar" aria-hidden="true"></span></button>' : '<button disabled style="cursor:default">' + esc(c.t) + "</button>") + "</th>"; }).join("");
+}
+function renderRow(r) {
+  return '<tr data-id="' + r.id + '">' + COLS.map(c => '<td' + (c.para ? ' class="para"' : "") + (c.edit ? ' tabindex="0" data-edit="' + c.edit + '" data-col="' + c.k + '"' : "") + ">" + cellHtml(c, r) + "</td>").join("") + "</tr>";
+}
+function renderTable() {
+  renderHead();
+  $("#tb").innerHTML = S.rows.length ? S.rows.map(renderRow).join("") : '<tr><td colspan="11" class="empty">No contacts match these filters.</td></tr>';
+  const pages = Math.max(1, Math.ceil(S.total / S.size));
+  $("#pg").textContent = "Page " + (S.page + 1) + " of " + pages;
+  $("#prev").disabled = S.page === 0; $("#next").disabled = S.page + 1 >= pages;
+  $("#count").textContent = S.total.toLocaleString() + " contacts"; $("#barN").textContent = S.total.toLocaleString();
+  $("#tagN").textContent = S.total.toLocaleString();
+}
+function renderChips() {
+  const out = [];
+  for (const [k, t] of FIELDS) S.f[k].forEach(v => out.push('<span class="chip">' + esc(t) + ": " + esc(v) + '<button aria-label="Remove filter ' + esc(v) + '" data-unf="' + k + '" data-val="' + esc(v) + '">×</button></span>'));
+  if (S.near && S.miles) out.push('<span class="chip">Within ' + esc(S.miles) + " mi of " + esc(S.near) + '<button aria-label="Remove proximity filter" data-unprox>×</button></span>');
+  $("#chips").innerHTML = out.join("");
+  document.querySelectorAll(".acc-h .cnt").forEach(el => { const n = S.f[el.dataset.f].length; el.textContent = n; el.hidden = !n; });
+  const total = FIELDS.reduce((a, [k]) => a + S.f[k].length, 0) + (S.near && S.miles ? 1 : 0); $("#railN").textContent = total ? total + " active" : "";
+}
+function toggleRail(open) { const r = $(".rail"), b = $("#railToggle"); const o = open == null ? r.classList.contains("closed") : open; r.classList.toggle("closed", !o); b.setAttribute("aria-expanded", o); }
+function addFilter(k, v) { if (!S.f[k].includes(v)) S.f[k].push(v); S.page = 0; syncRail(); schedule(0); }
+function removeFilter(k, v) { S.f[k] = S.f[k].filter(x => x !== v); S.page = 0; syncRail(); schedule(0); }
+
+/* ---------------- left control panel: click-to-reveal, typable, then a checklist ---------------- */
+function buildRail() {
+  $("#rail").innerHTML = FIELDS.map(([k, t]) => '<div class="acc"><button class="acc-h" aria-expanded="false" aria-controls="p-' + k + '" data-acc="' + k + '"><span>' + esc(t) + '</span><span><span class="cnt" data-f="' + k + '" hidden>0</span> <span class="chev" aria-hidden="true">▾</span></span></button>' +
+    '<div class="acc-p" id="p-' + k + '" hidden><label class="sr" for="i-' + k + '">Type to find ' + esc(t) + '</label><input class="fld" id="i-' + k + '" data-fi="' + k + '" type="search" placeholder="Type to find…" autocomplete="off"><ul class="chk" id="l-' + k + '"></ul></div></div>').join("") +
+    '<div class="acc"><div class="acc-h" style="cursor:default"><span>Proximity (miles)</span></div><div class="prox"><div><label for="near">Near (City, ST)</label><input class="fld" id="near" placeholder="Dallas, TX" autocomplete="off"></div>' +
+    '<div><label for="miles">Miles</label><input class="fld" id="miles" inputmode="numeric" placeholder="25"></div></div><div class="presets" aria-label="Distance presets"><button class="btn sm" data-mi="10">10</button><button class="btn sm" data-mi="25">25</button><button class="btn sm" data-mi="50">50</button><button class="btn sm" data-mi="100">100</button></div></div>' +
+    '<div style="padding:10px 8px"><button class="btn" id="clear" style="width:100%">Clear all filters</button></div>';
+}
+const facetTimers = {};
+async function loadFacet(k) {
+  const input = $("#i-" + k), ul = $("#l-" + k); if (!input) return;
+  try {
+    let vals;
+    if (k === "label") { const all = await apiJson("/api/facets"); const q = input.value.toLowerCase(); vals = (all.labels || []).filter(l => l.value.toLowerCase().includes(q)).slice(0, 40); }
+    else vals = (await apiJson("/api/facets?" + new URLSearchParams({ field: k, q: input.value, limit: 40 }))).values || [];
+    const sel = S.f[k]; const merged = sel.map(v => ({ value: v, count: null })).concat(vals.filter(x => !sel.includes(x.value)));
+    ul.innerHTML = merged.map((x, i) => '<li><label><input type="checkbox" data-ck="' + k + '" data-val="' + esc(x.value) + '"' + (sel.includes(x.value) ? " checked" : "") + '><span class="t">' + esc(x.value) + '</span></label><span class="ct">' + (x.count == null ? "" : x.count) + "</span></li>").join("") || '<li class="mini">No matches</li>';
+  } catch (e) {}
+}
+function syncRail() { renderChips(); document.querySelectorAll(".acc-p:not([hidden])").forEach(p => loadFacet(p.id.slice(2))); }
+
+/* ---------------- inline edit: double-click / Enter, saves immediately, no dialogs ---------------- */
+let editing = null;
+function rawFor(c, r) { return c.k === "name" ? (r.full_name || "") : c.k === "phone" ? (r.phone || "") : c.k === "linkedin" ? (r.linkedin_url || "") : (r[c.k] || ""); }
+function startEdit(td) {
+  if (editing || !td.dataset.edit) return;
+  const tr = td.parentElement, r = S.rows.find(x => x.id == tr.dataset.id), c = COLS.find(x => x.k === td.dataset.col);
+  editing = { td, r, c, before: rawFor(c, r) };
+  td.classList.add("editing"); td.textContent = editing.before; td.contentEditable = "true"; td.focus();
+  const rg = document.createRange(); rg.selectNodeContents(td); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(rg);
+}
+async function endEdit(commit) {
+  if (!editing) return; const { td, r, c, before } = editing; editing = null;
+  const val = td.textContent.trim(); td.contentEditable = "false"; td.classList.remove("editing");
+  const revert = () => { td.innerHTML = cellHtml(c, r); };
+  if (!commit || val === before) return revert();
+  let body = {}; if (c.k === "name") { const parts = val.split(/\s+/).filter(Boolean); body = { last_name: parts.length > 1 ? parts.pop() : (parts[0] || ""), first_name: parts.join(" ") }; if (parts.length === 0) body.first_name = ""; } else body[c.edit] = val;
+  try {
+    const d = await apiJson("/api/contacts/" + r.id, { method: "PATCH", body });
+    Object.assign(r, d.contact || {}); const tr = td.parentElement; const idx = [...tr.parentElement.children].indexOf(tr);
+    tr.outerHTML = renderRow(r); const nt = $("#tb").children[idx].querySelector('[data-col="' + c.k + '"]'); nt.classList.add("saved"); nt.focus(); announce("Saved " + c.t);
+  } catch (e) { revert(); toast(c.t + ": " + e.message, true); td.focus(); }
+}
+
+/* ---------------- reports: live full-size document, DONE -> PDF ---------------- */
+const REPORTS = [["directory", "Project Directory"], ["full", "Full Contact Directory"], ["trade", "Subcontractors by Trade"], ["company", "Company / Entity Rollup"], ["label", "Group / Label Rollup"]];
+let currentReport = null;
+function reportQs(type) { return qs({ type, orientation: S.orient }); }
+async function openReport(type, customSpec) {
+  closeDrawer();
+  try {
+    let spec; if (customSpec) spec = await specFromTemplate(customSpec); else spec = (await apiJson("/api/report?" + reportQs(type))).spec;
+    currentReport = { type, spec, custom: !!customSpec, tpl: customSpec ? { doc_title: customSpec.doc_title, columns: customSpec.columns, widths: customSpec.widths } : null };
+    $("#doc").className = "doc" + (S.orient === "landscape" ? " land" : ""); $("#doc").innerHTML = docHtml(spec);
+    $("#rvTitle").textContent = spec.doc_title + " · " + (spec.project_title || "");
+    $("#tableView").hidden = true; $("#reportView").hidden = false; $("#exports").hidden = true; scrollTo(0, 0); $("#rvDone").focus();
+  } catch (e) { if (e.message !== "auth") toast("Report: " + e.message, true); }
+}
+function docHtml(sp) {
+  const sec = sp.sections.map(s => {
+    if (s.flow) return '<div class="d-card"><div class="d-bar">' + esc(s.title) + '</div><div class="d-tiles">' + s.flow[0].items.map(i => '<div class="d-tile"><b>' + esc(i.value) + "</b><span>" + esc(i.label) + "</span></div>").join("") + "</div></div>";
+    return '<div class="d-card"><div class="d-bar">' + esc(s.title) + "<span>" + s.rows.length + "</span></div><table><thead><tr>" + s.columns.map((c, i) => '<th style="width:' + (s.widths ? s.widths[i] : 100 / s.columns.length) + '%">' + esc(c) + "</th>").join("") + "</tr></thead><tbody>" +
+      s.rows.map(r => "<tr>" + r.map((v, i) => "<td>" + (/@/.test(v) && /^[^\s@]+@[^\s@]+$/.test(v) ? '<a href="mailto:' + esc(v) + '">' + esc(v) + "</a>" : /^\d{3}-\d{3}-\d{4}$/.test(v) ? '<a href="tel:' + esc(v) + '">' + esc(v) + "</a>" : esc(v)) + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>";
+  }).join("");
+  return '<div class="d-band">' + (window.__logo ? '<img src="/assets/ntxp_logo_reversed.png" alt="NTXP" style="max-height:78px;max-width:140px">' : "<b>NTXP</b>") + '<div><h2>' + esc(sp.doc_title) + "</h2><p>" + esc(sp.project_title || "") + '</p></div><span></span></div><div class="d-acc"></div>' +
+    '<div class="d-tag">' + (sp.meta || []).map(m => "<span><b>" + esc(m[0]) + "</b> " + esc(m[1]) + "</span>").join("") + "<span><b>DATE</b> " + new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) + "</span></div>" + sec +
+    '<div class="d-foot"><span>' + esc(sp.footer_left || "") + "</span><span>" + esc(sp.footer_center || "") + "</span><b>Page 1 of 1 (preview)</b></div>";
+}
+async function refreshReport() {
+  const cr = currentReport; if (!cr) return;
+  try {
+    const spec = cr.custom ? await specFromTemplate(cr.tpl) : (await apiJson("/api/report?" + reportQs(cr.type))).spec;
+    if (currentReport !== cr) return; cr.spec = spec; $("#doc").innerHTML = docHtml(spec); $("#rvTitle").textContent = spec.doc_title + " · " + (spec.project_title || "");
+  } catch (e) { if (e.message !== "auth") toast("Report: " + e.message, true); }
+}
+function closeReport() { $("#reportView").hidden = true; $("#tableView").hidden = false; $("#exports").hidden = false; currentReport = null; }
+async function renderFile(fmt) {
+  const spec = currentReport && currentReport.spec; if (!spec) return;
+  let r;
+  if (currentReport.custom) r = await api("/api/report/render-custom?" + qs({ orientation: S.orient }) + "&format=" + fmt, { method: "POST", body: currentReport.tpl });
+  else r = await api("/api/report/render?" + reportQs(currentReport.type) + "&format=" + fmt);
+  return r;
+}
+function download(blob, name) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+const stamp = () => new Date().toISOString().slice(0, 10);
+async function saveReport(fmt) {
+  if (!currentReport) return;
+  toast("Rendering with the NTXP document engine…");
+  try {
+    const r = await renderFile(fmt);
+    if (r.status === 501 && fmt === "pdf") { toast("Server renderer not configured — using your browser's Save as PDF."); setTimeout(() => print(), 400); return; }
+    if (!r.ok) { const j = await r.json().catch(() => ({})); throw new Error((j.error || r.statusText) + (j.detail ? " — " + j.detail.slice(0, 160) : "")); }
+    download(await r.blob(), "NTXP_" + currentReport.spec.doc_title.replace(/\W+/g, "_") + "_" + stamp() + "." + fmt); toast("Saved " + fmt.toUpperCase());
+  } catch (e) { if (e.message !== "auth") toast(e.message, true); }
+}
+
+/* ---------------- uploaded templates: layout kept, contact data wiped ---------------- */
+const tpls = () => store.get("ntxp.tpls", []);
+function wipeSpec(spec) {
+  const t = { name: spec.doc_title || "Custom report", doc_title: spec.doc_title || "Custom Report", orientation: spec.orientation || "portrait", columns: null, widths: null };
+  const s0 = (spec.sections || []).find(s => s.columns); if (!s0) throw new Error("No table section found in that spec.");
+  t.columns = s0.columns.slice(); t.widths = (s0.widths || []).slice(); return t;
+}
+async function specFromTemplate(t) {   /* the server builds the spec: a template contributes layout, never content */
+  return (await apiJson("/api/report/custom?" + qs({ orientation: S.orient }), { method: "POST", body: { doc_title: t.doc_title, columns: t.columns, widths: t.widths } })).spec;
+}
+function renderTpls() {
+  const l = tpls(); $("#tplList").innerHTML = l.length ? "Saved: " + l.map(x => esc(x.name)).join(", ") : "";
+  $("#reportBtns").innerHTML = REPORTS.map(([k, n]) => '<button class="rb" data-rep="' + k + '">' + esc(n) + "</button>").join("") + l.map((x, i) => '<button class="rb" data-tpl="' + i + '">★ ' + esc(x.name) + "</button>").join("");
+}
+
+/* ---------------- Drive: save PDF to the project folder under !Active Projects ---------------- */
+async function driveToken() {
+  await loadGsi();
+  return new Promise((res, rej) => google.accounts.oauth2.initTokenClient({ client_id: CFG.clientId, scope: "https://www.googleapis.com/auth/drive", hd: CFG.domain,
+    callback: r => r.error ? rej(new Error(r.error)) : res(r.access_token), error_callback: e => rej(new Error(e.type || "auth")) }).requestAccessToken({ prompt: "" }));
+}
+async function saveToDrive() {
+  if (S.f.project.length !== 1) return toast("Pick exactly one Project in the filters first — that's the folder it saves to.", true);
+  if (CFG.dev || !CFG.clientId) return toast("Google Drive needs real sign-in (not available in dev mode).", true);
+  const proj = S.f.project[0];
+  try {
+    toast("Rendering PDF…");
+    const r = await api("/api/report/render?" + qs({ type: "directory", orientation: S.orient }) + "&format=pdf"); if (!r.ok) throw new Error("PDF render failed (" + r.status + ")");
+    const pdf = await r.blob(); const tk = await driveToken(); const G = "https://www.googleapis.com/drive/v3/files";
+    const find = async q => (await (await fetch(G + "?supportsAllDrives=true&includeItemsFromAllDrives=true&fields=files(id,name)&q=" + encodeURIComponent(q), { headers: { Authorization: "Bearer " + tk } })).json()).files || [];
+    const root = (await find("name='!Active Projects' and mimeType='application/vnd.google-apps.folder' and trashed=false"))[0]; if (!root) throw new Error("No '!Active Projects' folder found in your Drive.");
+    const kids = await find("'" + root.id + "' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false and name contains '" + proj.replace(/'/g, "\\'") + "'");
+    const dest = kids.find(f => f.name.toLowerCase() === proj.toLowerCase()) || kids[0]; if (!dest) throw new Error("No folder matching '" + proj + "' under !Active Projects.");
+    const meta = { name: "NTXP_Project_Directory_" + stamp() + ".pdf", parents: [dest.id] }; const fd = new FormData();
+    fd.append("metadata", new Blob([JSON.stringify(meta)], { type: "application/json" })); fd.append("file", pdf);
+    const up = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", { method: "POST", headers: { Authorization: "Bearer " + tk }, body: fd });
+    if (!up.ok) throw new Error("Drive upload failed (" + up.status + ")"); toast("Saved to !Active Projects / " + dest.name);
+  } catch (e) { if (e.message !== "auth") toast(e.message, true); }
+}
+
+/* ---------------- drawer, settings, wiring ---------------- */
+function openDrawer() { $("#drawer").classList.add("open"); $("#drawer").inert = false; $("#scrim").hidden = false; $("#ham").setAttribute("aria-expanded", "true"); $("#drawer").querySelector(".rb").focus(); }
+function closeDrawer() { $("#drawer").classList.remove("open"); $("#drawer").inert = true; $("#scrim").hidden = true; $("#ham").setAttribute("aria-expanded", "false"); $("#gear").setAttribute("aria-expanded", "false"); $("#panel").hidden = true; }
+function setView(v) { S.view = v; document.body.dataset.view = v; document.documentElement.style.setProperty("--lines", v); store.set("ntxp.view", v);
+  document.querySelectorAll(".seg [data-v]").forEach(b => b.setAttribute("aria-pressed", b.dataset.v == v)); }
+const PALETTES = [["ntxp", "NTXP Standard", "#1B2A4E"], ["field", "Field (copier-safe)", "#E4DCD0"], ["slate", "Slate", "#2B3A55"], ["graphite", "Graphite", "#2A2F36"]];
+function setPalette(p) { document.documentElement.dataset.palette = p; try { localStorage.setItem("ntxp.palette", p); } catch (e) {}
+  $("#palettes").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === p)); }
+function setDark(on) { document.documentElement.dataset.theme = on ? "dark" : "light"; try { localStorage.setItem("ntxp.theme", on ? "dark" : "light"); } catch (e) {} $("#dark").setAttribute("aria-checked", on); }
+async function loadCouncil() {
+  try { const d = await apiJson("/api/council"), e = d.effectiveness;
+    $("#council").innerHTML = e.decisions ? "<b>" + e.decisions + "</b> decisions · <b>" + e.resolved_free_by_jev_pct + "%</b> resolved free by JEV · total cost <b>$" + e.total_cost + "</b>" : "No council decisions recorded yet."; }
+  catch (e) { $("#council").textContent = "Unavailable."; }
+}
+
+/* A single click on a link inside an editable cell acts after a short delay so a double-click can edit instead. */
+let linkTimer = null;
+function followLink(a) {
+  if (a.dataset.hot) return addFilter(a.dataset.hot, a.dataset.val);
+  const href = a.getAttribute("href"); if (!href) return;
+  if (a.target === "_blank") window.open(href, "_blank", "noopener"); else location.href = href;
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  const lk = t.closest("td[data-edit] a"); if (lk && !editing) { e.preventDefault(); clearTimeout(linkTimer); linkTimer = setTimeout(() => followLink(lk), 260); return; }
+  const h = t.closest("[data-hot]"); if (h) { addFilter(h.dataset.hot, h.dataset.val); return; }
+  const rm = t.closest("[data-rm]"); if (rm) { const id = rm.closest("tr").dataset.id; apiJson("/api/contacts/" + id + "/labels", { method: "POST", body: { remove: [rm.dataset.rm] } }).then(load).catch(x => toast(x.message, true)); return; }
+  const add = t.closest("[data-addlbl]"); if (add) { const inp = document.createElement("input"); inp.className = "fld"; inp.setAttribute("aria-label", "New label"); inp.style.width = "120px"; const id = add.closest("tr").dataset.id; add.replaceWith(inp); inp.focus();
+    const finish = ok => { inp.onblur = null; const val = inp.value.trim(); if (ok && val) apiJson("/api/contacts/" + id + "/labels", { method: "POST", body: { add: [val] } }).then(load).catch(x => { toast(x.message, true); load(); }); else load(); };
+    inp.addEventListener("keydown", k => { if (k.key === "Enter") { k.preventDefault(); finish(true); } else if (k.key === "Escape") { finish(false); } }); inp.onblur = () => finish(true); return; }
+  const so = t.closest("[data-sort]"); if (so) { const k = so.dataset.sort; if (S.sort === k) S.dir = S.dir === "asc" ? "desc" : "asc"; else { S.sort = k; S.dir = "asc"; } S.page = 0; load(); return; }
+  const un = t.closest("[data-unf]"); if (un) { removeFilter(un.dataset.unf, un.dataset.val); return; }
+  if (t.closest("[data-unprox]")) { S.near = S.miles = ""; $("#near").value = $("#miles").value = ""; schedule(0); renderChips(); return; }
+  const ac = t.closest("[data-acc]"); if (ac) { const k = ac.dataset.acc, p = $("#p-" + k), open = p.hidden; p.hidden = !open; ac.setAttribute("aria-expanded", open); if (open) { loadFacet(k); $("#i-" + k).focus(); } return; }
+  if (t.closest("#clear")) { clearAll(); return; }
+  const mi = t.closest("[data-mi]"); if (mi) { S.miles = mi.dataset.mi; $("#miles").value = S.miles; if (!S.near) $("#near").focus(); schedule(0); renderChips(); return; }
+  const rep = t.closest("[data-rep]"); if (rep) { openReport(rep.dataset.rep); return; }
+  const tp = t.closest("[data-tpl]"); if (tp) { openReport("custom", tpls()[+tp.dataset.tpl]); return; }
+  const v = t.closest("[data-v]"); if (v) { setView(+v.dataset.v); return; }
+  const pal = t.closest("[data-p]"); if (pal) { setPalette(pal.dataset.p); return; }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.matches && e.target.matches("a.hot")) { e.preventDefault(); e.target.click(); }
+  if (e.target.matches && e.target.matches("td[data-edit]")) {
+    if (!editing && (e.key === "Enter" || e.key === "F2")) { e.preventDefault(); startEdit(e.target); }
+    else if (editing && e.key === "Enter") { e.preventDefault(); endEdit(true); }
+    else if (editing && e.key === "Escape") { e.preventDefault(); endEdit(false); e.target.focus(); }
+  }
+  if (e.key === "Escape") { if (!$("#panel").hidden || $("#drawer").classList.contains("open")) { closeDrawer(); $("#ham").focus(); } }
+});
+document.addEventListener("dblclick", e => { const td = e.target.closest("td[data-edit]"); if (td) { clearTimeout(linkTimer); startEdit(td); } });
+document.addEventListener("focusout", e => { if (editing && e.target === editing.td) endEdit(true); });
+document.addEventListener("change", e => { const c = e.target.closest("[data-ck]"); if (c) { c.checked ? addFilter(c.dataset.ck, c.dataset.val) : removeFilter(c.dataset.ck, c.dataset.val); } });
+document.addEventListener("input", e => {
+  const fi = e.target.closest("[data-fi]"); if (fi) { clearTimeout(facetTimers[fi.dataset.fi]); facetTimers[fi.dataset.fi] = setTimeout(() => loadFacet(fi.dataset.fi), 180); }
+  if (e.target.id === "q") { S.q = e.target.value; S.page = 0; schedule(220); }
+  if (e.target.id === "near") { S.near = e.target.value; if (S.miles) schedule(400); renderChips(); }
+  if (e.target.id === "miles") { S.miles = e.target.value.replace(/\D/g, ""); if (S.near) schedule(400); renderChips(); }
+});
+$("#railToggle").onclick = () => toggleRail();
+$("#ham").onclick = () => $("#drawer").classList.contains("open") ? closeDrawer() : openDrawer();
+$("#scrim").onclick = closeDrawer;
+$("#gear").onclick = () => { const o = $("#panel").hidden; $("#panel").hidden = !o; $("#gear").setAttribute("aria-expanded", o); if (o) { $("#acctEmail").textContent = me ? me.email : ""; loadCouncil(); } };
+$("#oP").onclick = () => { S.orient = "portrait"; $("#oP").setAttribute("aria-pressed", true); $("#oL").setAttribute("aria-pressed", false); };
+$("#oL").onclick = () => { S.orient = "landscape"; $("#oL").setAttribute("aria-pressed", true); $("#oP").setAttribute("aria-pressed", false); };
+$("#rvBack").onclick = closeReport; $("#rvDone").onclick = () => saveReport("pdf"); $("#rvWord").onclick = () => saveReport("docx");
+$("#prev").onclick = () => { if (S.page > 0) { S.page--; load(); scrollTo(0, 0); } };
+$("#next").onclick = () => { S.page++; load(); scrollTo(0, 0); };
+function clearAll() { for (const [k] of FIELDS) S.f[k] = []; S.q = S.near = S.miles = ""; $("#q").value = $("#near").value = $("#miles").value = ""; S.page = 0; syncRail(); schedule(0); }
+$("#xCsv").onclick = async () => { try { const r = await api("/api/export.csv?" + qs()); if (!r.ok) throw new Error(r.statusText); download(await r.blob(), "NTXP_contacts_" + stamp() + ".csv"); toast("CSV exported"); } catch (e) { if (e.message !== "auth") toast(e.message, true); } };
+$("#xPdf").onclick = () => openReport("full");
+$("#xDrive").onclick = saveToDrive;
+$("#signin").onclick = async () => { if (await signIn("select_account")) { $("#gate").hidden = true; start(); } };
+$("#reauth").onclick = async () => { if (await signIn("consent")) { toast("Re-authenticated"); $("#acctEmail").textContent = me.email; load(); } };
+$("#signout").onclick = () => { if (token && window.google) google.accounts.oauth2.revoke(token, () => {}); token = null; me = null; closeDrawer(); showGate("Signed out."); };
+$("#dark").onclick = () => setDark($("#dark").getAttribute("aria-checked") !== "true");
+$("#tplFile").onchange = async e => { const f = e.target.files[0]; if (!f) return;
+  try { const t = wipeSpec(JSON.parse(await f.text())); t.name = f.name.replace(/\.json$/i, ""); const l = tpls(); l.push(t); store.set("ntxp.tpls", l); renderTpls(); toast("Template added — all contact data in it was wiped, layout kept."); }
+  catch (x) { toast("Couldn't read that template: " + x.message + " (upload a .json doc-engine spec; PDF/Word templates aren't supported yet)", true); } e.target.value = ""; };
+
+async function start() {
+  $("#who").textContent = me ? me.email : ""; $("#av").textContent = me ? me.email[0].toUpperCase() : "";
+  $("#tagD").textContent = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  buildRail(); renderTpls(); setView(store.get("ntxp.view", 1));
+  load();
+}
+(function init() {
+  $("#palettes").innerHTML = PALETTES.map(([k, n, c]) => '<button data-p="' + k + '" aria-pressed="false"><i style="background:' + c + '"></i>' + esc(n) + "</button>").join("");
+  setPalette(document.documentElement.dataset.palette || "ntxp"); setDark(document.documentElement.dataset.theme === "dark");
+  const img = new Image(); img.alt = "NTXP LLC General Contractors"; img.src = "/assets/ntxp_logo_reversed.png";
+  img.onload = () => { window.__logo = true; $("#logo").appendChild(img); }; img.onerror = () => { $("#logo").innerHTML = '<span class="wordmark">NTXP</span>'; };
+  if (matchMedia("(max-width:900px)").matches) toggleRail(false);   /* phones: contacts first, filters on demand */
+  if (CFG.dev) { me = { email: "dev@" + CFG.domain }; start(); } else { showGate(); }
+  $("#drawer").inert = true;
+})();
+</script>
+</body>
+</html>

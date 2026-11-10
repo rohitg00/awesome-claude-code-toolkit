@@ -33,6 +33,11 @@ JEV grades, enrichment backfills, and a user-facing page + MCP + hooks expose it
 | **F2b** | **Mini model council (JEV + cheap LLMs)** | DONE | `council/*`, `docs/COUNCIL.md` |
 | **F2c** | **Whitelisted connector middle-layer (Zapier-style)** | DONE | `connectors/*`, `docs/CONNECTORS.md` |
 | M | Mirror to NTXP Forge repo `ntxp-contacts` | BLOCKED(repo access) | scratchpad bundle ready |
+| **L1** | **Live app at contacts.ntxpllc.com** (real Google OAuth, NTXP-DOC-STANDARD 2.1 tokens, full UI spec, live `/api`) | DONE (code) · BLOCKED(deploy) | `web/index.html`, `remote/api.py`, `remote/http_server.py` |
+| **L2** | **Supabase as canonical DB + persisted council answers** (pooler-safe, RLS deny-all) | DONE (code) · BLOCKED(Supabase project) | `db/pg.py`, `db/migrations/runner.py`, `0004_council*.sql`, `council/router.py` |
+| **L3** | **Google Sheet live mirror** (Apps Script, domain-OAuth ×2, menu/sidebar/reports) | DONE (logic tested) · UNVERIFIED in Google runtime | `sheets/*` |
+| **L4** | **Hostinger deploy kit** (Docker + Caddy + deploy.sh) | WRITTEN · image NOT built (no Docker daemon here) | `deploy/*` |
+| **L5** | **Front-end design audit** (standard + WCAG + axe, 52 checks) | DONE — 52/52 | `tools/ui_audit.py` |
 
 ---
 
@@ -194,3 +199,20 @@ repo without the user confirming the Forge owner.
 ## Changelog pointer
 See `CHANGELOG.md` for dated, shipped entries. Keep it in lockstep with the flags
 above.
+
+
+## Live view (L1–L5) — resume notes
+**State:** all code built and tested; 109 Python tests (SQLite + PostgreSQL 16), 11 Apps Script tests (Node, mutation-checked),
+28 browser e2e checks, 52 UI-audit checks, and every report type renders audit-clean through the real NTXP document engine.
+
+**Remaining = external, not code:**
+1. Supabase project → `NTXP_DB_URL` (then `ntxp init`; RLS lockdown applies automatically).
+2. Google OAuth Web client (consent screen **Internal**) → `NTXP_GOOGLE_CLIENT_ID`; this is also where the real token exchange gets its first test.
+3. Hostinger VPS + DNS A record → `deploy/deploy.sh /path/to/ntxp-branded-document-2`; first real Docker build.
+4. Install the Apps Script (`sheets/README.md`) and run its first-run checklist in a real Workspace account.
+5. Not yet built: JobTread job lookup for the Drive-folder save (it currently matches the *Project filter* to a folder name under `!Active Projects`);
+   uploaded **PDF/Word** templates (only `.json` doc-engine specs are supported; the UI says so).
+
+**Design decisions worth knowing:** brand assets/engine are proprietary → served from `NTXP_ASSETS_DIR`/`NTXP_DOC_ENGINE`, never committed;
+reports default to portrait 8.5×11 (org rule) and drop the Title column there so emails never wrap (the engine audit fails otherwise);
+the 4 palettes are an owner-directed UI feature — only the default (`ntxp`) equals the standard exactly.

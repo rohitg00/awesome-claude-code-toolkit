@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head><base target="_top">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1B2A4E;--mid:#46567D;--warm:#F6F3EF;--edge:#CDC0B2;--link:#2F529B;--ink:#1F2A3D;--accent:#C8102E}
+  *{box-sizing:border-box} body{font:13px/1.4 "Open Sans",Arial,sans-serif;color:var(--ink);margin:0}
+  header{background:var(--navy);color:#fff;text-align:center;padding:12px 8px 10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .acc{height:5px;background:linear-gradient(90deg,rgba(200,16,46,.1),var(--accent)),#182746}
+  main{padding:12px}
+  label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A6880;margin:10px 0 3px}
+  input,select{width:100%;padding:8px;border:1px solid var(--edge);border-radius:4px;font:inherit;min-height:36px}
+  .row{display:grid;grid-template-columns:1fr 84px;gap:8px}
+  button{width:100%;margin-top:10px;padding:10px;border-radius:4px;border:1px solid var(--edge);background:#fff;font:600 13px "Open Sans",Arial;min-height:40px;cursor:pointer}
+  button.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+  button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--link);outline-offset:2px}
+  .sec{margin-top:16px;border-top:1px solid #E2DAD0;padding-top:4px}
+  .msg{margin-top:10px;font-size:12px;padding:8px;border-radius:4px;background:var(--warm)} .err{color:#B92A32;font-weight:600}
+  a{color:var(--link)} .chk{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:12px} .chk input{width:18px;min-height:18px}
+</style></head>
+<body>
+<header>NTXP Contacts</header><div class="acc"></div>
+<main>
+  <label for="q">Search</label><input id="q" placeholder="name, company, email…">
+  <label for="project">Project</label><input id="project">
+  <label for="role">Project role</label>
+  <select id="role"><option value="">Any</option><option>Owner</option><option>Inspector</option><option>Contractor</option><option>Sub</option><option>Engineer</option><option>Consultant</option></select>
+  <label for="trade">Trade / industry</label><input id="trade">
+  <div class="row"><div><label for="state">State</label><input id="state" maxlength="2" placeholder="TX"></div><div><label for="label">Label</label><input id="label"></div></div>
+  <div class="row"><div><label for="near">Near (City, ST)</label><input id="near" placeholder="Dallas, TX"></div><div><label for="miles">Miles</label><input id="miles" inputmode="numeric" placeholder="25"></div></div>
+  <button class="pri" id="apply">Apply filters &amp; refresh</button>
+  <button id="clear">Clear filters</button>
+  <div class="sec"><label for="type">Report</label>
+    <select id="type"><option value="directory">Project Directory</option><option value="full">Full Contact Directory</option><option value="trade">Subcontractors by Trade</option><option value="company">Company / Entity Rollup</option><option value="label">Group / Label Rollup</option></select>
+    <label for="orient">Orientation</label><select id="orient"><option value="portrait">Portrait (8.5 × 11)</option><option value="landscape">Landscape</option></select>
+    <div class="chk"><input type="checkbox" id="toProject" checked><label for="toProject" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Save into the project folder under !Active Projects (needs a Project filter)</label></div>
+    <button id="export">Render PDF with the NTXP document engine</button></div>
+  <div id="msg" class="msg" role="status" aria-live="polite" hidden></div>
+</main>
+<script>
+  var F=['q','project','role','trade','state','label','near','miles'];
+  function val(){var o={};F.forEach(function(k){var v=document.getElementById(k).value.trim();if(v)o[k]=v});return o}
+  function say(t,bad,link){var m=document.getElementById('msg');m.hidden=false;m.className='msg'+(bad?' err':'');m.textContent=t;
+    if(link){var a=document.createElement('a');a.href=link.url;a.target='_blank';a.rel='noopener';a.textContent=link.text;m.appendChild(document.createTextNode(' '));m.appendChild(a)}}
+  function busy(b){document.querySelectorAll('button').forEach(function(x){x.disabled=b})}
+  function fail(e){busy(false);say((e&&e.message)||String(e),true)}
+  google.script.run.withSuccessHandler(function(s){F.forEach(function(k){if(s.filters[k])document.getElementById(k).value=s.filters[k]})}).sidebarState();
+  document.getElementById('apply').onclick=function(){busy(true);say('Refreshing…');google.script.run.withSuccessHandler(function(r){busy(false);say(r.total+' contacts mirrored.')}).withFailureHandler(fail).sidebarApply(val())};
+  document.getElementById('clear').onclick=function(){F.forEach(function(k){document.getElementById(k).value=''});document.getElementById('apply').click()};
+  document.getElementById('export').onclick=function(){busy(true);say('Rendering… this takes a few seconds.');
+    google.script.run.withSuccessHandler(function(r){busy(false);say('Saved to '+r.where+':',false,{url:r.url,text:r.name})}).withFailureHandler(fail)
+    .sidebarExport(document.getElementById('type').value,document.getElementById('orient').value,val(),document.getElementById('toProject').checked)};
+</script></body></html>

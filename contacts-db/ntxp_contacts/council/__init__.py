@@ -10,6 +10,7 @@ document-parsing council lives in `plugins/canonical-project-model` and is
 separate.
 """
 from .base import Task, Verdict, Judge, JUDGES, register_judge
-from .router import Council, decide
+from .router import Council, decide, save_answer, list_answers, effectiveness
 
-__all__ = ["Task", "Verdict", "Judge", "JUDGES", "register_judge", "Council", "decide"]
+__all__ = ["Task", "Verdict", "Judge", "JUDGES", "register_judge", "Council", "decide",
+           "save_answer", "list_answers", "effectiveness"]

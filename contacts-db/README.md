@@ -201,6 +201,13 @@ available** cheap LLM judge (DeepSeek/Grok/OpenAI, key-gated, env-overridable) o
 when uncertain, then weighted-votes with provenance. Runs for free with no keys.
 See [docs/COUNCIL.md](docs/COUNCIL.md).
 
+### Live view (hosted app + Google Sheet mirror)
+
+`ntxp serve-http` also serves the **live contacts app** at `/` (real Google Workspace sign-in; NTXP document-engine styling; filters,
+proximity, inline edit, labels, reports → PDF/Word, CSV) backed by `/api/*`. A read-only **Google Sheet mirror** (`sheets/`) pulls the same
+API with domain OAuth. Production target: Hostinger VPS + **Supabase** Postgres — see [deploy/README.md](deploy/README.md),
+[docs/LIVE_VIEW.md](docs/LIVE_VIEW.md) and [sheets/README.md](sheets/README.md). Audit the UI with `python tools/ui_audit.py <url> <out>`.
+
 ### Cloud MCP (stateless, OAuth-gated) + auto-hooks
 
 A stateless, cloud-hostable **streamable-HTTP MCP** gives any tool/skill/workflow

@@ -4,6 +4,23 @@ All dates ISO. See `docs/BLUEPRINT.md` for the live status board and resume flag
 
 ## [Unreleased]
 
+### Added — live view (this branch)
+- **Live app** (`web/index.html`, served at `/`): real Google Workspace sign-in (token client, `hd=ntxpllc.com`), NTXP-DOC-STANDARD 2.1
+  look (navy band 1.00in, red accent fade, warm two-tone rows, centred cells / left paragraph columns), VIEW 1/3/5, click-to-reveal
+  typable-then-checklist filters, proximity in miles, sortable headers, double-click inline edit with instant save, Google-style labels,
+  blue hotlinks that become filters, animated hamburger → baby-blue REPORTS drawer, settings (dark mode, 4 palettes, template upload,
+  council effectiveness), live full-size report document + DONE→PDF/Word via the NTXP engine, CSV, save to `!Active Projects`.
+- **REST API** (`remote/api.py`): `/api/contacts|facets|report|report/render|report/custom|export.csv|council`, PATCH inline edits and labels
+  (attributed in `change_log` as `ui:<email>` so they fan out through sync), exposure-gated, multi-value (checklist) filters.
+- **Supabase support**: pooler-safe connections (prepared statements disabled for port 6543), deny-all RLS re-applied after every migration,
+  `council_answers` table + `ntxp council-report` (consensus of effectiveness). Verified an `anon` role is denied.
+- **Google Sheet mirror** (`sheets/`): Apps Script with domain gate, paging sync, NTXP-styled sheet, sidebar filters/reports, PDF-to-project-folder.
+- **Hostinger deploy kit** (`deploy/`), **UI audit tool** (`tools/ui_audit.py`), geo helper for proximity (`geo.py`).
+
+### Security
+- Contact data is untrusted: escaped in the page; `<`/`>` stripped before the document-engine renderer; formula-injection guarded in the Sheet.
+- Proprietary NTXP logo/engine are `.gitignore`d and served from deploy-time paths.
+
 ### Fixed (post-merge, from Codex review of #59)
 - **Sweep recency**: re-seeing an old Gmail/Calendar/Drive record no longer bumps
   `last_seen_at` to now (`touch_source_record` preserves the data point's own

@@ -134,5 +134,19 @@ def connect_pg(dsn: str) -> PgConnection:
             "PostgreSQL backend requested (NTXP_DB_URL set) but 'psycopg' is "
             "not installed. Install the extra: pip install 'ntxp-contacts[postgres]'."
         )
-    raw = psycopg.connect(dsn, autocommit=False)
+    kwargs = {"autocommit": False}
+    if _needs_no_prepare(dsn):
+        # Supabase's transaction-mode pooler (Supavisor, port 6543) / PgBouncer
+        # reuse server connections between transactions, which breaks psycopg's
+        # server-side prepared statements ("prepared statement ... does not exist").
+        kwargs["prepare_threshold"] = None
+    raw = psycopg.connect(dsn, **kwargs)
     return PgConnection(raw)
+
+
+def _needs_no_prepare(dsn: str) -> bool:
+    import os
+    if os.environ.get("NTXP_PG_NO_PREPARE", "").lower() in ("1", "true", "yes"):
+        return True
+    d = dsn.lower()
+    return ":6543/" in d or "pooler.supabase" in d or "pgbouncer=true" in d

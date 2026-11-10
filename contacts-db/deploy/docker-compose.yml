@@ -1,0 +1,22 @@
+# docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args: { WITH_ENGINE: "${WITH_ENGINE:-1}" }
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NTXP_MCP_AUTH: google                  # never "none" in production
+    expose: ["8080"]
+  caddy:                                     # automatic HTTPS for contacts.ntxpllc.com
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [app]
+volumes:
+  caddy_data:

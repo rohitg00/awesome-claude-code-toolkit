@@ -56,3 +56,36 @@ def test_llm_judge_gated_on_key(monkeypatch):
 def test_abstain_on_no_options():
     out = decide({"kind": "pick_value", "question": "?", "options": []})
     assert out["choice"] is None
+
+
+# -- persisted answers + effectiveness (Supabase-backed in production) ------------
+
+def test_answers_persist_and_effectiveness(tmp_path):
+    from ntxp_contacts.council import effectiveness, list_answers
+    from ntxp_contacts.db import connect, migrate
+    c = connect(tmp_path / "c.db")
+    migrate(c)
+    sure = {"kind": "pick_value", "question": "phone?",
+            "options": [{"id": "A", "grade": 0.95}, {"id": "B", "grade": 0.3}]}
+    unsure = {"kind": "pick_value", "question": "email?",
+              "options": [{"id": "A", "grade": 0.5}, {"id": "B", "grade": 0.48}]}
+    r1 = decide(sure, conn=c)
+    r2 = decide(unsure, conn=c)
+    assert r1["answer_id"] and r2["answer_id"] != r1["answer_id"]
+    eff = effectiveness(c)
+    assert eff["decisions"] == 2 and eff["resolved_free_by_jev_pct"] == 50.0
+    assert eff["total_cost"] == 0.0
+    recent = list_answers(c, 5)
+    assert recent[0]["question"] == "email?" and recent[0]["voters"]
+    # decision with no conn stays side-effect free
+    assert "answer_id" not in decide(sure)
+
+
+def test_pooler_disables_prepared_statements(monkeypatch):
+    from ntxp_contacts.db.pg import _needs_no_prepare
+    monkeypatch.delenv("NTXP_PG_NO_PREPARE", raising=False)
+    assert _needs_no_prepare("postgresql://u:p@aws-0-us.pooler.supabase.com:6543/postgres")
+    assert _needs_no_prepare("postgresql://u@host:6543/db")
+    assert not _needs_no_prepare("postgresql://u@db.xyz.supabase.co:5432/postgres")
+    monkeypatch.setenv("NTXP_PG_NO_PREPARE", "1")
+    assert _needs_no_prepare("postgresql://u@host:5432/db")

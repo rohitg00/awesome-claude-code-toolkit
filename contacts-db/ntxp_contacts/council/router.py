@@ -54,10 +54,66 @@ class Council:
                 "voters": sorted(v.judge for v in backing), "provenance": prov}
 
 
-def decide(task: dict, **opts) -> dict:
-    """Convenience: build a Task from a dict and run the default council."""
+def save_answer(conn, task: dict, result: dict, contact_id: int | None = None) -> int:
+    """Persist a council decision (consensus + provenance + cost) so its
+    effectiveness can be audited later. Returns the answer id."""
+    import json
+    cur_id = None
+    sql = ("INSERT INTO council_answers(kind, question, choice, confidence, cost, mode, "
+           "voters, provenance, options, contact_id) VALUES (?,?,?,?,?,?,?,?,?,?)")
+    params = (task.get("kind", "pick_value"), task.get("question", ""),
+              result.get("choice"), float(result.get("confidence", 0.0)),
+              float(result.get("cost", 0.0)), result.get("mode", ""),
+              json.dumps(result.get("voters", [])),
+              json.dumps(result.get("provenance", []), default=str),
+              json.dumps(task.get("options", []), default=str),
+              contact_id if contact_id is not None else task.get("contact_id"))
+    if getattr(conn, "backend", "sqlite") == "postgres":
+        cur_id = int(conn.execute(sql + " RETURNING answer_id", params).fetchone()[0])
+    else:
+        cur_id = int(conn.execute(sql, params).lastrowid)
+    conn.commit()
+    return cur_id
+
+
+def list_answers(conn, limit: int = 50) -> list[dict]:
+    import json
+    out = []
+    for r in conn.execute(
+            "SELECT answer_id, kind, question, choice, confidence, cost, mode, voters, "
+            "contact_id, created_at FROM council_answers ORDER BY answer_id DESC LIMIT ?",
+            (limit,)).fetchall():
+        d = dict(r)
+        d["voters"] = json.loads(d.get("voters") or "[]")
+        d["created_at"] = str(d["created_at"])
+        out.append(d)
+    return out
+
+
+def effectiveness(conn) -> dict:
+    """Consensus-of-effectiveness summary over all persisted answers."""
+    rows = conn.execute(
+        "SELECT mode, COUNT(*) n, AVG(confidence) conf, SUM(cost) cost "
+        "FROM council_answers GROUP BY mode").fetchall()
+    total = sum(r["n"] for r in rows)
+    free = sum(r["n"] for r in rows if r["mode"] == "jev-only")
+    return {
+        "decisions": total,
+        "resolved_free_by_jev_pct": round(100 * free / total, 1) if total else None,
+        "total_cost": round(sum((r["cost"] or 0) for r in rows), 4),
+        "by_mode": {r["mode"]: {"n": r["n"], "avg_confidence": round(r["conf"] or 0, 3)}
+                    for r in rows},
+    }
+
+
+def decide(task: dict, conn=None, **opts) -> dict:
+    """Run the default council on a task dict. If `conn` is given, the decision
+    is persisted to council_answers and its id returned as `answer_id`."""
     t = Task(kind=task.get("kind", "pick_value"),
              question=task.get("question", ""),
              options=task.get("options", []),
              context=task.get("context", {}))
-    return Council().decide(t, **opts)
+    result = Council().decide(t, **opts)
+    if conn is not None:
+        result["answer_id"] = save_answer(conn, task, result)
+    return result

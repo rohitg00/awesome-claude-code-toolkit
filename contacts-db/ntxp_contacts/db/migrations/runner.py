@@ -17,6 +17,31 @@ _FILE_RE = re.compile(r"^(\d{4})_.*\.sql$")
 _PG_SUFFIX = ".postgres.sql"
 
 
+# Supabase exposes public-schema tables to its anon/authenticated roles through
+# the auto-generated Data API. This database holds contact PII and is reached
+# only server-side (owner/service role, which bypass RLS), so after every
+# migration batch we idempotently enable RLS with NO policies (deny-all) on every
+# table and revoke the API roles' grants. Harmless on plain Postgres. Re-running
+# it each time means a future migration's new table can never ship exposed.
+RLS_LOCKDOWN_SQL = """
+DO $$
+DECLARE t record;
+BEGIN
+  FOR t IN SELECT tablename FROM pg_tables WHERE schemaname = 'public' LOOP
+    EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY', t.tablename);
+  END LOOP;
+  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
+    REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anon;
+    REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM anon;
+  END IF;
+  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
+    REVOKE ALL ON ALL TABLES IN SCHEMA public FROM authenticated;
+    REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM authenticated;
+  END IF;
+END $$;
+"""
+
+
 def _backend(conn) -> str:
     return getattr(conn, "backend", "sqlite")
 
@@ -82,4 +107,7 @@ def migrate(conn) -> list[int]:
             conn.rollback()
             raise
         applied.append(version)
+    if backend == "postgres" and applied:
+        conn.executescript(RLS_LOCKDOWN_SQL)
+        conn.commit()
     return applied

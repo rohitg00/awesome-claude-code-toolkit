@@ -408,13 +408,30 @@ def connector_import_cmd(ctx, service, contactsfile):
 @main.command("council")
 @click.argument("taskfile", type=click.Path(exists=True))
 @click.option("--escalate", type=int, default=1, help="Max LLM judges to consult on escalation.")
+@click.option("--save/--no-save", default=True, help="Persist the answer to the database (default).")
 @click.pass_context
-def council_cmd(ctx, taskfile, escalate):
+def council_cmd(ctx, taskfile, escalate, save):
     """Decide a qualification task via the model council (JEV free; cheap LLMs on
-    escalation). TASKFILE is JSON: {kind, question, options:[{id,value,grade?}]}."""
+    escalation). TASKFILE is JSON: {kind, question, options:[{id,value,grade?}]}.
+    The consensus + provenance are persisted (council_answers) unless --no-save."""
     from .council import decide
     task = json.loads(Path(taskfile).read_text())
-    click.echo(json.dumps(decide(task, escalate=escalate), indent=2, default=str))
+    conn = None
+    if save:
+        conn = _conn(ctx)
+        migrate(conn)
+    click.echo(json.dumps(decide(task, conn=conn, escalate=escalate), indent=2, default=str))
+
+
+@main.command("council-report")
+@click.pass_context
+def council_report_cmd(ctx):
+    """Consensus-of-effectiveness summary over all persisted council answers."""
+    from .council import effectiveness, list_answers
+    conn = _conn(ctx)
+    migrate(conn)
+    click.echo(json.dumps({"effectiveness": effectiveness(conn),
+                           "recent": list_answers(conn, 10)}, indent=2, default=str))
 
 
 @main.command("context")

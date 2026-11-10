@@ -29,4 +29,4 @@ ntxp = "ntxp_contacts.cli:main"
 include = ["ntxp_contacts*"]
 
 [tool.setuptools.package-data]
-ntxp_contacts = ["db/migrations/*.sql", "remote/*.json", "hooks/*.json"]
+ntxp_contacts = ["db/migrations/*.sql", "remote/*.json", "hooks/*.json", "web/*"]

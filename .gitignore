@@ -44,3 +44,10 @@ temp/
 # Browserbase runtime data
 .browserbase/
 stagehand-cache/
+
+# contacts-db deploy: secrets and the proprietary NTXP document engine / logo never go in git
+contacts-db/deploy/.env
+contacts-db/deploy/engine/*
+contacts-db/deploy/assets/*
+!contacts-db/deploy/engine/.gitkeep
+!contacts-db/deploy/assets/.gitkeep
