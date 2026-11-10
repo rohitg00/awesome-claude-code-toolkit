@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ntxp-platform"
+version = "0.1.0"
+description = "NTXP shared core: one registry of every self-hosted NTXP app's data fields and functions, cross-app links, and a host-routed hub so each subdomain is a different view of the same codebase."
+requires-python = ">=3.10"
+dependencies = []   # stdlib only; apps are imported lazily when installed
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0,<2"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ntxp-platform = "ntxp_platform.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ntxp_platform*"]
