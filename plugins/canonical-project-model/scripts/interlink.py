@@ -282,6 +282,8 @@ def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="
     backrefs = {}
 
     def attach(chunk, sheet_id, via):
+        if sheet_id not in links:                        # a concept may name a sheet this set does not hold
+            return
         cid = chunk["id"]
         key = (sheet_id, cid)
         conf = CONF[via]
@@ -308,7 +310,8 @@ def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="
                 page = int(rec.get("page_index")) + 1
             except (TypeError, ValueError):
                 page = 0
-            s, via = atlas_by_docpage.get((doc_stem(rec.get("_doc") or c.get("doc")), page)), "doc_page"
+            # No usable page means no page match: page 0 would pair with any sheet that also lacks one.
+            s, via = (atlas_by_docpage.get((doc_stem(rec.get("_doc") or c.get("doc")), page)) if page else None), "doc_page"
         if s is None:
             continue
         sid = s["sheet_id"]
@@ -377,7 +380,7 @@ def build(kb_dir, atlas, viewer_rel="Plans Atlas/plans-atlas.html", request_id="
                         "kb_division_file": div_files.get(d),
                         "itb_package": ("ignition/itb/itb-packages.html" if ignition_dir and (Path(ignition_dir) / "itb" / "itb-packages.html").exists() else None)}
     for key, (sp, sids) in spec_sheets.items():
-        kb_ids = sorted({cid for sid in sids for role in links[sid].values() for cid in role
+        kb_ids = sorted({cid for sid in sids for role in links.get(sid, {}).values() for cid in role
                          if any(r["via"] == "spec_section" and r["sheet_id"] == sid for r in backrefs.get(cid, []))})
         specs[sp.get("section")] = {"title": sp.get("title") or "", "division": sp.get("division"),
                                     "atlas_sheets": sids, "kb_chunks": kb_ids[:50]}

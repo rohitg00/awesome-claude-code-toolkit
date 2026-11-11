@@ -34,6 +34,7 @@ JSON goes to stdout only via --dry-run's plan (the real run writes files).
 """
 
 import argparse
+import glob
 import json
 import re
 import sys
@@ -424,6 +425,8 @@ def build_sheets_from_pdfs(pdf_paths, out_dir, render_images, dpi, model_divisio
                 sheet_no, title = "COVER", "Cover Sheet"
                 sheet_id = dedupe_id("COVER", used_ids)
                 id_conf = 0.6
+                review.append(f"page 1 of {pdf_path.name} has no sheet number; labelled 'COVER' from the word "
+                              f"on the page - verify")
             else:
                 sheet_id = dedupe_id(f"{pdf_path.stem}-p{page_no}", used_ids)
                 id_conf = 0.4
@@ -652,7 +655,9 @@ def guess_spec_pdf(section_no, division, bases):
     for base in bases:
         if not base:
             continue
-        matches = sorted(Path(base).glob(f"Specs By CSI/{division}/{section_no}*.pdf"))
+        # The section number must end where the match ends: "03 30 00" must not pick up "03 30 00.13 ...".
+        matches = sorted(p for p in Path(base).glob(f"Specs By CSI/{division}/{glob.escape(section_no)}*.pdf")
+                         if not re.match(r"[\d.]", p.name[len(section_no):len(section_no) + 1] or " "))
         if matches:
             return posix_rel(matches[0], base)
     return None
