@@ -1,0 +1,6 @@
+{
+  "name": "tesla-connector",
+  "version": "0.1.0",
+  "description": "Tesla vehicle control from Claude: find my Tesla / drop a pin / navigate-to-car, lock & unlock, climate, charging, sentry — 72 MCP tools with zero-touch first-run setup, a themed dashboard GUI, and Siri/ChatGPT bridge",
+  "commands": ["commands/setup.md", "commands/dashboard.md"]
+}

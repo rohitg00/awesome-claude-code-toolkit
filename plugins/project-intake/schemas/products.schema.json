@@ -1,0 +1,29 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "products",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "manufacturer": { "type": "string" },
+              "model_no": { "type": "string" },
+              "spec_section": { "type": "string" },
+              "csi_division": { "type": "string" },
+              "ratings": { "type": "array", "items": { "type": "string" } },
+              "substitution_allowed": { "type": "boolean" },
+              "page_ref": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

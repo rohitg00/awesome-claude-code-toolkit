@@ -1,0 +1,31 @@
+# One image, one service per view. Each view is a different subdomain of the same codebase.
+# Traefik/proxy labels mirror contacts-db/deploy/docker-compose.yml (join the VPS's existing proxy; no ports published).
+x-common: &common
+  image: ghcr.io/ntxptrevor/ntxp-platform:latest
+  restart: unless-stopped
+  networks: [proxy]
+  env_file: .env
+services:
+  hub:
+    <<: *common
+    command: ["ntxp-platform", "serve", "--port", "8080"]
+    environment:
+      NTXP_UPSTREAMS: "contacts=http://contacts:8081,contracts=http://contracts:8082,apilog=http://apilog:8083"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ntxp-hub.rule=Host(`contacts.ntxpllc.cloud`) || Host(`contracts.ntxpllc.cloud`) || Host(`api.ntxpllc.cloud`)"
+      - "traefik.http.routers.ntxp-hub.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ntxp-hub.loadbalancer.server.port=8080"
+  contacts:
+    <<: *common
+    command: ["ntxp", "serve-http", "--host", "0.0.0.0", "--port", "8081"]
+  contracts:
+    <<: *common
+    command: ["ntxp-contracts", "serve-web", "--host", "0.0.0.0", "--port", "8082"]
+  apilog:
+    <<: *common
+    command: ["ntxp-apilog", "serve", "--host", "0.0.0.0", "--port", "8083"]
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-proxy}

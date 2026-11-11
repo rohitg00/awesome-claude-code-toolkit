@@ -1,0 +1,3 @@
+# Real contract data, the built DB, and signed PDFs are never committed.
+*
+!.gitignore

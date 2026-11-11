@@ -1,0 +1,49 @@
+{
+  "manifest_version": "0.2",
+  "name": "tesla",
+  "display_name": "Tesla Connector",
+  "version": "0.1.0",
+  "description": "Full Tesla vehicle control over MCP: find/locate, drop a pin, navigate-to-car, lock/unlock, climate, charging, trunk, windows, sentry, nav share, media — plus a themed dashboard GUI and Siri/ChatGPT bridge.",
+  "long_description": "A portable Tesla connector. Point it at your Tesla auth (an app-style refresh token, or a Fleet API developer app) and every vehicle data endpoint and remote command becomes an MCP tool — 72 of them, from tesla_find_my_tesla and tesla_unlock_doors to seat heaters, scheduled departure, speed limit mode, boombox, and software updates. A companion HTTP bridge (tesla-bridge) serves a Tesla-themed dashboard and Siri-Shortcut-friendly endpoints (/siri/find, /siri/pin, /siri/lock, /siri/unlock, /siri/navigate) plus an OpenAPI spec for ChatGPT Actions. Set TESLA_MOCK=1 to demo everything with no credentials.",
+  "author": { "name": "awesome-claude-code-toolkit" },
+  "license": "MIT",
+  "keywords": ["tesla", "vehicle", "fleet-api", "locate", "lock", "unlock", "climate", "charging", "siri", "shortcuts", "dashboard"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "TESLA_REFRESH_TOKEN": "${user_config.tesla_refresh_token}",
+        "TESLA_AUTH_MODE": "${user_config.tesla_auth_mode}",
+        "TESLA_CLIENT_ID": "${user_config.tesla_client_id}",
+        "TESLA_CLIENT_SECRET": "${user_config.tesla_client_secret}",
+        "TESLA_REGION": "${user_config.tesla_region}",
+        "TESLA_VIN": "${user_config.tesla_vin}",
+        "TESLA_COMMAND_PROXY_URL": "${user_config.tesla_command_proxy_url}",
+        "TESLA_MOCK": "${user_config.tesla_mock}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "tesla_find_my_tesla", "description": "Locate the parked car: GPS, address, map links, speakable summary." },
+    { "name": "tesla_drop_pin", "description": "Shareable pin message with Apple/Google Maps links to the car." },
+    { "name": "tesla_navigate_to_tesla", "description": "Turn-by-turn deep links TO the parked car (walking/driving)." },
+    { "name": "tesla_status", "description": "Composite snapshot: battery, charging, climate, locks, location." },
+    { "name": "tesla_lock_doors", "description": "Lock the car remotely." },
+    { "name": "tesla_unlock_doors", "description": "Unlock the car remotely." },
+    { "name": "tesla_climate_on", "description": "Start climate / preconditioning (plus 65 more tools: charging, trunk, windows, sentry, valet, speed limit, nav share, seat heaters, media, boombox, software updates…)." }
+  ],
+  "user_config": {
+    "tesla_refresh_token": { "type": "string", "title": "Tesla Refresh Token", "description": "From scripts/get-refresh-token.mjs (app-style) or your Fleet API OAuth flow.", "sensitive": true, "required": false },
+    "tesla_auth_mode": { "type": "string", "title": "Auth Mode", "description": "'owner' (app-style token, default) or 'fleet' (developer app).", "required": false },
+    "tesla_client_id": { "type": "string", "title": "Fleet API Client ID", "description": "Only for fleet mode (developer.tesla.com app).", "required": false },
+    "tesla_client_secret": { "type": "string", "title": "Fleet API Client Secret", "sensitive": true, "required": false },
+    "tesla_region": { "type": "string", "title": "Region", "description": "na (default), eu, or cn — Fleet API region.", "required": false },
+    "tesla_vin": { "type": "string", "title": "Default VIN", "description": "Default vehicle when the account has several.", "required": false },
+    "tesla_command_proxy_url": { "type": "string", "title": "Command Proxy URL", "description": "URL of a running tesla-http-proxy for signed commands (2021+ vehicles on Fleet API).", "required": false },
+    "tesla_mock": { "type": "string", "title": "Mock Mode", "description": "Set to 1 to demo with canned data and no credentials.", "required": false }
+  },
+  "compatibility": { "runtimes": { "node": ">=18.0.0" } }
+}

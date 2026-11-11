@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark light">
+  <script>try{var t=localStorage.getItem("ntxp.theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NTXP — Contract Profile</title>
+  <link rel="icon" href="/assets/icon_small.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header id="top">
+    <div class="band">
+      <div class="logo" id="logo"></div>
+      <div class="lockup"><h1>Contract Profile</h1><p id="subtitle">NTXP Master Contracts</p></div>
+      <div class="acct no-print">
+        <button class="btn sm" id="printBtn" type="button">Print</button>
+        <button class="btn sm" id="pdfBtn" type="button">Download PDF</button>
+      </div>
+    </div>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="tag">
+      <span><b>CONTRACT #</b><span id="tagNo">—</span></span>
+      <span><b>OWNER</b><span id="tagOwner">—</span></span>
+      <span><b>DATE</b><span id="tagD"></span></span>
+    </div>
+  </header>
+
+  <main class="profile" id="root">
+    <div class="crumbs no-print"><a href="/">← Master Contracts</a></div>
+    <div id="content"><p class="muted">Loading…</p></div>
+  </main>
+
+  <script src="/static/util.js"></script>
+  <script src="/static/brand.js"></script>
+  <script src="/static/contract.js"></script>
+</body>
+</html>

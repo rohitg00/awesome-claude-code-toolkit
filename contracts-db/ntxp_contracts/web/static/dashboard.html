@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark light">
+  <script>try{var t=localStorage.getItem("ntxp.theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NTXP — Master Contracts</title>
+  <meta name="description" content="NTXP Master Contracts log — live, inline-editable reference data.">
+  <link rel="icon" href="/assets/icon_small.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header id="top">
+    <div class="band">
+      <div class="logo" id="logo"></div>
+      <div class="lockup"><h1>NTXP Master Contracts</h1><p>Contract log · reference data for NTXP tools</p></div>
+      <div class="acct"><label for="actor">Editing as</label>
+        <input id="actor" placeholder="your name" autocomplete="name"></div>
+    </div>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="tag">
+      <span><b>CONTRACTS</b><span id="tagN">—</span></span>
+      <span><b>EXPIRING ≤ 90 DAYS</b><span id="tagS">—</span></span>
+      <span><b>UNEXECUTED</b><span id="tagU">—</span></span>
+      <span><b>DATE</b><span id="tagD"></span></span>
+    </div>
+  </header>
+  <div class="sr" id="live" role="status" aria-live="polite"></div>
+
+  <main>
+  <div class="toolbar no-print" role="search">
+    <input id="search" class="search" type="search" aria-label="Search contracts" placeholder="Search title, number, owner, location, scope…">
+    <button class="btn primary" id="add" type="button">+ Add contract</button>
+    <button class="btn" id="printBtn" type="button" title="Print the log on Letter (8.5×11)">Print</button>
+    <button class="btn" id="pdfBtn" type="button" title="Save the log as PDF on Letter (8.5×11)">Download PDF</button>
+    <span class="spacer"></span>
+    <span class="saveflash" id="flash" role="status" aria-live="polite">saved ✓</span>
+  </div>
+
+  <div class="wrap">
+    <div class="tablecard">
+      <div class="bar">Contract log<span class="n" id="barN"></span></div>
+      <table id="grid">
+        <caption class="sr">Master contracts. Click any cell to edit; changes save instantly.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Contract #</th>
+            <th scope="col">Title</th>
+            <th scope="col">Type</th>
+            <th scope="col">Owner entity</th>
+            <th scope="col">Coefficient</th>
+            <th scope="col">Co-op fee</th>
+            <th scope="col">Expiration</th>
+            <th scope="col">Scope</th>
+            <th scope="col">Signed</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="no-print"><span class="sr">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">No contracts yet — click <b>+ Add contract</b> to start.</div>
+    </div>
+
+    <div class="legend no-print">
+      <span><b>Click any cell</b> to edit — saves instantly.</span>
+      <span><span class="key" style="background:var(--navy-mid)"></span>expires within 90 days (bold date)</span>
+      <span><span class="key" style="background:var(--red)"></span>expired or unexecuted</span>
+      <span>Click a <b>contract #</b> to open its profile.</span>
+    </div>
+  </div>
+  </main>
+
+  <script src="/static/util.js"></script>
+  <script src="/static/brand.js"></script>
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

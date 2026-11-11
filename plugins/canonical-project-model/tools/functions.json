@@ -1,0 +1,309 @@
+{
+  "_about": "Function-tool definitions for API deployments of the NTXP Plans Atlas. Written in the OpenAI function-calling shape, which the xAI (Grok) API also accepts. For the Anthropic Messages API, use each function's name and description unchanged and pass its 'parameters' object as 'input_schema'. The host executes a call with: python scripts/run_tool.py <name> '<arguments-json>'",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "deploy_plans_atlas",
+        "description": "Deploy or update the NTXP Plans Atlas for a project. It discovers the drawing PDFs under the project's Construction Documents folder, extracts sheets, callout links and the trade/spec/phase/area index, renders the offline viewer to 'Construction Documents/Plans Atlas/plans-atlas.html', and records a SHA-256 drawing manifest. It is idempotent: an unchanged drawing set returns status 'up_to_date' without rebuilding. Call it automatically when a bid is confirmed, when a project is confirmed, and when addenda or revised sheets arrive. Returns JSON: status (built | up_to_date | no_drawings), atlas path, sheets, event, atlas_version.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "event": {
+              "type": "string",
+              "enum": [
+                "bid_confirmed",
+                "project_confirmed",
+                "kb_initial_review",
+                "addendum",
+                "manual"
+              ],
+              "description": "Why the deployment is running; recorded in the atlas state."
+            },
+            "const_docs": {
+              "type": "string",
+              "description": "Construction Documents folder. Omit to auto-detect it, or to create it if absent."
+            },
+            "pdf_dir": {
+              "type": "string",
+              "description": "Folder holding the drawing PDFs. Defaults to the Construction Documents folder."
+            },
+            "dossier": {
+              "type": "string",
+              "description": "Dossier directory for model assembly. Defaults to the project root."
+            },
+            "company": {
+              "type": "string",
+              "description": "Branding name. Default NTXP."
+            },
+            "force": {
+              "type": "boolean",
+              "description": "Rebuild even when the drawing set is unchanged."
+            },
+            "check": {
+              "type": "boolean",
+              "description": "Only report whether a rebuild is needed; change nothing."
+            },
+            "dry_run": {
+              "type": "boolean",
+              "description": "Print the deployment plan; change nothing."
+            }
+          },
+          "required": [
+            "project",
+            "event"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "render_plans_atlas_viewer",
+        "description": "Re-render only the Plans Atlas viewer HTML from an already-built Canonical Project Record, for example to embed it as a fragment or to restyle it without re-extracting drawings. Prefer deploy_plans_atlas for normal deployments.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string",
+              "description": "Path to canonical-model.json."
+            },
+            "out": {
+              "type": "string",
+              "description": "Output .html path."
+            },
+            "company": {
+              "type": "string",
+              "description": "Branding name. Default NTXP."
+            },
+            "fragment": {
+              "type": "boolean",
+              "description": "Emit body-only HTML for embedding in another page."
+            }
+          },
+          "required": [
+            "model"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "project_ignition_blueprint",
+        "description": "Project Ignition stage 1 (deterministic, free). Reads the Canonical Project Record and Plans Atlas and writes model/ignition/blueprint.json plus typed work orders for the two frontier seats (Astra = gpt-6-astra, Opus = claude-opus-5-5) and a Compass work order for public $/SF benchmarks. Call it when a bid is confirmed, after the atlas deploys. Returns JSON: status, divisions, tasks, price_lines, gaps, next steps.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "today": {
+              "type": "string",
+              "description": "ISO date to treat as today (optional)."
+            }
+          },
+          "required": [
+            "project"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "project_ignition_process",
+        "description": "Project Ignition stage 3 (the Jev work). Reads the raw Astra and Opus outputs saved in model/ignition/raw/, validates them, compares PERT durations and rolls up a CPM schedule, decides unit prices with confidence and valid-through dates, and sanity-checks cost per square foot against localized public benchmarks. Everything is a DRAFT for PM approval. Returns JSON summary; full results in model/ignition/processed.json and jev-judgments.jsonl.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "today": {
+              "type": "string",
+              "description": "ISO date to treat as today (optional)."
+            },
+            "astra": {
+              "type": "string",
+              "description": "Astra output JSON path (default model/ignition/raw/astra.json)."
+            },
+            "opus": {
+              "type": "string",
+              "description": "Opus output JSON path (default model/ignition/raw/opus.json)."
+            },
+            "benchmarks": {
+              "type": "string",
+              "description": "Public $/SF CSV with citations (default model/ignition/benchmarks.csv)."
+            },
+            "markup_pct": {
+              "type": "number",
+              "description": "Markup fraction added before the $/SF check, for example 0.18."
+            }
+          },
+          "required": [
+            "project"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "project_ignition_itb",
+        "description": "Project Ignition stage 4. Generates 8.5 x 11 ITB packages, one per CSI division, plus a bid-package index and an internal ignition summary. ITB pages carry scope, quantities and schedule only, never our prices. Drafts only; nothing is sent.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "today": {
+              "type": "string",
+              "description": "ISO date to treat as today (optional)."
+            },
+            "pdf": {
+              "type": "boolean",
+              "description": "Also write a letter-size PDF."
+            }
+          },
+          "required": [
+            "project"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "phase1_receive_atlas_request",
+        "description": "Process a Phase 1 drawing handoff. Takes <kb>/handoffs/atlas-request.json staged by the NTXP Estimating Phase 1 skill, seeds the project record from the KB (never over an edited section), deploys the Plans Atlas and the Project Ignition blueprint, interlinks the KB with the drawings, and writes atlas-response.json, plans_atlas.json, interlinks.json and atlas-chunks.json into the KB's atlas/ folder. Idempotent. Returns JSON: status, sheets, kb_links, needs_review, response path.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "request": {
+              "type": "string",
+              "description": "Path to atlas-request.json."
+            },
+            "force": {
+              "type": "boolean",
+              "description": "Rebuild even if the drawings are unchanged."
+            },
+            "no_chain": {
+              "type": "boolean",
+              "description": "Do not call the Estimating bridge afterwards."
+            }
+          },
+          "required": [
+            "request"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "build_scope_index",
+        "description": "Build the Plans Atlas scope index from the drawing set: project index (title, address, owner, architect, engineers, page index with detail labels, notes per page, rooms, millwork elevations, trades), clarifications and exclusions (scheduling, exclusions, owner-required vendors, owner allowances, pricing and alternates, phasing), every schedule as a cropped image plus a recreated table, and a scope index per CSI division. Deterministic; never invents: values not printed on the sheets are null, and size tags are counted, not measured. Writes sections/scope_index.json and atlas/crops/. Runs automatically inside deploy_plans_atlas. Returns JSON: status, stats, needs_review.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string",
+              "description": "Project model/ directory."
+            },
+            "pdf_dir": {
+              "type": "string",
+              "description": "Folder holding the drawing PDFs (default: searched under the project)."
+            }
+          },
+          "required": [
+            "model"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "build_linked_drawing_set",
+        "description": "Write the drawing set with the Index Legend in front of the first sheet and live links throughout. Every link targets a named destination (sheet:A-101, schedule:<id>, index:<section>), the outline lists the legend sections and every sheet, and page labels show sheet numbers. Drawing pages are untouched. Optionally also saves the legend alone as PDF and Markdown for the knowledge base. Runs automatically inside deploy_plans_atlas. Returns JSON: status, pages, links, named_destinations.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "pdf": {
+              "type": "string",
+              "description": "Source drawing-set PDF."
+            },
+            "model": {
+              "type": "string",
+              "description": "Project model/ directory."
+            },
+            "out": {
+              "type": "string",
+              "description": "Output PDF path."
+            },
+            "project": {
+              "type": "string",
+              "description": "Project name for the legend header."
+            },
+            "legend_out": {
+              "type": "string",
+              "description": "Also save the Index Legend alone as a PDF."
+            },
+            "legend_md": {
+              "type": "string",
+              "description": "Also save the Index Legend as Markdown."
+            }
+          },
+          "required": [
+            "pdf",
+            "model",
+            "out"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "export_sheet_with_markups",
+        "description": "Export one sheet as a PDF with its overlays drawn on top in the NTXP markup colours (trade hue; demolition dotted with 25% fill, new work solid with 40% fill; measurements red), a legend and the red version footer. Layers: markup (manifests in model/atlas/markups, schema 3.0), schedules, notes, rooms, doors. A working export; published markups still go through ntxp-pdf-markups-and-redlines. Returns JSON: status, out, overlays.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string",
+              "description": "Project root directory."
+            },
+            "sheet": {
+              "type": "string",
+              "description": "Sheet id or sheet number."
+            },
+            "layers": {
+              "type": "string",
+              "description": "Comma list of layers (default markup)."
+            },
+            "out": {
+              "type": "string",
+              "description": "Output PDF path."
+            }
+          },
+          "required": [
+            "project",
+            "sheet"
+          ]
+        }
+      }
+    }
+  ]
+}

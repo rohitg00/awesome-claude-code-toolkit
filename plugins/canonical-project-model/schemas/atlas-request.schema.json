@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atlas-request.schema.json",
+  "title": "Phase 1 -> Plans Atlas drawing handoff request",
+  "description": "Staged by ntxp-estimating-phase-1-intake (atlas_bridge.py send) at <kb>/handoffs/atlas-request.json; consumed by the Plans Atlas receiver (phase1_receiver.py). The request id hashes the drawings and the KB content, so an unchanged project never reruns.",
+  "type": "object",
+  "required": [
+    "schema",
+    "request_id",
+    "kb_path",
+    "outputs_dir",
+    "project_root",
+    "drawings"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ntxp.atlas-request/1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "kb_signature": {
+      "type": "string"
+    },
+    "event": {
+      "enum": [
+        "kb_initial_review",
+        "bid_confirmed",
+        "project_confirmed",
+        "addendum",
+        "manual"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "kb_path": {
+      "type": "string",
+      "description": "Phase 1 KB directory (projects/<slug>); extracts are read, never written."
+    },
+    "outputs_dir": {
+      "type": "string",
+      "description": "Where results are written: <kb>/atlas."
+    },
+    "project_root": {
+      "type": "string",
+      "description": "Root for model/ and Construction Documents/ (default <kb>/atlas/project)."
+    },
+    "drawings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "doc_id": {
+            "type": "string"
+          },
+          "pages": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "unresolved_drawings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "doc_id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "chain": {
+      "type": "boolean",
+      "description": "When true the receiver calls the Estimating bridge's receive step itself."
+    },
+    "sender": {
+      "type": "object"
+    }
+  }
+}

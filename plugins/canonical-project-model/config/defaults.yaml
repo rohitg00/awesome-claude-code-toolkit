@@ -1,0 +1,46 @@
+skill:
+  id: ntxp-plans-atlas
+  plugin: canonical-project-model
+  contract: AGENTS.md            # model-agnostic rules every platform follows
+
+company: NTXP
+
+classification:
+  system: CSI MasterFormat
+  version: MasterFormat 2020
+  primary_divisions: "01-32"
+
+atlas:
+  const_docs_names:              # matched case-insensitively, leading numbering stripped
+    - Construction Documents
+    - Const Docs
+    - Construction Docs
+    - Plans
+    - Drawings
+  output_subfolder: Plans Atlas
+  output_file: plans-atlas.html
+  state_file: model/.atlas-state.json
+  deploy_events:
+    - bid_confirmed
+    - project_confirmed
+    - addendum
+  image_dpi: 110
+  searchable_min_words: 25
+  link_confidence:
+    resolved_sheet: 0.9          # script-verified callout target
+    resolved_spec: 0.7           # script-verified six-digit spec reference
+    hand_built_max: 0.7          # model-built without code execution
+
+model_settings:                  # recommended per-platform generation settings
+  normalization_temperature: 0.2 # structure work: keep it low and repeatable
+  narrative_temperature: 0.5     # PM summaries and suggestions
+  json_output: strict            # no comments or prose inside JSON
+
+health_lights:
+  green: on track
+  yellow: PM team should give this attention soon
+  red: priority focus (trending the wrong way)
+
+approval:
+  outbound_writes: require_user_approval
+  staged_renders: require_user_approval

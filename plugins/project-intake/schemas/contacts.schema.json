@@ -1,0 +1,29 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "contacts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": { "type": "string", "description": "owner, architect, engineer, GC, subcontractor, supplier, contact." },
+              "company": { "type": "string" },
+              "name": { "type": "string" },
+              "title": { "type": "string" },
+              "email": { "type": "string" },
+              "phone": { "type": "string" },
+              "address": { "type": "string" },
+              "page_ref": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

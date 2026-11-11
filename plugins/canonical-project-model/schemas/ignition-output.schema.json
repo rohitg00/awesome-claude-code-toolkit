@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ignition-output.schema.json",
+  "title": "Project Ignition seat output",
+  "description": "What Astra (gpt-6-astra) and Opus (claude-opus-5-5) each return for a Project Ignition work order. ignition.py validates against this shape and flags, never repairs, anything that does not fit.",
+  "type": "object",
+  "required": [
+    "seat",
+    "divisions"
+  ],
+  "properties": {
+    "seat": {
+      "enum": [
+        "astra",
+        "opus"
+      ]
+    },
+    "model": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "divisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "division"
+        ],
+        "properties": {
+          "division": {
+            "type": "string",
+            "pattern": "^[0-9]{2}$"
+          },
+          "pert": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "task_id",
+                "optimistic",
+                "most_likely",
+                "pessimistic"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "string"
+                },
+                "optimistic": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "most_likely": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "pessimistic": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "basis": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "prices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "line_id",
+                "unit_price"
+              ],
+              "properties": {
+                "line_id": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "uom": {
+                  "type": "string"
+                },
+                "unit_price": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "low": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "high": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "price_basis": {
+                  "enum": [
+                    "vendor_quote",
+                    "book",
+                    "public_bid",
+                    "model_estimate"
+                  ]
+                },
+                "price_date": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "YYYY-MM-DD the price is true for"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "itb": {
+            "type": "object",
+            "properties": {
+              "scope_narrative": {
+                "type": "string"
+              },
+              "inclusions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exclusions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "clarifications": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "required_submittals": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "alternates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "risks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "not_applicable": {
+            "type": "boolean",
+            "description": "True when no work belongs in this division; then omit pert and prices."
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

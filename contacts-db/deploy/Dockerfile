@@ -1,0 +1,38 @@
+# NTXP Contacts — app image (live page + /api + /api/v1 + /mcp + /carddav + peer webhooks).
+# Built by CI (.github/workflows/contacts-image.yml) and PULLED by the Hostinger Docker Manager —
+# that manager cannot build images. Build context = contacts-db/.
+#
+# Deliberately NOT in the image (kept on the VPS and mounted read-only):
+#   /engine   the proprietary NTXP Branded Document engine (license: NTXP only, no redistribution)
+#   /assets   the NTXP logo
+# The renderer's *public* dependencies (Chromium, Playwright, python-docx, ...) are installed here.
+# --- stage 1: build the React + Tailwind front end (web-app/) into ntxp_contacts/web/dist ---
+FROM node:22-slim AS web
+WORKDIR /src/web-app
+COPY web-app/package.json web-app/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY web-app/ ./
+RUN npm run build        # vite outDir = ../ntxp_contacts/web/dist
+
+# --- stage 2: the app ---
+FROM python:3.12-slim
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1 \
+    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
+    NTXP_ASSETS_DIR=/assets NTXP_DOC_ENGINE=/engine/scripts/render.py NTXP_DOC_PYTHON=python
+WORKDIR /app
+COPY pyproject.toml README.md ./
+COPY ntxp_contacts ./ntxp_contacts
+COPY --from=web /src/ntxp_contacts/web/dist ./ntxp_contacts/web/dist
+# Playwright's bundled node needs libatomic before `playwright install --with-deps` can even run (python:slim lacks it).
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+RUN pip install ".[mcp,remote,postgres]" \
+ && pip install playwright python-docx lxml pikepdf reportlab pypdfium2 Pillow \
+ && playwright install --with-deps chromium && chmod -R a+rX /ms-playwright
+# /app stays root-owned (code is not writable by the service); only the data volume belongs to the app user.
+RUN useradd -m -u 10001 ntxp && mkdir -p /data && chown ntxp /data
+USER ntxp
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD python -c "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=4)"
+CMD ["ntxp", "serve-http", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,0 +1,3 @@
+# No third-party dependencies. scripts/mistral_ocr.py uses the Python standard
+# library only (urllib, json, ssl, argparse), so the skill runs in a sandbox with
+# no `pip install` step. Python 3.10+ required.

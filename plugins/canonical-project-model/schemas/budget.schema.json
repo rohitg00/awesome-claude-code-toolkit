@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "budget.schema.json",
+  "title": "Section — Budget (per-trade lines + editable rollup)",
+  "description": "Two views of the budget, both in CSI MasterFormat order. (1) lines: detailed per-trade budget lines — each references a QTO takeoff_id so its quantity is PULLED from the Summary QTO (the single source of truth), not restated; the workbook renders these as one page per trade with live qty links, unit costs, and a trade total. (2) rollup: the high-level editable budget — one row per top-level cost code / trade with an estimated value (from the trade pages) that a user can override or replace with a selected bid, and a running project total. The model supplies structure and any extracted numbers; it does not invent pricing.",
+  "type": "object",
+  "required": ["section", "lines"],
+  "properties": {
+    "section": { "type": "string", "const": "budget" },
+    "currency": { "type": "string", "default": "USD" },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["budget_line_id", "description", "trade_id"],
+        "properties": {
+          "budget_line_id": { "type": "string", "description": "Stable id, e.g. 'BL-09-003'." },
+          "trade_id": { "type": "string", "description": "Trade page this line belongs to (trades.trades[].trade_id)." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "cost_code": { "type": "string", "description": "Sub-division split within the trade (demo | new_work | schedule | ...)." },
+          "description": { "type": "string" },
+          "qto_takeoff_id": { "type": "string", "description": "QTO line this quantity is pulled from (quantity-takeoff.items[].takeoff_id). The workbook links the cell to the QTO so editing the QTO updates the budget." },
+          "quantity": { "$ref": "common.defs.schema.json#/$defs/quantity", "description": "Mirror of the QTO quantity for offline readers; the live workbook value comes from the QTO link." },
+          "unit_cost": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Estimated cost per unit. Null until an estimating tool/user fills it." },
+          "extended_cost": { "$ref": "common.defs.schema.json#/$defs/money", "description": "quantity x unit_cost; computed by the workbook formula when both are present." },
+          "scope_item_ids": { "type": "array", "items": { "type": "string" } },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" },
+          "normalization": { "$ref": "common.defs.schema.json#/$defs/normalization" }
+        }
+      }
+    },
+    "rollup": {
+      "type": "array",
+      "description": "The high-level editable budget: one row per top-level trade/cost code. estimated_value comes from the trade pages; selected_bid_id lets a user swap in a submitted bid; override lets them set a manual number. The workbook keeps a running project total.",
+      "items": {
+        "type": "object",
+        "required": ["trade_id"],
+        "properties": {
+          "trade_id": { "type": "string" },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "label": { "type": "string" },
+          "estimated_value": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Rolled up from the trade's budget page." },
+          "selected_bid_id": { "type": ["string", "null"], "description": "bid-log.bids[].bid_id the user chose to use instead of the estimate." },
+          "manual_override": { "$ref": "common.defs.schema.json#/$defs/money", "description": "User-entered value that wins over estimate/selected bid when set." }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "direct_cost": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "indirect_cost": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "total_budget": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "contract_value": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Awarded contract sum (project phase)." },
+        "profit": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Buyout profit (contract value minus committed/estimated cost). Shown in the buyout view once phase=project." }
+      }
+    }
+  }
+}

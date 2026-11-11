@@ -1,0 +1,31 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "finish_schedule",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "type": "array",
+          "description": "One entry per room/space in the finish schedule.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "room_no": { "type": "string" },
+              "room_name": { "type": "string" },
+              "floor": { "type": "string" },
+              "base": { "type": "string" },
+              "walls": { "type": "string" },
+              "ceiling": { "type": "string" },
+              "ceiling_height": { "type": "string" },
+              "remarks": { "type": "string" },
+              "sheet": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

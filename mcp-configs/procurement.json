@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "deeprfp": {
+      "command": "node",
+      "args": ["./mcp-servers/deeprfp/dist/index.js"],
+      "env": {
+        "DEEPRFP_API_KEY": "<your-deeprfp-api-key>",
+        "DEEPRFP_API_BASE_URL": "https://api.deeprfp.com/v1"
+      },
+      "description": "DeepRFP AI procurement connector: analyze tenders, draft proposals, auto-fill questionnaires, build compliance matrices, and review bids. Run `npm install && npm run build` in mcp-servers/deeprfp first."
+    },
+    "ntxp-bidwatch": {
+      "command": "node",
+      "args": ["./mcp-servers/ntxp-bidwatch/dist/index.js"],
+      "env": {
+        "SAM_GOV_API_KEY": "<optional-free-api.data.gov-key>",
+        "HIGHERGOV_API_KEY": "<optional-highergov-key>",
+        "BIDBANANA_API_KEY": "<optional-bidbanana-key>"
+      },
+      "description": "NTXP BidWatch: unified search across public bidding sources: SAM.gov, HigherGov, BidBanana, Texas ESBD, Bonfire (UT Dallas, Lewisville), Jaggaer (UNT, Texas A&M), Ionwave (Denton), OpenGov, DemandStar, PlanetBids. Keyless sources (esbd, utd, lewisville-tx) work with no config. Run `npm install && npm run build` in mcp-servers/ntxp-bidwatch first."
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/proposals"],
+      "description": "Read and write proposal documents, tender attachments, and exports."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch published tender notices and procurement portal pages as markdown."
+    }
+  }
+}

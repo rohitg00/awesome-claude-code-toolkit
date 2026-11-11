@@ -1,0 +1,5 @@
+# Runtime dependencies for the NTXP API Log skill.
+click>=8.1
+cryptography>=3.4
+# Optional: only needed to run the MCP server (ntxp-apilog mcp-serve)
+# mcp>=1.0

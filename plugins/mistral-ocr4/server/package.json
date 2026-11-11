@@ -1,0 +1,29 @@
+{
+  "name": "mistral-ocr4-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lean MCP server exposing the full Mistral OCR4 + Document AI API as a tool-agnostic extraction layer (OCR, annotations, Files, Batch, generic passthrough). Extraction only - reasoning stays with the calling model.",
+  "type": "module",
+  "bin": {
+    "mistral-ocr4-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  }
+}

@@ -1,6 +1,23 @@
 node_modules/
 dist/
 build/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+venv/
+.venv/
+
+# Contacts DB — never commit real contact data (PII)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+contacts-db/data/raw/
 .env
 .env.local
 .env.*.local
@@ -23,3 +40,17 @@ yarn.lock
 .cache/
 tmp/
 temp/
+
+# Browserbase runtime data
+.browserbase/
+stagehand-cache/
+
+# contacts-db deploy: secrets and the proprietary NTXP document engine / logo never go in git
+contacts-db/deploy/.env
+contacts-db/deploy/engine/*
+contacts-db/deploy/assets/*
+!contacts-db/deploy/engine/.gitkeep
+!contacts-db/deploy/assets/.gitkeep
+
+# the contacts front end pins its dependency tree (Docker/CI use `npm ci`)
+!contacts-db/web-app/package-lock.json

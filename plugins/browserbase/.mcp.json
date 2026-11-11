@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "browserbase": {
+      "command": "npx",
+      "args": ["-y", "@browserbasehq/mcp@latest"],
+      "env": {
+        "BROWSERBASE_API_KEY": "${BROWSERBASE_API_KEY}"
+      }
+    }
+  }
+}

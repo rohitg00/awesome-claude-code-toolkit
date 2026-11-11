@@ -1,0 +1,10 @@
+# Runtime dependencies for canonical-project-model.
+#
+# assemble_model.py is stdlib-only and needs NONE of these.
+# build_workbook.py needs openpyxl to render the Excel workbook; segno + Pillow
+# are optional and only used to embed the ITB QR code (it falls back to a plain
+# hyperlink when they are absent).
+
+openpyxl>=3.1      # workbook rendering (required by build_workbook.py)
+segno>=1.6         # optional: QR code generation for the ITB
+Pillow>=10.0       # optional: lets openpyxl embed the QR PNG

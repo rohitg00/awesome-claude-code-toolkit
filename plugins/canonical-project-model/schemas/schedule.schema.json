@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schedule.schema.json",
+  "title": "Section — Schedule & Milestones",
+  "description": "Contract milestones, key dates, and duration constraints harvested from the documents — the dated skeleton a scheduling tool builds a CPM schedule on. Captures owner-imposed milestones, phase durations, and liquidated-damages-bearing dates. The model structures the dates; it does not build a logic-driven schedule.",
+  "type": "object",
+  "required": ["section"],
+  "properties": {
+    "section": { "type": "string", "const": "schedule" },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {
+          "milestone_id": { "type": "string" },
+          "label": { "type": "string", "description": "e.g. 'Notice to Proceed', 'Substantial Completion', 'Final Completion', 'Phase 1 Complete'." },
+          "date": { "type": ["string", "null"], "description": "ISO 8601 when an absolute date is stated." },
+          "relative_to": { "type": "string", "description": "e.g. '180 calendar days from NTP' when the milestone is relative." },
+          "is_contractual": { "type": "boolean", "description": "True if liquidated-damages-bearing / contractually fixed." },
+          "phase": { "type": "string" },
+          "as_written": { "type": "string" },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "contract_duration": { "type": "string", "description": "Overall stated duration (e.g. '270 calendar days')." },
+    "lookahead": {
+      "type": "array",
+      "description": "Short-interval look-ahead items (the last/this/next-week view): tasks, deliveries, inspections. is_critical items sit on the critical path (rendered red); deliveries render blue.",
+      "items": {
+        "type": "object",
+        "required": ["label", "start"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "label": { "type": "string" },
+          "start": { "type": "string", "description": "ISO date." },
+          "end": { "type": ["string", "null"], "description": "ISO date; null for single-day items." },
+          "type": { "type": "string", "enum": ["task", "delivery", "inspection", "milestone", "meeting", "other"] },
+          "is_critical": { "type": "boolean" },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$" },
+          "trade_id": { "type": "string" },
+          "status": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Sequencing/timing constraints stated in the documents, verbatim.",
+      "items": { "type": "object", "properties": { "text": { "type": "string" }, "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" } } }
+    }
+  }
+}

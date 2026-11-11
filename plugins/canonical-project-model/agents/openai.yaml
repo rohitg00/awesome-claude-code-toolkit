@@ -1,0 +1,4 @@
+interface:
+  display_name: "NTXP Plans Atlas"
+  short_description: "Project source of truth + navigable, hyperlinked drawing-set atlas"
+  default_prompt: "A bid is confirmed for this project. Normalize the documents into the Canonical Project Record, deploy the Plans Atlas into Construction Documents/Plans Atlas, and report what was built and the one or two items worth the PM's attention."

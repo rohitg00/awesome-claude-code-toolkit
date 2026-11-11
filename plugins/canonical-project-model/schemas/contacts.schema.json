@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contacts.schema.json",
+  "title": "Section — Project Contacts (Team Roster)",
+  "description": "The project team roster shown on the Contacts page: the named roles NTXP needs to reach during bid and start-up. Distinct from the subcontractors directory (which is the bidding subs/suppliers); these are the owner/design/authority/NTXP-side roles. Each references a party in the subcontractors directory by party_id when the same company also appears there, but carries its own role and contact for the page. Engineers are listed per discipline (with the MasterFormat division they own) and sorted by division.",
+  "type": "object",
+  "required": ["section", "contacts"],
+  "properties": {
+    "section": { "type": "string", "const": "contacts" },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "designated_poc", "owner", "owner_pm", "architect",
+              "engineer_civil", "engineer_structural", "engineer_mechanical",
+              "engineer_electrical", "engineer_plumbing", "engineer_fire_protection",
+              "engineer_other", "special_inspections", "ahj_permitting",
+              "joc_coop_admin", "ntxp_estimator", "ntxp_pm", "other"
+            ],
+            "description": "Role on the project. 'designated_poc' is the single point of contact; 'ntxp_estimator' is the assigned NTXP estimator."
+          },
+          "role_label": { "type": "string", "description": "Display label when role=other or engineer_other (e.g. 'Geotechnical Engineer')." },
+          "masterformat_division": { "type": "string", "pattern": "^[0-9]{2}$", "description": "Division this contact owns, for engineers/inspections (e.g. '26' for the electrical engineer). Used to sort and to link the contact to its trade." },
+          "party_id": { "type": "string", "description": "Link to subcontractors.parties[].party_id when the same company appears there." },
+          "company": { "type": "string" },
+          "name": { "type": "string" },
+          "title": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "notes": { "type": "string" },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    }
+  }
+}

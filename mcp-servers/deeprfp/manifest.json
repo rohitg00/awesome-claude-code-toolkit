@@ -1,0 +1,65 @@
+{
+  "manifest_version": "0.2",
+  "name": "deeprfp",
+  "display_name": "DeepRFP",
+  "version": "0.1.0",
+  "description": "AI RFP/tender connector for public procurement: analyze tenders, draft proposals, auto-fill questionnaires, build compliance matrices, and review bids.",
+  "long_description": "MCP custom connector for DeepRFP. Exposes DeepRFP's AI agents as tools so Claude can analyze RFPs/tenders (bid/no-bid, requirements, deadlines, evaluation criteria), draft proposal responses grounded in your content library, auto-fill questionnaire/RFQ forms, generate compliance matrices, and run proposal reviews. DeepRFP does not publish an official public API, so the endpoint is configurable to target whatever your account exposes (default https://api.deeprfp.com/v1).",
+  "author": {
+    "name": "awesome-claude-code-toolkit"
+  },
+  "license": "MIT",
+  "keywords": ["rfp", "procurement", "tender", "proposal", "deeprfp", "bid"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "DEEPRFP_API_KEY": "${user_config.api_key}",
+        "DEEPRFP_API_BASE_URL": "${user_config.api_base_url}",
+        "DEEPRFP_TIMEOUT_MS": "${user_config.timeout_ms}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "deeprfp_list_projects", "description": "List RFP/tender projects, optionally filtered by status." },
+    { "name": "deeprfp_get_project", "description": "Retrieve a project with its documents and generated artifacts." },
+    { "name": "deeprfp_create_project", "description": "Create a project for a specific opportunity." },
+    { "name": "deeprfp_analyze_rfp", "description": "Analyzer agent: requirements, dates, criteria, bid/no-bid recommendation." },
+    { "name": "deeprfp_draft_response", "description": "Writer agent: draft proposal sections grounded in your content library." },
+    { "name": "deeprfp_answer_questionnaire", "description": "Auto-fill questionnaire/RFQ questions from your library." },
+    { "name": "deeprfp_generate_compliance_matrix", "description": "Map tender requirements to responses/evidence." },
+    { "name": "deeprfp_review_proposal", "description": "Color/red-team review with optional rewrite." },
+    { "name": "deeprfp_search_library", "description": "Search your content library for reusable material." }
+  ],
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "DeepRFP API Key",
+      "description": "Bearer token for your DeepRFP account.",
+      "sensitive": true,
+      "required": true
+    },
+    "api_base_url": {
+      "type": "string",
+      "title": "API Base URL",
+      "description": "DeepRFP API base URL. Change only if your account uses a custom endpoint.",
+      "default": "https://api.deeprfp.com/v1",
+      "required": false
+    },
+    "timeout_ms": {
+      "type": "string",
+      "title": "Request Timeout (ms)",
+      "description": "Per-request timeout in milliseconds.",
+      "default": "120000",
+      "required": false
+    }
+  },
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}

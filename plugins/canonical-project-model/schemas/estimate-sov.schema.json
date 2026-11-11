@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "estimate-sov.schema.json",
+  "title": "Section — Estimate Basis & Schedule of Values",
+  "description": "The STRUCTURE an estimate, a Schedule of Values (AIA G703), and — for JOC — a line-item proposal are built on. It provides CSI-coded cost lines with the standard M/L/E/S cost-type split, the markup ladder, and the SOV billing breakdown that ties to the contract sum. Any prices, unit rates, or coefficients present here were EXTRACTED from documents (owner SOV, bid form, JOC UPB) and carry provenance — the model never generates pricing. An estimating tool fills the empty slots; a billing tool reads the SOV; a JOC tool reads the line-item proposal.",
+  "type": "object",
+  "required": ["section"],
+  "properties": {
+    "section": { "type": "string", "const": "estimate_sov" },
+    "cost_lines": {
+      "type": "array",
+      "description": "Estimate line items by cost code, with the standard cost-type breakdown. amount fields are null unless a value was in a source document.",
+      "items": {
+        "type": "object",
+        "required": ["cost_line_id", "description"],
+        "properties": {
+          "cost_line_id": { "type": "string", "description": "Stable id, e.g. 'EL-0331-02'." },
+          "scope_item_id": { "type": "string" },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "description": { "type": "string" },
+          "quantity": { "$ref": "common.defs.schema.json#/$defs/quantity" },
+          "cost_types": {
+            "type": "object",
+            "description": "Material / Labor / Equipment / Subcontract / Other split (the 'MELS+O' estimating breakdown). Each is a money object; null amounts are unpriced slots.",
+            "properties": {
+              "material": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "labor": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "labor_hours": { "type": ["number", "null"] },
+              "equipment": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "subcontract": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "other": { "$ref": "common.defs.schema.json#/$defs/money" }
+            }
+          },
+          "unit_rate": { "$ref": "common.defs.schema.json#/$defs/money" },
+          "extended": { "$ref": "common.defs.schema.json#/$defs/money", "description": "Quantity x unit rate, when present in the source." },
+          "joc_line": {
+            "type": "object",
+            "description": "For JOC: the unit-price-book reference this line draws from.",
+            "properties": {
+              "upb_line_number": { "type": "string", "description": "Catalog line id (e.g. RSMeans line number)." },
+              "upb_unit_price": { "$ref": "common.defs.schema.json#/$defs/money" },
+              "modifier": { "type": "string", "description": "Demo/install/modification flag when the UPB distinguishes them." }
+            }
+          },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" },
+          "normalization": { "$ref": "common.defs.schema.json#/$defs/normalization" }
+        }
+      }
+    },
+    "markups": {
+      "type": "object",
+      "description": "The markup ladder applied above direct cost. Percentages/values are captured only when stated in the documents; otherwise the keys stand as a structure for the estimating tool to fill.",
+      "properties": {
+        "general_conditions": { "type": "string" },
+        "general_requirements": { "type": "string" },
+        "overhead_and_profit": { "type": "string" },
+        "fee": { "type": "string", "description": "CM/GC fee (GMP/cost-plus)." },
+        "joc_coefficient": { "type": ["number", "null"], "description": "Adjustment factor applied to UPB cost (JOC)." },
+        "contingency": { "type": "string" },
+        "bond": { "type": "string" },
+        "insurance": { "type": "string" },
+        "escalation": { "type": "string" },
+        "tax": { "type": "string" }
+      }
+    },
+    "schedule_of_values": {
+      "type": "array",
+      "description": "AIA G703-style SOV: the billing breakdown that sums to the contract sum. Distinct from the internal estimate — this is what gets billed against. Captured verbatim when an owner/contract SOV exists; otherwise structured from scope/divisions.",
+      "items": {
+        "type": "object",
+        "required": ["sov_line", "description"],
+        "properties": {
+          "sov_line": { "type": "string", "description": "SOV item number." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref" },
+          "description": { "type": "string" },
+          "scheduled_value": { "$ref": "common.defs.schema.json#/$defs/money" },
+          "scope_item_ids": { "type": "array", "items": { "type": "string" }, "description": "Scope rows this SOV line covers." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "totals": {
+      "type": "object",
+      "description": "Stated totals (base bid, alternates, contract sum) as extracted. Re-derivation/validation of arithmetic is a downstream (bid-leveling) responsibility — recorded here verbatim only.",
+      "properties": {
+        "base_bid": { "$ref": "common.defs.schema.json#/$defs/money" },
+        "alternates": { "type": "array", "items": { "type": "object", "properties": { "id": { "type": "string" }, "description": { "type": "string" }, "amount": { "$ref": "common.defs.schema.json#/$defs/money" } } } },
+        "contract_sum": { "$ref": "common.defs.schema.json#/$defs/money" }
+      }
+    }
+  }
+}

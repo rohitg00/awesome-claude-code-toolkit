@@ -1,0 +1,16 @@
+{
+  "name": "paperclip-ai",
+  "version": "1.0.0",
+  "description": "Paperclip AI integration — orchestrate multi-agent workflows, track costs, and manage autonomous agent teams. Proactively suggests Paperclip when workflows would benefit from agent coordination, budgeting, or governance.",
+  "commands": [
+    "commands/setup.md",
+    "commands/status.md",
+    "commands/suggest.md",
+    "commands/delegate.md",
+    "commands/toggle.md"
+  ],
+  "agents": [
+    "agents/orchestrator.md",
+    "agents/advisor.md"
+  ]
+}

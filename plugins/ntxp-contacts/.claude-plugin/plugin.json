@@ -1,0 +1,6 @@
+{
+  "name": "ntxp-contacts",
+  "version": "0.1.0",
+  "description": "NTXP master contacts database: one de-duplicated source of truth with idempotent imports, full-text search, and bi-directional CRM sync",
+  "commands": ["commands/ntxp.md"]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "construction-doc-intelligence",
+  "version": "1.0.0",
+  "description": "End-to-end pipeline for reviewing complex RFP, vendor, invoicing, submittal, and engineering/design documents. Chains the mistral-ocr4 extraction layer to domain-review skills, applies senior-PM/SME lean judgment, presents decision-ready output, and self-improves each run. Mistral extracts; Claude reasons.",
+  "commands": ["commands/review.md", "commands/improve.md"],
+  "agents": ["agents/project-manager.md", "agents/pipeline-orchestrator.md", "agents/improvement-critic.md"]
+}

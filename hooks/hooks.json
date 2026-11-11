@@ -141,6 +141,39 @@
       "type": "UserPromptSubmit",
       "description": "Detect vague prompts and suggest clarification",
       "command": "node hooks/scripts/prompt-check.js"
+    },
+    {
+      "type": "SessionStart",
+      "description": "Auto-start Paperclip server and load agent context silently",
+      "command": "node hooks/scripts/paperclip-auto-start.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Bash",
+      "description": "Log significant actions (commits, pushes, tests) to Paperclip",
+      "command": "node hooks/scripts/paperclip-activity-log.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Write",
+      "description": "Track file creation activity in Paperclip",
+      "command": "node hooks/scripts/paperclip-activity-log.js"
+    },
+    {
+      "type": "PostToolUse",
+      "matcher": "Edit",
+      "description": "Track file edit activity in Paperclip",
+      "command": "node hooks/scripts/paperclip-activity-log.js"
+    },
+    {
+      "type": "UserPromptSubmit",
+      "description": "Suggest Paperclip features when prompt matches orchestration patterns",
+      "command": "node hooks/scripts/paperclip-prompt-enhance.js"
+    },
+    {
+      "type": "SessionEnd",
+      "description": "Flush pending activity to Paperclip and save session state",
+      "command": "node hooks/scripts/paperclip-session-end.js"
     }
   ]
 }

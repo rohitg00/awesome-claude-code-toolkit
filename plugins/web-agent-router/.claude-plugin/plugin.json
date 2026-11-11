@@ -1,0 +1,6 @@
+{
+  "name": "web-agent-router",
+  "version": "0.1.0",
+  "description": "Gated tool selection for remote/web tasks: detects browsing, scraping, crawling, or automation intent and pops up a minimal-click question card (via AskUserQuestion) that routes to the right installed tool — Fetch, Firecrawl, Playwright/Puppeteer, or Browserbase — instead of guessing.",
+  "commands": ["commands/route.md"]
+}

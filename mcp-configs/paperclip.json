@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "paperclip": {
+      "command": "node",
+      "args": ["hooks/scripts/paperclip-mcp-server.js"],
+      "env": {
+        "PAPERCLIP_BASE_URL": "http://127.0.0.1:3100/api"
+      },
+      "description": "Paperclip AI — manage issues, agents, and costs with native MCP tools. Auto-discovers credentials from ~/.paperclip/connector-state.json. Toggle with /paperclip-ai:toggle."
+    }
+  }
+}

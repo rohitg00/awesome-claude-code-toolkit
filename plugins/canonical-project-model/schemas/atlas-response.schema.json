@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atlas-response.schema.json",
+  "title": "Plans Atlas -> Phase 1 drawing handoff response",
+  "description": "Written by phase1_receiver.py to <kb>/atlas/atlas-response.json. atlas_bridge.py receive folds it into kb_index.jsonl, lifecycle.json, handoff.json and CHANGELOG.md.",
+  "type": "object",
+  "required": [
+    "schema",
+    "request_id",
+    "status"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ntxp.atlas-response/1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "no_drawings",
+        "error"
+      ]
+    },
+    "deploy_status": {
+      "enum": [
+        "built",
+        "up_to_date",
+        "no_drawings",
+        "error",
+        null
+      ]
+    },
+    "received_at": {
+      "type": "string"
+    },
+    "atlas": {
+      "type": "object",
+      "properties": {
+        "sheets": {
+          "type": "integer"
+        },
+        "links": {
+          "type": "integer"
+        },
+        "atlas_version": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "viewer_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "viewer_rel": {
+          "type": "string"
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "plans_atlas": {
+          "type": "string"
+        },
+        "interlinks": {
+          "type": "string"
+        },
+        "chunks": {
+          "type": "string"
+        },
+        "viewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "blueprint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "work_orders": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "seeded_sections": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "written",
+          "refreshed",
+          "kept"
+        ]
+      },
+      "description": "CPR sections seeded from the KB; kept = a person or tool owns it, so it was not touched."
+    },
+    "interlink": {
+      "type": "object",
+      "properties": {
+        "stats": {
+          "type": "object"
+        }
+      }
+    },
+    "ignition": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "needs_review": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

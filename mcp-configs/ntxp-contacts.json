@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ntxp-contacts": {
+      "command": "ntxp",
+      "args": ["mcp-serve"],
+      "env": {
+        "NTXP_DB_PATH": "~/.ntxp/contacts.db"
+      },
+      "description": "Query and update the NTXP master contacts database: search/get/upsert contacts and organizations, export, stats, and produce CRM sync plans. The single source of truth for all NTXP tools."
+    }
+  }
+}

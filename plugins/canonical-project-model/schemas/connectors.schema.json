@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "connectors.schema.json",
+  "title": "Section — Data Connectors & Sync State",
+  "description": "State of each connected data source. Policy: connectors sync ONE-WAY into the knowledge base (the canonical model is the single source of truth), prioritizing the last five days of data then backfilling. Outbound (two-way) changes happen only through the user-approved suggestions flow. If the user declines, the dashboard and knowledge base stay correct even when external tools do not align.",
+  "type": "object",
+  "required": ["section", "sources"],
+  "properties": {
+    "section": { "type": "string", "const": "connectors" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "description": "e.g. JobTread, OCR4 Docs, Schedule, Contacts, Email." },
+          "kind": { "type": "string" },
+          "direction": { "type": "string", "enum": ["one_way_in"], "default": "one_way_in" },
+          "last_sync": { "type": ["string", "null"], "description": "ISO timestamp of last successful inbound sync." },
+          "window_days": { "type": "integer", "default": 5, "description": "Recent-data window prioritized on each sync." },
+          "health": { "type": "string", "enum": ["green", "yellow", "red"], "description": "green=on track, yellow=team attention, red=priority focus." },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "project_identity",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "project_title": { "type": "string", "description": "Official project name from the drawing title block or RFP/solicitation cover." },
+        "project_number": { "type": "string", "description": "Project / solicitation / bid number if present." },
+        "owner": { "type": "string", "description": "Owner / issuing agency / client." },
+        "location": { "type": "string", "description": "Project site address or city/state." },
+        "source": { "type": "string", "description": "Where on the page this identity was found (e.g. 'title block', 'RFP cover')." }
+      }
+    }
+  }
+}

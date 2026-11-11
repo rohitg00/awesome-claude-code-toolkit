@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "logistics-plan.schema.json",
+  "title": "Section — Site Logistics Plan",
+  "description": "Structured inputs to the site logistics / general-conditions plan, harvested from civil/site drawings, phasing plans, and Division 01 (temporary facilities, use of site, working hours). Organizes staging, access, hoisting, temporary facilities, phasing, and site controls so a logistics/GC tool can produce the plan and price general conditions. Collected and structured only — not authored or optimized here.",
+  "type": "object",
+  "required": ["section"],
+  "properties": {
+    "section": { "type": "string", "const": "logistics_plan" },
+    "site_access": { "type": "array", "items": { "type": "string" }, "description": "Access/egress points, haul routes, road restrictions as stated." },
+    "staging_laydown": { "type": "array", "items": { "type": "string" }, "description": "Staging, laydown, and storage areas/constraints." },
+    "hoisting_craning": { "type": "array", "items": { "type": "string" }, "description": "Crane/hoist requirements, pick zones, overhead constraints." },
+    "temporary_facilities": { "type": "array", "items": { "type": "string" }, "description": "Temp power, water, fencing, toilets, office trailers, dumpsters." },
+    "phasing": {
+      "type": "array",
+      "description": "Construction phases / sequencing as described (e.g. occupied-facility phasing).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": { "type": "string" },
+          "description": { "type": "string" },
+          "scope_item_ids": { "type": "array", "items": { "type": "string" } },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "site_controls": { "type": "array", "items": { "type": "string" }, "description": "Traffic control, SWPPP/erosion control, dust/noise, security, environmental controls." },
+    "working_hours": { "type": "string", "description": "Permitted working hours / restrictions, verbatim." },
+    "constraints": {
+      "type": "array",
+      "description": "Verbatim logistics constraints with provenance (e.g. 'no Saturday work', 'maintain egress for occupied wing').",
+      "items": { "type": "object", "properties": { "text": { "type": "string" }, "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" } } }
+    }
+  }
+}

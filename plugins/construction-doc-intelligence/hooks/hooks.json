@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "type": "UserPromptSubmit",
+      "description": "Divine construction document-review intent from conversational wording and surface the construction-doc-intelligence pipeline",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-review-intent.js"
+    }
+  ]
+}

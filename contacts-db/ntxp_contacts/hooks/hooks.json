@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m ntxp_contacts.hooks.contact_context"
+          }
+        ]
+      }
+    ]
+  }
+}

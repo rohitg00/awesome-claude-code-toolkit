@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ntxp-apilog": {
+      "command": "ntxp-apilog",
+      "args": ["mcp-serve"],
+      "env": {
+        "NTXP_APILOG_DB_PATH": "~/.ntxp/apilog.db",
+        "NTXP_APILOG_KEY": "<your-shared-fernet-key>"
+      },
+      "description": "Query and update the NTXP API Log: the single shared registry of API endpoints, credentials, and cost. Use find_api/get_credentials to fill in a URL+key the moment a system, skill, or user needs an API; upsert_api to register new ones; log_usage to track spend. Reveals are audited."
+    }
+  }
+}

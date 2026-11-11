@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "plans-atlas.schema.json",
+  "title": "Plans Atlas — navigable drawing-set index",
+  "description": "Makes the PDF drawing set navigable like a linked web document without altering the drawings. One record per sheet plus a concept index (trade / spec section / phase / area) and a callout-link graph, all classified by CSI MasterFormat division (the sole classification system and universal sort key). Built deterministically by build_atlas_data.py (never hand-rolled per run) and rendered by build_atlas_html.py into a self-contained offline viewer in NTXP's brand system. Live markups and generated phase-of-scope images are STAGED here as render requests — the atlas records them; ntxp-pdf-markups-and-redlines and construction-scope-visualizer produce them; nothing is invented by this layer.",
+  "type": "object",
+  "required": ["sheets"],
+  "properties": {
+    "generated_at": { "type": "string" },
+    "source_set": {
+      "type": "object",
+      "description": "The drawing pack this atlas indexes. The atlas never modifies these files.",
+      "properties": {
+        "dossier_dir": { "type": "string" },
+        "documents": { "type": "array", "items": { "type": "string" } },
+        "pack_qa": { "type": "string", "enum": ["ready", "ready_with_warnings", "blocked", "not_run"], "description": "Result of the pre-atlas pack inventory (duplicates, text layer, sheet size). A blocked pack gates atlas building." }
+      }
+    },
+    "sheets": {
+      "type": "array",
+      "description": "One entry per drawing sheet, in CSI-division order then sheet-number order.",
+      "items": {
+        "type": "object",
+        "required": ["sheet_id", "sheet_no"],
+        "properties": {
+          "sheet_id": { "type": "string", "description": "Stable id other records point at (e.g. 'A-101')." },
+          "sheet_no": { "type": "string" },
+          "title": { "type": "string" },
+          "discipline": { "type": "string", "description": "Sheet-set discipline (G, C, A, S, M, E, P, FP…) used for viewer tabs." },
+          "csi": { "$ref": "common.defs.schema.json#/$defs/csi_ref", "description": "Primary division(s) the sheet serves; the universal sort key." },
+          "divisions": { "type": "array", "items": { "type": "string" }, "description": "All two-digit divisions with scope on this sheet." },
+          "source_doc": { "type": "string" },
+          "page": { "type": "integer" },
+          "image": { "type": "string", "description": "Rendered page image path or data URI for the viewer canvas." },
+          "thumbnail": { "type": "string" },
+          "width_in": { "type": "number" },
+          "height_in": { "type": "number" },
+          "declared_scale": { "type": "string" },
+          "ocr": { "type": ["string", "boolean"], "description": "Provider name when the sheet text came from OCR (rapidocr, mistral-titleblock); false when read from the PDF text layer." },
+          "searchable": { "type": "boolean", "description": "False when the sheet has no text layer — the viewer marks it 'not searchable' instead of pretending." },
+          "revision": { "type": "string" },
+          "phases": { "type": "array", "items": { "type": "string" } },
+          "areas": { "type": "array", "items": { "type": "string" }, "description": "Rooms / areas / wings shown (verbatim from the documents)." },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "description": "The callout hyperlink graph: plan → section/detail/schedule/spec, each with a normalized source box so the viewer can draw the hotspot and offer Back navigation. Extracted deterministically from callout tags (e.g. '5/A-501'); judgement never invents a target.",
+      "items": {
+        "type": "object",
+        "required": ["from_sheet", "kind"],
+        "properties": {
+          "link_id": { "type": "string" },
+          "kind": { "type": "string", "enum": ["detail", "section", "elevation", "schedule", "spec", "sheet", "qto", "trade", "external"] },
+          "from_sheet": { "type": "string" },
+          "from_box": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4, "description": "Normalized [x0,y0,x1,y1] (0..1) hotspot on the source sheet." },
+          "tag": { "type": "string", "description": "Verbatim callout tag ('5/A-501', 'FD-2')." },
+          "to_sheet": { "type": "string" },
+          "to_box": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 },
+          "to_spec_section": { "type": "string", "description": "MasterFormat section number when the link lands in the spec book (per-section PDF from specs-skill)." },
+          "to_href": { "type": "string", "description": "Resolved hyperlink (spec PDF, workbook sheet, dashboard anchor, OCR4 screenshot URL)." },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "concepts": {
+      "type": "object",
+      "description": "The fast-navigation index: pick a concept, land on every place it appears. Each anchor points at a sheet (and optionally a box), a spec section, or a canonical-model record — never at re-stated data.",
+      "properties": {
+        "trades": {
+          "type": "array",
+          "description": "One entry per division with scope, in MasterFormat order.",
+          "items": {
+            "type": "object",
+            "required": ["division"],
+            "properties": {
+              "division": { "type": "string" },
+              "label": { "type": "string" },
+              "sheet_ids": { "type": "array", "items": { "type": "string" } },
+              "spec_sections": { "type": "array", "items": { "type": "string" } },
+              "takeoff_ids": { "type": "array", "items": { "type": "string" }, "description": "QTO rows for this trade — quantities live once, in the Summary QTO." },
+              "trade_href": { "type": "string", "description": "Link to the trade's budget page / trades row." }
+            }
+          }
+        },
+        "specs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": { "type": "string" },
+              "title": { "type": "string" },
+              "division": { "type": "string" },
+              "pdf": { "type": "string", "description": "Per-section PDF (specs-skill 'Specs By CSI' output) when available." },
+              "sheet_ids": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phase": { "type": "string" },
+              "summary": { "type": "string" },
+              "sheet_ids": { "type": "array", "items": { "type": "string" } },
+              "divisions": { "type": "array", "items": { "type": "string" } },
+              "render_ids": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "areas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "area": { "type": "string" },
+              "sheet_ids": { "type": "array", "items": { "type": "string" } },
+              "divisions": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "renders": {
+      "type": "array",
+      "description": "Live-generation ledger: rendered markups (ntxp-pdf-markups-and-redlines) and generated phase-of-scope images (construction-scope-visualizer). A request is STAGED from the viewer, produced by the owning skill, then recorded here with provenance — the atlas never draws or generates imagery itself.",
+      "items": {
+        "type": "object",
+        "required": ["render_id", "kind", "status"],
+        "properties": {
+          "render_id": { "type": "string" },
+          "kind": { "type": "string", "enum": ["markup", "phase_image", "scope_overlay", "takeoff_exhibit"] },
+          "status": { "type": "string", "enum": ["staged", "generating", "ready", "declined"] },
+          "generator": { "type": "string", "description": "Owning skill (ntxp-pdf-markups-and-redlines, construction-scope-visualizer, 4d-bim-visualization)." },
+          "request": { "type": "string", "description": "What was asked for, verbatim ('shade Div 09 scope on A-101', 'render finishes phase, Rm 114')." },
+          "sheet_ids": { "type": "array", "items": { "type": "string" } },
+          "division": { "type": "string" },
+          "phase": { "type": "string" },
+          "area": { "type": "string" },
+          "output": { "type": "string", "description": "Path/URL of the produced file once ready." },
+          "thumbnail": { "type": "string" },
+          "requested_by": { "type": "string" },
+          "generated_at": { "type": "string" },
+          "provenance": { "$ref": "common.defs.schema.json#/$defs/provenance" }
+        }
+      }
+    },
+    "search": {
+      "type": "object",
+      "description": "Word-box index the viewer searches. Matching is punctuation-insensitive ('FD2' finds 'FD-2').",
+      "properties": {
+        "words_file": { "type": "string", "description": "Sidecar JSON with per-sheet normalized word boxes (kept out of the main record for size)." },
+        "sheets_indexed": { "type": "integer" },
+        "sheets_not_searchable": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "needs_review": { "type": "array", "items": { "type": "string" } }
+  }
+}

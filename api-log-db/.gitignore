@@ -1,0 +1,14 @@
+# The API Log directory ships CODE ONLY. Never commit real credentials, the
+# built database, the encryption key, or exports.
+*.db
+*.db-wal
+*.db-shm
+*.key
+apilog.key
+exports/
+data/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc

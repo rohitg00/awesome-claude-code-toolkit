@@ -1,0 +1,28 @@
+{
+  "name": "@toolkit/mcp-server-tesla",
+  "version": "0.1.0",
+  "description": "Tesla connector MCP server — full Fleet/Owner API surface (locate, lock/unlock, climate, charging, trunk, windows, sentry, navigation share, media, and more) plus a Tesla-themed dashboard GUI and Siri/ChatGPT-ready HTTP bridge.",
+  "type": "module",
+  "bin": {
+    "mcp-server-tesla": "dist/index.js",
+    "tesla-bridge": "dist/bridge.js",
+    "tesla-cli": "dist/cli.js"
+  },
+  "files": ["dist", "public"],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "bridge": "node dist/bridge.js",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["mcp", "tesla", "fleet-api", "vehicle", "dashboard", "siri", "shortcuts", "lock", "unlock", "locate"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.14.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "browserbase": {
+      "command": "npx",
+      "args": ["-y", "@browserbasehq/mcp@latest"],
+      "env": {
+        "BROWSERBASE_API_KEY": "${BROWSERBASE_API_KEY}"
+      },
+      "description": "Browserbase cloud browser automation via Stagehand: scrape pages, fill forms, extract data, and drive browsers with natural language (act/extract/observe). Get your API key at https://browserbase.com/settings. No project ID needed — the key resolves it automatically."
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch web pages as markdown for lightweight reads that don't need a full browser session."
+    }
+  }
+}

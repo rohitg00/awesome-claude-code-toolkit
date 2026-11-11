@@ -1,0 +1,34 @@
+{
+  "manifest_version": "0.2",
+  "name": "browserbase",
+  "display_name": "Browserbase Plugin",
+  "version": "1.1.0",
+  "description": "Cloud browser automation via Browserbase and Stagehand: scrape pages, fill forms, extract structured data, and drive browsers with natural language — no local Chrome required.",
+  "long_description": "Wraps the official @browserbasehq/mcp server for one-click install in Claude Desktop. Exposes 6 tools (start, end, navigate, act, observe, extract) backed by real cloud Chrome sessions. Bring your own Browserbase API key (free tier available) — no project ID needed, the key resolves it automatically.",
+  "author": { "name": "awesome-claude-code-toolkit" },
+  "license": "MIT",
+  "keywords": ["browser", "automation", "scraping", "stagehand", "browserbase", "web"],
+  "server": {
+    "type": "node",
+    "entry_point": "vendor/node_modules/@browserbasehq/mcp/cli.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/vendor/node_modules/@browserbasehq/mcp/cli.js"],
+      "env": {
+        "BROWSERBASE_API_KEY": "${user_config.browserbase_api_key}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "start", "description": "Open (or reuse) a cloud browser session." },
+    { "name": "navigate", "description": "Load a URL in the current session." },
+    { "name": "act", "description": "Perform one interaction: click, type, select, scroll." },
+    { "name": "observe", "description": "List interactable elements matching a description." },
+    { "name": "extract", "description": "Pull structured data out of the current page." },
+    { "name": "end", "description": "Close the current session." }
+  ],
+  "user_config": {
+    "browserbase_api_key": { "type": "string", "title": "Browserbase API Key", "description": "From browserbase.com/settings. No project ID needed.", "sensitive": true, "required": true }
+  },
+  "compatibility": { "runtimes": { "node": ">=18.0.0" } }
+}

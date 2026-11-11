@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mistral-ocr": {
+      "command": "uvx",
+      "args": ["mistral-ocr-mcp"],
+      "env": {
+        "MISTRAL_API_KEY": "<your-mistral-api-key>"
+      },
+      "description": "Extract text and images from PDF/image files via the Mistral OCR API. Published on PyPI, so uvx fetches and runs it on demand — no local build required. Requires a Mistral API key (get one at https://console.mistral.ai/). Set MISTRAL_API_KEY to your key. Distinct from the repo's custom mistral-ocr4 server; this is the upstream mistral-ocr-mcp package."
+    }
+  }
+}
