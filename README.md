@@ -675,6 +675,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | [BlogBurst](https://github.com/shensi8312/blogburst-claude-skill) | `git clone https://github.com/shensi8312/blogburst-claude-skill ~/.claude/skills/blogburst` | Autonomous social media manager for Twitter/Bluesky/Telegram/Discord — writes posts, replies, learns what works. Replaces a $500-1,500/mo freelance SMM for $29-99/mo. Public endpoints demo content before signup. |
 | [Gear Foundation Skills](https://github.com/gear-foundation/vara-skills) | [Repo](https://github.com/gear-foundation/vara-skills) | 21 skills teaching AI coding agents to build and ship Rust smart contracts on Vara Network with Gear/Sails. Covers planning, implementation, testing, frontend, indexing, on-chain deployment, and safe program evolution. MIT. |
 | [Superpower Builder](https://github.com/redhuntlabs/superpower-builder) | `/plugin marketplace add redhuntlabs/superpower-builder` then `/plugin install superpower-builder@superpower-builder` | Interview-driven meta-builder that turns recurring tasks into reusable `SKILL.md` files. Routes by workflow/discipline/content/subagent kind, then pressure-tests baseline-without-skill vs. with-skill before saving. MIT, no telemetry. |
+| [datacircle](https://datacircle.dev) | `mkdir -p ~/.claude/skills/datacircle && curl -fsSL -o ~/.claude/skills/datacircle/SKILL.md https://datacircle.dev/SKILL.md` | Find the best GTM API for a job and compare every plan by price, from the open API at api.datacircle.dev/v1. |
 
 ### Installing Skills
 
