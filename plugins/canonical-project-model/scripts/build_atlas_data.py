@@ -370,10 +370,17 @@ def render_page_images(page, sheet_id, img_dir, dpi):
     img_path = img_dir / f"{safe}.jpg"
     pix.save(str(img_path), jpg_quality=72)
 
-    thumb_dpi = min(eff_dpi, THUMB_EDGE_PX * 72.0 / long_edge_pt)
-    tpix = page.get_pixmap(matrix=fitz.Matrix(thumb_dpi / 72.0, thumb_dpi / 72.0))
+    # The thumbnail is the full image scaled down: drawing the page a second time costs about a
+    # quarter of the render time on a dense sheet.
+    scale = min(1.0, THUMB_EDGE_PX / float(max(pix.width, pix.height) or 1))
+    try:
+        tpix = fitz.Pixmap(pix, max(1, round(pix.width * scale)), max(1, round(pix.height * scale)), None)
+    except Exception:                                    # noqa: BLE001  (older PyMuPDF: draw it instead)
+        thumb_dpi = min(eff_dpi, THUMB_EDGE_PX * 72.0 / long_edge_pt)
+        tpix = page.get_pixmap(matrix=fitz.Matrix(thumb_dpi / 72.0, thumb_dpi / 72.0))
     thumb_path = img_dir / f"{safe}.thumb.jpg"
     tpix.save(str(thumb_path))
+    pix = tpix = None                                    # release the bitmaps before the next sheet
     return img_path, thumb_path
 
 
@@ -609,6 +616,10 @@ def load_model_crosslinks(model_dir):
             return
         sec = csi.get("masterformat_section")
         div = csi.get("masterformat_division")
+        if sec is not None and not isinstance(sec, str):
+            sec = str(sec)                               # a section typed as a number must not break sorting
+        if sec and re.fullmatch(r"\d{6}", sec.strip()):
+            sec = f"{sec[:2]} {sec[2:4]} {sec[4:]}"      # "033000" is the same section as "03 30 00" on the drawings
         if sec:
             result["spec_from_model"].setdefault(
                 sec, {"title": csi.get("section_title", ""), "division": div or sec[:2]})
@@ -657,7 +668,7 @@ def guess_spec_pdf(section_no, division, bases):
             continue
         # The section number must end where the match ends: "03 30 00" must not pick up "03 30 00.13 ...".
         matches = sorted(p for p in Path(base).glob(f"Specs By CSI/{division}/{glob.escape(section_no)}*.pdf")
-                         if not re.match(r"[\d.]", p.name[len(section_no):len(section_no) + 1] or " "))
+                         if not re.match(r"[\d.]", p.stem[len(section_no):len(section_no) + 1] or " "))
         if matches:
             return posix_rel(matches[0], base)
     return None

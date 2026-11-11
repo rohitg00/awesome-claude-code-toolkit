@@ -163,11 +163,17 @@ def manifest_key(manifest):
     return {k: v["sha256"] for k, v in (manifest or {}).items()}
 
 
+MAX_STEP_RETRIES = 2
+
+
 def run_step(label, cmd):
     log(f"{label}: {' '.join(str(c) for c in cmd[1:])}")
     proc = subprocess.run([str(c) for c in cmd], capture_output=True, text=True)
     if proc.stderr:
         sys.stderr.write(proc.stderr if proc.stderr.endswith("\n") else proc.stderr + "\n")
+    if proc.returncode != 0 and proc.stdout:              # the cause is often printed on stdout
+        tail = "\n".join(proc.stdout.strip().splitlines()[-15:])
+        sys.stderr.write(f"[{label}] exit {proc.returncode}; last output:\n{tail}\n")
     return proc
 
 
@@ -191,16 +197,20 @@ def plan_for(args, project, const_docs, created, pdf_dir, pdfs, manifest, state,
     outs = [project / o for o in (state or {}).get("outputs", [])]
     outputs_ok = bool(outs) and all(o.exists() for o in outs)
     unchanged = state is not None and manifest_key(stored) == manifest_key(manifest)
+    # A build whose scope index or legend step failed is retried, at most MAX_STEP_RETRIES times,
+    # so a passing failure heals and a lasting one does not rebuild the atlas on every sync.
+    retry_failed = bool((state or {}).get("failed_steps")) and (state or {}).get("failed_retries", 0) <= MAX_STEP_RETRIES
     if not pdfs:
         action = "no_drawings"
-    elif unchanged and outputs_ok and not args.force:
+    elif unchanged and outputs_ok and not args.force and not retry_failed:
         action = "up_to_date"
     else:
         action = "rebuild"
     reason = ("forced" if args.force else
               "no previous state" if state is None else
               "drawing set changed" if not unchanged else
-              "outputs missing" if not outputs_ok else "no drawing changes")
+              "outputs missing" if not outputs_ok else
+              "retrying failed steps: " + ", ".join(state["failed_steps"]) if retry_failed else "no drawing changes")
     return {"action": action, "reason": reason, "project": str(project),
             "const_docs": str(const_docs), "const_docs_will_be_created": created,
             "pdf_dir": str(pdf_dir), "sheets_found": len(pdfs),
@@ -270,9 +280,9 @@ def main():
 
     if plan["action"] == "no_drawings":
         log(f"No drawing PDFs found under {pdf_dir} yet - the atlas will build on the next sync that brings plans.")
-        write_json(state_path, {"schema": 1, "last_built": (state or {}).get("last_built"),
-                                "event": args.event, "pdf_manifest": {}, "outputs": [],
-                                "atlas_version": version})
+        # Keep the last build's record: an empty folder is often a sync that has not arrived yet.
+        write_json(state_path, {**(state or {}), "schema": 1, "event": args.event, "atlas_version": version,
+                                "last_no_drawings": now_iso()})
         result = {"status": "no_drawings", "atlas": None, "sheets": 0,
                   "event": args.event, "atlas_version": version,
                   "note": f"No drawing PDFs found under {pdf_dir} yet - the atlas will build on the next sync that brings plans."}
@@ -286,6 +296,9 @@ def main():
         log(f"Plans Atlas up to date ({n} sheets, no drawing changes)")
         result = {"status": "up_to_date", "atlas": str(atlas_path), "sheets": n,
                   "event": args.event, "atlas_version": version}
+        if (state or {}).get("failed_steps"):             # still failing after the retries: say so every time
+            result["failed_steps"] = state["failed_steps"]
+            result["warning"] = "The last build finished with failed steps; run with --force after fixing the cause."
         if args.ignite:
             result["ignition"] = run_ignition(project)
         print(json.dumps(result, indent=2))
@@ -325,11 +338,13 @@ def main():
     # scope index: project index, notes, clarifications, schedules and a scope index per trade.
     # Best effort: the viewer and the legend still build without it, and say that it is missing.
     scope_status = "skipped"
+    failed_steps = []
     if classified:
         proc = run_step("step 1b/4 scope index", [py, SCRIPTS_DIR / "scope_index.py", "build", "--model", model_dir,
                                                   "--pdf-dir", pdf_dir])
         scope_status = "built" if proc.returncode == 0 else "failed"
         if proc.returncode != 0:
+            failed_steps.append("scope index")
             log("WARNING: scope_index.py failed; the atlas continues without the scope index.")
 
     other_sections = [p for p in (model_dir / "sections").glob("*.json")
@@ -375,9 +390,13 @@ def main():
     # Drawing set with the Index Legend in front and named-destination links, plus the legend on its own.
     legend_outputs = []
     if classified:
+        # Remove the last build's legend first, so a failed step cannot pass old files off as this build's.
+        for stale in (out_dir / "Index Legend.pdf", out_dir / "INDEX-LEGEND.md"):
+            stale.unlink(missing_ok=True)
         for i, pdf in enumerate(pdfs):
             stem = Path(pdf).stem
             out_pdf = out_dir / f"{stem} - Plans Atlas.pdf"
+            out_pdf.unlink(missing_ok=True)
             cmd = [py, SCRIPTS_DIR / "build_atlas_pdf.py", "--pdf", pdf, "--model", model_dir, "--out", out_pdf]
             if i == 0:
                 cmd += ["--legend-out", out_dir / "Index Legend.pdf", "--legend-md", out_dir / "INDEX-LEGEND.md"]
@@ -386,6 +405,7 @@ def main():
                 outputs.append(out_pdf)
                 legend_outputs.append(out_pdf)
             else:
+                failed_steps.append(f"linked set ({Path(pdf).name})")
                 log(f"WARNING: build_atlas_pdf.py failed for {Path(pdf).name}; the viewer is still deployed.")
         for extra in (out_dir / "Index Legend.pdf", out_dir / "INDEX-LEGEND.md"):
             if extra.exists():
@@ -403,10 +423,14 @@ def main():
         if o.exists():
             rel_outputs.append(o.relative_to(project).as_posix() if project in o.parents else str(o))
     write_json(state_path, {"schema": 1, "last_built": now_iso(), "event": args.event,
+                            "failed_steps": failed_steps,
+                            "failed_retries": 0 if not failed_steps else
+                            ((state or {}).get("failed_retries", 0) + 1 if plan["reason"].startswith("retrying") else 1),
                             "pdf_manifest": manifest, "outputs": rel_outputs, "atlas_version": version})
     log(f"Plans Atlas built: {atlas_path} ({n} sheets, version {version})")
     result = {"status": "built", "atlas": str(atlas_path), "sheets": n,
               "event": args.event, "atlas_version": version, "scope_index": scope_status,
+              "failed_steps": failed_steps,
               "index_legend": str(out_dir / "Index Legend.pdf") if (out_dir / "Index Legend.pdf").exists() else None,
               "linked_sets": [str(p) for p in legend_outputs]}
     if pdfs and not classified:

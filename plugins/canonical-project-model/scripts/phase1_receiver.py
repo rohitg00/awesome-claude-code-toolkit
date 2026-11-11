@@ -181,7 +181,9 @@ def seed_sections(kb_dir, model_dir):
             continue
         trades.append({"trade_id": f"TR-{div}-{re.sub(r'[^a-z0-9]+', '-', str(t['trade']).lower()).strip('-')[:16]}",
                        "name": t["trade"], "masterformat_division": div, "scope_summary": t.get("scope") or "",
-                       "self_perform": bool(t.get("self_perform")), "bid_package_status": "not_started",
+                       # Only what curation states: no self-perform flag is assumed, and buyout status is unknown here.
+                       **({"self_perform": t["self_perform"]} if isinstance(t.get("self_perform"), bool) else {}),
+                       "bid_package_status": "unknown",
                        "spec_notes": [{"text": f"Governing specification section {sp}", "spec_section": str(sp), "kind": "general",
                                        "provenance": {"source_doc": "curation.json", "page": None, "confidence": None}}
                                       for sp in (t.get("spec_sections") or [])],
@@ -222,6 +224,8 @@ def stage_drawings(request, staging):
             f.unlink()
     n = 0
     for d in request.get("drawings") or []:
+        if not isinstance(d, dict) or not d.get("path"):  # a malformed entry is skipped, not fatal
+            continue
         src = Path(d["path"])
         if not src.is_file():
             continue
@@ -338,7 +342,8 @@ def receive(request_path, force=False, chain=True):
             legend[key] = name
     crops = model_dir / "atlas" / "crops"
     if crops.is_dir():
-        shutil.copytree(crops, out_dir / "crops", dirs_exist_ok=True)
+        shutil.rmtree(out_dir / "crops", ignore_errors=True)   # crops of removed sheets must not linger
+        shutil.copytree(crops, out_dir / "crops")
         legend["crops"] = "crops/"
     if not legend.get("index_legend_pdf"):
         review.append("the Index Legend was not built for this set (needs PyMuPDF); the knowledge base has no legend copy")
@@ -359,8 +364,10 @@ def receive(request_path, force=False, chain=True):
     bridge = find_bridge() if (chain and req.get("chain", True)) else None
     if bridge:
         r = subprocess.run([sys.executable, str(bridge), "receive", "--kb", str(kb_dir), "--quiet"], capture_output=True, text=True)
-        resp["chained"] = {"bridge": str(bridge), "exit": r.returncode,
-                           "detail": (r.stdout.strip().splitlines() or [""])[-1] if r.returncode else "ok"}
+        tail = ((r.stderr or "").strip().splitlines() or (r.stdout or "").strip().splitlines() or [""])[-1]
+        resp["chained"] = {"bridge": str(bridge), "exit": r.returncode, "detail": tail if r.returncode else "ok"}
+        if r.returncode:                                  # the atlas is built, but the next step did not take it
+            resp["needs_review"].append(f"the estimating bridge did not accept the atlas (exit {r.returncode}): {tail}")
         write_json(resp_path, resp)
     print(json.dumps({"status": "ok", "sheets": resp["atlas"]["sheets"], "kb_links": stats["links"],
                       "needs_review": len(review), "chained": bool(bridge), "response": str(resp_path)}, indent=2))
