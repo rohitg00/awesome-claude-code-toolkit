@@ -18,6 +18,7 @@ dependencies = [
 [project.optional-dependencies]
 mcp = ["mcp>=1.0,<2"]                  # v1 FastMCP API (stdio + streamable HTTP)
 remote = ["mcp>=1.0,<2", "uvicorn>=0.23"]  # stateless cloud MCP over HTTP
+fast = ["duckdb>=1.0"]               # opt-in DuckDB bulk import
 ocr = ["pytesseract>=0.3", "pdf2image>=1.17", "Pillow>=10.0"]
 postgres = ["psycopg[binary]>=3.1"]   # cloud canonical store (NTXP_DB_URL)
 dev = ["pytest>=7.0", "psycopg[binary]>=3.1"]
