@@ -1190,6 +1190,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Dispatch & Remote Control](https://claude.com/blog/dispatch-and-computer-use) | Blog | Run Claude Code from phone/web, schedule recurring tasks, remote session control |
 | [Claude Code Cheat Sheet](https://cc.storyfox.cz/) | Reference | One-page printable reference, auto-updated daily, 4 languages |
 | [Multi-Agent Orchestra](https://addyosmani.com/blog/code-agent-orchestra/) | Blog | Addy Osmani's survey of multi-agent coding patterns |
+| [Skills, connectors and plugins](https://www.agentflowshub.com/en/learn/skills-connectors-plugins) | Guide | What skills, MCP servers and plugins each change about Claude Code, and how to choose between them |
 
 ## Related Awesome Lists
 
