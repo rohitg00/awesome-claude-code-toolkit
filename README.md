@@ -1015,6 +1015,7 @@ claude-code-toolkit/               850+ files
 
 | Name | Stars | Description |
 |------|-------|-------------|
+| [meetjson](https://github.com/ouzbhdr/meetjson) | -- | Drop-in BaseURL proxy (`https://api.meetjson.com` for Claude Code, `https://api.meetjson.com/v1` for Cursor) & Edge MCP server (~0.04ms). Cuts token costs 60-99% via AST code skeletons, homogeneous JSON pruning, and stream healing |
 | [ctrl](https://ctrl.bulletproof.sh) | - | Pixel-art office that visualizes AI coding agents (Claude Code, Codex, Gemini) working in real time. Standalone web app + daemon, relay sharing for remote access, multi-agent support |
 | [Opcode](https://github.com/winfunc/opcode) | 21,000+ | Tauri 2 desktop GUI and toolkit for Claude Code -- create custom agents with visual editor, usage analytics, MCP integration |
 | [CloudCLI](https://github.com/siteboon/claudecodeui) | 8,400+ | Free open-source web/mobile UI for Claude Code, Cursor CLI, and Codex. Responsive design, integrated shell, file explorer, git explorer |
