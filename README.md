@@ -258,6 +258,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [screen-reader-tester](plugins/screen-reader-tester/) | Screen reader compatibility testing and ARIA fixes |
 | [security-guidance](plugins/security-guidance/) | Security best practices advisor with vulnerability detection and fixes |
 | [seed-generator](plugins/seed-generator/) | Database seeding script generation with realistic data |
+| [self-compact](https://github.com/w21180239/claude-code-self-compact) | Lets Claude compact its own context at task milestones with a self-written handoff, then auto-continue. Install: `/plugin marketplace add w21180239/claude-code-self-compact` |
 | [sitemd](https://github.com/sitemd-cc/sitemd) | Build websites from Markdown via MCP. 22 tools for creating pages, generating content, configuring settings, running SEO audits, and deploying static sites to Cloudflare Pages |
 | [simmer](https://github.com/2389-research/simmer) | Iterative artifact refinement using judge subagents that score against user-defined criteria across multiple rounds |
 | [slack-notifier](plugins/slack-notifier/) | Slack integration for deployment and build notifications |
