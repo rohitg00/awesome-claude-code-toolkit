@@ -1180,6 +1180,7 @@ Tutorials, guides, and deep-dives on Claude Code.
 | [Claude Code Official Docs](https://docs.anthropic.com/en/docs/claude-code) | Docs | Official Anthropic documentation for Claude Code |
 | [Context Engineering Guide](https://www.anthropic.com/research/long-running-Claude) | Guide | Anthropic's guide to long-running Claude Code sessions and scientific computing |
 | [Auto Mode Engineering](https://www.anthropic.com/engineering/claude-code-auto-mode) | Blog | How Auto Mode's two-layer safety system works under the hood |
+| [A home for your mind: the AI harness that powers up your work](https://waldo.vanderlore.de/blog/personal-ai-operating-system/) | Guide | Five steps from a chat window to a Claude Code setup that knows your work, remembers decisions and runs on its own |
 | [Claude Code Guide](https://claudecodeguide.dev) | Guide | Beginner-friendly guide from first install to daily operating system, zero jargon ([GitHub](https://github.com/mshadmanrahman/claudecode-guide)) |
 | [Claude Code Hooks Mastery](https://github.com/disler/claude-code-hooks-mastery) | Tutorial | Complete mastery guide with production-ready hook scripts |
 | [Skills vs MCP vs Plugins](https://www.morphllm.com/context-engineering) | Guide | When to use which extension mechanism in Claude Code |
