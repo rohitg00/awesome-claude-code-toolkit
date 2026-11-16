@@ -3,7 +3,7 @@
     "dchub": {
       "type": "http",
       "url": "https://dchub.cloud/mcp",
-      "description": "DC Hub is the orchestration layer for data center and energy intelligence: start with execute_plan. It publishes the Data Center Power Index (DCPI), a daily score of where data centers can get grid power across 300+ markets, plus interconnection queues, facilities, fiber, gas, and capacity to buy or lease. 96 tools. DCHUB_API_KEY is optional."
+      "description": "DC Hub is the orchestration layer for data center and energy intelligence: start with execute_plan. It publishes the Data Center Power Index (DCPI), a daily score of where data centers can get grid power across 300+ markets, plus interconnection queues, facilities, fiber, gas, and capacity to buy or lease. 97 tools. DCHUB_API_KEY is optional."
     }
   }
 }
