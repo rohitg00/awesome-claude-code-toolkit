@@ -286,6 +286,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [workflow-optimizer](plugins/workflow-optimizer/) | Development workflow analysis and optimization recommendations |
 | [background-timer](https://github.com/culminationAI/background-timer) | Background timer with task notifications -- set delayed checks without blocking conversation |
 | [claude-sounds](https://github.com/culminationAI/claude-sounds) | Audio feedback for Claude Code hooks -- 10 events, 21 sounds, random rotation, customizable (macOS) |
+| [agent-tollbooth-402](https://github.com/Red-Center-Studio/agent-tollbooth-402) | Dual-rail HTTP 402 & x402 V2 monetization plugin for Cloudflare Workers, Hono, Next.js, Express & MCP servers (0% BYO crypto or <1ms Stripe Fiat Wallet receipts + `/scan-routes`, `/install-tollbooth`, `/test-agent`) |
 
 | [notch-so-good](https://github.com/deepshal99/notch-so-good) | Pixel-art crab (Chawd) lives in your Mac's notch and watches Claude Code for you. Live session timers, color-coded notifications, 13 idle animations, mouse-reactive eyes, drowsiness system. Universal binary, one-line install: `npx notch-so-good`. MIT, 130+ users |
 | [codebase-graph](https://github.com/Phoenixrr2113/codebase-graph) | Code intelligence MCP server — 42-language tree-sitter AST parsing, FalkorDB knowledge graphs, 0.944 MRR search quality. npm: `@anthropic/codegraph` |
