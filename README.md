@@ -280,6 +280,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [vibe-kanban](https://github.com/BloopAI/vibe-kanban) | Kanban-based orchestration for 10+ coding agents (Claude Code, Codex, Gemini CLI, Copilot, Amp). Isolated git worktrees per agent, inline diff review. 23,200+ stars |
 | [VibeGuard](https://github.com/majiayu000/vibeguard) | Stop AI from hallucinating code. 88 rules + 13 hooks + 14 agents for real-time interception and static scanning across 5 languages |
 | [visual-regression](plugins/visual-regression/) | Visual regression testing with screenshot comparison |
+| [Watch (值更)](https://github.com/can4hou6joeng4/Watch) | Local-first session relay for Claude Code, Codex, Pi, Grok, Kimi and OpenCode -- writes each target's native session format with per-target write guards and disclosed degradations. CLI + Tauri desktop app, zero telemetry |
 | [wshobson/agents](https://github.com/wshobson/agents) | 112 specialized agents, 16 multi-agent workflow orchestrators, 146 skills, 79 tools in 72 focused plugins. 31,300+ stars |
 | [web-dev](plugins/web-dev/) | Full-stack web development with app scaffolding and page generation |
 | [whatsapp-claude-plugin](https://github.com/Rich627/whatsapp-claude-plugin) | WhatsApp channel plugin for Claude Code -- connects as a linked device via Baileys v7 with bidirectional messaging, full media support, voice transcription, permission relay, and access control |
