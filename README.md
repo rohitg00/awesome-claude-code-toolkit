@@ -1164,6 +1164,7 @@ Notable projects, directories, and resources across the Claude Code ecosystem.
 | [llm-prices](https://github.com/benbencodes/llm-prices) | new | CLI + Python library + MCP server to look up and compare LLM API costs across 167 models from 23 providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Groq, and more). Ask Claude "what's the cheapest model for 10k input + 2k output?" before making API calls. Zero deps, no API key. `pipx install git+https://github.com/benbencodes/llm-prices` |
 
 ---
+| [dayan-enterprise-ai-skills](https://github.com/Kosmoray/dayan-enterprise-ai-skills) | -- | 66 battle-tested enterprise Agent Skills covering anti-AI-slop editing, single-file executive HTML dashboards, rubric-scored proposals, 4-angle contract review, and guardrail RAG. MIT |
 
 ## XVARY Stock Research
 
