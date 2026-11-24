@@ -551,6 +551,7 @@ Thirty-five curated skill modules included in this repo, with access to **400,00
 | Frontend Excellence | `skills/frontend-excellence/` | Component architecture, state management, performance budgets |
 | Security Hardening | `skills/security-hardening/` | Input validation, auth patterns, secrets management, CSP |
 | [Prism Scanner](https://github.com/aidongise-cell/prism-scanner) | `pip install prism-scanner` | Agent skill/plugin/MCP security scanner — 39+ rules, AST taint tracking, A-F grading |
+| [publicrecords-skills](https://github.com/GeminiGeorge22/publicrecords-skills) | Agent Skills + MCP plugin (Claude Code, Codex, Copilot, Cursor, Gemini CLI, Kiro) for 18 public-data Apify Actors: SAM.gov, Grants.gov, USAspending, EU/UK tenders, council meetings, ATS jobs, company socials, Google Ads, Etsy, sports odds, Spotify |  |
 | DevOps Automation | `skills/devops-automation/` | Infrastructure as code, GitOps, monitoring, incident response |
 | Continuous Learning | `skills/continuous-learning/` | Session summaries, learning logs, pattern extraction |
 | React Patterns | `skills/react-patterns/` | Hooks, server components, suspense, error boundaries |
