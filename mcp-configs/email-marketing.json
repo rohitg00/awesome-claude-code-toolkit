@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sequenzy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sequenzy/mcp"
+      ],
+      "env": {
+        "SEQUENZY_API_KEY": "${SEQUENZY_API_KEY}"
+      },
+      "description": "Manage Sequenzy subscribers, segments, email campaigns, automated sequences, transactional templates, and delivery analytics. Also available as a hosted OAuth remote MCP server at https://api.sequenzy.com/v1/mcp."
+    }
+  }
+}
