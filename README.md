@@ -251,6 +251,7 @@ Over 176 production-ready plugins that extend Claude Code with domain-specific c
 | [readme-generator](plugins/readme-generator/) | Smart README generation from project analysis |
 | [refactor-engine](plugins/refactor-engine/) | Extract functions, simplify complex code, and reduce cognitive complexity |
 | [regex-builder](plugins/regex-builder/) | Build, test, and debug regular expression patterns |
+| [reinwatch](https://github.com/sofumel/reinwatch) | Watchdog for the subagents, teammates and workflow agents Claude Code runs for you: per-agent token counts (cache reads excluded), configurable runaway/stuck warnings with notifications, turn summaries, 30-day totals, and stopping a single agent — even inside a workflow. Install: `/plugin install reinwatch --marketplace sofumel/reinwatch` |
 | [release-manager](plugins/release-manager/) | Semantic versioning management and automated release workflows |
 | [responsive-designer](plugins/responsive-designer/) | Responsive design implementation and testing |
 | [review-squad](https://github.com/2389-research/review-squad) | Multi-perspective code review via dispatched subagent panels: experts, normie users, pedantic nitpickers, and real-user task runners |
