@@ -750,7 +750,7 @@ Forty-two slash commands organized into eight categories. Drop these into your p
 
 | Command | File | Description |
 |---------|------|-------------|
-| [Insomnia Security MCP](https://github.com/vulnz/insomnia-mcp) | 159 SAST/taint, live secrets, Web DAST, OSINT, 21k+ CVE & Outbound Network Tunnel v4.0 tools | Streamable HTTP (`https://mcp.insom.ai/mcp`) & `npx`/`uvx` |
+| [Insomnia Security MCP](https://github.com/CQR-Cybersecurity-LLC/insomnia-mcp) | 159 SAST/taint, live secrets, Web DAST, OSINT, 21k+ CVE & Outbound Network Tunnel v4.0 tools | Streamable HTTP (`https://mcp.insom.ai/mcp`) & `npx`/`uvx` |
 | `/audit` | [`audit.md`](commands/security/audit.md) | Run security audit on code and dependencies |
 | `/hardening` | [`hardening.md`](commands/security/hardening.md) | Apply security hardening measures |
 | `/secrets-scan` | [`secrets-scan.md`](commands/security/secrets-scan.md) | Scan for leaked secrets and credentials |
